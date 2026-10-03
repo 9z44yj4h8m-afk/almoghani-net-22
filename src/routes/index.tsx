@@ -4,18 +4,29 @@ import {
   Bell,
   ChevronLeft,
   CirclePlay,
+  Copy,
+  Gem,
+  Ghost,
+  Heart,
   Home,
+  Instagram,
   ListVideo,
+  MessageCircle,
+  Moon,
   Play,
-  Radio,
+  ScrollText,
   Search,
   Signal,
   Sparkles,
+  Sunrise,
+  Users,
   WandSparkles,
   Volume2,
 } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
+import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
+import quranIcon from "@/assets/quran-icon.jpg";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 
@@ -151,6 +162,15 @@ const sections = [
   { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
 ];
 
+const portalLinks = [
+  { title: "سيرة الرسول ﷺ", Icon: Moon },
+  { title: "الأحاديث الشريفة", Icon: ScrollText },
+  { title: "أمهات المؤمنين رضي الله عنهن", Icon: Heart },
+  { title: "سير الصحابة رضي الله عنهم", Icon: Users },
+  { title: "أذكار الصباح والمساء", Icon: Sunrise },
+  { title: "أجور عظيمة من أذكار يسيرة", Icon: Gem },
+];
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -180,6 +200,7 @@ function Index() {
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
   const [searchError, setSearchError] = useState("");
   const [searching, setSearching] = useState(false);
+  const [copied, setCopied] = useState(false);
   const searchWithAi = useServerFn(searchChannelsWithAi);
 
   const searchResults = searchResultIds
@@ -224,13 +245,12 @@ function Index() {
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
-          <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI LIVE">
-            <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-live shadow-live sm:h-11 sm:w-11">
-              <Radio className="h-5 w-5 text-live-foreground" />
-              <span className="absolute -left-1 -top-1 h-3 w-3 rounded-full border-2 border-background bg-signal animate-live-pulse" />
-            </span>
-            <span className="min-w-0 truncate text-left font-display text-lg font-black sm:text-2xl">
-              ALMOGHANI <span className="text-signal">LIVE</span>
+          <a href="#home" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
+            <img src={kaabaEmblem} alt="" width={816} height={816} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
+            <span className="h-9 w-px bg-border" />
+            <span className="min-w-0 text-center">
+              <span className="block font-display text-xs font-bold text-foreground underline decoration-primary underline-offset-4">almoghani.net</span>
+              <span className="block truncate text-sm font-bold text-muted-foreground sm:text-base">صفحة شخصية من اجتهادي</span>
             </span>
           </a>
 
@@ -317,6 +337,59 @@ function Index() {
       </header>
 
       <main className="pb-24 md:pb-12">
+        <section id="home" className="mx-auto max-w-3xl space-y-3 px-4 pt-4">
+          <div className="portal-frame overflow-hidden p-3">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <p className="text-sm font-black">شاهد الآن | القنوات الإخبارية المباشرة</p>
+              <a href="#player" className="rounded-md border border-sky/60 bg-sky/15 px-3 py-1 text-xs font-bold text-sky">المشغّل</a>
+            </div>
+            <div className="overflow-hidden">
+              <div className="portal-ticker gap-8 text-xs text-muted-foreground">
+                {[...channels, ...channels]
+                  .filter((c) => c.category === "إخبارية")
+                  .map((c, i) => (
+                    <button key={`${c.id}-${i}`} type="button" onClick={() => playChannel(c)} className="flex shrink-0 items-center gap-2 hover:text-sky">
+                      <span className="h-1.5 w-1.5 rounded-full bg-sky" />{c.name}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="relative grid grid-cols-[1fr_auto] items-center gap-4 py-2">
+            <div className="portal-frame grid h-24 place-items-center sm:h-32">
+              <span className="portal-wordmark text-3xl sm:text-5xl">ALMOGHANI</span>
+            </div>
+            <img src={kaabaEmblem} alt="الكعبة المشرفة" width={816} height={816} className="h-24 w-24 rounded-3xl object-cover sm:h-32 sm:w-32" />
+          </div>
+
+          <a href="#section-2" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
+            <img src={quranIcon} alt="" loading="lazy" width={816} height={816} className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20" />
+            <span className="flex-1 text-center">
+              <span className="block text-2xl font-black sm:text-3xl">القرآن الكريم</span>
+              <span className="mx-auto mt-2 block h-0.5 w-14 bg-primary" />
+            </span>
+          </a>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            {portalLinks.map(({ title, Icon }) => (
+              <button key={title} type="button" title="قريبًا" className="portal-frame flex min-h-16 items-center gap-3 p-3 text-right">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary/25 text-sky"><Icon className="h-5 w-5" /></span>
+                <span className="flex-1 text-sm font-black leading-snug sm:text-base">{title}</span>
+                <ChevronLeft className="h-4 w-4 shrink-0 text-primary" />
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => { setSearchOpen(true); setSearchError(""); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="portal-frame flex w-full items-center justify-between px-4 py-3 text-muted-foreground"
+          >
+            ابحث داخل الموقع <Search className="h-4 w-4 text-sky" />
+          </button>
+        </section>
+
         <section id="player" className="relative border-b border-border/60">
           <div className="broadcast-grid absolute inset-0 opacity-40" aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
@@ -445,6 +518,55 @@ function Index() {
             );
           })}
         </div>
+
+        <section id="contact" className="mx-auto max-w-3xl space-y-5 px-4 pb-6">
+          <div className="portal-frame p-4 text-center sm:p-6">
+            <h2 className="mb-4 flex items-center justify-center gap-3 font-black">
+              <span className="h-px w-10 bg-primary" />للتواصل المباشر<span className="h-px w-10 bg-primary" />
+            </h2>
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <span dir="ltr" className="font-display text-lg font-bold">+966 557 073 007</span>
+              <span className="h-6 w-px bg-border" />
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText("+966557073007");
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1800);
+                }}
+                className="flex items-center gap-1.5 rounded-md border border-primary/60 px-3 py-1.5 text-sm font-bold transition-colors hover:border-sky"
+              >
+                <Copy className="h-4 w-4" />{copied ? "تم النسخ" : "نسخ"}
+              </button>
+            </div>
+            <a
+              href="https://wa.me/966557073007"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-lg border border-primary/60 bg-gradient-to-l from-primary to-sky/70 py-3 font-black text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              <MessageCircle className="h-5 w-5" />تواصل الآن عبر الواتساب
+            </a>
+          </div>
+
+          <h2 className="flex items-center justify-center gap-3 text-xl font-black">
+            <span className="h-px w-12 bg-border" />للتواصل<span className="h-px w-12 bg-border" />
+          </h2>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { label: "انستقرام", icon: <Instagram className="h-5 w-5" /> },
+              { label: "إكس", icon: <span className="font-display text-lg font-black">𝕏</span> },
+              { label: "سناب شات", icon: <Ghost className="h-5 w-5" /> },
+            ].map((s) => (
+              <span key={s.label} title={s.label} aria-label={s.label} className="portal-frame grid h-12 place-items-center text-foreground">
+                {s.icon}
+              </span>
+            ))}
+          </div>
+          <p className="border-t border-border pt-4 text-center text-sm font-bold text-muted-foreground">
+            جميع الحقوق محفوظة © 2026 · almoghani.net
+          </p>
+        </section>
       </main>
 
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-3 border-t border-border bg-background/95 px-6 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
