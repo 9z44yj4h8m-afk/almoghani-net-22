@@ -83,6 +83,23 @@
   &:active { transform: scale(0.94); }
 }
 
+@utility ai-search-panel {
+  border: 1px solid color-mix(in oklab, var(--sky) 32%, var(--border));
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--surface) 94%, transparent);
+  padding: 1rem;
+  box-shadow: 0 18px 48px color-mix(in oklab, var(--background) 72%, transparent);
+}
+
+@utility ai-search-spinner {
+  height: 1rem;
+  width: 1rem;
+  border: 2px solid color-mix(in oklab, var(--accent-foreground) 35%, transparent);
+  border-top-color: var(--accent-foreground);
+  border-radius: 999px;
+  animation: search-spin 700ms linear infinite;
+}
+
 @utility player-shell {
   overflow: hidden;
   border: 1px solid color-mix(in oklab, var(--sky) 28%, var(--border));
@@ -194,6 +211,10 @@
 @keyframes live-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.45; transform: scale(0.75); }
+}
+
+@keyframes search-spin {
+  to { transform: rotate(360deg); }
 }
 
 @utility animate-fade-up { animation: fade-up 500ms ease-out both; }

@@ -12,3 +12,4 @@
 ## Architecture
 
 - Keep channel metadata in one typed array on the home route so each supplied stream can switch the same embedded player without external navigation.
+- Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.

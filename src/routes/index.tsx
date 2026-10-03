@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
   ChevronLeft,
@@ -10,9 +11,13 @@ import {
   Search,
   Signal,
   Sparkles,
+  WandSparkles,
   Volume2,
 } from "lucide-react";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 
 type Channel = {
   id: string;
@@ -66,6 +71,47 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [selected, setSelected] = useState(channels[0]);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
+  const [searchError, setSearchError] = useState("");
+  const [searching, setSearching] = useState(false);
+  const searchWithAi = useServerFn(searchChannelsWithAi);
+
+  const searchResults = searchResultIds
+    ?.map((id) => channels.find((channel) => channel.id === id))
+    .filter((channel): channel is Channel => Boolean(channel));
+
+  async function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (query.length < 2) {
+      setSearchError("اكتب اسم قناة أو وصفًا من كلمتين على الأقل.");
+      return;
+    }
+
+    setSearching(true);
+    setSearchError("");
+    setSearchResultIds(null);
+    try {
+      const result = await searchWithAi({
+        data: {
+          query,
+          channels: channels.map(({ id, name, category, description }) => ({ id, name, category, description })),
+        },
+      });
+      setSearchResultIds(result.ids);
+    } catch (error) {
+      setSearchError(error instanceof Error ? error.message : "تعذّر إكمال البحث الذكي.");
+    } finally {
+      setSearching(false);
+    }
+  }
+
+  function playChannel(channel: Channel) {
+    setSelected(channel);
+    setSearchOpen(false);
+    document.getElementById("player")?.scrollIntoView({ behavior: "smooth" });
+  }
 
   if (!selected) return null;
 
@@ -91,7 +137,10 @@ function Index() {
             </nav>
             <button
               type="button"
-              onClick={() => setSearchOpen((value) => !value)}
+              onClick={() => {
+                setSearchOpen((value) => !value);
+                setSearchError("");
+              }}
               className="icon-button"
               aria-label="بحث"
               title="بحث"
@@ -105,14 +154,59 @@ function Index() {
         </div>
         {searchOpen && (
           <div className="mx-auto max-w-7xl animate-slide-down px-4 pb-4 sm:px-6 lg:px-8">
-            <label className="flex items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3">
-              <Search className="h-4 w-4 text-muted-foreground" />
-              <input
-                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                placeholder="ابحث عن قناة..."
-                autoFocus
-              />
-            </label>
+            <form onSubmit={handleSearch} className="ai-search-panel">
+              <div className="mb-3 flex items-center gap-2 text-sm font-black text-sky">
+                <WandSparkles className="h-4 w-4" />
+                بحث ذكي في القنوات المتاحة
+              </div>
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+                <label className="flex min-w-0 items-center gap-3 rounded-lg border border-border bg-background/60 px-4 py-3 focus-within:border-sky">
+                  <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <input
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                    placeholder="مثال: قناة أخبار بتغطية مستمرة"
+                    autoFocus
+                    maxLength={200}
+                    aria-label="اسم القناة أو وصفها"
+                  />
+                </label>
+                <Button type="submit" size="lg" disabled={searching} className="h-12 bg-sky px-6 text-accent-foreground hover:bg-sky/90">
+                  {searching ? <span className="ai-search-spinner" /> : <WandSparkles />}
+                  {searching ? "جارٍ البحث" : "ابحث بالذكاء الاصطناعي"}
+                </Button>
+              </div>
+
+              {searchError && <p role="alert" className="mt-3 text-sm font-bold text-signal">{searchError}</p>}
+
+              {searchResults && (
+                <div className="mt-4 border-t border-border pt-4">
+                  {searchResults.length ? (
+                    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                      {searchResults.map((channel) => (
+                        <Button
+                          key={channel.id}
+                          type="button"
+                          variant="secondary"
+                          onClick={() => playChannel(channel)}
+                          className="h-auto min-w-0 justify-start whitespace-normal p-3 text-right"
+                        >
+                          <img src={channel.thumbnail} alt="" className="h-12 w-20 shrink-0 rounded-md object-cover" />
+                          <span className="min-w-0">
+                            <span className="block truncate font-black">{channel.name}</span>
+                            <span className="mt-1 block truncate text-xs text-muted-foreground">{channel.description}</span>
+                          </span>
+                          <Play className="mr-auto text-sky" />
+                        </Button>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm font-bold text-muted-foreground">لم نجد قناة مطابقة ضمن القنوات المتاحة حاليًا.</p>
+                  )}
+                </div>
+              )}
+            </form>
           </div>
         )}
       </header>
@@ -204,8 +298,7 @@ function Index() {
                         key={channel.id}
                         type="button"
                         onClick={() => {
-                          setSelected(channel);
-                          document.getElementById("player")?.scrollIntoView({ behavior: "smooth" });
+                          playChannel(channel);
                         }}
                         className={`channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
                       >
