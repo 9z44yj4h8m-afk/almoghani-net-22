@@ -22,7 +22,7 @@ import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 type Channel = {
   id: string;
   name: string;
-  category: "سعودية" | "رياضية" | "إسلامية" | "إخبارية";
+  category: "سعودية" | "رياضية" | "إسلامية" | "إخبارية" | "مسلسلات وأفلام";
   youtubeId: string;
   thumbnail: string;
   description: string;
@@ -92,6 +92,7 @@ const sections = [
   { title: "القنوات الرياضية", category: "رياضية" as const },
   { title: "القنوات الإسلامية", category: "إسلامية" as const },
   { title: "القنوات الإخبارية", category: "إخبارية" as const },
+  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
 ];
 
 export const Route = createFileRoute("/")({
