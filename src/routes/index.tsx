@@ -140,7 +140,7 @@ function Index() {
                 <iframe
                   key={selected.youtubeId}
                   className="h-full w-full"
-                  src={`https://www.youtube-nocookie.com/embed/${selected.youtubeId}?autoplay=1&rel=0`}
+                  src={`https://www.youtube.com/embed/${selected.youtubeId}?rel=0&playsinline=1`}
                   title={`البث المباشر — ${selected.name}`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
