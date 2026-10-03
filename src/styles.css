@@ -224,3 +224,28 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+@utility portal-frame {
+  position: relative;
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in oklab, var(--primary) 70%, transparent);
+  background: linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, var(--surface-deep)), var(--surface-deep));
+  box-shadow: 0 0 22px color-mix(in oklab, var(--primary) 35%, transparent), inset 0 0 0 4px var(--surface-deep), inset 0 0 0 5px color-mix(in oklab, var(--primary) 45%, transparent);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  &:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in oklab, var(--primary) 55%, transparent), inset 0 0 0 4px var(--surface-deep), inset 0 0 0 5px color-mix(in oklab, var(--sky) 55%, transparent); }
+}
+
+@utility portal-wordmark {
+  font-family: "Sora", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+  text-shadow: 0 3px 0 color-mix(in oklab, var(--primary) 70%, var(--background)), 0 0 24px color-mix(in oklab, var(--primary) 80%, transparent);
+}
+
+@utility portal-ticker {
+  display: flex;
+  width: max-content;
+  animation: portal-ticker 38s linear infinite;
+}
+
+@keyframes portal-ticker { from { transform: translateX(0); } to { transform: translateX(50%); } }
