@@ -46,8 +46,8 @@ function QuranPage() {
       .then((r) => r.json())
       .then((j) => {
         const list: Ayah[] = j.data.ayahs;
-        if (current.number !== 1 && list[0]?.text.startsWith(BASMALA)) {
-          list[0] = { ...list[0], text: list[0].text.slice(BASMALA.length).trim() };
+        if (current.number !== 1 && current.number !== 9 && list[0]) {
+          list[0] = { ...list[0], text: list[0].text.split(" ").slice(4).join(" ").trim() };
         }
         setAyahs(list);
       })
