@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
@@ -363,13 +363,32 @@ function Index() {
             <img src={kaabaEmblem} alt="الكعبة المشرفة" width={816} height={816} className="h-24 w-24 rounded-3xl object-cover sm:h-32 sm:w-32" />
           </div>
 
-          <a href="#section-2" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
+          <nav aria-label="أقسام القنوات" className="portal-frame p-3">
+            <p className="mb-2 flex items-center gap-2 text-sm font-black"><span className="h-2 w-2 rounded-full bg-signal animate-live-pulse" />أقسام القنوات المباشرة</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+              {sections.map((section, index) => {
+                const count = channels.filter((c) => c.category === section.category).length;
+                return (
+                  <a
+                    key={section.title}
+                    href={`#section-${index}`}
+                    className="flex items-center justify-between gap-2 rounded-md border border-primary/50 bg-primary/15 px-3 py-2.5 text-sm font-bold transition-colors hover:border-sky hover:text-sky last:col-span-2 sm:last:col-span-1"
+                  >
+                    <span className="truncate">{section.title.replace("القنوات ", "")}</span>
+                    <span className="rounded bg-background/60 px-1.5 text-xs text-sky">{count}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </nav>
+
+          <Link to="/quran" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
             <img src={quranIcon} alt="" loading="lazy" width={816} height={816} className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20" />
             <span className="flex-1 text-center">
               <span className="block text-2xl font-black sm:text-3xl">القرآن الكريم</span>
               <span className="mx-auto mt-2 block h-0.5 w-14 bg-primary" />
             </span>
-          </a>
+          </Link>
 
           <div className="grid grid-cols-2 gap-2.5">
             {portalLinks.map(({ title, Icon }) => (
