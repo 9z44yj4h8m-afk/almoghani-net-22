@@ -249,3 +249,5 @@
 }
 
 @keyframes portal-ticker { from { transform: translateX(0); } to { transform: translateX(50%); } }
+
+@utility font-quran { font-family: "Amiri Quran", serif; }
