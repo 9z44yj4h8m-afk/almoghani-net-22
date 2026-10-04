@@ -125,12 +125,12 @@ function ChatPage() {
                             a: (props: Record<string, unknown>) => {
                               const href = typeof props["href"] === "string" ? props["href"] : undefined;
                               const children = props["children"] as React.ReactNode;
-                              return
-                              href?.startsWith("/") && !href.startsWith("//") ? (
+                              return href?.startsWith("/") && !href.startsWith("//") ? (
                                 <a href={href} className="font-bold text-sky underline underline-offset-4 hover:text-primary">{children}</a>
                               ) : (
                                 <a href={href} target="_blank" rel="noopener noreferrer" className="text-sky underline">{children}</a>
-                              ),
+                              );
+                            },
                           }}
                         >
                           {part.text}
