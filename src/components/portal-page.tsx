@@ -1,16 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
+  Baby,
   Bell,
+  Clapperboard,
   Home,
   ListVideo,
   MessageCircle,
+  MoonStar,
+  Newspaper,
   Play,
   Search,
   Signal,
   Sparkles,
+  Tv,
   Volume2,
   WandSparkles,
+  type LucideIcon,
 } from "lucide-react";
 import { type FormEvent, useEffect, useState } from "react";
 
@@ -23,13 +29,19 @@ import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
 
-const sections = [
-  { slug: "news", title: "الإخبارية", category: "إخبارية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "sports", title: "الرياضية", category: "رياضية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "kids", title: "أطفال ووثائقي", category: "أطفال ووثائقي" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "general", title: "عامة", category: "عامة" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+const sections: {
+  slug: string;
+  title: string;
+  category: ChannelCategory;
+  icon: LucideIcon;
+  cols: string;
+}[] = [
+  { slug: "news", title: "الإخبارية", category: "إخبارية" as ChannelCategory, icon: Newspaper, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "sports", title: "الرياضية", category: "رياضية" as ChannelCategory, icon: Trophy, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as ChannelCategory, icon: MoonStar, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as ChannelCategory, icon: Clapperboard, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "kids", title: "أطفال ووثائقي", category: "أطفال ووثائقي" as ChannelCategory, icon: Baby, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "general", title: "عامة", category: "عامة" as ChannelCategory, icon: Tv, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
 ];
 
 export const liveSections = sections;
