@@ -1024,6 +1024,14 @@ export const channels: Channel[] = [
     description: "مسلسلات عربية — روتانا دراما",
   },
   {
+    id: "ar-mbc-bollywood",
+    name: "MBC بوليوود",
+    category: "أفلام كاملة",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-bollywood/546eb40d7dcf9a209255dd2496903764/index.m3u8",
+    thumbnail: "https://i.imgur.com/TTAGFHG.png",
+    description: "أفلام هندية كاملة مترجمة للعربية طوال اليوم",
+  },
+  {
     id: "ar-rotana-classic",
     name: "روتانا كلاسيك",
     category: "أفلام كاملة",
