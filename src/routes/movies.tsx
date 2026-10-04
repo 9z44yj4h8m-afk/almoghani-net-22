@@ -61,7 +61,7 @@ function MoviesPage() {
     <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4">
-          <Link to="/channels/$section" params={{ section: "movies" }} className="icon-button shrink-0" aria-label="رجوع">
+          <Link to="/" className="icon-button shrink-0" aria-label="رجوع">
             <ArrowRight className="h-5 w-5" />
           </Link>
           <h1 className="text-lg font-black text-primary sm:text-xl">أفلام مميزة كاملة</h1>

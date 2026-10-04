@@ -71,8 +71,9 @@ export function PortalPage({ section }: { section?: string }) {
   const searchWithAi = useServerFn(searchChannelsWithAi);
   const navigate = useNavigate();
   function goBack() {
-    if (window.history.length > 1) window.history.back();
-    else navigate({ to: "/live" });
+    // Always return to the home page: browser history is unreliable here
+    // (section chips add #hash entries, and direct/installed-app opens have no previous page).
+    navigate({ to: "/" });
   }
   const inactiveIds = useInactiveChannels();
   const inactiveChannels = channels.filter((c) => inactiveIds.includes(c.id));
