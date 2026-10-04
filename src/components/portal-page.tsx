@@ -117,7 +117,7 @@ function LivePlayer({ channel }: { channel: Channel }) {
     <iframe
       ref={frameRef}
       className="h-full w-full"
-      src={`https://www.youtube.com/embed/${channel.youtubeId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`}
+      src={`https://www.youtube.com/embed/${channel.youtubeChannelId ? `live_stream?channel=${channel.youtubeChannelId}&` : `${channel.youtubeId}?`}rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`}
       title={`البث المباشر — ${channel.name}`}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
