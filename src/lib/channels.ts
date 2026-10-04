@@ -19,7 +19,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya",
     name: "قناة العربية",
-    category: "إخبارية",
+    category: "سعودية",
     youtubeId: "n7eQejkXbnM",
     thumbnail: "https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg",
     description: "آخر الأخبار والعواجل لحظة بلحظة",
@@ -35,7 +35,7 @@ export const channels: Channel[] = [
   {
     id: "alhadath",
     name: "قناة الحدث",
-    category: "إخبارية",
+    category: "سعودية",
     youtubeId: "au8t81S0tag",
     thumbnail: "https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg",
     description: "البث الإخباري المباشر لقناة الحدث",
@@ -51,7 +51,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya-business",
     name: "العربية Business",
-    category: "إخبارية",
+    category: "سعودية",
     youtubeId: "iHr7P4kZYrk",
     thumbnail: "https://i.ytimg.com/vi/iHr7P4kZYrk/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق والأعمال مباشرة",
@@ -91,7 +91,7 @@ export const channels: Channel[] = [
   {
     id: "asharq-bloomberg",
     name: "تلفزيون الشرق بلومبرغ",
-    category: "إخبارية",
+    category: "سعودية",
     youtubeId: "f6VpkfV7m4Y",
     thumbnail: "https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق مباشرة",
