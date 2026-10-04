@@ -218,6 +218,11 @@ function Index() {
       <main className="pb-24 md:pb-12">
         <section id="home" className="mx-auto max-w-3xl space-y-3 px-4 pt-4">
           <div className="relative grid grid-cols-[1fr_auto] items-center gap-4 py-2">
+            <div className="portal-frame grid h-24 place-items-center sm:h-32">
+              <span className="portal-wordmark text-3xl sm:text-5xl">ALMOGHANI</span>
+            </div>
+            <img src={kaabaEmblem} alt="الكعبة المشرفة" width={816} height={816} className="h-24 w-24 rounded-3xl object-cover sm:h-32 sm:w-32" />
+          </div>
 
           <Link to="/quran" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
             <img src={quranIcon} alt="" loading="lazy" width={816} height={816} className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20" />
