@@ -34,7 +34,12 @@ function QuranPage() {
   useEffect(() => {
     fetch("https://api.alquran.cloud/v1/surah")
       .then((r) => r.json())
-      .then((j) => setSurahs(j.data))
+      .then((j) => {
+        setSurahs(j.data);
+        const n = Number(new URLSearchParams(window.location.search).get("s"));
+        const hit = (j.data as Surah[]).find((s) => s.number === n);
+        if (hit) setCurrent(hit);
+      })
       .catch(() => setError("تعذّر تحميل قائمة السور."));
   }, []);
 
@@ -106,7 +111,18 @@ function QuranPage() {
               <h2 className="text-2xl font-black">{current.name}</h2>
               <p className="text-sm text-muted-foreground">{current.revelationType === "Meccan" ? "مكية" : "مدنية"} · {current.numberOfAyahs} آية</p>
               <p className="flex items-center justify-center gap-2 text-xs font-bold text-sky"><Headphones className="h-4 w-4" />تلاوة الشيخ مشاري العفاسي</p>
-              <audio key={current.number} controls preload="none" className="w-full" src={`https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${current.number}.mp3`} />
+              <audio
+                key={current.number}
+                controls
+                preload="metadata"
+                className="w-full"
+                onError={(e) => {
+                  const el = e.currentTarget;
+                  const fallback = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${current.number}.mp3`;
+                  if (el.src !== fallback) { el.src = fallback; void el.play().catch(() => {}); }
+                }}
+                src={`https://cdn.mp3quran.net/audio/mishary-alafasy/r1/${String(current.number).padStart(3, "0")}.mp3`}
+              />
             </div>
             <article className="portal-frame p-5 sm:p-8">
               {current.number !== 1 && current.number !== 9 && <p className="mb-6 text-center font-quran text-2xl">{BASMALA}</p>}

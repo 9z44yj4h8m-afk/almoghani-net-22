@@ -118,7 +118,24 @@ function ChatPage() {
                 <MessageContent className={m.role === "user" ? "bg-primary text-primary-foreground" : "bg-transparent text-foreground"}>
                   {m.parts.map((part, i) =>
                     part.type === "text" ? (
-                      m.role === "assistant" ? <MessageResponse key={i}>{part.text}</MessageResponse> : <p key={i} className="whitespace-pre-wrap">{part.text}</p>
+                      m.role === "assistant" ? (
+                        <MessageResponse
+                          key={i}
+                          components={{
+                            a: (props: { href?: string | undefined; children?: React.ReactNode }) => {
+                              const href = props.href;
+                              const children = props.children;
+                              return href?.startsWith("/") && !href.startsWith("//") ? (
+                                <a href={href} className="font-bold text-sky underline underline-offset-4 hover:text-primary">{children}</a>
+                              ) : (
+                                <a href={href} target="_blank" rel="noopener noreferrer" className="text-sky underline">{children}</a>
+                              );
+                            },
+                          } as never}
+                        >
+                          {part.text}
+                        </MessageResponse>
+                      ) : <p key={i} className="whitespace-pre-wrap">{part.text}</p>
                     ) : null,
                   )}
                 </MessageContent>
