@@ -21,7 +21,7 @@ function collect(o: unknown, out: VR[]) {
   if (Array.isArray(o)) o.forEach((v) => collect(v, out));
   else if (o && typeof o === "object") {
     const r = o as Record<string, unknown>;
-    if (r.videoRenderer) out.push(r.videoRenderer as VR);
+    if (r['videoRenderer']) out.push(r['videoRenderer'] as VR);
     for (const v of Object.values(r)) collect(v, out);
   }
 }
