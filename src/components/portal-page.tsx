@@ -273,7 +273,7 @@ export function PortalPage({ section }: { section?: string }) {
                       </p>
                     </div>
                   </div>
-                  {sectionChannels.length > 0 && (
+                  {previewMode && sectionChannels.length > 8 && (
                     <Link
                       to="/channels/$section"
                       params={{ section: section.slug }}
