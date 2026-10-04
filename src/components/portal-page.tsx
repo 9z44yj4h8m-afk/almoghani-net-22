@@ -35,65 +35,93 @@ export const liveSections = sections;
 
 function LivePlayer({ channel }: { channel: Channel }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [hlsFailed, setHlsFailed] = useState(false);
+  const frameRef = useRef<HTMLIFrameElement | null>(null);
+  const [failed, setFailed] = useState(false);
 
+  // HLS streams: native playback on Safari/iOS, hls.js elsewhere, limited retries.
   useEffect(() => {
+    setFailed(false);
     if (!channel.streamUrl) return;
-    setHlsFailed(false);
     let destroyed = false;
     let hls: Hls | undefined;
-    import("hls.js")
-      .then(({ default: HlsCtor }) => {
-        const video = videoRef.current;
-        if (destroyed || !video) return;
-        if (HlsCtor.isSupported()) {
-          hls = new HlsCtor({ enableWorker: false, maxBufferLength: 30 });
+    const video = videoRef.current;
+    if (!video) return;
+    const fail = () => !destroyed && setFailed(true);
+    const timeout = window.setTimeout(() => {
+      if (video.readyState === 0) fail();
+    }, 20000);
+    video.addEventListener("playing", () => window.clearTimeout(timeout), { once: true });
+
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = channel.streamUrl;
+      video.addEventListener("error", fail, { once: true });
+    } else {
+      import("hls.js")
+        .then(({ default: HlsCtor }) => {
+          if (destroyed) return;
+          if (!HlsCtor.isSupported()) return fail();
+          let retries = 0;
+          hls = new HlsCtor({ enableWorker: true, maxBufferLength: 30 });
           hls.on(HlsCtor.Events.ERROR, (_event, data) => {
             if (!data.fatal) return;
-            if (data.type === HlsCtor.ErrorTypes.NETWORK_ERROR) {
-              hls?.startLoad();
-            } else if (data.type === HlsCtor.ErrorTypes.MEDIA_ERROR) {
-              hls?.recoverMediaError();
-            } else {
+            if (retries++ < 2 && data.type === HlsCtor.ErrorTypes.NETWORK_ERROR) hls?.startLoad();
+            else if (retries < 3 && data.type === HlsCtor.ErrorTypes.MEDIA_ERROR) hls?.recoverMediaError();
+            else {
               hls?.destroy();
-              setHlsFailed(true);
+              fail();
             }
           });
           hls.loadSource(channel.streamUrl!);
           hls.attachMedia(video);
-        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-          video.src = channel.streamUrl!;
-        }
-      })
-      .catch((error) => {
-        console.warn("HLS load failed:", error);
-        setHlsFailed(true);
-      });
+        })
+        .catch(fail);
+    }
     return () => {
       destroyed = true;
+      window.clearTimeout(timeout);
       hls?.destroy();
+      video.removeAttribute("src");
     };
   }, [channel]);
 
-  if (channel.streamUrl) {
-    return hlsFailed ? (
+  // YouTube: listen for player errors (ended or blocked streams).
+  useEffect(() => {
+    if (channel.streamUrl) return;
+    const onMessage = (e: MessageEvent) => {
+      if (!String(e.origin).includes("youtube.com") || typeof e.data !== "string") return;
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.event === "onError") setFailed(true);
+      } catch {
+        /* ignore */
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [channel]);
+
+  if (failed) {
+    return (
       <div className="grid h-full w-full place-items-center bg-surface-deep p-6 text-center">
         <div>
-          <p className="font-display text-lg font-black">تعذّر تشغيل هذا البث على هذا المتصفح</p>
-          <p className="mt-2 text-sm text-muted-foreground">جرّب متصفحًا آخر مثل كروم أو سفاري، أو اختر قناة أخرى من الأسفل.</p>
+          <p className="font-display text-lg font-black">هذه القناة متوقفة حاليًا</p>
+          <p className="mt-2 text-sm text-muted-foreground">قد يكون البث انتهى أو غير متاح في منطقتك. اختر قناة أخرى من الأسفل.</p>
         </div>
       </div>
-    ) : (
-      <video ref={videoRef} className="h-full w-full bg-black" controls autoPlay playsInline />
     );
+  }
+  if (channel.streamUrl) {
+    return <video ref={videoRef} className="h-full w-full bg-black" controls autoPlay muted playsInline />;
   }
   return (
     <iframe
+      ref={frameRef}
       className="h-full w-full"
-      src={`https://www.youtube.com/embed/${channel.youtubeId}?rel=0&playsinline=1`}
+      src={`https://www.youtube.com/embed/${channel.youtubeId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`}
       title={`البث المباشر — ${channel.name}`}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
+      onLoad={() => frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: channel.id }), "*")}
     />
   );
 }
