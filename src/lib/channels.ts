@@ -11,7 +11,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera",
     name: "قناة الجزيرة",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "bNyUyrR0PHo",
     thumbnail: "https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg",
     description: "التغطية مستمرة على مدار الساعة",
@@ -19,7 +19,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya",
     name: "قناة العربية",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "n7eQejkXbnM",
     thumbnail: "https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg",
     description: "آخر الأخبار والعواجل لحظة بلحظة",
@@ -27,7 +27,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-quran",
     name: "قناة القرآن الكريم",
-    category: "إسلامية",
+    category: "البث",
     youtubeId: "eC4LfEVxvKg",
     thumbnail: "https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg",
     description: "بث مباشر من مكة المكرمة",
@@ -35,7 +35,7 @@ export const channels: Channel[] = [
   {
     id: "alhadath",
     name: "قناة الحدث",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "au8t81S0tag",
     thumbnail: "https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg",
     description: "البث الإخباري المباشر لقناة الحدث",
@@ -43,7 +43,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-news",
     name: "قناة الإخبارية",
-    category: "سعودية",
+    category: "البث",
     youtubeId: "iw0YDBYgaUU",
     thumbnail: "https://i.ytimg.com/vi/iw0YDBYgaUU/hqdefault.jpg",
     description: "البث المباشر لقناة الإخبارية السعودية",
@@ -51,7 +51,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya-business",
     name: "العربية Business",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "iHr7P4kZYrk",
     thumbnail: "https://i.ytimg.com/vi/iHr7P4kZYrk/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق والأعمال مباشرة",
@@ -59,7 +59,7 @@ export const channels: Channel[] = [
   {
     id: "france24-arabic",
     name: "فرانس 24 عربي",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "93g513Uth98",
     thumbnail: "https://i.ytimg.com/vi/93g513Uth98/hqdefault.jpg",
     description: "الأخبار الدولية على مدار الساعة",
@@ -67,7 +67,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-sports",
     name: "القناة الرياضية السعودية",
-    category: "رياضية",
+    category: "البث",
     youtubeId: "TK1XWtPXj6w",
     thumbnail: "https://i.ytimg.com/vi/TK1XWtPXj6w/hqdefault.jpg",
     description: "القناة الرياضية السعودية الأولى — بث مباشر",
@@ -75,7 +75,7 @@ export const channels: Channel[] = [
   {
     id: "bein-sports",
     name: "beIN SPORTS",
-    category: "رياضية",
+    category: "البث",
     youtubeId: "ekMxMIexsJ8",
     thumbnail: "https://i.ytimg.com/vi/ekMxMIexsJ8/hqdefault.jpg",
     description: "بث مباشر من بي إن سبورتس",
@@ -83,7 +83,7 @@ export const channels: Channel[] = [
   {
     id: "bein-news",
     name: "beIN SPORTS الإخبارية",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "2lJZPT6OljI",
     thumbnail: "https://i.ytimg.com/vi/2lJZPT6OljI/hqdefault.jpg",
     description: "قناة بي إن سبورتس الإخبارية — بث مباشر",
@@ -91,7 +91,7 @@ export const channels: Channel[] = [
   {
     id: "asharq-bloomberg",
     name: "تلفزيون الشرق بلومبرغ",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "f6VpkfV7m4Y",
     thumbnail: "https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق مباشرة",
@@ -99,7 +99,7 @@ export const channels: Channel[] = [
   {
     id: "sky-news-arabia",
     name: "سكاي نيوز عربية",
-    category: "إخبارية",
+    category: "البث",
     youtubeId: "ppgTP8xQQsM",
     thumbnail: "https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg",
     description: "البث المباشر لقناة سكاي نيوز عربية",
@@ -107,7 +107,7 @@ export const channels: Channel[] = [
   {
     id: "shabab-albomb",
     name: "مسلسل شباب البومب",
-    category: "مسلسلات وأفلام",
+    category: "البث",
     youtubeId: "Pj6ks4vaVG0",
     thumbnail: "https://i.ytimg.com/vi/Pj6ks4vaVG0/hqdefault.jpg",
     description: "بث مباشر لمسلسل شباب البومب — هلا بالعيال",
@@ -115,7 +115,7 @@ export const channels: Channel[] = [
   {
     id: "sen-anlat-karadeniz",
     name: "مسلسل البحر الأسود",
-    category: "مسلسلات وأفلام",
+    category: "البث",
     youtubeId: "tW_78_pmCo4",
     thumbnail: "https://i.ytimg.com/vi/tW_78_pmCo4/hqdefault.jpg",
     description: "بث مباشر لمسلسل البحر الأسود — Sen Anlat Karadeniz",
