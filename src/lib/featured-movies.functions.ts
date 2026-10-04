@@ -2,14 +2,18 @@ import { createServerFn } from "@tanstack/react-start";
 import { movies as fallback, type Movie } from "./movies";
 
 // Official channels that upload full movies. New uploads appear automatically.
-const SOURCES = [
-  { handle: "RotanaStudios", name: "Rotana Studios" },
-  { handle: "sobkyproductions", name: "السبكي للإنتاج الفني" },
-  { handle: "MelodyAflam", name: "ميلودي أفلام" },
-  { handle: "GoldenScreenEG", name: "الشاشة الذهبية" },
-  { handle: "ReelMoviesMENA", name: "Reel Movies MENA" },
-  { handle: "shamcinema", name: "شام سينما" },
-  { handle: "ARTTVNetwork", name: "شبكة ART" },
+type Source = { handle: string; name: string; lang: Movie["lang"] };
+const SOURCES: Source[] = [
+  { handle: "RotanaStudios", name: "Rotana Studios", lang: "عربي" },
+  { handle: "sobkyproductions", name: "السبكي للإنتاج الفني", lang: "عربي" },
+  { handle: "MelodyAflam", name: "ميلودي أفلام", lang: "عربي" },
+  { handle: "GoldenScreenEG", name: "الشاشة الذهبية", lang: "عربي" },
+  { handle: "ReelMoviesMENA", name: "Reel Movies MENA", lang: "عربي" },
+  { handle: "shamcinema", name: "شام سينما", lang: "عربي" },
+  { handle: "ARTTVNetwork", name: "شبكة ART", lang: "عربي" },
+  { handle: "LionsgateMovies", name: "Lionsgate Movies", lang: "عالمي" },
+  { handle: "ShoutStudios", name: "Shout! Studios", lang: "عالمي" },
+  { handle: "FilmRiseMovies", name: "FilmRise Movies", lang: "عالمي" },
 ];
 
 let cache: { at: number; list: Movie[] } | null = null;
@@ -35,13 +39,14 @@ function seconds(t: string) {
   return t.split(":").reduce((a, p) => a * 60 + Number(p), 0);
 }
 
-async function fromChannel(handle: string, name: string): Promise<Movie[]> {
+async function fromChannel({ handle, name, lang }: Source): Promise<Movie[]> {
+  const ar = lang === "عربي";
   const res = await fetch(
-    `https://www.youtube.com/@${handle}/search?query=${encodeURIComponent("فيلم")}`,
+    `https://www.youtube.com/@${handle}/search?query=${encodeURIComponent(ar ? "فيلم" : "full movie")}`,
     {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
-        "Accept-Language": "ar",
+        "Accept-Language": ar ? "ar" : "en",
         Cookie: "SOCS=CAI; CONSENT=YES+",
       },
     },
@@ -56,10 +61,15 @@ async function fromChannel(handle: string, name: string): Promise<Movie[]> {
     .filter((v) => {
       const len = v.lengthText?.simpleText ?? "";
       const title = v.title?.runs?.[0]?.text ?? "";
-      return seconds(len) >= 60 * 60 && title.includes("فيلم");
+      if (seconds(len) < 60 * 60) return false;
+      return ar ? title.includes("فيلم") : !/trailer|clip|scene/i.test(title);
     })
     .map((v) => {
       const raw = v.title?.runs?.[0]?.text ?? "";
+      if (!ar) {
+        const title = raw.replace(/\s*[|(\[-]?\s*(free\s+)?full\s+(movie|film)s?.*$/i, "").replace(/["“”]/g, "").trim().slice(0, 60) || raw;
+        return { id: v.videoId, youtubeId: v.videoId, title, duration: v.lengthText?.simpleText ?? "", description: `فيلم عالمي كامل من ${name}.`, source: name, lang };
+      }
       const parts = raw.split("|").map((s) => s.trim()).filter(Boolean);
       const title = (parts.length > 1 ? parts[1]! : raw).replace(/["“”]/g, "").slice(0, 60);
       const desc = parts.slice(2).join(" ").replace(/-?\s*Full HD/i, "").trim() || raw;
@@ -70,7 +80,7 @@ async function fromChannel(handle: string, name: string): Promise<Movie[]> {
         duration: v.lengthText?.simpleText ?? "",
         description: desc,
         source: name,
-        lang: "عربي" as const,
+        lang,
       };
     });
 }
@@ -78,7 +88,7 @@ async function fromChannel(handle: string, name: string): Promise<Movie[]> {
 export const getFeaturedMovies = createServerFn({ method: "GET" }).handler(async () => {
   if (cache && Date.now() - cache.at < TTL) return cache.list;
   try {
-    const lists = await Promise.all(SOURCES.map((s) => fromChannel(s.handle, s.name).catch(() => [])));
+    const lists = await Promise.all(SOURCES.map((s) => fromChannel(s).catch(() => [])));
     const merged: Movie[] = [];
     // Interleave sources, then append the hand-picked list (incl. international titles).
     const max = Math.max(...lists.map((l) => l.length));
