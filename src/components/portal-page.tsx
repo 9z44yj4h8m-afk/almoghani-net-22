@@ -20,10 +20,15 @@ import mosqueBg from "@/assets/mosque-bg.png.asset.json";
 import riyadhBg from "@/assets/riyadh-bg.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
-import { channels, type Channel } from "@/lib/channels";
+import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
 
 const sections = [
-  { slug: "live", title: "البث", category: "بث" as const, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "news", title: "الإخبارية", category: "إخبارية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "sports", title: "الرياضية", category: "رياضية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "kids", title: "أطفال ووثائقي", category: "أطفال ووثائقي" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "general", title: "عامة", category: "عامة" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
 ];
 
 export const liveSections = sections;
