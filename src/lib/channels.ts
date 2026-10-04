@@ -334,15 +334,6 @@ export const channels: Channel[] = [
     description: "كرة قدم ورياضات متنوعة مجانًا",
   },
   {
-    id: "laliga-live",
-    name: "LALIGA",
-    category: "رياضية",
-    youtubeId: "mGhLMaYb1TE",
-    youtubeChannelId: "UCTv-XvfzLX3i4IGWAm4sbmA",
-    thumbnail: "https://i.ytimg.com/vi/mGhLMaYb1TE/hqdefault.jpg",
-    description: "بث مباشر من قناة الدوري الإسباني",
-  },
-  {
     id: "natgeo-live",
     name: "National Geographic",
     category: "أطفال ووثائقي",
