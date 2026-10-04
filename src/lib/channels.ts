@@ -118,14 +118,6 @@ export const channels: Channel[] = [
     description: "البث المباشر لقناة سكاي نيوز عربية",
   },
   {
-    id: "shabab-albomb",
-    name: "مسلسل شباب البومب",
-    category: "مسلسلات وأفلام",
-    youtubeId: "Pj6ks4vaVG0",
-    thumbnail: "https://i.ytimg.com/vi/Pj6ks4vaVG0/hqdefault.jpg",
-    description: "بث مباشر لمسلسل شباب البومب — هلا بالعيال",
-  },
-  {
     id: "sen-anlat-karadeniz",
     name: "مسلسل البحر الأسود",
     category: "مسلسلات وأفلام",
