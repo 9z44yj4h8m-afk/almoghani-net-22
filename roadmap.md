@@ -1,8 +1,10 @@
 # Roadmap
 
-- [x] Add the supplied YouTube live stream to an embedded player.
-- [x] Confirm the channel name/category and visual direction.
-- [x] Build the Arabic RTL responsive ALMOGHANI LIVE interface.
-- [x] Verify channel switching and mobile/desktop presentation.
-- [x] Add AI-powered matching by channel name or description against the available catalog only.
-- [x] Add the six supplied live channels to the shared embedded player catalog.
+## Open tasks
+- [ ] إضافة روابط بث IPTV (قوائم عامة) وتشغيلها داخل المشغّل — المستخدم وافق على الخيار الأول («اضف روابط»)
+- [ ] إعادة ترتيب واجهة البث لتناسب تطبيق الجوال (قيد العمل)
+- [ ] رابط M3U من اشتراك IPTV الخاص بالمستخدم — بانتظار إرساله
+- [ ] نص الأزرار الستة (سيرة، أحاديث، أمهات المؤمنين، صحابة، أذكار، أجور) — بانتظار المستخدم
+- [ ] حسابات انستقرام/إكس/سناب شات للروابط — بانتظار المستخدم
+- [ ] قرار إضافة مقطع «طبيب لبناني ينقذ طفلًا» (8RXGqvB5_GU) — بانتظار المستخدم
+- [ ] فحص نهائي على الجوال والكمبيوتر (روابط الشات خصوصًا)

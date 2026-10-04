@@ -12,7 +12,8 @@ import {
   Volume2,
   WandSparkles,
 } from "lucide-react";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
+import type Hls from "hls.js";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
 import mosqueBg from "@/assets/mosque-bg.png.asset.json";
@@ -22,13 +23,58 @@ import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel } from "@/lib/channels";
 
 const sections = [
-  { slug: "sports", title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
-  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as const, cols: "md:grid-cols-2 xl:grid-cols-2" },
-  { slug: "news", title: "الإخبارية", category: "إخبارية" as const, cols: "md:grid-cols-3 xl:grid-cols-4" },
-  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const, cols: "md:grid-cols-2 xl:grid-cols-4" },
+  { slug: "live", title: "البث", category: "بث" as const, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
 ];
 
 export const liveSections = sections;
+
+function LivePlayer({ channel }: { channel: Channel }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (!channel.streamUrl) return;
+    let destroyed = false;
+    let hls: Hls | undefined;
+    import("hls.js")
+      .then(({ default: HlsCtor }) => {
+        const video = videoRef.current;
+        if (destroyed || !video) return;
+        if (HlsCtor.isSupported()) {
+          hls = new HlsCtor();
+          hls.loadSource(channel.streamUrl!);
+          hls.attachMedia(video);
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          video.src = channel.streamUrl!;
+        }
+      })
+      .catch(() => {});
+    return () => {
+      destroyed = true;
+      hls?.destroy();
+    };
+  }, [channel]);
+
+  if (channel.streamUrl) {
+    return (
+      <video
+        ref={videoRef}
+        className="h-full w-full bg-black"
+        controls
+        autoPlay
+        playsInline
+      />
+    );
+  }
+  return (
+    <iframe
+      className="h-full w-full"
+      src={`https://www.youtube.com/embed/${channel.youtubeId}?rel=0&playsinline=1`}
+      title={`البث المباشر — ${channel.name}`}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowFullScreen
+    />
+  );
+}
 
 export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
@@ -84,7 +130,7 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   if (!selected) return null;
-  const heroTitle = section === "islamic" ? "قنوات إسلامية مباشرة" : section ? `قنوات ${visibleSections[0]?.title ?? ""} مباشرة` : "القنوات المباشرة";
+  const heroTitle = section === "live" || !section ? "القنوات المباشرة" : `قنوات ${visibleSections[0]?.title ?? ""} مباشرة`;
   const heroSub = section === "islamic" ? "تلاوات وبرامج إيمانية على مدار الساعة" : "تابع القنوات المباشرة من مكان واحد";
 
   return (
@@ -103,7 +149,7 @@ export function PortalPage({ section }: { section?: string }) {
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
               <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
-              {sections.map((s) => (
+              {sections.length > 1 && sections.map((s) => (
                 <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
               ))}
             </nav>
@@ -124,12 +170,6 @@ export function PortalPage({ section }: { section?: string }) {
             </button>
           </div>
         </div>
-        <nav className="no-scrollbar flex gap-2 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
-          <Link to="/quran" className="category-pill shrink-0">القرآن الكريم</Link>
-          {sections.map((s) => (
-            <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className={`category-pill shrink-0 ${section === s.slug ? "category-pill-active" : ""}`}>{s.title}</Link>
-          ))}
-        </nav>
         {searchOpen && (
           <div className="mx-auto max-w-7xl animate-slide-down px-4 pb-4 sm:px-6 lg:px-8">
             <form onSubmit={handleSearch} className="ai-search-panel">
@@ -170,7 +210,7 @@ export function PortalPage({ section }: { section?: string }) {
                           onClick={() => playChannel(channel)}
                           className="h-auto min-w-0 justify-start whitespace-normal p-3 text-right"
                         >
-                          <img src={channel.thumbnail} alt="" className="h-12 w-20 shrink-0 rounded-md object-cover" />
+                          <img src={channel.thumbnail} alt="" className="h-12 w-20 shrink-0 rounded-md object-contain" />
                           <span className="min-w-0">
                             <span className="block truncate font-black">{channel.name}</span>
                             <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
@@ -189,12 +229,12 @@ export function PortalPage({ section }: { section?: string }) {
         )}
       </header>
 
-      <main className="pb-24 md:pb-12">
+      <main className="pb-28 md:pb-12">
         <section id="player" className="relative border-b border-border/60">
           <div className="hero-scene" style={{ backgroundImage: `url(${section === "islamic" ? mosqueBg.url : riyadhBg.url})` }} aria-hidden="true" />
-          <div className="relative mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-            <div className="mb-5 text-center sm:mb-7">
-              <h1 className="gold-title font-display text-3xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
+          <div className="relative mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
+            <div className="mb-4 text-center sm:mb-7">
+              <h1 className="gold-title font-display text-2xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
               <p className="mt-2 text-sm font-bold text-foreground/90 sm:text-lg">{heroSub}</p>
             </div>
             <div className="mb-3 flex items-center justify-between gap-3">
@@ -206,14 +246,7 @@ export function PortalPage({ section }: { section?: string }) {
             </div>
             <div className="player-shell animate-fade-up rounded-xl border-sky/60">
               <div className="aspect-video w-full overflow-hidden bg-surface-deep">
-                <iframe
-                  key={selected.youtubeId}
-                  className="h-full w-full"
-                  src={`https://www.youtube.com/embed/${selected.youtubeId}?rel=0&playsinline=1`}
-                  title={`البث المباشر — ${selected.name}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                <LivePlayer channel={selected} />
               </div>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border bg-surface px-4 py-3 sm:px-5 sm:py-4">
                 <div className="flex min-w-0 items-center gap-3">
@@ -234,26 +267,11 @@ export function PortalPage({ section }: { section?: string }) {
           </div>
         </section>
 
-        <section id="categories" className={`${section ? "hidden md:block " : ""}border-b border-border/60 bg-surface/40 py-4`}>
-          <div className="no-scrollbar mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
-            {sections.map((s) => (
-              <Link
-                key={s.slug}
-                to="/channels/$section"
-                params={{ section: s.slug }}
-                className={`category-pill ${s.slug === section ? "category-pill-active" : ""}`}
-              >
-                {s.title}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <div id="channels" className="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div id="channels" className="mx-auto max-w-7xl space-y-8 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {visibleSections.map((section, index) => {
             const sectionChannels = channels.filter((channel) => channel.category === section.category);
             return (
-              <section id={`section-${index}`} key={section.title} className="scroll-mt-28">
+              <section id={`section-${index}`} key={section.title} className="scroll-mt-24">
                 <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span className={`h-5 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-primary" : "bg-sky"}`} />
@@ -276,7 +294,7 @@ export function PortalPage({ section }: { section?: string }) {
                         className={`channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
                       >
                         <span className="relative block aspect-video overflow-hidden bg-surface-deep">
-                          <img className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={channel.thumbnail} alt={`صورة ${channel.name}`} />
+                          <img className={`h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`} src={channel.thumbnail} alt={`صورة ${channel.name}`} />
                           <span className="absolute inset-0 bg-player-overlay" />
                           <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
@@ -288,12 +306,12 @@ export function PortalPage({ section }: { section?: string }) {
                             </span>
                           </span>
                         </span>
-                        <span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 p-2.5 text-right sm:gap-3 sm:p-4">
+                        <span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 p-2 text-right sm:gap-3 sm:p-4">
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-bold sm:text-base">{channel.name}</span>
                             <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
                           </span>
-                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-4 w-4 fill-current" /></span>
+                          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-3.5 w-3.5 fill-current sm:h-4 sm:w-4" /></span>
                         </span>
                       </button>
                     ))}
@@ -317,16 +335,18 @@ export function PortalPage({ section }: { section?: string }) {
 
       <Link
         to="/chat"
-        className="fixed bottom-24 left-4 z-50 flex items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-primary/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:bottom-6"
+        className="fixed bottom-6 left-4 z-40 hidden items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-primary/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:flex"
       >
         <MessageCircle className="h-5 w-5" />ALMOGHANI AI
       </Link>
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-3 border-t border-border bg-background/95 px-6 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
-        <a href="#player" className="mobile-nav-item text-primary"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
+      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-5 items-end border-t border-border bg-background/95 px-2 pb-2 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
+        <a href="#player" className="mobile-nav-item text-primary"><Home className="h-5 w-5" /><span>البث</span></a>
         <a href="#channels" className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
-        <a href="#player" className="relative -top-4 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-primary text-primary-foreground shadow-live" aria-label="شغّل البث">
+        <a href="#player" className="relative -top-5 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-primary text-primary-foreground shadow-live" aria-label="شغّل البث">
           <Play className="h-6 w-6 fill-current" />
         </a>
+        <Link to="/chat" className="mobile-nav-item"><MessageCircle className="h-5 w-5" /><span>المحادثة</span></Link>
+        <Link to="/quran" className="mobile-nav-item"><Sparkles className="h-5 w-5" /><span>القرآن</span></Link>
       </nav>
     </div>
   );
