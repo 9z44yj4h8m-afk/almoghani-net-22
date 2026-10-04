@@ -105,6 +105,29 @@ export function PortalPage({ section }: { section?: string }) {
     }
   }
 
+  // Warm up a channel before the tap lands: open the connection to its stream host
+  // so the player starts faster once the channel is selected.
+  function warmChannel(channel: Channel) {
+    const w = window as unknown as { __warmed?: Set<string> };
+    w.__warmed ??= new Set();
+    if (w.__warmed.has(channel.id)) return;
+    w.__warmed.add(channel.id);
+    try {
+      const url = channel.streamUrl ?? "https://www.youtube.com";
+      const origin = new URL(url).origin;
+      const link = document.createElement("link");
+      link.rel = "preconnect";
+      link.href = origin;
+      link.crossOrigin = "anonymous";
+      document.head.appendChild(link);
+      if (channel.streamUrl) {
+        fetch(channel.streamUrl, { mode: "cors", referrerPolicy: "no-referrer", cache: "force-cache" }).catch(() => {});
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
   function playChannel(channel: Channel) {
     // Scroll first (instant feedback), then swap the stream at lower priority so taps feel immediate.
     document.getElementById("player")?.scrollIntoView({ behavior: "auto", block: "start" });
@@ -341,17 +364,32 @@ export function PortalPage({ section }: { section?: string }) {
                 {sectionChannels.length ? (
                   <>
                     <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${section.cols}`}>
-                      {previewChannels.map((channel) => (
+                      {previewChannels.map((channel, i) => (
                       <button
                         key={channel.id}
                         type="button"
+                        onPointerEnter={() => warmChannel(channel)}
+                        onTouchStart={() => warmChannel(channel)}
+                        onFocus={() => warmChannel(channel)}
                         onClick={() => {
                           playChannel(channel);
                         }}
+                        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 220px" }}
                         className={`channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
                       >
                         <span className="relative block aspect-video overflow-hidden bg-surface-deep">
-                          <img loading="lazy" decoding="async" className={`h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`} src={channel.thumbnail} alt={`صورة ${channel.name}`} />
+                          <span className="absolute inset-0 animate-pulse bg-muted/40" aria-hidden />
+                          <img
+                            loading={index === 0 && i < 4 ? "eager" : "lazy"}
+                            fetchPriority={index === 0 && i < 4 ? "high" : "low"}
+                            decoding="async"
+                            width={320}
+                            height={180}
+                            onLoad={(e) => (e.currentTarget.previousElementSibling as HTMLElement | null)?.remove()}
+                            className={`relative h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`}
+                            src={channel.thumbnail}
+                            alt={`صورة ${channel.name}`}
+                          />
                           <span className="absolute inset-0 bg-player-overlay" />
                           <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
