@@ -171,6 +171,7 @@ export function PortalPage({ section }: { section?: string }) {
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
               <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
+              <Link to="/movies" className="text-sky transition-colors hover:text-primary">أفلام مميزة</Link>
               {sections.length > 1 && sections.map((s) => (
                 <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
               ))}
@@ -319,6 +320,13 @@ export function PortalPage({ section }: { section?: string }) {
             </details>
           )}
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
+            <Link
+              to="/movies"
+              className="flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-black text-primary-foreground"
+            >
+              <Film className="h-4 w-4 shrink-0" />
+              <span className="whitespace-nowrap">أفلام مميزة</span>
+            </Link>
             {sections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
               return (
@@ -457,7 +465,7 @@ export function PortalPage({ section }: { section?: string }) {
       </Link>
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-5 items-end border-t border-border bg-background/95 px-2 pb-2 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
         <a href="#player" className="mobile-nav-item text-primary"><Home className="h-5 w-5" /><span>البث</span></a>
-        <a href="#channels" className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
+        <Link to="/movies" className="mobile-nav-item"><Film className="h-5 w-5" /><span>أفلام</span></Link>
         <a href="#player" className="relative -top-5 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-primary text-primary-foreground shadow-live" aria-label="شغّل البث">
           <Play className="h-6 w-6 fill-current" />
         </a>
