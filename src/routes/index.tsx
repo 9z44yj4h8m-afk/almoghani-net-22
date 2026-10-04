@@ -33,11 +33,6 @@ import { channels, type Channel } from "@/lib/channels";
 
 
 const sections = [
-  { title: "القنوات السعودية", category: "سعودية" as const },
-  { title: "القنوات الرياضية", category: "رياضية" as const },
-  { title: "القنوات الإسلامية", category: "إسلامية" as const },
-  { title: "القنوات الإخبارية", category: "إخبارية" as const },
-  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
   { title: "البث", category: "البث" as const },
 ];
 
@@ -224,13 +219,13 @@ function Index() {
         <section id="home" className="mx-auto max-w-3xl space-y-3 px-4 pt-4">
           <div className="portal-frame overflow-hidden p-3">
             <div className="mb-2 flex items-center justify-between gap-2">
-              <p className="text-sm font-black">شاهد الآن | القنوات الإخبارية المباشرة</p>
+              <p className="text-sm font-black">شاهد الآن | قنوات البث المباشر</p>
               <a href="#player" className="rounded-md border border-sky/60 bg-sky/15 px-3 py-1 text-xs font-bold text-sky">المشغّل</a>
             </div>
             <div className="overflow-hidden">
               <div className="portal-ticker gap-8 text-xs text-muted-foreground">
                 {[...channels, ...channels]
-                  .filter((c) => c.category === "إخبارية")
+                  .filter((c) => c.category === "البث")
                   .map((c, i) => (
                     <button key={`${c.id}-${i}`} type="button" onClick={() => playChannel(c)} className="flex shrink-0 items-center gap-2 hover:text-sky">
                       <span className="h-1.5 w-1.5 rounded-full bg-sky" />{c.name}
