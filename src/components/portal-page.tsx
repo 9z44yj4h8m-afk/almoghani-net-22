@@ -12,12 +12,13 @@ import {
   Volume2,
   WandSparkles,
 } from "lucide-react";
-import { type FormEvent, useEffect, useRef, useState } from "react";
-import type Hls from "hls.js";
+import { type FormEvent, useEffect, useState } from "react";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
 import mosqueBg from "@/assets/mosque-bg.png.asset.json";
 import riyadhBg from "@/assets/riyadh-bg.png.asset.json";
+import { InstallAppButton } from "@/components/install-app-button";
+import { LivePlayer } from "@/components/live-player";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
@@ -32,99 +33,6 @@ const sections = [
 ];
 
 export const liveSections = sections;
-
-function LivePlayer({ channel }: { channel: Channel }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const frameRef = useRef<HTMLIFrameElement | null>(null);
-  const [failed, setFailed] = useState(false);
-
-  // HLS streams: native playback on Safari/iOS, hls.js elsewhere, limited retries.
-  useEffect(() => {
-    setFailed(false);
-    if (!channel.streamUrl) return;
-    let destroyed = false;
-    let hls: Hls | undefined;
-    const video = videoRef.current;
-    if (!video) return;
-    const fail = () => !destroyed && setFailed(true);
-    const timeout = window.setTimeout(() => {
-      if (video.readyState === 0) fail();
-    }, 20000);
-    video.addEventListener("playing", () => window.clearTimeout(timeout), { once: true });
-
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = channel.streamUrl;
-      video.addEventListener("error", fail, { once: true });
-    } else {
-      import("hls.js")
-        .then(({ default: HlsCtor }) => {
-          if (destroyed) return;
-          if (!HlsCtor.isSupported()) return fail();
-          let retries = 0;
-          hls = new HlsCtor({ enableWorker: true, maxBufferLength: 30 });
-          hls.on(HlsCtor.Events.ERROR, (_event, data) => {
-            if (!data.fatal) return;
-            if (retries++ < 2 && data.type === HlsCtor.ErrorTypes.NETWORK_ERROR) hls?.startLoad();
-            else if (retries < 3 && data.type === HlsCtor.ErrorTypes.MEDIA_ERROR) hls?.recoverMediaError();
-            else {
-              hls?.destroy();
-              fail();
-            }
-          });
-          hls.loadSource(channel.streamUrl!);
-          hls.attachMedia(video);
-        })
-        .catch(fail);
-    }
-    return () => {
-      destroyed = true;
-      window.clearTimeout(timeout);
-      hls?.destroy();
-      video.removeAttribute("src");
-    };
-  }, [channel]);
-
-  // YouTube: listen for player errors (ended or blocked streams).
-  useEffect(() => {
-    if (channel.streamUrl) return;
-    const onMessage = (e: MessageEvent) => {
-      if (!String(e.origin).includes("youtube.com") || typeof e.data !== "string") return;
-      try {
-        const msg = JSON.parse(e.data);
-        if (msg.event === "onError") setFailed(true);
-      } catch {
-        /* ignore */
-      }
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [channel]);
-
-  if (failed) {
-    return (
-      <div className="grid h-full w-full place-items-center bg-surface-deep p-6 text-center">
-        <div>
-          <p className="font-display text-lg font-black">هذه القناة متوقفة حاليًا</p>
-          <p className="mt-2 text-sm text-muted-foreground">قد يكون البث انتهى أو غير متاح في منطقتك. اختر قناة أخرى من الأسفل.</p>
-        </div>
-      </div>
-    );
-  }
-  if (channel.streamUrl) {
-    return <video ref={videoRef} className="h-full w-full bg-black" controls autoPlay muted playsInline />;
-  }
-  return (
-    <iframe
-      ref={frameRef}
-      className="h-full w-full"
-      src={`https://www.youtube.com/embed/${channel.youtubeChannelId ? `live_stream?channel=${channel.youtubeChannelId}&` : `${channel.youtubeId}?`}rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`}
-      title={`البث المباشر — ${channel.name}`}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-      onLoad={() => frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: channel.id }), "*")}
-    />
-  );
-}
 
 export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
@@ -215,6 +123,7 @@ export function PortalPage({ section }: { section?: string }) {
             >
               <Search className="h-5 w-5" />
             </button>
+            <InstallAppButton />
             <button type="button" className="icon-button hidden sm:grid" aria-label="التنبيهات" title="التنبيهات">
               <Bell className="h-5 w-5" />
             </button>
@@ -295,9 +204,7 @@ export function PortalPage({ section }: { section?: string }) {
               </div>
             </div>
             <div className="player-shell animate-fade-up rounded-xl border-sky/60">
-              <div className="aspect-video w-full overflow-hidden bg-surface-deep">
-                <LivePlayer key={selected.id} channel={selected} />
-              </div>
+              <LivePlayer key={selected.id} channel={selected} />
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border bg-surface px-4 py-3 sm:px-5 sm:py-4">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-sky">
