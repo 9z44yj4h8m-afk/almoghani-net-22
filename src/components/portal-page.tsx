@@ -18,6 +18,8 @@ import {
   Volume2,
   WandSparkles,
   type LucideIcon,
+  RefreshCw,
+  WifiOff,
 } from "lucide-react";
 import { type FormEvent, startTransition, useEffect, useState } from "react";
 import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
