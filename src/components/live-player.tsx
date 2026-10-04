@@ -157,19 +157,26 @@ export function LivePlayer({ channel }: { channel: Channel }) {
     video.addEventListener("stalled", onWaiting);
     video.addEventListener("ended", onEnded);
 
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = channel.streamUrl;
+    const playNative = () => {
+      if (!video.canPlayType("application/vnd.apple.mpegurl")) return drop();
+      video.src = channel.streamUrl!;
       video.addEventListener("error", drop, { once: true });
       void video.play().catch(() => undefined);
-    } else {
+    };
+    {
+      // Prefer hls.js (incl. iOS ManagedMediaSource) so requests go out without
+      // a Referer header — some CDNs (e.g. MBC/Shahid) reject foreign referrers.
       import("hls.js")
-        .then(({ default: HlsCtor }) => {
+        .then(({ default: HlsCtor, FetchLoader }) => {
           if (destroyed) return;
-          if (!HlsCtor.isSupported()) return drop();
+          if (!HlsCtor.isSupported()) return playNative();
           const hls = new HlsCtor({
             enableWorker: true,
             maxBufferLength: 30,
             liveSyncDurationCount: 3,
+            loader: FetchLoader,
+            fetchSetup: (context, init) =>
+              new Request(context.url, { ...init, referrerPolicy: "no-referrer" }),
           });
           hlsRef.current = hls;
           let mediaRecoveries = 0;
