@@ -67,7 +67,7 @@ export function InstallAppButton() {
       <PopoverTrigger className={cls} aria-label="ثبّت التطبيق">
         {label}
       </PopoverTrigger>
-      <PopoverContent dir="rtl" className="w-72 text-right text-sm leading-7">
+      <PopoverContent dir="rtl" className="w-72 border-border bg-surface text-right text-sm leading-7 text-foreground shadow-xl">
         <p className="mb-1 font-black">أضف ALMOGHANI لشاشتك الرئيسية</p>
         {isIos ? (
           <p>افتح الموقع في Safari، اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».</p>

@@ -428,6 +428,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
 
         <label className="flex cursor-pointer items-center gap-2 text-xs font-bold text-muted-foreground">
           <Switch
+            dir="ltr"
             checked={settings.autoReconnect}
             onCheckedChange={(v) => update({ autoReconnect: v })}
             aria-label="إعادة الاتصال تلقائيًا"
