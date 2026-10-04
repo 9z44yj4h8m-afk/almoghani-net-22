@@ -18,7 +18,7 @@ export const Route = createFileRoute("/movies")({
 });
 
 function MoviesPage() {
-  const [current, setCurrent] = useState<Movie>(movies[0]);
+  const [current, setCurrent] = useState<Movie>(movies[0]!);
   const [filter, setFilter] = useState<"الكل" | Movie["lang"]>("الكل");
   const list = filter === "الكل" ? movies : movies.filter((m) => m.lang === filter);
 
