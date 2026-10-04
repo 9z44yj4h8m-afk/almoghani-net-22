@@ -131,7 +131,7 @@ function ChatPage() {
                                 <a href={href} target="_blank" rel="noopener noreferrer" className="text-sky underline">{children}</a>
                               );
                             },
-                          }}
+                          } as never}
                         >
                           {part.text}
                         </MessageResponse>
