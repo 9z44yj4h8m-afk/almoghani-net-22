@@ -101,6 +101,7 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   if (!selected) return null;
+  const previewMode = !section;
   const heroTitle = section === "live" || !section ? "القنوات المباشرة" : `قنوات ${visibleSections[0]?.title ?? ""} مباشرة`;
   const heroSub = section === "islamic" ? "تلاوات وبرامج إيمانية على مدار الساعة" : "تابع القنوات المباشرة من مكان واحد";
 
@@ -316,8 +317,19 @@ export function PortalPage({ section }: { section?: string }) {
                           <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-3.5 w-3.5 fill-current sm:h-4 sm:w-4" /></span>
                         </span>
                       </button>
-                    ))}
-                  </div>
+                     ))}
+                    </div>
+                    {hiddenCount > 0 && (
+                      <Link
+                        to="/channels/$section"
+                        params={{ section: section.slug }}
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3 text-sm font-black text-sky transition-colors hover:border-sky hover:bg-primary/5"
+                      >
+                        <ListVideo className="h-4 w-4" />
+                        عرض كل قنوات {section.title} ({sectionChannels.length})
+                      </Link>
+                    )}
+                  </>
                 ) : (
                   <div className="empty-channel-row">
                     <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-secondary text-muted-foreground">
