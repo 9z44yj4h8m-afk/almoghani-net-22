@@ -5,7 +5,7 @@ import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createLovableAiGatewayRunIdFetch } from "@/lib/ai/run-id.server";
 import { channels } from "@/lib/channels";
 
-const CATALOG = channels.map((c) => `- ${c.name}  |  الرابط: /live?channel=${c.id}`).join("\n");
+const CATALOG = channels.map((c) => `- ${c.name}  |  القسم: ${c.category}  |  الرابط: /live?channel=${c.id}`).join("\n");
 
 const SYSTEM = `أنت "ALMOGHANI AI"، مساعد ذكي ودود داخل موقع almoghani.net.
 تحدث بالعربية الفصحى المبسطة (أو بلغة المستخدم إن كتب بغيرها)، وأجب بإيجاز ووضوح مع تنسيق Markdown عند الحاجة.
