@@ -33,11 +33,11 @@ import { channels, type Channel } from "@/lib/channels";
 
 
 const sections = [
-  { title: "السعودية", category: "سعودية" as const, cols: "md:grid-cols-3 xl:grid-cols-5" },
-  { title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
-  { title: "الإسلامية", category: "إسلامية" as const, cols: "md:grid-cols-2 xl:grid-cols-2" },
-  { title: "الإخبارية", category: "إخبارية" as const, cols: "md:grid-cols-3 xl:grid-cols-4" },
-  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const, cols: "md:grid-cols-2 xl:grid-cols-4" },
+  { slug: "saudi", title: "السعودية", category: "سعودية" as const, cols: "md:grid-cols-3 xl:grid-cols-5" },
+  { slug: "sports", title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
+  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as const, cols: "md:grid-cols-2 xl:grid-cols-2" },
+  { slug: "news", title: "الإخبارية", category: "إخبارية" as const, cols: "md:grid-cols-3 xl:grid-cols-4" },
+  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const, cols: "md:grid-cols-2 xl:grid-cols-4" },
 ];
 
 const portalLinks = [
@@ -49,8 +49,13 @@ const portalLinks = [
   { title: "أجور عظيمة من أذكار يسيرة", Icon: Gem },
 ];
 
-export function PortalPage({ live = false }: { live?: boolean }) {
-  const [selected, setSelected] = useState(channels[0]);
+export const liveSections = sections;
+
+export function PortalPage({ live = false, section }: { live?: boolean; section?: string }) {
+  const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
+  const [selected, setSelected] = useState(
+    channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
+  );
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -119,8 +124,9 @@ export function PortalPage({ live = false }: { live?: boolean }) {
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
               <a className="text-foreground transition-colors hover:text-sky" href="/">الرئيسية</a>
-              <a className="transition-colors hover:text-sky" href={live ? "#channels" : "/live"}>القنوات</a>
-              <a className="transition-colors hover:text-sky" href="/live#categories">الأقسام</a>
+              {sections.map((s) => (
+                <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
+              ))}
             </nav>
             <button
               type="button"
@@ -139,6 +145,11 @@ export function PortalPage({ live = false }: { live?: boolean }) {
             </button>
           </div>
         </div>
+        <nav className="no-scrollbar flex gap-2 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
+          {sections.map((s) => (
+            <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className={`category-pill shrink-0 ${section === s.slug ? "category-pill-active" : ""}`}>{s.title}</Link>
+          ))}
+        </nav>
         {searchOpen && (
           <div className="mx-auto max-w-7xl animate-slide-down px-4 pb-4 sm:px-6 lg:px-8">
             <form onSubmit={handleSearch} className="ai-search-panel">
@@ -290,22 +301,23 @@ export function PortalPage({ live = false }: { live?: boolean }) {
           </div>
         </section>
 
-        <section id="categories" className="border-b border-border/60 bg-surface/40 py-4">
+        <section id="categories" className={`${section ? "hidden md:block " : ""}border-b border-border/60 bg-surface/40 py-4`}>
           <div className="no-scrollbar mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
-            {sections.map((section, index) => (
-              <a
-                key={section.title}
-                href={`#section-${index}`}
-                className={`category-pill ${section.category === selected.category ? "category-pill-active" : ""}`}
+            {sections.map((s) => (
+              <Link
+                key={s.slug}
+                to="/channels/$section"
+                params={{ section: s.slug }}
+                className={`category-pill ${s.slug === section ? "category-pill-active" : ""}`}
               >
-                {section.title}
-              </a>
+                {s.title}
+              </Link>
             ))}
           </div>
         </section>
 
         <div id="channels" className="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-          {sections.map((section, index) => {
+          {visibleSections.map((section, index) => {
             const sectionChannels = channels.filter((channel) => channel.category === section.category);
             return (
               <section id={`section-${index}`} key={section.title} className="scroll-mt-28">

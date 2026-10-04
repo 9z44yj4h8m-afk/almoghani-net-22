@@ -14,6 +14,7 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChannelsSectionRoute = ChannelsSectionRouteImport.update({
+  id: '/channels/$section',
+  path: '/channels/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/live': typeof LiveRoute
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
+  '/channels/$section': typeof ChannelsSectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/live': typeof LiveRoute
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
+  '/channels/$section': typeof ChannelsSectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,22 @@ export interface FileRoutesById {
   '/live': typeof LiveRoute
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
+  '/channels/$section': typeof ChannelsSectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/live' | '/quran' | '/api/chat'
+  fullPaths:
+    '/' | '/chat' | '/live' | '/quran' | '/api/chat' | '/channels/$section'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/live' | '/quran' | '/api/chat'
-  id: '__root__' | '/' | '/chat' | '/live' | '/quran' | '/api/chat'
+  to: '/' | '/chat' | '/live' | '/quran' | '/api/chat' | '/channels/$section'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/live'
+    | '/quran'
+    | '/api/chat'
+    | '/channels/$section'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +94,7 @@ export interface RootRouteChildren {
   LiveRoute: typeof LiveRoute
   QuranRoute: typeof QuranRoute
   ApiChatRoute: typeof ApiChatRoute
+  ChannelsSectionRoute: typeof ChannelsSectionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/channels/$section': {
+      id: '/channels/$section'
+      path: '/channels/$section'
+      fullPath: '/channels/$section'
+      preLoaderRoute: typeof ChannelsSectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveRoute: LiveRoute,
   QuranRoute: QuranRoute,
   ApiChatRoute: ApiChatRoute,
+  ChannelsSectionRoute: ChannelsSectionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
