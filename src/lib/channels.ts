@@ -1024,14 +1024,6 @@ export const channels: Channel[] = [
     description: "مسلسلات عربية — روتانا دراما",
   },
   {
-    id: "ar-nile-drama",
-    name: "نايل دراما",
-    category: "مسلسلات وأفلام",
-    streamUrl: "http://185.9.2.18/chid_352/index.m3u8",
-    thumbnail: "https://i.imgur.com/FasJFMM.png",
-    description: "مسلسلات مصرية — نايل دراما",
-  },
-  {
     id: "ar-jordan-drama",
     name: "الأردن دراما",
     category: "مسلسلات وأفلام",
