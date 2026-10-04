@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
-  CirclePlay,
   Home,
   ListVideo,
   MessageCircle,
@@ -193,7 +192,7 @@ export function PortalPage({ section }: { section?: string }) {
       <main className="pb-24 md:pb-12">
         <section id="player" className="relative border-b border-border/60">
           <div className="hero-scene" style={{ backgroundImage: `url(${section === "islamic" ? mosqueBg.url : riyadhBg.url})` }} aria-hidden="true" />
-          <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+          <div className="relative mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <div className="mb-5 text-center sm:mb-7">
               <h1 className="gold-title font-display text-3xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
               <p className="mt-2 text-sm font-bold text-foreground/90 sm:text-lg">{heroSub}</p>
