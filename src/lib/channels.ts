@@ -1,8 +1,9 @@
 export type Channel = {
   id: string;
   name: string;
-  category: "رياضية" | "إسلامية" | "إخبارية" | "مسلسلات وأفلام";
-  youtubeId: string;
+  category: "بث";
+  youtubeId?: string;
+  streamUrl?: string;
   thumbnail: string;
   description: string;
 };
@@ -11,7 +12,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera",
     name: "قناة الجزيرة",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "bNyUyrR0PHo",
     thumbnail: "https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg",
     description: "التغطية مستمرة على مدار الساعة",
@@ -19,7 +20,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya",
     name: "قناة العربية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "n7eQejkXbnM",
     thumbnail: "https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg",
     description: "آخر الأخبار والعواجل لحظة بلحظة",
@@ -27,7 +28,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-quran",
     name: "قناة القرآن الكريم",
-    category: "إسلامية",
+    category: "بث",
     youtubeId: "eC4LfEVxvKg",
     thumbnail: "https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg",
     description: "بث مباشر من مكة المكرمة",
@@ -35,7 +36,7 @@ export const channels: Channel[] = [
   {
     id: "alhadath",
     name: "قناة الحدث",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "au8t81S0tag",
     thumbnail: "https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg",
     description: "البث الإخباري المباشر لقناة الحدث",
@@ -43,7 +44,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-news",
     name: "قناة الإخبارية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "iw0YDBYgaUU",
     thumbnail: "https://i.ytimg.com/vi/iw0YDBYgaUU/hqdefault.jpg",
     description: "البث المباشر لقناة الإخبارية السعودية",
@@ -51,7 +52,7 @@ export const channels: Channel[] = [
   {
     id: "alarabiya-business",
     name: "العربية Business",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "iHr7P4kZYrk",
     thumbnail: "https://i.ytimg.com/vi/iHr7P4kZYrk/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق والأعمال مباشرة",
@@ -59,7 +60,7 @@ export const channels: Channel[] = [
   {
     id: "france24-arabic",
     name: "فرانس 24 عربي",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "93g513Uth98",
     thumbnail: "https://i.ytimg.com/vi/93g513Uth98/hqdefault.jpg",
     description: "الأخبار الدولية على مدار الساعة",
@@ -67,7 +68,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-sports",
     name: "القناة الرياضية السعودية",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "TK1XWtPXj6w",
     thumbnail: "https://i.ytimg.com/vi/TK1XWtPXj6w/hqdefault.jpg",
     description: "القناة الرياضية السعودية الأولى — بث مباشر",
@@ -75,7 +76,7 @@ export const channels: Channel[] = [
   {
     id: "bein-sports",
     name: "beIN SPORTS",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "ekMxMIexsJ8",
     thumbnail: "https://i.ytimg.com/vi/ekMxMIexsJ8/hqdefault.jpg",
     description: "بث مباشر من بي إن سبورتس",
@@ -83,7 +84,7 @@ export const channels: Channel[] = [
   {
     id: "bein-news",
     name: "beIN SPORTS الإخبارية",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "2lJZPT6OljI",
     thumbnail: "https://i.ytimg.com/vi/2lJZPT6OljI/hqdefault.jpg",
     description: "قناة بي إن سبورتس الإخبارية — بث مباشر",
@@ -91,7 +92,7 @@ export const channels: Channel[] = [
   {
     id: "asharq-bloomberg",
     name: "تلفزيون الشرق بلومبرغ",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "f6VpkfV7m4Y",
     thumbnail: "https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg",
     description: "أخبار الاقتصاد والأسواق مباشرة",
@@ -99,7 +100,7 @@ export const channels: Channel[] = [
   {
     id: "sky-news-arabia",
     name: "سكاي نيوز عربية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "ppgTP8xQQsM",
     thumbnail: "https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg",
     description: "البث المباشر لقناة سكاي نيوز عربية",
@@ -107,7 +108,7 @@ export const channels: Channel[] = [
   {
     id: "shabab-albomb",
     name: "مسلسل شباب البومب",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "Pj6ks4vaVG0",
     thumbnail: "https://i.ytimg.com/vi/Pj6ks4vaVG0/hqdefault.jpg",
     description: "بث مباشر لمسلسل شباب البومب — هلا بالعيال",
@@ -115,7 +116,7 @@ export const channels: Channel[] = [
   {
     id: "sen-anlat-karadeniz",
     name: "مسلسل البحر الأسود",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "tW_78_pmCo4",
     thumbnail: "https://i.ytimg.com/vi/tW_78_pmCo4/hqdefault.jpg",
     description: "بث مباشر لمسلسل البحر الأسود — Sen Anlat Karadeniz",
@@ -123,7 +124,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera-mubasher",
     name: "قناة الجزيرة مباشر",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "NNnZLWHRmd4",
     thumbnail: "https://i.ytimg.com/vi/NNnZLWHRmd4/hqdefault.jpg",
     description: "بث حي متواصل للأحداث والتغطيات الميدانية",
@@ -131,7 +132,7 @@ export const channels: Channel[] = [
   {
     id: "trt-arabi",
     name: "TRT عربي",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "sat-YpJQ-fg",
     thumbnail: "https://i.ytimg.com/vi/sat-YpJQ-fg/hqdefault.jpg",
     description: "تغطيات مستمرة على شاشة TRT عربي",
@@ -139,7 +140,7 @@ export const channels: Channel[] = [
   {
     id: "dw-arabic",
     name: "DW عربية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "AGkp2AL8e7o",
     thumbnail: "https://i.ytimg.com/vi/AGkp2AL8e7o/hqdefault.jpg",
     description: "البث المباشر لقناة دويتشه فيله عربية",
@@ -147,7 +148,7 @@ export const channels: Channel[] = [
   {
     id: "cgtn-arabic",
     name: "CGTN العربية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "O0ZppASlI6o",
     thumbnail: "https://i.ytimg.com/vi/O0ZppASlI6o/hqdefault.jpg",
     description: "البث الحي لقناة CGTN العربية",
@@ -155,7 +156,7 @@ export const channels: Channel[] = [
   {
     id: "almamlaka",
     name: "قناة المملكة",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "YAQQ1RLfQtY",
     thumbnail: "https://i.ytimg.com/vi/YAQQ1RLfQtY/hqdefault.jpg",
     description: "البث المباشر لقناة المملكة الأردنية",
@@ -163,7 +164,7 @@ export const channels: Channel[] = [
   {
     id: "alghad",
     name: "قناة الغد",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "mo_6IkfLstk",
     thumbnail: "https://i.ytimg.com/vi/mo_6IkfLstk/hqdefault.jpg",
     description: "بث مباشر لقناة الغد الإخبارية",
@@ -171,7 +172,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera-2",
     name: "الجزيرة 2",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "N8xxOD0nT1Y",
     thumbnail: "https://i.ytimg.com/vi/N8xxOD0nT1Y/hqdefault.jpg",
     description: "متابعات إخبارية وبرامج مختارة من الجزيرة",
@@ -179,7 +180,7 @@ export const channels: Channel[] = [
   {
     id: "bbc-arabic",
     name: "بي بي سي نيوز عربي",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "O1pGmVtj2Y8",
     thumbnail: "https://i.ytimg.com/vi/O1pGmVtj2Y8/hqdefault.jpg",
     description: "البث الحي لبي بي سي نيوز عربي",
@@ -187,7 +188,7 @@ export const channels: Channel[] = [
   {
     id: "saudi-sunnah",
     name: "قناة السنة النبوية",
-    category: "إسلامية",
+    category: "بث",
     youtubeId: "Rs7St51oDDc",
     thumbnail: "https://i.ytimg.com/vi/Rs7St51oDDc/hqdefault.jpg",
     description: "بث مباشر من المسجد النبوي الشريف",
@@ -195,7 +196,7 @@ export const channels: Channel[] = [
   {
     id: "alqahera-news",
     name: "القاهرة الإخبارية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "zZ-EysS8Eq8",
     thumbnail: "https://i.ytimg.com/vi/zZ-EysS8Eq8/hqdefault.jpg",
     description: "البث المباشر لقناة القاهرة الإخبارية",
@@ -203,7 +204,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera-english",
     name: "Al Jazeera English",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "gCNeDWCI0vo",
     thumbnail: "https://i.ytimg.com/vi/gCNeDWCI0vo/hqdefault.jpg",
     description: "البث المباشر للجزيرة الإنجليزية",
@@ -211,7 +212,7 @@ export const channels: Channel[] = [
   {
     id: "sky-news",
     name: "Sky News",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "xDWQ3LkccY8",
     thumbnail: "https://i.ytimg.com/vi/xDWQ3LkccY8/hqdefault.jpg",
     description: "البث المباشر لسكاي نيوز البريطانية",
@@ -219,7 +220,7 @@ export const channels: Channel[] = [
   {
     id: "dw-news",
     name: "DW News",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "LuKwFajn37U",
     thumbnail: "https://i.ytimg.com/vi/LuKwFajn37U/hqdefault.jpg",
     description: "البث المباشر لدويتشه فيله الإنجليزية",
@@ -227,7 +228,7 @@ export const channels: Channel[] = [
   {
     id: "france24-en",
     name: "FRANCE 24 English",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "HvZt-nh9sGg",
     thumbnail: "https://i.ytimg.com/vi/HvZt-nh9sGg/hqdefault.jpg",
     description: "البث المباشر لفرانس 24 الإنجليزية",
@@ -235,7 +236,7 @@ export const channels: Channel[] = [
   {
     id: "trt-world",
     name: "TRT World",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "qBe59l6p_EU",
     thumbnail: "https://i.ytimg.com/vi/qBe59l6p_EU/hqdefault.jpg",
     description: "البث المباشر لقناة TRT World",
@@ -243,7 +244,7 @@ export const channels: Channel[] = [
   {
     id: "alaraby-news",
     name: "قناة العربي أخبار",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "e2RgSa1Wt5o",
     thumbnail: "https://i.ytimg.com/vi/e2RgSa1Wt5o/hqdefault.jpg",
     description: "البث الحي المباشر لقناة العربي",
@@ -251,7 +252,7 @@ export const channels: Channel[] = [
   {
     id: "qatar-tv",
     name: "تلفزيون قطر",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "d020NL_oFAY",
     thumbnail: "https://i.ytimg.com/vi/d020NL_oFAY/hqdefault.jpg",
     description: "البث المباشر لتلفزيون قطر",
@@ -259,7 +260,7 @@ export const channels: Channel[] = [
   {
     id: "almayadeen",
     name: "الميادين مباشر",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "oIuWBQeglfs",
     thumbnail: "https://i.ytimg.com/vi/oIuWBQeglfs/hqdefault.jpg",
     description: "البث المباشر لقناة الميادين",
@@ -267,7 +268,7 @@ export const channels: Channel[] = [
   {
     id: "bee-movies",
     name: "أفلام عربي مباشر",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "Va6QU9n3q18",
     thumbnail: "https://i.ytimg.com/vi/Va6QU9n3q18/hqdefault.jpg",
     description: "بث مباشر لأفلام عربية",
@@ -275,7 +276,7 @@ export const channels: Channel[] = [
   {
     id: "roya-news",
     name: "رؤيا الإخبارية",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "A1cZxijueg4",
     thumbnail: "https://i.ytimg.com/vi/A1cZxijueg4/hqdefault.jpg",
     description: "تغطية مستمرة من الأردن والمنطقة والعالم",
@@ -283,7 +284,7 @@ export const channels: Channel[] = [
   {
     id: "aljazeera-doc",
     name: "الجزيرة الوثائقية",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "TiPYdMXt_XI",
     thumbnail: "https://i.ytimg.com/vi/TiPYdMXt_XI/hqdefault.jpg",
     description: "البث الحي للجزيرة الوثائقية",
@@ -291,7 +292,7 @@ export const channels: Channel[] = [
   {
     id: "nbc-news-now",
     name: "NBC News NOW",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "_sKZFIZvwP8",
     thumbnail: "https://i.ytimg.com/vi/_sKZFIZvwP8/hqdefault.jpg",
     description: "البث المباشر لشبكة NBC الأمريكية",
@@ -299,7 +300,7 @@ export const channels: Channel[] = [
   {
     id: "abc-news-live",
     name: "ABC News Live",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "iipR5yUp36o",
     thumbnail: "https://i.ytimg.com/vi/iipR5yUp36o/hqdefault.jpg",
     description: "أخبار وتحليلات على مدار الساعة",
@@ -307,7 +308,7 @@ export const channels: Channel[] = [
   {
     id: "euronews-en",
     name: "Euronews English",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "pykpO5kQJ98",
     thumbnail: "https://i.ytimg.com/vi/pykpO5kQJ98/hqdefault.jpg",
     description: "البث المباشر ليورونيوز الإنجليزية",
@@ -315,7 +316,7 @@ export const channels: Channel[] = [
   {
     id: "nasa-iss",
     name: "NASA — محطة الفضاء الدولية",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "M3HKLzjvKPc",
     thumbnail: "https://i.ytimg.com/vi/M3HKLzjvKPc/hqdefault.jpg",
     description: "بث حي للأرض من محطة الفضاء الدولية",
@@ -323,7 +324,7 @@ export const channels: Channel[] = [
   {
     id: "wwe-live",
     name: "WWE",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "hNcn_i8tEOo",
     thumbnail: "https://i.ytimg.com/vi/hNcn_i8tEOo/hqdefault.jpg",
     description: "مباريات مصارعة كاملة مباشرة",
@@ -331,7 +332,7 @@ export const channels: Channel[] = [
   {
     id: "bein-xtra",
     name: "beIN SPORTS Xtra",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "QXw3ryva6MI",
     thumbnail: "https://i.ytimg.com/vi/QXw3ryva6MI/hqdefault.jpg",
     description: "كرة قدم ورياضات متنوعة مجانًا",
@@ -339,7 +340,7 @@ export const channels: Channel[] = [
   {
     id: "laliga-live",
     name: "LALIGA",
-    category: "رياضية",
+    category: "بث",
     youtubeId: "mGhLMaYb1TE",
     thumbnail: "https://i.ytimg.com/vi/mGhLMaYb1TE/hqdefault.jpg",
     description: "بث مباشر من قناة الدوري الإسباني",
@@ -347,7 +348,7 @@ export const channels: Channel[] = [
   {
     id: "natgeo-live",
     name: "National Geographic",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "tbLcWRxPel0",
     thumbnail: "https://i.ytimg.com/vi/tbLcWRxPel0/hqdefault.jpg",
     description: "حلقات وثائقية متواصلة",
@@ -355,7 +356,7 @@ export const channels: Channel[] = [
   {
     id: "mrbean-live",
     name: "Mr. Bean",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "oPonPGALYaU",
     thumbnail: "https://i.ytimg.com/vi/oPonPGALYaU/hqdefault.jpg",
     description: "حلقات مستر بين الكرتونية",
@@ -363,7 +364,7 @@ export const channels: Channel[] = [
   {
     id: "spongebob-live",
     name: "SpongeBob",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "SkjgMm6xRbg",
     thumbnail: "https://i.ytimg.com/vi/SkjgMm6xRbg/hqdefault.jpg",
     description: "أشهر لقطات سبونج بوب",
@@ -371,7 +372,7 @@ export const channels: Channel[] = [
   {
     id: "scooby-live",
     name: "Scooby-Doo",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "kRn_n6uoc9M",
     thumbnail: "https://i.ytimg.com/vi/kRn_n6uoc9M/hqdefault.jpg",
     description: "حلقات سكوبي دو كاملة",
@@ -379,7 +380,7 @@ export const channels: Channel[] = [
   {
     id: "nick-live",
     name: "Nickelodeon",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "80ijzf3ct68",
     thumbnail: "https://i.ytimg.com/vi/80ijzf3ct68/hqdefault.jpg",
     description: "ماراثون حلقات نيكلوديون",
@@ -387,7 +388,7 @@ export const channels: Channel[] = [
   {
     id: "peppa-live",
     name: "Peppa Pig",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "8NcoRe_kFgE",
     thumbnail: "https://i.ytimg.com/vi/8NcoRe_kFgE/hqdefault.jpg",
     description: "أغاني بيبا بيغ للأطفال",
@@ -395,7 +396,7 @@ export const channels: Channel[] = [
   {
     id: "iqraa",
     name: "قناة اقرأ",
-    category: "إسلامية",
+    category: "بث",
     youtubeId: "3Uw_n19-g0E",
     thumbnail: "https://i.ytimg.com/vi/3Uw_n19-g0E/hqdefault.jpg",
     description: "بث مباشر لقناة اقرأ الفضائية",
@@ -403,7 +404,7 @@ export const channels: Channel[] = [
   {
     id: "cnn-live",
     name: "CNN Headlines",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "GotlA1KKWoo",
     thumbnail: "https://i.ytimg.com/vi/GotlA1KKWoo/hqdefault.jpg",
     description: "عناوين CNN على مدار الساعة",
@@ -411,7 +412,7 @@ export const channels: Channel[] = [
   {
     id: "abc-au",
     name: "ABC NEWS Australia",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "vOTiJkg1voo",
     thumbnail: "https://i.ytimg.com/vi/vOTiJkg1voo/hqdefault.jpg",
     description: "البث المباشر لأخبار ABC الأسترالية",
@@ -419,7 +420,7 @@ export const channels: Channel[] = [
   {
     id: "wion",
     name: "WION",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "arWOEtucvVk",
     thumbnail: "https://i.ytimg.com/vi/arWOEtucvVk/hqdefault.jpg",
     description: "أخبار عالمية مباشرة",
@@ -427,7 +428,7 @@ export const channels: Channel[] = [
   {
     id: "livenow-fox",
     name: "LiveNOW from FOX",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "z0nHA8i4j2M",
     thumbnail: "https://i.ytimg.com/vi/z0nHA8i4j2M/hqdefault.jpg",
     description: "تغطية حية لأهم الأحداث",
@@ -435,7 +436,7 @@ export const channels: Channel[] = [
   {
     id: "talktv",
     name: "Talk",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "DFYaNjzI1aI",
     thumbnail: "https://i.ytimg.com/vi/DFYaNjzI1aI/hqdefault.jpg",
     description: "بث مباشر 24/7 من بريطانيا",
@@ -443,7 +444,7 @@ export const channels: Channel[] = [
   {
     id: "yahoo-finance",
     name: "Yahoo Finance",
-    category: "إخبارية",
+    category: "بث",
     youtubeId: "KQp-e_XQnDE",
     thumbnail: "https://i.ytimg.com/vi/KQp-e_XQnDE/hqdefault.jpg",
     description: "تغطية الأسواق المالية يوميًا",
@@ -451,7 +452,7 @@ export const channels: Channel[] = [
   {
     id: "discovery",
     name: "Discovery",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "NAsWOpz9O94",
     thumbnail: "https://i.ytimg.com/vi/NAsWOpz9O94/hqdefault.jpg",
     description: "حلقات ديسكفري متواصلة",
@@ -459,7 +460,7 @@ export const channels: Channel[] = [
   {
     id: "animal-planet",
     name: "Animal Planet",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "spLY34LecBA",
     thumbnail: "https://i.ytimg.com/vi/spLY34LecBA/hqdefault.jpg",
     description: "ساعات من عالم الحيوان",
@@ -467,9 +468,291 @@ export const channels: Channel[] = [
   {
     id: "baby-shark",
     name: "Baby Shark",
-    category: "مسلسلات وأفلام",
+    category: "بث",
     youtubeId: "4uvohdqHOMk",
     thumbnail: "https://i.ytimg.com/vi/4uvohdqHOMk/hqdefault.jpg",
     description: "أغاني بيبي شارك للأطفال",
+  },
+
+  // ==== قنوات IPTV (روابط بث مباشر مُختبرة) ====
+  {
+    id: "saudi-tv",
+    name: "السعودية",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8",
+    thumbnail: "https://i.imgur.com/GRQTndk.png",
+    description: "البث المباشر لقناة السعودية",
+  },
+  {
+    id: "saudi-alaan",
+    name: "السعودية الآن",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-ksa-now/71ed3aa814c643306c0a8bc4fcc7d17f/index.m3u8",
+    thumbnail: "https://i.imgur.com/sEOjApe.png",
+    description: "بث مباشر لحظة بلحظة",
+  },
+  {
+    id: "sbc-tv",
+    name: "SBC",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-sbc/90e09c0c28db26435799b4a14892a167/index.m3u8",
+    thumbnail: "https://i.imgur.com/9JSQglj.png",
+    description: "البث المباشر لقناة SBC",
+  },
+  {
+    id: "thaqafiya",
+    name: "الثقافية",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thaqafeyyah/28c0d2a20dbf1dc049ce15d3973f494b/index.m3u8",
+    thumbnail: "https://shahid.mbc.net/mediaObject/55f69983-5b4b-47c7-9c25-06ed5ad860a4?height=auto&width=512&croppingPoint=&version=1&type=jpeg",
+    description: "برامج ثقافية ووثائقيات مباشرة",
+  },
+  {
+    id: "cnbc-arabiya",
+    name: "CNBC العربية",
+    category: "بث",
+    streamUrl: "https://cnbc-live.akamaized.net/cnbc/master.m3u8",
+    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/CNBC_Arabia_2025.svg/960px-CNBC_Arabia_2025.svg.png",
+    description: "أخبار الاقتصاد والأسواق مباشرة",
+  },
+  {
+    id: "i24-arabic",
+    name: "آي 24 نيوز عربي",
+    category: "بث",
+    streamUrl: "https://i24newsarabic-cdn.encoders.immergo.tv/master.m3u8",
+    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/LOGO_i24NEWS.png/960px-LOGO_i24NEWS.png",
+    description: "أخبار عالمية مباشرة",
+  },
+  {
+    id: "alwesam",
+    name: "الوسام",
+    category: "بث",
+    streamUrl: "https://stream.addresses-sat.com/Alwesam/index.m3u8",
+    thumbnail: "https://i.imgur.com/rtqVAxf.png",
+    description: "البث المباشر لقناة الوسام",
+  },
+  {
+    id: "riyadh-radio",
+    name: "الرياض راديو",
+    category: "بث",
+    streamUrl: "https://live.kwikmotion.com/sbrksariyadhradiolive/srpksariyadhradio/playlist.m3u8",
+    thumbnail: "https://aloula.faulio.com/storage/mediagallery/37/1a/fullhd_399eddcc4305f34f41c7fab24c3518fab5d55d97.png",
+    description: "إذاعة الرياض — بث مباشر",
+  },
+  {
+    id: "khuzama-radio",
+    name: "الخزامى راديو",
+    category: "بث",
+    streamUrl: "https://live.kwikmotion.com/sbrksakhuzamaradiolive/srpkhuzama/playlist.m3u8",
+    thumbnail: "https://shahid.mbc.net/mediaObject/61010cbc-91c5-4ce1-94a4-ed40adadb97b",
+    description: "إذاعة الخزامى — بث مباشر",
+  },
+  {
+    id: "amman-tv",
+    name: "عمان",
+    category: "بث",
+    streamUrl: "https://ammantv-live.ercdn.net/ammantvhd/ammantvhd.m3u8",
+    thumbnail: "https://i.imgur.com/5l7kw0b.png",
+    description: "البث المباشر لتلفزيون عمان",
+  },
+  {
+    id: "altaghier",
+    name: "التغيير",
+    category: "بث",
+    streamUrl: "https://jmc-live.ercdn.net/altaghier/altaghier.m3u8",
+    thumbnail: "https://i.imgur.com/YTyCBvB.png",
+    description: "البث المباشر لقناة التغيير",
+  },
+  {
+    id: "jordan-tv",
+    name: "الأردن",
+    category: "بث",
+    streamUrl: "https://jrtv-live.ercdn.net/jordanhd/jordanhd.m3u8",
+    thumbnail: "https://i.imgur.com/0XozB5N.png",
+    description: "البث المباشر للتلفزيون الأردني",
+  },
+  {
+    id: "jordan-archive",
+    name: "الأرشيف",
+    category: "بث",
+    streamUrl: "https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Archive/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/8UrCl4k.png",
+    description: "برامج وأرشيف الأردني",
+  },
+  {
+    id: "iqraa-quran",
+    name: "اقرأ — القرآن",
+    category: "بث",
+    streamUrl: "https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv2/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/HPVsIa4.png",
+    description: "تلاوات وبث مباشر لقناة اقرأ",
+  },
+  {
+    id: "iqraa-world",
+    name: "اقرأ — عالمي",
+    category: "بث",
+    streamUrl: "https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv1/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/nUlZvSe.png",
+    description: "البث المباشر لقناة اقرأ العالمية",
+  },
+  {
+    id: "qatar-quran",
+    name: "القرآن الكريم — قطر",
+    category: "بث",
+    streamUrl: "https://qatartv.akamaized.net/hls/live/20000612/qtvquran/master.m3u8",
+    thumbnail: "https://www.qmc.qa/img/LiveChannels/1ca67a44-9290-4b2a-8a16-d8c6e2260816.jpg",
+    description: "بث مباشر لقراءات القرآن الكريم",
+  },
+  {
+    id: "makkah-tv",
+    name: "مكة",
+    category: "بث",
+    streamUrl: "https://media2.streambrothers.com:1936/8122/8122/playlist.m3u8",
+    thumbnail: "https://i.ibb.co/r2k71w5N/download.png",
+    description: "بث مباشر من مكة المكرمة",
+  },
+  {
+    id: "ktv-sport",
+    name: "الكويت — الرياضية",
+    category: "بث",
+    streamUrl: "https://kwtspta.cdn.mangomolo.com/sp/smil:sp.stream.smil/chunklist.m3u8",
+    thumbnail: "https://i.imgur.com/R1hGX1d.png",
+    description: "البث المباشر للقنوات الرياضية الكويتية",
+  },
+  {
+    id: "ktv-sport-plus",
+    name: "الكويت — الرياضية 2",
+    category: "بث",
+    streamUrl: "https://kwtsplta.cdn.mangomolo.com/spl/smil:spl.stream.smil/chunklist.m3u8",
+    thumbnail: "https://i.imgur.com/l4oX0gf.png",
+    description: "بث مباشر للقناة الرياضية الثانية",
+  },
+  {
+    id: "oman-sport",
+    name: "عمان — الرياضية",
+    category: "بث",
+    streamUrl: "https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8",
+    thumbnail: "https://i.imgur.com/1omi7p8.png",
+    description: "البث المباشر لقناة عمان الرياضية",
+  },
+  {
+    id: "jordan-sport",
+    name: "الأردن — الرياضية",
+    category: "بث",
+    streamUrl: "https://jrtv-live.ercdn.net/jordansporthd/jordansporthd.m3u8",
+    thumbnail: "https://i.imgur.com/2EmrZPQ.png",
+    description: "البث المباشر للقناة الرياضية الأردنية",
+  },
+  {
+    id: "bahrain-sport",
+    name: "البحرين — الرياضية",
+    category: "بث",
+    streamUrl: "https://5c7b683162943.streamlock.net/live/ngrp:sportsone_all/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/fBpLsbC.png",
+    description: "البث المباشر لقناة البحرين الرياضية",
+  },
+  {
+    id: "aflam",
+    name: "أفلام",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx001/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/cTLj7Yt.png",
+    description: "أفلام عربية وأجنبية مباشرة",
+  },
+  {
+    id: "movies-action",
+    name: "أفلام أكشن",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/NIVhISa.png",
+    description: "أفلام أكشن على مدار الساعة",
+  },
+  {
+    id: "movies-thriller",
+    name: "أفلام إثارة",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx012/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/JWihdcl.png",
+    description: "أفلام إثارة وتشويق مباشرة",
+  },
+  {
+    id: "bab-al-hara",
+    name: "باب الحارة",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx010/playlist.m3u8",
+    thumbnail: "https://i.imgur.com/QtlnZbq.png",
+    description: "حلقات باب الحارة متواصلة",
+  },
+  {
+    id: "fairuz",
+    name: "فيروز",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx029/playlist.m3u8",
+    thumbnail: "https://shahid.mbc.net/mediaObject/f809d51c-e83d-43c9-8236-78731c2216ad?type=png",
+    description: "أعمال فيروز وأغاني الطرب القديم",
+  },
+  {
+    id: "maraya",
+    name: "مرايا",
+    category: "بث",
+    streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx008/playlist.m3u8",
+    thumbnail: "https://shahid.mbc.net/mediaObject/d089a559-4f41-4def-a786-f98fcfbf0464?height=auto&width=288&croppingPoint=&version=1&type=png",
+    description: "برنامج مرايا — بث مباشر",
+  },
+  {
+    id: "mbc-1",
+    name: "MBC 1",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1/15cf99af5de54063fdabfefe66adc075/index.m3u8",
+    thumbnail: "https://i.imgur.com/CiA3plN.png",
+    description: "البث المباشر لقناة MBC 1",
+  },
+  {
+    id: "mbc-4",
+    name: "MBC 4",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-4/24f134f1cd63db9346439e96b86ca6ed/index.m3u8",
+    thumbnail: "https://i.imgur.com/BcXASJp.png",
+    description: "البث المباشر لقناة MBC 4",
+  },
+  {
+    id: "mbc-5",
+    name: "MBC 5",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-5/ee6b000cee0629411b666ab26cb13e9b/index.m3u8",
+    thumbnail: "https://i.imgur.com/fRWaDyF.png",
+    description: "البث المباشر لقناة MBC 5",
+  },
+  {
+    id: "mbc-drama",
+    name: "MBC Drama",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-drama/2c28a458e2f3253e678b07ac7d13fe71/index.m3u8",
+    thumbnail: "https://i.imgur.com/g5PWnqp.png",
+    description: "مسلسلات عربية وتركية مباشرة",
+  },
+  {
+    id: "mbc-plus-drama",
+    name: "MBC+ Drama",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-plus-drama/e37251ec2aac8f6c98f75cd0fa37cd28/index.m3u8",
+    thumbnail: "https://i.imgur.com/lxWdjXG.png",
+    description: "مسلسلات مباشرة على مدار الساعة",
+  },
+  {
+    id: "mbc-masr-drama",
+    name: "MBC مصر دراما",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-drama/567b703c19ede6598222de81b0e4508b/index.m3u8",
+    thumbnail: "https://media0070.elcinema.com/tvguide/1399_1.png",
+    description: "مسلسلات مصرية مباشرة",
+  },
+  {
+    id: "mbc-mood",
+    name: "MBC Mood",
+    category: "بث",
+    streamUrl: "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-mood/78367bf48ccdba501d0d014a10c21031/index.m3u8",
+    thumbnail: "https://shahid.mbc.net/mediaObject/c2b6a882-458b-446e-b0fe-f97f7992149a?height=auto&width=144&croppingPoint=&version=1&type=png",
+    description: "برامج وأعمال متنوعة مباشرة",
   },
 ];
