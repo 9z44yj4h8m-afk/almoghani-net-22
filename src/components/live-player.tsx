@@ -1,4 +1,4 @@
-import { Maximize, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
+import { Bell, Maximize, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type Hls from "hls.js";
 import { useServerFn } from "@tanstack/react-start";
@@ -13,13 +13,9 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import type { Channel } from "@/lib/channels";
+import { markActive, markInactive, notifyStream } from "@/lib/inactive-channels";
 import { resolveYoutubeLive } from "@/lib/youtube-live.functions";
 
-type Settings = { volume: number; muted: boolean; quality: number; autoReconnect: boolean };
-type Status = "loading" | "playing" | "reconnecting" | "failed";
-
-const STORAGE_KEY = "almoghani-player-v1";
-const DEFAULTS: Settings = { volume: 80, muted: true, quality: 0, autoReconnect: true };
 const MAX_ATTEMPTS = 6;
 const backoff = (attempt: number) => Math.min(2000 * 2 ** attempt, 30000);
 
@@ -93,24 +89,37 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   }, [reload]);
 
   // Called whenever the stream drops: retry with backoff, or give up.
+  const dropped = useRef(false);
   const handleDrop = useCallback(() => {
     window.clearTimeout(retryTimer.current);
+    const notify = settingsRef.current.notify;
     setAttempt((current) => {
       if (!settingsRef.current.autoReconnect || current >= MAX_ATTEMPTS) {
         setStatus("failed");
+        markInactive(channel.id);
+        if (notify) notifyStream(`توقف بث ${channel.name}`, "تعذّر إعادة الاتصال — نُقلت القناة إلى قائمة القنوات غير النشطة.", channel.id);
         return current;
       }
+      if (current === 0 && notify) {
+        notifyStream(`انقطع بث ${channel.name}`, settingsRef.current.autoReconnect ? "جارٍ إعادة الاتصال تلقائيًا…" : "اضغط تحديث لإعادة التشغيل.", channel.id);
+      }
+      dropped.current = true;
       setStatus("reconnecting");
       retryTimer.current = window.setTimeout(reload, backoff(current));
       return current + 1;
     });
-  }, [reload]);
+  }, [reload, channel.id, channel.name]);
 
   const markPlaying = useCallback(() => {
     window.clearTimeout(retryTimer.current);
     setStatus("playing");
     setAttempt(0);
-  }, []);
+    markActive(channel.id);
+    if (dropped.current && settingsRef.current.notify) {
+      notifyStream(`عاد بث ${channel.name}`, "تمت إعادة الاتصال بنجاح.", channel.id);
+    }
+    dropped.current = false;
+  }, [channel.id, channel.name]);
 
   // Reset when the channel changes.
   useEffect(() => {
@@ -441,6 +450,26 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             aria-label="إعادة الاتصال تلقائيًا"
           />
           إعادة الاتصال تلقائيًا
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-2 text-xs font-bold text-muted-foreground">
+          <Switch
+            dir="ltr"
+            checked={settings.notify}
+            onCheckedChange={async (v) => {
+              if (v && typeof Notification !== "undefined" && Notification.permission !== "granted") {
+                const p = await Notification.requestPermission().catch(() => "denied");
+                if (p !== "granted") {
+                  alert("اسمح بالإشعارات من إعدادات المتصفح. على آيفون: ثبّت التطبيق أولًا على الشاشة الرئيسية.");
+                  return;
+                }
+              }
+              update({ notify: v });
+            }}
+            aria-label="إشعار عند الانقطاع"
+          />
+          <Bell className="h-3.5 w-3.5" />
+          إشعار عند الانقطاع
         </label>
 
         <div className="mr-auto flex items-center gap-2">
