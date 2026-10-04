@@ -16,6 +16,8 @@ import {
 import { type FormEvent, useEffect, useState } from "react";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
+import mosqueBg from "@/assets/mosque-bg.png.asset.json";
+import riyadhBg from "@/assets/riyadh-bg.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel } from "@/lib/channels";
@@ -83,6 +85,8 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   if (!selected) return null;
+  const heroTitle = section === "islamic" ? "قنوات إسلامية مباشرة" : section ? `قنوات ${visibleSections[0]?.title ?? ""} مباشرة` : "القنوات المباشرة";
+  const heroSub = section === "islamic" ? "تلاوات وبرامج إيمانية على مدار الساعة" : "تابع القنوات المباشرة من مكان واحد";
 
   return (
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -188,23 +192,20 @@ export function PortalPage({ section }: { section?: string }) {
 
       <main className="pb-24 md:pb-12">
         <section id="player" className="relative border-b border-border/60">
-          <div className="broadcast-grid absolute inset-0 opacity-40" aria-hidden="true" />
+          <div className="hero-scene" style={{ backgroundImage: `url(${section === "islamic" ? mosqueBg.url : riyadhBg.url})` }} aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-            <div className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
-              <div className="min-w-0">
-                <div className="mb-2 flex items-center gap-2 text-xs font-bold text-sky sm:text-sm">
-                  <Sparkles className="h-4 w-4" />
-                  <span>البث المختار</span>
-                </div>
-                <h1 className="truncate font-display text-2xl font-black sm:text-4xl">{selected.name}</h1>
-              </div>
+            <div className="mb-5 text-center sm:mb-7">
+              <h1 className="gold-title font-display text-3xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
+              <p className="mt-2 text-sm font-bold text-foreground/90 sm:text-lg">{heroSub}</p>
+            </div>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="min-w-0 truncate font-display text-base font-black sm:text-xl">{selected.name}</p>
               <div className="live-badge shrink-0">
                 <span className="h-2 w-2 rounded-full bg-live-foreground animate-live-pulse" />
-                مباشر الآن
+                LIVE
               </div>
             </div>
-
-            <div className="player-shell animate-fade-up">
+            <div className="player-shell animate-fade-up rounded-xl border-sky/60">
               <div className="aspect-video w-full overflow-hidden bg-surface-deep">
                 <iframe
                   key={selected.youtubeId}
@@ -256,7 +257,7 @@ export function PortalPage({ section }: { section?: string }) {
               <section id={`section-${index}`} key={section.title} className="scroll-mt-28">
                 <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <span className={`h-5 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-signal" : "bg-sky"}`} />
+                    <span className={`h-5 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-primary" : "bg-sky"}`} />
                     <h2 className="truncate font-display text-base font-black sm:text-xl">{section.title}</h2>
                   </div>
                   <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[10px] font-bold text-muted-foreground sm:text-xs">
@@ -283,7 +284,7 @@ export function PortalPage({ section }: { section?: string }) {
                             {selected.id === channel.id ? "يُعرض الآن" : "LIVE"}
                           </span>
                           <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <span className="grid h-12 w-12 place-items-center rounded-full bg-signal text-live-foreground shadow-live">
+                            <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
                               <Play className="h-5 w-5 fill-current" />
                             </span>
                           </span>
@@ -293,7 +294,7 @@ export function PortalPage({ section }: { section?: string }) {
                             <span className="block truncate text-sm font-bold sm:text-base">{channel.name}</span>
                             <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
                           </span>
-                          <CirclePlay className="h-5 w-5 shrink-0 text-sky sm:h-6 sm:w-6" />
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-4 w-4 fill-current" /></span>
                         </span>
                       </button>
                     ))}
@@ -317,14 +318,14 @@ export function PortalPage({ section }: { section?: string }) {
 
       <Link
         to="/chat"
-        className="fixed bottom-24 left-4 z-50 flex items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-sky/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:bottom-6"
+        className="fixed bottom-24 left-4 z-50 flex items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-primary/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:bottom-6"
       >
         <MessageCircle className="h-5 w-5" />ALMOGHANI AI
       </Link>
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-3 border-t border-border bg-background/95 px-6 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
-        <a href="#player" className="mobile-nav-item text-signal"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
+        <a href="#player" className="mobile-nav-item text-primary"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
         <a href="#channels" className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
-        <a href="#player" className="relative -top-4 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-live text-live-foreground shadow-live" aria-label="شغّل البث">
+        <a href="#player" className="relative -top-4 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-primary text-primary-foreground shadow-live" aria-label="شغّل البث">
           <Play className="h-6 w-6 fill-current" />
         </a>
       </nav>
