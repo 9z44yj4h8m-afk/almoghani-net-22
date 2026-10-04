@@ -13,3 +13,4 @@
 
 - Keep channel metadata in one typed array on the home route so each supplied stream can switch the same embedded player without external navigation.
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
+- Keep the AI chat streaming through the /api/chat server route with history stored only in the visitor's browser, so no login or database is needed.
