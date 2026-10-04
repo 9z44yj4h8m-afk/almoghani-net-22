@@ -217,49 +217,7 @@ function Index() {
 
       <main className="pb-24 md:pb-12">
         <section id="home" className="mx-auto max-w-3xl space-y-3 px-4 pt-4">
-          <div className="portal-frame overflow-hidden p-3">
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <p className="text-sm font-black">شاهد الآن | قنوات البث المباشر</p>
-              <a href="#player" className="rounded-md border border-sky/60 bg-sky/15 px-3 py-1 text-xs font-bold text-sky">المشغّل</a>
-            </div>
-            <div className="overflow-hidden">
-              <div className="portal-ticker gap-8 text-xs text-muted-foreground">
-                {[...channels, ...channels]
-                  .filter((c) => c.category === "البث")
-                  .map((c, i) => (
-                    <button key={`${c.id}-${i}`} type="button" onClick={() => playChannel(c)} className="flex shrink-0 items-center gap-2 hover:text-sky">
-                      <span className="h-1.5 w-1.5 rounded-full bg-sky" />{c.name}
-                    </button>
-                  ))}
-              </div>
-            </div>
-          </div>
-
           <div className="relative grid grid-cols-[1fr_auto] items-center gap-4 py-2">
-            <div className="portal-frame grid h-24 place-items-center sm:h-32">
-              <span className="portal-wordmark text-3xl sm:text-5xl">ALMOGHANI</span>
-            </div>
-            <img src={kaabaEmblem} alt="الكعبة المشرفة" width={816} height={816} className="h-24 w-24 rounded-3xl object-cover sm:h-32 sm:w-32" />
-          </div>
-
-          <nav aria-label="أقسام القنوات" className="portal-frame p-3">
-            <p className="mb-2 flex items-center gap-2 text-sm font-black"><span className="h-2 w-2 rounded-full bg-signal animate-live-pulse" />أقسام القنوات المباشرة</p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-              {sections.map((section, index) => {
-                const count = channels.filter((c) => c.category === section.category).length;
-                return (
-                  <a
-                    key={section.title}
-                    href={`#section-${index}`}
-                    className="flex items-center justify-between gap-2 rounded-md border border-primary/50 bg-primary/15 px-3 py-2.5 text-sm font-bold transition-colors hover:border-sky hover:text-sky last:col-span-2 sm:last:col-span-1"
-                  >
-                    <span className="truncate">{section.title.replace("القنوات ", "")}</span>
-                    <span className="rounded bg-background/60 px-1.5 text-xs text-sky">{count}</span>
-                  </a>
-                );
-              })}
-            </div>
-          </nav>
 
           <Link to="/quran" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
             <img src={quranIcon} alt="" loading="lazy" width={816} height={816} className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20" />
