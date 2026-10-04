@@ -33,7 +33,6 @@ import { channels, type Channel } from "@/lib/channels";
 
 
 const sections = [
-  { slug: "saudi", title: "السعودية", category: "سعودية" as const, cols: "md:grid-cols-3 xl:grid-cols-5" },
   { slug: "sports", title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
   { slug: "islamic", title: "الإسلامية", category: "إسلامية" as const, cols: "md:grid-cols-2 xl:grid-cols-2" },
   { slug: "news", title: "الإخبارية", category: "إخبارية" as const, cols: "md:grid-cols-3 xl:grid-cols-4" },
