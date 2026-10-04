@@ -182,7 +182,7 @@ export function PortalPage({ live = false }: { live?: boolean }) {
                           <img src={channel.thumbnail} alt="" className="h-12 w-20 shrink-0 rounded-md object-cover" />
                           <span className="min-w-0">
                             <span className="block truncate font-black">{channel.name}</span>
-                            <span className="mt-1 block truncate text-xs text-muted-foreground">{channel.description}</span>
+                            <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
                           </span>
                           <Play className="mr-auto text-sky" />
                         </Button>
@@ -323,7 +323,7 @@ export function PortalPage({ live = false }: { live?: boolean }) {
                 </div>
 
                 {sectionChannels.length ? (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
                     {sectionChannels.map((channel) => (
                       <button
                         key={channel.id}
@@ -336,9 +336,9 @@ export function PortalPage({ live = false }: { live?: boolean }) {
                         <span className="relative block aspect-video overflow-hidden bg-surface-deep">
                           <img className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={channel.thumbnail} alt={`صورة ${channel.name}`} />
                           <span className="absolute inset-0 bg-player-overlay" />
-                          <span className="absolute left-3 top-3 live-badge py-1 text-[10px]">
-                            <span className="h-1.5 w-1.5 rounded-full bg-live-foreground" />
-                            LIVE
+                          <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
+                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
+                            {selected.id === channel.id ? "يُعرض الآن" : "LIVE"}
                           </span>
                           <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <span className="grid h-12 w-12 place-items-center rounded-full bg-signal text-live-foreground shadow-live">
@@ -346,12 +346,12 @@ export function PortalPage({ live = false }: { live?: boolean }) {
                             </span>
                           </span>
                         </span>
-                        <span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4 text-right">
+                        <span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 p-2.5 text-right sm:gap-3 sm:p-4">
                           <span className="min-w-0">
-                            <span className="block truncate font-bold">{channel.name}</span>
-                            <span className="mt-1 block truncate text-xs text-muted-foreground">{channel.description}</span>
+                            <span className="block truncate text-sm font-bold sm:text-base">{channel.name}</span>
+                            <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
                           </span>
-                          <CirclePlay className="h-6 w-6 shrink-0 text-sky" />
+                          <CirclePlay className="h-5 w-5 shrink-0 text-sky sm:h-6 sm:w-6" />
                         </span>
                       </button>
                     ))}
