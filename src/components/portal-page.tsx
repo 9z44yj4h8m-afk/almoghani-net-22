@@ -33,11 +33,11 @@ import { channels, type Channel } from "@/lib/channels";
 
 
 const sections = [
-  { title: "السعودية", category: "سعودية" as const },
-  { title: "الرياضية", category: "رياضية" as const },
-  { title: "الإسلامية", category: "إسلامية" as const },
-  { title: "الإخبارية", category: "إخبارية" as const },
-  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
+  { title: "السعودية", category: "سعودية" as const, cols: "md:grid-cols-3 xl:grid-cols-5" },
+  { title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
+  { title: "الإسلامية", category: "إسلامية" as const, cols: "md:grid-cols-2 xl:grid-cols-2" },
+  { title: "الإخبارية", category: "إخبارية" as const, cols: "md:grid-cols-3 xl:grid-cols-4" },
+  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const, cols: "md:grid-cols-2 xl:grid-cols-4" },
 ];
 
 const portalLinks = [
@@ -304,26 +304,23 @@ export function PortalPage({ live = false }: { live?: boolean }) {
           </div>
         </section>
 
-        <div id="channels" className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div id="channels" className="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
           {sections.map((section, index) => {
             const sectionChannels = channels.filter((channel) => channel.category === section.category);
             return (
               <section id={`section-${index}`} key={section.title} className="scroll-mt-28">
-                <div className="mb-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:mb-5">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className={`h-7 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-signal" : "bg-sky"}`} />
-                    <div className="min-w-0">
-                      <h2 className="truncate font-display text-lg font-black sm:text-2xl">{section.title}</h2>
-                      <p className="mt-0.5 text-xs text-muted-foreground">
-                        {sectionChannels.length ? `${sectionChannels.length} قناة متاحة` : "بانتظار إضافة روابط القنوات"}
-                      </p>
-                    </div>
+                <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <span className={`h-5 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-signal" : "bg-sky"}`} />
+                    <h2 className="truncate font-display text-base font-black sm:text-xl">{section.title}</h2>
                   </div>
-                  <ChevronLeft className="h-5 w-5 shrink-0 text-muted-foreground" />
+                  <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[10px] font-bold text-muted-foreground sm:text-xs">
+                    {sectionChannels.length ? `${sectionChannels.length} قناة` : "قريبًا"}
+                  </span>
                 </div>
 
                 {sectionChannels.length ? (
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+                  <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${section.cols}`}>
                     {sectionChannels.map((channel) => (
                       <button
                         key={channel.id}
