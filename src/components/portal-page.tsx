@@ -33,7 +33,11 @@ import { channels, type Channel } from "@/lib/channels";
 
 
 const sections = [
-  { title: "البث", category: "البث" as const },
+  { title: "السعودية", category: "سعودية" as const },
+  { title: "الرياضية", category: "رياضية" as const },
+  { title: "الإسلامية", category: "إسلامية" as const },
+  { title: "الإخبارية", category: "إخبارية" as const },
+  { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
 ];
 
 const portalLinks = [
