@@ -122,7 +122,7 @@ function ChatPage() {
                         <MessageResponse
                           key={i}
                           components={{
-                            a: ({ href, children }: { href?: string; children?: React.ReactNode }) =>
+                            a: ({ href, children }: React.AnchorHTMLAttributes<HTMLAnchorElement>) =>
                               href?.startsWith("/") && !href.startsWith("//") ? (
                                 <a href={href} className="font-bold text-sky underline underline-offset-4 hover:text-primary">{children}</a>
                               ) : (
