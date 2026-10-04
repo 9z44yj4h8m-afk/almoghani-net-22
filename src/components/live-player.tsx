@@ -16,6 +16,10 @@ import type { Channel } from "@/lib/channels";
 import { markActive, markInactive, notifyStream } from "@/lib/inactive-channels";
 import { resolveYoutubeLive } from "@/lib/youtube-live.functions";
 
+type Settings = { volume: number; muted: boolean; quality: number; autoReconnect: boolean; notify: boolean };
+type Status = "loading" | "playing" | "reconnecting" | "failed";
+const STORAGE_KEY = "almoghani-player-settings";
+const DEFAULTS: Settings = { volume: 80, muted: true, quality: 0, autoReconnect: true, notify: false };
 const MAX_ATTEMPTS = 6;
 const backoff = (attempt: number) => Math.min(2000 * 2 ** attempt, 30000);
 
