@@ -296,7 +296,7 @@ export function PortalPage({ section }: { section?: string }) {
             </div>
             <div className="player-shell animate-fade-up rounded-xl border-sky/60">
               <div className="aspect-video w-full overflow-hidden bg-surface-deep">
-                <LivePlayer channel={selected} />
+                <LivePlayer key={selected.id} channel={selected} />
               </div>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border bg-surface px-4 py-3 sm:px-5 sm:py-4">
                 <div className="flex min-w-0 items-center gap-3">
