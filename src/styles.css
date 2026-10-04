@@ -32,27 +32,27 @@
 }
 
 :root {
-  --background: oklch(0.145 0.035 276);
+  --background: oklch(0.16 0.035 170);
   --foreground: oklch(0.97 0.01 258);
-  --surface: oklch(0.19 0.04 276);
-  --surface-deep: oklch(0.11 0.025 276);
-  --card: oklch(0.205 0.042 276);
+  --surface: oklch(0.2 0.04 168);
+  --surface-deep: oklch(0.12 0.03 170);
+  --card: oklch(0.2 0.045 165);
   --card-foreground: oklch(0.97 0.01 258);
-  --primary: oklch(0.49 0.26 287);
+  --primary: oklch(0.62 0.19 150);
   --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.235 0.045 273);
+  --secondary: oklch(0.25 0.05 165);
   --secondary-foreground: oklch(0.93 0.015 258);
-  --muted: oklch(0.22 0.03 274);
-  --muted-foreground: oklch(0.69 0.035 261);
-  --accent: oklch(0.61 0.17 241);
-  --accent-foreground: oklch(0.98 0.005 260);
-  --border: oklch(0.3 0.05 274 / 70%);
-  --input: oklch(0.3 0.05 274);
-  --ring: oklch(0.61 0.17 241);
+  --muted: oklch(0.23 0.035 168);
+  --muted-foreground: oklch(0.75 0.03 150);
+  --accent: oklch(0.8 0.13 85);
+  --accent-foreground: oklch(0.18 0.03 170);
+  --border: oklch(0.55 0.09 110 / 45%);
+  --input: oklch(0.32 0.05 165);
+  --ring: oklch(0.8 0.13 85);
   --live: oklch(0.62 0.24 20);
   --live-foreground: oklch(0.99 0.005 260);
   --signal: oklch(0.62 0.24 20);
-  --sky: oklch(0.67 0.16 240);
+  --sky: oklch(0.82 0.13 85);
 }
 
 @layer base {
@@ -136,17 +136,18 @@
 }
 
 @utility category-pill-active {
-  border-color: color-mix(in oklab, var(--live) 70%, transparent);
-  background: var(--live);
-  color: var(--live-foreground);
-  box-shadow: var(--shadow-live);
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--primary) 55%, transparent);
 }
 
 @utility channel-card {
   overflow: hidden;
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  border-color: color-mix(in oklab, var(--sky) 40%, var(--border));
   background: var(--card);
   color: var(--card-foreground);
   cursor: pointer;
@@ -251,3 +252,21 @@
 @keyframes portal-ticker { from { transform: translateX(0); } to { transform: translateX(50%); } }
 
 @utility font-quran { font-family: "Amiri Quran", serif; }
+
+@utility hero-scene {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  &::after { content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 15%, transparent), color-mix(in oklab, var(--background) 45%, transparent) 55%, var(--background)); }
+}
+@utility gold-title {
+  background: linear-gradient(180deg, oklch(0.95 0.08 95), oklch(0.78 0.14 80));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 3px 10px color-mix(in oklab, var(--background) 80%, transparent));
+}
+@utility glow-pill {
+  border: 1px solid var(--primary) !important;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 85%, white), var(--primary)) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: 0 0 18px color-mix(in oklab, var(--primary) 55%, transparent) !important;
+}
