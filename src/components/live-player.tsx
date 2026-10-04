@@ -3,7 +3,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type Hls from "hls.js";
 import { useServerFn } from "@tanstack/react-start";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import type { Channel } from "@/lib/channels";
@@ -160,7 +166,11 @@ export function LivePlayer({ channel }: { channel: Channel }) {
         .then(({ default: HlsCtor }) => {
           if (destroyed) return;
           if (!HlsCtor.isSupported()) return drop();
-          const hls = new HlsCtor({ enableWorker: true, maxBufferLength: 30, liveSyncDurationCount: 3 });
+          const hls = new HlsCtor({
+            enableWorker: true,
+            maxBufferLength: 30,
+            liveSyncDurationCount: 3,
+          });
           hlsRef.current = hls;
           let mediaRecoveries = 0;
           hls.on(HlsCtor.Events.MANIFEST_PARSED, (_e, data) => {
@@ -205,7 +215,10 @@ export function LivePlayer({ channel }: { channel: Channel }) {
 
   // YouTube: follow player events (ready, playing, ended, error).
   const ytCommand = useCallback((func: string, args: unknown[] = []) => {
-    frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args }), "*");
+    frameRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func, args }),
+      "*",
+    );
   }, []);
 
   useEffect(() => {
@@ -284,10 +297,14 @@ export function LivePlayer({ channel }: { channel: Channel }) {
     if (!el) return;
     if (document.fullscreenElement) void document.exitFullscreen();
     else if (el.requestFullscreen) void el.requestFullscreen().catch(() => undefined);
-    else (videoRef.current as unknown as { webkitEnterFullscreen?: () => void })?.webkitEnterFullscreen?.();
+    else
+      (
+        videoRef.current as unknown as { webkitEnterFullscreen?: () => void }
+      )?.webkitEnterFullscreen?.();
   }
 
-  const VolumeIcon = settings.muted || settings.volume === 0 ? VolumeX : settings.volume < 50 ? Volume1 : Volume2;
+  const VolumeIcon =
+    settings.muted || settings.volume === 0 ? VolumeX : settings.volume < 50 ? Volume1 : Volume2;
   const heights = [...new Set(levels.map((l) => l.height))].sort((a, b) => b - a);
   const ytSrc = `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`;
 
@@ -314,7 +331,10 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
             allowFullScreen
             onLoad={() =>
-              frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: channel.id }), "*")
+              frameRef.current?.contentWindow?.postMessage(
+                JSON.stringify({ event: "listening", id: channel.id }),
+                "*",
+              )
             }
           />
         )}
@@ -333,7 +353,9 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             <div>
               <WifiOff className="mx-auto h-8 w-8 text-muted-foreground" />
               <p className="mt-3 font-display text-lg font-black">هذه القناة متوقفة حاليًا</p>
-              <p className="mt-2 text-sm text-muted-foreground">قد يكون البث انتهى أو غير متاح في منطقتك.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                قد يكون البث انتهى أو غير متاح في منطقتك.
+              </p>
               <button
                 type="button"
                 onClick={manualReload}
@@ -374,7 +396,10 @@ export function LivePlayer({ channel }: { channel: Channel }) {
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold text-muted-foreground">الدقة</span>
           {isHls && heights.length > 1 ? (
-            <Select value={String(settings.quality)} onValueChange={(v) => update({ quality: Number(v) })}>
+            <Select
+              value={String(settings.quality)}
+              onValueChange={(v) => update({ quality: Number(v) })}
+            >
               <SelectTrigger className="h-9 w-28" aria-label="دقة البث">
                 <SelectValue />
               </SelectTrigger>
@@ -390,7 +415,11 @@ export function LivePlayer({ channel }: { channel: Channel }) {
           ) : (
             <span
               className="rounded-md border border-border px-3 py-1.5 text-xs font-bold"
-              title={isHls ? "هذه القناة تبث بدقة واحدة" : "يوتيوب يختار الدقة حسب سرعة الإنترنت، ويمكن تغييرها من زر الإعدادات داخل المشغّل"}
+              title={
+                isHls
+                  ? "هذه القناة تبث بدقة واحدة"
+                  : "يوتيوب يختار الدقة حسب سرعة الإنترنت، ويمكن تغييرها من زر الإعدادات داخل المشغّل"
+              }
             >
               تلقائي
             </span>
