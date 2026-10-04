@@ -13,6 +13,7 @@ import {
   Search,
   Signal,
   Sparkles,
+  Trophy,
   Tv,
   Volume2,
   WandSparkles,
