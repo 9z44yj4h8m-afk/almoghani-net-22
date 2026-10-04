@@ -11,6 +11,6 @@
 
 ## Architecture
 
-- Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /?channel=<id> and /quran?s=<n>.
+- Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /live?channel=<id> and /quran?s=<n>.
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Keep the AI chat streaming through the /api/chat server route with history stored only in the visitor's browser, so no login or database is needed.

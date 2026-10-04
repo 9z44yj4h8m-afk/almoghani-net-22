@@ -5,14 +5,14 @@ import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createLovableAiGatewayRunIdFetch } from "@/lib/ai/run-id.server";
 import { channels } from "@/lib/channels";
 
-const CATALOG = channels.map((c) => `- ${c.name} | القسم: ${c.category} | الرابط: /?channel=${c.id}`).join("\n");
+const CATALOG = channels.map((c) => `- ${c.name} | القسم: ${c.category} | الرابط: /live?channel=${c.id}`).join("\n");
 
 const SYSTEM = `أنت "ALMOGHANI AI"، مساعد ذكي ودود داخل موقع almoghani.net.
 تحدث بالعربية الفصحى المبسطة (أو بلغة المستخدم إن كتب بغيرها)، وأجب بإيجاز ووضوح مع تنسيق Markdown عند الحاجة.
 
 ## القنوات المتاحة في الموقع (هذه فقط، لا تذكر قناة غيرها كأنها في الموقع):
 ${CATALOG}
-عند اقتراح قناة اكتبها رابطًا بصيغة Markdown بالضبط هكذا: [اسم القناة](/?channel=المعرّف). لا تخترع روابط أو قنوات.
+عند اقتراح قناة اكتبها رابطًا بصيغة Markdown بالضبط هكذا: [اسم القناة](/live?channel=المعرّف). لا تخترع روابط أو قنوات.
 
 ## صفحة القرآن الكريم
 فيها السور الـ114 قراءةً بالرسم العثماني واستماعًا بتلاوة الشيخ مشاري العفاسي.
