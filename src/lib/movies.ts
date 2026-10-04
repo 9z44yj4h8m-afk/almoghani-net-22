@@ -20,4 +20,9 @@ export const movies: Movie[] = [
   { id: "1408", youtubeId: "ELOQ0O2kKGU", title: "1408 (2007)", duration: "1:44:24", description: "رعب وتشويق بطولة جون كيوزاك وصامويل ل. جاكسون.", source: "Lionsgate Movies", lang: "عالمي" },
   { id: "southpaw", youtubeId: "y_6zrQZRJr8", title: "Southpaw (2015)", duration: "2:03:57", description: "دراما رياضية عن ملاكم يبدأ من جديد، بطولة جيك جيلنهال.", source: "Lionsgate Movies", lang: "عالمي" },
   { id: "paper-man", youtubeId: "BDdyKWZrdng", title: "Paper Man", duration: "1:50:46", description: "كوميديا درامية بطولة رايان رينولدز وجيف دانيالز.", source: "Shout! Studios", lang: "عالمي" },
+  // Sent by the site owner.
+  { id: "big-legend", youtubeId: "oBNFGtxOrKc", title: "أسطورة كبيرة", duration: "فيلم كامل", description: "فيلم أكشن مع ترجمة عربية.", source: "Bigtime - أفلام مجانية", lang: "عالمي" },
+  { id: "hazel", youtubeId: "hZntpjaJ92c", title: "هيزل وقلبها المحب", duration: "فيلم كامل", description: "فيلم إثارة ودراما من قصة حقيقية، مترجم كامل.", source: "Tuhaf Film", lang: "عالمي" },
+  { id: "boyka-action", youtubeId: "_TbLOphqpA4", title: "فيلم أكشن جديد (بويكا)", duration: "فيلم كامل", description: "فيلم أكشن جديد مترجم بجودة عالية.", source: "هشام الجعفري", lang: "عالمي" },
+  { id: "revenge", youtubeId: "yg_s2NwYyQ8", title: "الانتقام", duration: "فيلم كامل", description: "فيلم أكشن مترجم.", source: "Adilo tube", lang: "عالمي" },
 ];
