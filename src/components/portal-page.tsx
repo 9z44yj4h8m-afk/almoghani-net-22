@@ -1,16 +1,23 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
+  Baby,
   Bell,
+  Clapperboard,
   Home,
   ListVideo,
   MessageCircle,
+  MoonStar,
+  Newspaper,
   Play,
   Search,
   Signal,
   Sparkles,
+  Trophy,
+  Tv,
   Volume2,
   WandSparkles,
+  type LucideIcon,
 } from "lucide-react";
 import { type FormEvent, useEffect, useState } from "react";
 
@@ -23,13 +30,19 @@ import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
 
-const sections = [
-  { slug: "news", title: "الإخبارية", category: "إخبارية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "sports", title: "الرياضية", category: "رياضية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "kids", title: "أطفال ووثائقي", category: "أطفال ووثائقي" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
-  { slug: "general", title: "عامة", category: "عامة" as ChannelCategory, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+const sections: {
+  slug: string;
+  title: string;
+  category: ChannelCategory;
+  icon: LucideIcon;
+  cols: string;
+}[] = [
+  { slug: "news", title: "الإخبارية", category: "إخبارية" as ChannelCategory, icon: Newspaper, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "sports", title: "الرياضية", category: "رياضية" as ChannelCategory, icon: Trophy, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "islamic", title: "الإسلامية", category: "إسلامية" as ChannelCategory, icon: MoonStar, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as ChannelCategory, icon: Clapperboard, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "kids", title: "أطفال ووثائقي", category: "أطفال ووثائقي" as ChannelCategory, icon: Baby, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
+  { slug: "general", title: "عامة", category: "عامة" as ChannelCategory, icon: Tv, cols: "sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6" },
 ];
 
 export const liveSections = sections;
@@ -88,6 +101,7 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   if (!selected) return null;
+  const previewMode = !section;
   const heroTitle = section === "live" || !section ? "القنوات المباشرة" : `قنوات ${visibleSections[0]?.title ?? ""} مباشرة`;
   const heroSub = section === "islamic" ? "تلاوات وبرامج إيمانية على مدار الساعة" : "تابع القنوات المباشرة من مكان واحد";
 
@@ -224,24 +238,56 @@ export function PortalPage({ section }: { section?: string }) {
           </div>
         </section>
 
-        <div id="channels" className="mx-auto max-w-7xl space-y-8 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
+            {sections.map((s, i) => {
+              const count = channels.filter((c) => c.category === s.category).length;
+              return (
+                <a
+                  key={s.slug}
+                  href={`#section-${i}`}
+                  className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:border-sky hover:text-sky"
+                >
+                  <s.icon className="h-4 w-4 shrink-0 text-sky" />
+                  <span className="whitespace-nowrap">{s.title}</span>
+                  <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-black text-muted-foreground">{count}</span>
+                </a>
+              );
+            })}
+          </div>
           {visibleSections.map((section, index) => {
             const sectionChannels = channels.filter((channel) => channel.category === section.category);
+            const previewChannels = previewMode ? sectionChannels.slice(0, 8) : sectionChannels;
+            const hiddenCount = sectionChannels.length - previewChannels.length;
             return (
-              <section id={`section-${index}`} key={section.title} className="scroll-mt-24">
-                <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
-                  <div className="flex min-w-0 items-center gap-2.5">
-                    <span className={`h-5 w-1 shrink-0 rounded-full ${sectionChannels.length ? "bg-primary" : "bg-sky"}`} />
-                    <h2 className="truncate font-display text-base font-black sm:text-xl">{section.title}</h2>
+              <section id={`section-${index}`} key={section.title} className="scroll-mt-28 border-t border-border/60 pt-9 first:border-t-0 first:pt-0 sm:pt-12">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-sky/40 bg-secondary text-sky sm:h-12 sm:w-12">
+                      <section.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                    </span>
+                    <div className="min-w-0">
+                      <h2 className="truncate font-display text-lg font-black sm:text-2xl">{section.title}</h2>
+                      <p className="truncate text-xs font-bold text-muted-foreground sm:text-sm">
+                        {sectionChannels.length ? `${sectionChannels.length} قناة مباشرة` : "قريبًا"}
+                      </p>
+                    </div>
                   </div>
-                  <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[10px] font-bold text-muted-foreground sm:text-xs">
-                    {sectionChannels.length ? `${sectionChannels.length} قناة` : "قريبًا"}
-                  </span>
+                  {previewMode && sectionChannels.length > 8 && (
+                    <Link
+                      to="/channels/$section"
+                      params={{ section: section.slug }}
+                      className="shrink-0 rounded-full border border-primary/70 px-4 py-2 text-xs font-black text-sky transition-colors hover:bg-primary/10"
+                    >
+                      عرض الكل
+                    </Link>
+                  )}
                 </div>
 
                 {sectionChannels.length ? (
-                  <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${section.cols}`}>
-                    {sectionChannels.map((channel) => (
+                  <>
+                    <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${section.cols}`}>
+                      {previewChannels.map((channel) => (
                       <button
                         key={channel.id}
                         type="button"
@@ -271,8 +317,19 @@ export function PortalPage({ section }: { section?: string }) {
                           <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-3.5 w-3.5 fill-current sm:h-4 sm:w-4" /></span>
                         </span>
                       </button>
-                    ))}
-                  </div>
+                     ))}
+                    </div>
+                    {hiddenCount > 0 && (
+                      <Link
+                        to="/channels/$section"
+                        params={{ section: section.slug }}
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3 text-sm font-black text-sky transition-colors hover:border-sky hover:bg-primary/5"
+                      >
+                        <ListVideo className="h-4 w-4" />
+                        عرض كل قنوات {section.title} ({sectionChannels.length})
+                      </Link>
+                    )}
+                  </>
                 ) : (
                   <div className="empty-channel-row">
                     <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-secondary text-muted-foreground">
