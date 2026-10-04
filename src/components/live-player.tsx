@@ -346,7 +346,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             value={[settings.muted ? 0 : settings.volume]}
             max={100}
             step={5}
-            onValueChange={([v]) => update({ volume: v, muted: v === 0 })}
+            onValueChange={([v = 0]) => update({ volume: v, muted: v === 0 })}
             aria-label="مستوى الصوت"
           />
           <span className="w-8 shrink-0 text-center text-xs font-bold tabular-nums text-muted-foreground">
