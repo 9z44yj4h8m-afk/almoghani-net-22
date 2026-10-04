@@ -1,6 +1,7 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
+  ArrowRight,
   Baby,
   Bell,
   Clapperboard,
@@ -66,6 +67,11 @@ export function PortalPage({ section }: { section?: string }) {
     if (found) { setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
   const searchWithAi = useServerFn(searchChannelsWithAi);
+  const navigate = useNavigate();
+  function goBack() {
+    if (window.history.length > 1) window.history.back();
+    else navigate({ to: "/live" });
+  }
   const inactiveIds = useInactiveChannels();
   const inactiveChannels = channels.filter((c) => inactiveIds.includes(c.id));
 
@@ -115,7 +121,19 @@ export function PortalPage({ section }: { section?: string }) {
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
-          <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
+          <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+            {section && (
+              <button
+                type="button"
+                onClick={goBack}
+                className="icon-button shrink-0"
+                aria-label="رجوع"
+                title="رجوع"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            )}
+            <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
             <img src={kaabaEmblem} alt="" width={816} height={816} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
             <span className="h-9 w-px bg-border" />
             <span className="min-w-0 text-center">
