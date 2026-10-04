@@ -361,6 +361,14 @@ export function PortalPage({ section }: { section?: string }) {
                       عرض الكل
                     </Link>
                   )}
+                  {section.slug === "movies" && (
+                    <Link
+                      to="/movies"
+                      className="shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-black text-primary-foreground"
+                    >
+                      أفلام مميزة
+                    </Link>
+                  )}
                 </div>
 
                 {sectionChannels.length ? (
