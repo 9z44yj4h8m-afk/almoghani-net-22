@@ -38,6 +38,7 @@ const sections = [
   { title: "القنوات الإسلامية", category: "إسلامية" as const },
   { title: "القنوات الإخبارية", category: "إخبارية" as const },
   { title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const },
+  { title: "البث", category: "البث" as const },
 ];
 
 const portalLinks = [
