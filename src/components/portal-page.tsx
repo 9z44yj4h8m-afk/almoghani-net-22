@@ -301,7 +301,7 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
           </div>
         </section>
 
-        <section id="categories" className={`${section ? "hidden md:block " : ""}border-b border-border/60 bg-surface/40 py-4">
+        <section id="categories" className={`${section ? "hidden md:block " : ""}border-b border-border/60 bg-surface/40 py-4`}>
           <div className="no-scrollbar mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
             {sections.map((s) => (
               <Link
