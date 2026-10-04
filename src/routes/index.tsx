@@ -588,6 +588,12 @@ function Index() {
         </section>
       </main>
 
+      <Link
+        to="/chat"
+        className="fixed bottom-24 left-4 z-50 flex items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-sky/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:bottom-6"
+      >
+        <MessageCircle className="h-5 w-5" />ALMOGHANI AI
+      </Link>
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-3 border-t border-border bg-background/95 px-6 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
         <a href="#player" className="mobile-nav-item text-signal"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
         <a href="#channels" className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
