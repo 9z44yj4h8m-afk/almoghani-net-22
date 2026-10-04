@@ -15,6 +15,7 @@ import { Route as LiveRouteImport } from './routes/live'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
+import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ChannelsSectionRoute = ChannelsSectionRouteImport.update({
   path: '/channels/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHlsRoute = ApiPublicHlsRouteImport.update({
+  id: '/api/public/hls',
+  path: '/api/public/hls',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/quran': typeof QuranRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/chat' | '/live' | '/quran' | '/api/chat' | '/channels/$section'
+    | '/'
+    | '/chat'
+    | '/live'
+    | '/quran'
+    | '/api/chat'
+    | '/channels/$section'
+    | '/api/public/hls'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/live' | '/quran' | '/api/chat' | '/channels/$section'
+  to:
+    | '/'
+    | '/chat'
+    | '/live'
+    | '/quran'
+    | '/api/chat'
+    | '/channels/$section'
+    | '/api/public/hls'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/quran'
     | '/api/chat'
     | '/channels/$section'
+    | '/api/public/hls'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   QuranRoute: typeof QuranRoute
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
+  ApiPublicHlsRoute: typeof ApiPublicHlsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsSectionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hls': {
+      id: '/api/public/hls'
+      path: '/api/public/hls'
+      fullPath: '/api/public/hls'
+      preLoaderRoute: typeof ApiPublicHlsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuranRoute: QuranRoute,
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,
+  ApiPublicHlsRoute: ApiPublicHlsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

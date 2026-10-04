@@ -1,4 +1,4 @@
-export type ChannelCategory = "إخبارية" | "رياضية" | "إسلامية" | "مسلسلات وأفلام" | "أطفال ووثائقي" | "عامة";
+export type ChannelCategory = "إخبارية" | "رياضية" | "إسلامية" | "مسلسلات وأفلام" | "أفلام كاملة" | "أطفال ووثائقي" | "عامة";
 
 export type Channel = {
   id: string;
@@ -978,7 +978,7 @@ export const channels: Channel[] = [
   {
     id: "ar-aflam",
     name: "أفلام",
-    category: "مسلسلات وأفلام",
+    category: "أفلام كاملة",
     streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx001/playlist.m3u8",
     thumbnail: "https://i.imgur.com/cTLj7Yt.png",
     description: "أفلام عربية على مدار الساعة",
@@ -986,7 +986,7 @@ export const channels: Channel[] = [
   {
     id: "ar-aflam-action",
     name: "أفلام أكشن",
-    category: "مسلسلات وأفلام",
+    category: "أفلام كاملة",
     streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8",
     thumbnail: "https://i.imgur.com/NIVhISa.png",
     description: "أفلام أكشن مدبلجة ومترجمة",
@@ -994,7 +994,7 @@ export const channels: Channel[] = [
   {
     id: "ar-aflam-thriller",
     name: "أفلام إثارة",
-    category: "مسلسلات وأفلام",
+    category: "أفلام كاملة",
     streamUrl: "https://shd-amg-fast.edgenextcdn.net/tx012/playlist.m3u8",
     thumbnail: "https://i.imgur.com/JWihdcl.png",
     description: "أفلام إثارة وتشويق",
@@ -1002,16 +1002,16 @@ export const channels: Channel[] = [
   {
     id: "ar-rotana-cinema",
     name: "روتانا سينما السعودية",
-    category: "مسلسلات وأفلام",
-    streamUrl: "https://rotana.hibridcdn.net/rotananet/cinema_net-7Y83PP5adWixDF93/playlist.m3u8",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fcinema_net-7Y83PP5adWixDF93/playlist.m3u8",
     thumbnail: "https://i.imgur.com/pGgp38I.png",
     description: "أفلام عربية — روتانا سينما",
   },
   {
     id: "ar-rotana-cinema-masr",
     name: "روتانا سينما مصر",
-    category: "مسلسلات وأفلام",
-    streamUrl: "https://rotana.hibridcdn.net/rotananet/cinemamasr_net-7Y83PP5adWixDF93/playlist.m3u8",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fcinemamasr_net-7Y83PP5adWixDF93/playlist.m3u8",
     thumbnail: "https://i.imgur.com/dGlKoLW.png",
     description: "أفلام مصرية — روتانا سينما مصر",
   },
@@ -1019,9 +1019,25 @@ export const channels: Channel[] = [
     id: "ar-rotana-drama",
     name: "روتانا دراما",
     category: "مسلسلات وأفلام",
-    streamUrl: "https://rotana.hibridcdn.net/rotananet/drama_net-7Y83PP5adWixDF93/playlist.m3u8",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fdrama_net-7Y83PP5adWixDF93/playlist.m3u8",
     thumbnail: "https://i.imgur.com/btnhPjZ.png",
     description: "مسلسلات عربية — روتانا دراما",
+  },
+  {
+    id: "ar-rotana-classic",
+    name: "روتانا كلاسيك",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fclassical_net-7Y83PP5adWixDF93%2Fplaylist.m3u8",
+    thumbnail: "https://i.imgur.com/pMMUvkt.png",
+    description: "أفلام عربية كلاسيكية كاملة طوال اليوم",
+  },
+  {
+    id: "ar-rotana-comedy",
+    name: "روتانا كوميدي",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fcomedy_net-7Y83PP5adWixDF93%2Fplaylist.m3u8",
+    thumbnail: "https://i.imgur.com/IlT8U6S.png",
+    description: "أفلام ومسرحيات كوميدية كاملة",
   },
   {
     id: "ar-jordan-drama",
@@ -1034,7 +1050,7 @@ export const channels: Channel[] = [
   {
     id: "mv-mix-hollywood",
     name: "Mix Hollywood",
-    category: "مسلسلات وأفلام",
+    category: "أفلام كاملة",
     streamUrl: "https://ml-pull-hwc.myco.io/MixTV/hls/index.m3u8",
     thumbnail: "https://i.imgur.com/1ENdbZn.png",
     description: "أفلام على مدار الساعة — Mix Hollywood",
