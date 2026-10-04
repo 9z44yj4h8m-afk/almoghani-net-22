@@ -1024,6 +1024,22 @@ export const channels: Channel[] = [
     description: "مسلسلات عربية — روتانا دراما",
   },
   {
+    id: "ar-rotana-classic",
+    name: "روتانا كلاسيك",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fclassical_net-7Y83PP5adWixDF93%2Fplaylist.m3u8",
+    thumbnail: "https://i.imgur.com/pMMUvkt.png",
+    description: "أفلام عربية كلاسيكية كاملة طوال اليوم",
+  },
+  {
+    id: "ar-rotana-comedy",
+    name: "روتانا كوميدي",
+    category: "أفلام كاملة",
+    streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fcomedy_net-7Y83PP5adWixDF93%2Fplaylist.m3u8",
+    thumbnail: "https://i.imgur.com/IlT8U6S.png",
+    description: "أفلام ومسرحيات كوميدية كاملة",
+  },
+  {
     id: "ar-jordan-drama",
     name: "الأردن دراما",
     category: "مسلسلات وأفلام",
