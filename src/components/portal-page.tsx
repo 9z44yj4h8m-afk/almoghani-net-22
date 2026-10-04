@@ -19,7 +19,8 @@ import {
   WandSparkles,
   type LucideIcon,
 } from "lucide-react";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, startTransition, useEffect, useState } from "react";
+import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
 import mosqueBg from "@/assets/mosque-bg.png.asset.json";
@@ -63,6 +64,8 @@ export function PortalPage({ section }: { section?: string }) {
     if (found) { setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
   const searchWithAi = useServerFn(searchChannelsWithAi);
+  const inactiveIds = useInactiveChannels();
+  const inactiveChannels = channels.filter((c) => inactiveIds.includes(c.id));
 
   const searchResults = searchResultIds
     ?.map((id) => channels.find((channel) => channel.id === id))
@@ -95,9 +98,10 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   function playChannel(channel: Channel) {
-    setSelected(channel);
+    // Scroll first (instant feedback), then swap the stream at lower priority so taps feel immediate.
+    document.getElementById("player")?.scrollIntoView({ behavior: "auto", block: "start" });
     setSearchOpen(false);
-    document.getElementById("player")?.scrollIntoView({ behavior: "smooth" });
+    startTransition(() => setSelected(channel));
   }
 
   if (!selected) return null;
@@ -239,6 +243,35 @@ export function PortalPage({ section }: { section?: string }) {
         </section>
 
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+          {inactiveChannels.length > 0 && (
+            <details className="rounded-xl border border-border bg-surface">
+              <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-black">
+                <WifiOff className="h-4 w-4 text-muted-foreground" />
+                قنوات غير نشطة ({inactiveChannels.length})
+              </summary>
+              <ul className="divide-y divide-border border-t border-border">
+                {inactiveChannels.map((c) => (
+                  <li key={c.id} className="flex items-center justify-between gap-3 px-4 py-2.5">
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-bold">{c.name}</span>
+                      <span className="block truncate text-xs text-muted-foreground">{c.category}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        markActive(c.id);
+                        playChannel(c);
+                      }}
+                      className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground"
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" />
+                      تحديث الرابط
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
             {sections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
@@ -297,7 +330,7 @@ export function PortalPage({ section }: { section?: string }) {
                         className={`channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
                       >
                         <span className="relative block aspect-video overflow-hidden bg-surface-deep">
-                          <img className={`h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`} src={channel.thumbnail} alt={`صورة ${channel.name}`} />
+                          <img loading="lazy" decoding="async" className={`h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`} src={channel.thumbnail} alt={`صورة ${channel.name}`} />
                           <span className="absolute inset-0 bg-player-overlay" />
                           <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
