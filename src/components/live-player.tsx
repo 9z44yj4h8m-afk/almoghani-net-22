@@ -1,11 +1,13 @@
 import { Maximize, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type Hls from "hls.js";
+import { useServerFn } from "@tanstack/react-start";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import type { Channel } from "@/lib/channels";
+import { resolveYoutubeLive } from "@/lib/youtube-live.functions";
 
 type Settings = { volume: number; muted: boolean; quality: number; autoReconnect: boolean };
 type Status = "loading" | "playing" | "reconnecting" | "failed";
@@ -55,6 +57,23 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   const [reloadKey, setReloadKey] = useState(0);
   const [levels, setLevels] = useState<{ index: number; height: number }[]>([]);
   const isHls = Boolean(channel.streamUrl);
+  const [ytId, setYtId] = useState(channel.youtubeId);
+  const resolveLive = useServerFn(resolveYoutubeLive);
+
+  // YouTube: look up the channel's current live broadcast on load and on every reconnect.
+  useEffect(() => {
+    const channelId = channel.youtubeChannelId;
+    if (!channelId) return;
+    let cancelled = false;
+    resolveLive({ data: { channelId } })
+      .then((r) => {
+        if (!cancelled && r.videoId) setYtId(r.videoId);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [channel.youtubeChannelId, reloadKey, resolveLive]);
 
   const reload = useCallback(() => {
     window.clearTimeout(retryTimer.current);
@@ -270,9 +289,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
 
   const VolumeIcon = settings.muted || settings.volume === 0 ? VolumeX : settings.volume < 50 ? Volume1 : Volume2;
   const heights = [...new Set(levels.map((l) => l.height))].sort((a, b) => b - a);
-  const ytSrc = `https://www.youtube.com/embed/${
-    channel.youtubeChannelId ? `live_stream?channel=${channel.youtubeChannelId}&` : `${channel.youtubeId}?`
-  }rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`;
+  const ytSrc = `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`;
 
   return (
     <div>
