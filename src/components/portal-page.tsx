@@ -40,14 +40,30 @@ function LivePlayer({ channel }: { channel: Channel }) {
         const video = videoRef.current;
         if (destroyed || !video) return;
         if (HlsCtor.isSupported()) {
-          hls = new HlsCtor();
+          hls = new HlsCtor({ enableWorker: false, maxBufferLength: 30 });
+          hls.on(HlsCtor.Events.MANIFEST_PARSED, () => console.info("HLS: manifest loaded"));
+          hls.on(HlsCtor.Events.ERROR, (_event, data) => {
+            console.warn("HLS error:", data.type, data.details, data.fatal);
+            if (data.fatal) {
+              switch (data.type) {
+                case HlsCtor.ErrorTypes.NETWORK_ERROR:
+                  hls?.startLoad();
+                  break;
+                case HlsCtor.ErrorTypes.MEDIA_ERROR:
+                  hls?.recoverMediaError();
+                  break;
+                default:
+                  hls?.destroy();
+              }
+            }
+          });
           hls.loadSource(channel.streamUrl!);
           hls.attachMedia(video);
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = channel.streamUrl!;
         }
       })
-      .catch(() => {});
+      .catch((error) => console.warn("HLS load failed:", error));
     return () => {
       destroyed = true;
       hls?.destroy();
