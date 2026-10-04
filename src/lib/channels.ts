@@ -1,7 +1,7 @@
 export type Channel = {
   id: string;
   name: string;
-  category: "سعودية" | "رياضية" | "إسلامية" | "إخبارية" | "مسلسلات وأفلام";
+  category: "سعودية" | "رياضية" | "إسلامية" | "إخبارية" | "مسلسلات وأفلام" | "البث";
   youtubeId: string;
   thumbnail: string;
   description: string;
