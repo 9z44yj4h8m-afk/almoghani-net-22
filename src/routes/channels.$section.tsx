@@ -26,5 +26,5 @@ export const Route = createFileRoute("/channels/$section")({
 
 function SectionPage() {
   const { section } = Route.useParams();
-  return <PortalPage key={section} live section={section} />;
+  return <PortalPage key={section} section={section} />;
 }

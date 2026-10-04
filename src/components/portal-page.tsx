@@ -2,35 +2,23 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
-  ChevronLeft,
   CirclePlay,
-  Copy,
-  Gem,
-  Ghost,
-  Heart,
   Home,
-  Instagram,
   ListVideo,
   MessageCircle,
-  Moon,
   Play,
-  ScrollText,
   Search,
   Signal,
   Sparkles,
-  Sunrise,
-  Users,
-  WandSparkles,
   Volume2,
+  WandSparkles,
 } from "lucide-react";
 import { type FormEvent, useEffect, useState } from "react";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
-import quranIcon from "@/assets/quran-icon.jpg";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel } from "@/lib/channels";
-
 
 const sections = [
   { slug: "sports", title: "الرياضية", category: "رياضية" as const, cols: "md:grid-cols-3 xl:grid-cols-3" },
@@ -39,18 +27,9 @@ const sections = [
   { slug: "series", title: "المسلسلات والأفلام", category: "مسلسلات وأفلام" as const, cols: "md:grid-cols-2 xl:grid-cols-4" },
 ];
 
-const portalLinks = [
-  { title: "سيرة الرسول ﷺ", Icon: Moon },
-  { title: "الأحاديث الشريفة", Icon: ScrollText },
-  { title: "أمهات المؤمنين رضي الله عنهن", Icon: Heart },
-  { title: "سير الصحابة رضي الله عنهم", Icon: Users },
-  { title: "أذكار الصباح والمساء", Icon: Sunrise },
-  { title: "أجور عظيمة من أذكار يسيرة", Icon: Gem },
-];
-
 export const liveSections = sections;
 
-export function PortalPage({ live = false, section }: { live?: boolean; section?: string }) {
+export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
@@ -60,10 +39,8 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
   const [searchError, setSearchError] = useState("");
   const [searching, setSearching] = useState(false);
-  const [copied, setCopied] = useState(false);
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("channel");
-    if (!live && id) { window.location.replace(`/live?channel=${encodeURIComponent(id)}`); return; }
     const found = id && channels.find((c) => c.id === id);
     if (found) { setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
@@ -111,7 +88,7 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
-          <a href="#home" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
+          <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
             <img src={kaabaEmblem} alt="" width={816} height={816} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
             <span className="h-9 w-px bg-border" />
             <span className="min-w-0 text-center">
@@ -122,7 +99,7 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
 
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
-              <a className="text-foreground transition-colors hover:text-sky" href="/">الرئيسية</a>
+              <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
               {sections.map((s) => (
                 <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
               ))}
@@ -145,6 +122,7 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
           </div>
         </div>
         <nav className="no-scrollbar flex gap-2 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
+          <Link to="/quran" className="category-pill shrink-0">القرآن الكريم</Link>
           {sections.map((s) => (
             <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className={`category-pill shrink-0 ${section === s.slug ? "category-pill-active" : ""}`}>{s.title}</Link>
           ))}
@@ -209,50 +187,6 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
       </header>
 
       <main className="pb-24 md:pb-12">
-        {!live && (<section id="home" className="mx-auto max-w-3xl space-y-3 px-4 pt-4">
-          <div className="relative grid grid-cols-[1fr_auto] items-center gap-4 py-2">
-            <div className="portal-frame grid h-24 place-items-center sm:h-32">
-              <span className="portal-wordmark text-3xl sm:text-5xl">ALMOGHANI</span>
-            </div>
-            <img src={kaabaEmblem} alt="الكعبة المشرفة" width={816} height={816} className="h-24 w-24 rounded-3xl object-cover sm:h-32 sm:w-32" />
-          </div>
-
-          <Link to="/quran" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
-            <img src={quranIcon} alt="" loading="lazy" width={816} height={816} className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20" />
-            <span className="flex-1 text-center">
-              <span className="block text-2xl font-black sm:text-3xl">القرآن الكريم</span>
-              <span className="mx-auto mt-2 block h-0.5 w-14 bg-primary" />
-            </span>
-          </Link>
-
-          <Link to="/live" className="portal-frame flex items-center gap-4 p-4 sm:p-6">
-            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-live/20 text-signal sm:h-20 sm:w-20"><Play className="h-8 w-8 fill-current" /></span>
-            <span className="flex-1 text-center">
-              <span className="block text-2xl font-black sm:text-3xl">البث</span>
-              <span className="mx-auto mt-2 block h-0.5 w-14 bg-primary" />
-            </span>
-          </Link>
-
-          <div className="grid grid-cols-2 gap-2.5">
-            {portalLinks.map(({ title, Icon }) => (
-              <button key={title} type="button" title="قريبًا" className="portal-frame flex min-h-16 items-center gap-3 p-3 text-right">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary/25 text-sky"><Icon className="h-5 w-5" /></span>
-                <span className="flex-1 text-sm font-black leading-snug sm:text-base">{title}</span>
-                <ChevronLeft className="h-4 w-4 shrink-0 text-primary" />
-              </button>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => { setSearchOpen(true); setSearchError(""); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className="portal-frame flex w-full items-center justify-between px-4 py-3 text-muted-foreground"
-          >
-            ابحث داخل الموقع <Search className="h-4 w-4 text-sky" />
-          </button>
-        </section>)}
-
-        {live && (<>
         <section id="player" className="relative border-b border-border/60">
           <div className="broadcast-grid absolute inset-0 opacity-40" aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
@@ -379,57 +313,6 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
             );
           })}
         </div>
-
-        </>)}
-
-        {!live && (<section id="contact" className="mx-auto max-w-3xl space-y-5 px-4 pb-6">
-          <div className="portal-frame p-4 text-center sm:p-6">
-            <h2 className="mb-4 flex items-center justify-center gap-3 font-black">
-              <span className="h-px w-10 bg-primary" />للتواصل المباشر<span className="h-px w-10 bg-primary" />
-            </h2>
-            <div className="mb-4 flex items-center justify-center gap-3">
-              <span dir="ltr" className="font-display text-lg font-bold">+966 557 073 007</span>
-              <span className="h-6 w-px bg-border" />
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard?.writeText("+966557073007");
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1800);
-                }}
-                className="flex items-center gap-1.5 rounded-md border border-primary/60 px-3 py-1.5 text-sm font-bold transition-colors hover:border-sky"
-              >
-                <Copy className="h-4 w-4" />{copied ? "تم النسخ" : "نسخ"}
-              </button>
-            </div>
-            <a
-              href="https://wa.me/966557073007"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-lg border border-primary/60 bg-gradient-to-l from-primary to-sky/70 py-3 font-black text-primary-foreground transition-transform hover:-translate-y-0.5"
-            >
-              <MessageCircle className="h-5 w-5" />تواصل الآن عبر الواتساب
-            </a>
-          </div>
-
-          <h2 className="flex items-center justify-center gap-3 text-xl font-black">
-            <span className="h-px w-12 bg-border" />للتواصل<span className="h-px w-12 bg-border" />
-          </h2>
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { label: "انستقرام", icon: <Instagram className="h-5 w-5" /> },
-              { label: "إكس", icon: <span className="font-display text-lg font-black">𝕏</span> },
-              { label: "سناب شات", icon: <Ghost className="h-5 w-5" /> },
-            ].map((s) => (
-              <span key={s.label} title={s.label} aria-label={s.label} className="portal-frame grid h-12 place-items-center text-foreground">
-                {s.icon}
-              </span>
-            ))}
-          </div>
-          <p className="border-t border-border pt-4 text-center text-sm font-bold text-muted-foreground">
-            جميع الحقوق محفوظة © 2026 · almoghani.net
-          </p>
-        </section>)}
       </main>
 
       <Link
@@ -439,9 +322,9 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
         <MessageCircle className="h-5 w-5" />ALMOGHANI AI
       </Link>
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-3 border-t border-border bg-background/95 px-6 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
-        <a href={live ? "/" : "#home"} className="mobile-nav-item text-signal"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
-        <a href={live ? "#channels" : "/live"} className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
-        <a href={live ? "#player" : "/live"} className="relative -top-4 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-live text-live-foreground shadow-live" aria-label="شغّل البث">
+        <a href="#player" className="mobile-nav-item text-signal"><Home className="h-5 w-5" /><span>الرئيسية</span></a>
+        <a href="#channels" className="mobile-nav-item"><ListVideo className="h-5 w-5" /><span>القنوات</span></a>
+        <a href="#player" className="relative -top-4 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-live text-live-foreground shadow-live" aria-label="شغّل البث">
           <Play className="h-6 w-6 fill-current" />
         </a>
       </nav>
