@@ -145,6 +145,11 @@ export function PortalPage({ live = false, section }: { live?: boolean; section?
             </button>
           </div>
         </div>
+        <nav className="no-scrollbar flex gap-2 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
+          {sections.map((s) => (
+            <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className={`category-pill shrink-0 ${section === s.slug ? "category-pill-active" : ""}`}>{s.title}</Link>
+          ))}
+        </nav>
         {searchOpen && (
           <div className="mx-auto max-w-7xl animate-slide-down px-4 pb-4 sm:px-6 lg:px-8">
             <form onSubmit={handleSearch} className="ai-search-panel">
