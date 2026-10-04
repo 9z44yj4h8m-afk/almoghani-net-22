@@ -23,7 +23,7 @@ import {
   WandSparkles,
   Volume2,
 } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
 import quranIcon from "@/assets/quran-icon.jpg";
@@ -79,6 +79,11 @@ function Index() {
   const [searchError, setSearchError] = useState("");
   const [searching, setSearching] = useState(false);
   const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("channel");
+    const found = id && channels.find((c) => c.id === id);
+    if (found) { setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
+  }, []);
   const searchWithAi = useServerFn(searchChannelsWithAi);
 
   const searchResults = searchResultIds

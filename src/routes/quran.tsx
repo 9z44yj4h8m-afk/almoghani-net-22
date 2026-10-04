@@ -34,7 +34,12 @@ function QuranPage() {
   useEffect(() => {
     fetch("https://api.alquran.cloud/v1/surah")
       .then((r) => r.json())
-      .then((j) => setSurahs(j.data))
+      .then((j) => {
+        setSurahs(j.data);
+        const n = Number(new URLSearchParams(window.location.search).get("s"));
+        const hit = (j.data as Surah[]).find((s) => s.number === n);
+        if (hit) setCurrent(hit);
+      })
       .catch(() => setError("تعذّر تحميل قائمة السور."));
   }, []);
 
