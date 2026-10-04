@@ -5,6 +5,11 @@ import { movies as fallback, type Movie } from "./movies";
 const SOURCES = [
   { handle: "RotanaStudios", name: "Rotana Studios" },
   { handle: "sobkyproductions", name: "السبكي للإنتاج الفني" },
+  { handle: "MelodyAflam", name: "ميلودي أفلام" },
+  { handle: "GoldenScreenEG", name: "الشاشة الذهبية" },
+  { handle: "ReelMoviesMENA", name: "Reel Movies MENA" },
+  { handle: "shamcinema", name: "شام سينما" },
+  { handle: "ARTTVNetwork", name: "شبكة ART" },
 ];
 
 let cache: { at: number; list: Movie[] } | null = null;
