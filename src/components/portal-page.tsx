@@ -30,9 +30,11 @@ export const liveSections = sections;
 
 function LivePlayer({ channel }: { channel: Channel }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [hlsFailed, setHlsFailed] = useState(false);
 
   useEffect(() => {
     if (!channel.streamUrl) return;
+    setHlsFailed(false);
     let destroyed = false;
     let hls: Hls | undefined;
     import("hls.js")
@@ -41,20 +43,15 @@ function LivePlayer({ channel }: { channel: Channel }) {
         if (destroyed || !video) return;
         if (HlsCtor.isSupported()) {
           hls = new HlsCtor({ enableWorker: false, maxBufferLength: 30 });
-          hls.on(HlsCtor.Events.MANIFEST_PARSED, () => console.info("HLS: manifest loaded"));
           hls.on(HlsCtor.Events.ERROR, (_event, data) => {
-            console.warn("HLS error:", data.type, data.details, data.fatal);
-            if (data.fatal) {
-              switch (data.type) {
-                case HlsCtor.ErrorTypes.NETWORK_ERROR:
-                  hls?.startLoad();
-                  break;
-                case HlsCtor.ErrorTypes.MEDIA_ERROR:
-                  hls?.recoverMediaError();
-                  break;
-                default:
-                  hls?.destroy();
-              }
+            if (!data.fatal) return;
+            if (data.type === HlsCtor.ErrorTypes.NETWORK_ERROR) {
+              hls?.startLoad();
+            } else if (data.type === HlsCtor.ErrorTypes.MEDIA_ERROR) {
+              hls?.recoverMediaError();
+            } else {
+              hls?.destroy();
+              setHlsFailed(true);
             }
           });
           hls.loadSource(channel.streamUrl!);
@@ -63,7 +60,10 @@ function LivePlayer({ channel }: { channel: Channel }) {
           video.src = channel.streamUrl!;
         }
       })
-      .catch((error) => console.warn("HLS load failed:", error));
+      .catch((error) => {
+        console.warn("HLS load failed:", error);
+        setHlsFailed(true);
+      });
     return () => {
       destroyed = true;
       hls?.destroy();
@@ -71,14 +71,15 @@ function LivePlayer({ channel }: { channel: Channel }) {
   }, [channel]);
 
   if (channel.streamUrl) {
-    return (
-      <video
-        ref={videoRef}
-        className="h-full w-full bg-black"
-        controls
-        autoPlay
-        playsInline
-      />
+    return hlsFailed ? (
+      <div className="grid h-full w-full place-items-center bg-surface-deep p-6 text-center">
+        <div>
+          <p className="font-display text-lg font-black">تعذّر تشغيل هذا البث على هذا المتصفح</p>
+          <p className="mt-2 text-sm text-muted-foreground">جرّب متصفحًا آخر مثل كروم أو سفاري، أو اختر قناة أخرى من الأسفل.</p>
+        </div>
+      </div>
+    ) : (
+      <video ref={videoRef} className="h-full w-full bg-black" controls autoPlay playsInline />
     );
   }
   return (
