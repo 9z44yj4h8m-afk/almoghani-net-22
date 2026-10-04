@@ -141,6 +141,7 @@ export function PortalPage({ section }: { section?: string }) {
               <span className="block truncate text-sm font-bold text-muted-foreground sm:text-base">صفحة شخصية من اجتهادي</span>
             </span>
           </a>
+          </div>
 
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
