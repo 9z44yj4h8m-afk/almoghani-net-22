@@ -74,16 +74,10 @@ export const getFeaturedMovies = createServerFn({ method: "GET" }).handler(async
   if (cache && Date.now() - cache.at < TTL) return cache.list;
   try {
     const lists = await Promise.all(SOURCES.map((s) => fromChannel(s.handle, s.name).catch(() => [])));
-    const seen = new Set<string>();
     const merged: Movie[] = [];
     // Interleave sources, then append the hand-picked list (incl. international titles).
     const max = Math.max(...lists.map((l) => l.length));
     for (let i = 0; i < max; i++) for (const l of lists) if (l[i]) merged.push(l[i]!);
-    for (const m of [...merged, ...fallback]) {
-      if (seen.has(m.youtubeId)) continue;
-      seen.add(m.youtubeId);
-      merged.length; // keep order
-    }
     const list = [...merged, ...fallback].filter((m, i, a) => a.findIndex((x) => x.youtubeId === m.youtubeId) === i);
     if (list.length > fallback.length) cache = { at: Date.now(), list };
     return list;
