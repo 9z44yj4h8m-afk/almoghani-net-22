@@ -101,11 +101,11 @@ function VipPage() {
 
   useEffect(() => {
     if (!pin) return;
-    setGroup("");
     setSelectedTitle("");
     if (kind === "movie") {
       fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setPin(null));
     } else {
+      setGroup("");
       setGroups([]);
     }
   }, [pin, kind]);
@@ -178,6 +178,7 @@ function VipPage() {
 
   const openLibrary = (nextKind: Kind) => {
     setKind(nextKind);
+    setGroup("");
     setSelectedTitle("");
     setQ("");
     setLibraryOpen(true);
