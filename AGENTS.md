@@ -19,4 +19,4 @@
 - Ship the site as an installable web app via public/manifest.webmanifest (start_url /live) with no service worker, so installs never serve stale cached files.
 - Relay streams whose CDN demands a specific Referer through /api/public/hls (host allow-list, playlists rewritten), because browsers cannot set Referer.
 - Build the featured-movies list server-side from official YouTube channel searches (getFeaturedMovies, 1h cache, full-length filter) with the hand-picked list in src/lib/movies.ts as fallback.
-- Keep the private IPTV library as one responsive Smarters-style interface with live, movie, and series modes sharing server-side search and external-player actions.
+- Keep the private IPTV library as one responsive Smarters-style interface with server-side search and external-player actions; group series episodes by series title and live channels by stream group before listing individual items.
