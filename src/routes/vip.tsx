@@ -85,12 +85,11 @@ function VipPage() {
   const [askPin, setAskPin] = useState(false);
 
   useEffect(() => {
+    // Every Smarters item requires the PIN up front — no free trial.
+    void beginTrial;
     const saved = sessionStorage.getItem("vip-pin");
-    if (saved) { setPin(saved); setReady(true); return; }
-    beginTrial()
-      .then((r) => { setPin(r.token); setTrialEnd(r.expiresAt); })
-      .catch(() => setExpired(true))
-      .finally(() => setReady(true));
+    if (saved) setPin(saved);
+    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -145,11 +144,14 @@ function VipPage() {
   useEffect(() => setPage(0), [kind, q, group, selectedTitle]);
 
   if (!ready) return null;
-  const unlocked = (_m: unknown, p: string) => { setPin(p); setTrialEnd(null); setExpired(false); setAskPin(false); };
-  if (askPin || (!pin && !expired)) {
-    return <PinPad onClose={() => setAskPin(false)} onUnlock={unlocked} />;
+  const unlocked = (_m: unknown, p: string) => {
+    sessionStorage.setItem("vip-pin", p);
+    setPin(p); setTrialEnd(null); setExpired(false); setAskPin(false);
+  };
+  if (askPin || expired || !pin) {
+    return <PinPad onClose={() => { window.location.href = "/"; }} onUnlock={unlocked} />;
   }
-  if (expired || !pin) return <Paywall onHavePin={() => setAskPin(true)} />;
+  void Paywall;
 
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
   if (!activeTab) return null;
