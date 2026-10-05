@@ -147,7 +147,9 @@ function MoviesPage() {
           )}
         </div>
         {filter === "خاص" && list.length === 0 && (
-          <p className="mt-8 px-4 text-center text-sm text-muted-foreground">لا توجد أفلام خاصة بعد.</p>
+          <Link to="/vip" className="mx-4 mt-6 block rounded-2xl border border-primary bg-card p-5 text-center font-black text-primary">
+            افتح المكتبة الخاصة: بث مباشر • أفلام • مسلسلات ←
+          </Link>
         )}
 
         {/* Vertical list with compact covers */}
