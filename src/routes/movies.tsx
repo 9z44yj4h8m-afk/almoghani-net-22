@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, Clock, Play, X } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Clock, Play, X } from "lucide-react";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
 
@@ -41,21 +41,7 @@ function MoviesPage() {
   const all = Route.useLoaderData();
   const [filter, setFilter] = useState<"الكل" | Movie["lang"]>("الكل");
   const [playing, setPlaying] = useState<Movie | null>(null);
-  const [index, setIndex] = useState(0);
-  const track = useRef<HTMLDivElement>(null);
   const list = filter === "الكل" ? all : all.filter((m) => m.lang === filter);
-
-  function go(i: number) {
-    const el = track.current?.children[i] as HTMLElement | undefined;
-    el?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  }
-
-  function onScroll() {
-    const t = track.current;
-    if (!t) return;
-    const w = t.clientWidth;
-    setIndex(Math.min(list.length - 1, Math.round(Math.abs(t.scrollLeft) / (w * 0.86))));
-  }
 
   return (
     <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
