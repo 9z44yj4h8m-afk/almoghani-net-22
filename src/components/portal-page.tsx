@@ -71,7 +71,7 @@ export function PortalPage({ section }: { section?: string }) {
   );
   const [trialId, setTrialId] = useState<string | null>(null);
   const [trialOver, setTrialOver] = useState(false);
-  const trialLocked = trialOver && trialId === selected.id;
+  const trialLocked = trialOver && trialId === selected?.id;
   useEffect(() => {
     if (!trialId) return;
     setTrialOver(false);
