@@ -42,6 +42,33 @@ export async function groupsOf(kind: Kind) {
   return [...m.entries()].map(([name, count]) => ({ name, count }));
 }
 
+export async function titles(kind: Exclude<Kind, "movie">, q: string, page: number) {
+  const rows = await loadKind(kind);
+  const ql = q.trim().toLowerCase();
+  const grouped = new Map<string, { count: number; logo: string; matches: boolean }>();
+  for (const row of rows) {
+    const current = grouped.get(row[1]);
+    const matches = !ql || row[1].toLowerCase().includes(ql) || row[0].toLowerCase().includes(ql);
+    if (current) {
+      current.count += 1;
+      current.matches ||= matches;
+      if (!current.logo && row[2]) current.logo = row[2];
+    } else {
+      grouped.set(row[1], { count: 1, logo: row[2], matches });
+    }
+  }
+  const hits = [...grouped.entries()].filter(([, value]) => value.matches);
+  const size = 60;
+  return {
+    total: hits.length,
+    titles: hits.slice(page * size, page * size + size).map(([name, value]) => ({
+      name,
+      count: value.count,
+      logo: value.logo,
+    })),
+  };
+}
+
 export async function search(kind: Kind, q: string, group: string, page: number) {
   const rows = await loadKind(kind);
   const ql = q.trim().toLowerCase();
