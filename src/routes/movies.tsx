@@ -80,7 +80,7 @@ function MoviesPage() {
               onClick={() => setPlaying(m)}
               className="channel-card flex w-full items-stretch gap-3 overflow-hidden p-2 text-right"
             >
-              <span className="relative block aspect-video w-36 shrink-0 overflow-hidden rounded-md bg-surface-deep sm:w-48">
+              <span className="relative block aspect-video w-36 shrink-0 self-start overflow-hidden rounded-md bg-surface-deep sm:w-48">
                 <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
                 <span className="absolute inset-0 grid place-items-center">
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
