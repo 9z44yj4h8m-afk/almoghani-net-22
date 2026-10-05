@@ -98,6 +98,7 @@ function VipPage() {
   }
 
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
+  if (!activeTab) return null;
   const copy = (url: string) => navigator.clipboard.writeText(url).then(() => alert("تم نسخ الرابط"));
   const lock = () => {
     sessionStorage.removeItem("vip-pin");
