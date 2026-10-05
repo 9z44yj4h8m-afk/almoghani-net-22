@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./movies";
-import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
+import { getLibraryGroups, getLibraryTitles, searchLibrary, startTrial } from "@/lib/iptv/library.functions";
+import { Paywall } from "@/components/paywall";
 
 export const Route = createFileRoute("/vip")({
   head: () => ({
@@ -69,10 +70,25 @@ function VipPage() {
   const fetchTitles = useServerFn(getLibraryTitles);
   const fetchItems = useServerFn(searchLibrary);
 
+  const beginTrial = useServerFn(startTrial);
+  const [trialEnd, setTrialEnd] = useState<number | null>(null);
+  const [expired, setExpired] = useState(false);
+  const [askPin, setAskPin] = useState(false);
+
   useEffect(() => {
-    setPin(sessionStorage.getItem("vip-pin"));
-    setReady(true);
+    const saved = sessionStorage.getItem("vip-pin");
+    if (saved) { setPin(saved); setReady(true); return; }
+    beginTrial()
+      .then((r) => { setPin(r.token); setTrialEnd(r.expiresAt); })
+      .catch(() => setExpired(true))
+      .finally(() => setReady(true));
   }, []);
+
+  useEffect(() => {
+    if (!trialEnd) return;
+    const t = setTimeout(() => { setExpired(true); setPlaying(null); }, Math.max(0, trialEnd - Date.now()));
+    return () => clearTimeout(t);
+  }, [trialEnd]);
 
   useEffect(() => {
     if (!pin) return;
@@ -120,9 +136,11 @@ function VipPage() {
   useEffect(() => setPage(0), [kind, q, group, selectedTitle]);
 
   if (!ready) return null;
-  if (!pin) {
-    return <PinPad onClose={() => history.back()} onUnlock={(_movies, unlockedPin) => setPin(unlockedPin)} />;
+  const unlocked = (_m: unknown, p: string) => { setPin(p); setTrialEnd(null); setExpired(false); setAskPin(false); };
+  if (askPin || (!pin && !expired)) {
+    return <PinPad onClose={() => setAskPin(false)} onUnlock={unlocked} />;
   }
+  if (expired || !pin) return <Paywall onHavePin={() => setAskPin(true)} />;
 
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
   if (!activeTab) return null;
@@ -130,6 +148,7 @@ function VipPage() {
   const lock = () => {
     sessionStorage.removeItem("vip-pin");
     setPin(null);
+    setExpired(true);
   };
 
   const openLibrary = (nextKind: Kind) => {
