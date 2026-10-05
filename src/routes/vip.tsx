@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./movies";
-import { getLibraryGroups, searchLibrary } from "@/lib/iptv/library.functions";
+import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 export const Route = createFileRoute("/vip")({
   head: () => ({
@@ -35,6 +35,7 @@ export const Route = createFileRoute("/vip")({
 
 type Kind = "live" | "movie" | "series";
 type Item = { name: string; group: string; logo: string; url: string };
+type LibraryTitle = { name: string; count: number; logo: string };
 
 const TABS: {
   k: Kind;
@@ -57,11 +58,15 @@ function VipPage() {
   const [group, setGroup] = useState("");
   const [q, setQ] = useState("");
   const [items, setItems] = useState<Item[]>([]);
+  const [titles, setTitles] = useState<LibraryTitle[]>([]);
+  const [selectedTitle, setSelectedTitle] = useState("");
   const [total, setTotal] = useState(0);
+  const [titleTotal, setTitleTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [busy, setBusy] = useState(false);
   const [playing, setPlaying] = useState<Item | null>(null);
   const fetchGroups = useServerFn(getLibraryGroups);
+  const fetchTitles = useServerFn(getLibraryTitles);
   const fetchItems = useServerFn(searchLibrary);
 
   useEffect(() => {
@@ -72,15 +77,21 @@ function VipPage() {
   useEffect(() => {
     if (!pin) return;
     setGroup("");
-    fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setPin(null));
+    setSelectedTitle("");
+    if (kind === "movie") {
+      fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setPin(null));
+    } else {
+      setGroups([]);
+    }
   }, [pin, kind]);
 
   useEffect(() => {
     if (!pin) return;
+    if (kind !== "movie" && !selectedTitle) return;
     const timer = setTimeout(async () => {
       setBusy(true);
       try {
-        const result = await fetchItems({ data: { pin, kind, q, group, page } });
+        const result = await fetchItems({ data: { pin, kind, q, group: selectedTitle || group, page } });
         setItems((current) => (page === 0 ? result.items : [...current, ...result.items]));
         setTotal(result.total);
       } finally {
@@ -88,9 +99,25 @@ function VipPage() {
       }
     }, 250);
     return () => clearTimeout(timer);
-  }, [pin, kind, q, group, page]);
+  }, [pin, kind, q, group, selectedTitle, page]);
 
-  useEffect(() => setPage(0), [kind, q, group]);
+  useEffect(() => {
+    if (!pin || kind === "movie" || selectedTitle) return;
+    const timer = setTimeout(async () => {
+      setBusy(true);
+      try {
+        const result = await fetchTitles({ data: { pin, kind, q, page } });
+        setTitles((current) => (page === 0 ? result.titles : [...current, ...result.titles]));
+        setTitleTotal(result.total);
+        setItems([]);
+      } finally {
+        setBusy(false);
+      }
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [pin, kind, q, selectedTitle, page]);
+
+  useEffect(() => setPage(0), [kind, q, group, selectedTitle]);
 
   if (!ready) return null;
   if (!pin) {
@@ -107,6 +134,8 @@ function VipPage() {
 
   const openLibrary = (nextKind: Kind) => {
     setKind(nextKind);
+    setSelectedTitle("");
+    setQ("");
     setLibraryOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -181,27 +210,46 @@ function VipPage() {
 
         <section className="mt-6 min-w-0 overflow-hidden" aria-label="البحث والتصنيف">
           <div className="flex items-center justify-between gap-3">
-            <div>
+            <div className="flex min-w-0 items-center gap-2">
+              {selectedTitle && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setSelectedTitle("");
+                    setQ("");
+                  }}
+                  className="shrink-0 border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10"
+                  aria-label="العودة إلى العناوين"
+                >
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              )}
+              <div className="min-w-0">
               <p className="text-xs font-bold text-vip-cyan">تصفّح الآن</p>
-              <h2 className="text-lg font-black">{activeTab.label}</h2>
+              <h2 className="truncate text-lg font-black">{selectedTitle || activeTab.label}</h2>
+              </div>
             </div>
             <span className="rounded-md border border-vip-foreground/10 bg-vip-surface px-2.5 py-1 text-xs font-bold text-vip-foreground/60">
-              {busy && page === 0 ? "جارٍ التحميل…" : `${total.toLocaleString("ar")} عنصر`}
+              {busy && page === 0
+                ? "جارٍ التحميل…"
+                : `${(kind !== "movie" && !selectedTitle ? titleTotal : total).toLocaleString("ar")} ${kind === "series" && !selectedTitle ? "مسلسل" : kind === "live" && !selectedTitle ? "عنوان" : "عنصر"}`}
             </span>
           </div>
 
-          <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_15rem]">
+          <div className={`mt-3 grid gap-2 ${kind === "movie" ? "sm:grid-cols-[1fr_15rem]" : ""}`}>
             <label className="relative block">
               <span className="sr-only">ابحث في المكتبة</span>
               <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={q}
                 onChange={(event) => setQ(event.target.value)}
-                placeholder="ابحث بالاسم…"
+                placeholder={kind === "series" && !selectedTitle ? "ابحث عن مسلسل…" : kind === "live" && !selectedTitle ? "ابحث عن عنوان بث…" : "ابحث بالاسم…"}
                 className="h-11 w-full rounded-lg border border-vip-foreground/10 bg-vip-surface pe-3 ps-10 text-sm text-vip-foreground outline-none transition-colors placeholder:text-vip-foreground/40 focus:border-vip-cyan focus:ring-2 focus:ring-vip-cyan/20"
               />
             </label>
-            <label>
+            {kind === "movie" && <label>
               <span className="sr-only">اختر التصنيف</span>
               <select
                 value={group}
@@ -215,10 +263,10 @@ function VipPage() {
                   </option>
                 ))}
               </select>
-            </label>
+            </label>}
           </div>
 
-          <div className="no-scrollbar mt-3 flex w-full min-w-0 gap-2 overflow-x-auto pb-1">
+          {kind === "movie" && <div className="no-scrollbar mt-3 flex w-full min-w-0 gap-2 overflow-x-auto pb-1">
             <Button
               type="button"
               size="sm"
@@ -240,9 +288,42 @@ function VipPage() {
                 {entry.name}
               </Button>
             ))}
-          </div>
+          </div>}
         </section>
 
+        {kind !== "movie" && !selectedTitle ? (
+        <ul className="mt-5 grid gap-2 lg:grid-cols-2">
+          {titles.map((entry) => (
+            <li key={entry.name}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setSelectedTitle(entry.name);
+                  setQ("");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
+              >
+                <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
+                  {entry.logo ? (
+                    <img src={entry.logo} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={(event) => { event.currentTarget.hidden = true; }} />
+                  ) : (
+                    <activeTab.Icon className="h-6 w-6 text-muted-foreground" />
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-black">{entry.name}</span>
+                  <span className="block text-xs text-vip-foreground/50">
+                    {entry.count.toLocaleString("ar")} {kind === "series" ? "حلقة" : "قناة"}
+                  </span>
+                </span>
+                <ChevronLeft className="h-5 w-5 shrink-0 text-vip-cyan" />
+              </Button>
+            </li>
+          ))}
+        </ul>
+        ) : (
         <ul className="mt-5 grid gap-2 lg:grid-cols-2">
           {items.map((item, index) => (
             <li key={`${item.url}-${index}`}>
@@ -278,14 +359,15 @@ function VipPage() {
             </li>
           ))}
         </ul>
+        )}
 
-        {!busy && items.length === 0 && (
+        {!busy && (kind !== "movie" && !selectedTitle ? titles.length === 0 : items.length === 0) && (
           <div className="mt-5 border border-dashed border-vip-foreground/15 bg-vip-surface p-8 text-center text-sm text-vip-foreground/55">
             لا توجد نتائج مطابقة.
           </div>
         )}
 
-        {items.length < total && (
+        {(kind !== "movie" && !selectedTitle ? titles.length < titleTotal : items.length < total) && (
           <Button type="button" variant="outline" disabled={busy} onClick={() => setPage((current) => current + 1)} className="mx-auto mt-5 flex border-vip-foreground/15 bg-vip-surface text-vip-foreground hover:bg-vip-foreground/10">
             {busy ? "جارٍ التحميل…" : "عرض المزيد"}
           </Button>

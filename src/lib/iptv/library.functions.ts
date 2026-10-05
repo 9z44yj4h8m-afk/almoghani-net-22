@@ -17,6 +17,16 @@ export const getLibraryGroups = createServerFn({ method: "POST" })
     return groupsOf(data.kind);
   });
 
+export const getLibraryTitles = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z.object({ pin, kind: z.enum(["live", "series"]), q: z.string().max(100), page: z.number().int().min(0).max(5000) }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { titles } = await import("./library.server");
+    return titles(data.kind, data.q, data.page);
+  });
+
 export const searchLibrary = createServerFn({ method: "POST" })
   .inputValidator((d) =>
     z
