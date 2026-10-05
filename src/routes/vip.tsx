@@ -70,6 +70,15 @@ function VipPage() {
   const fetchTitles = useServerFn(getLibraryTitles);
   const fetchItems = useServerFn(searchLibrary);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("kind") !== "movie") return;
+    setKind("movie");
+    setGroup(params.get("group") ?? "");
+    setQ(params.get("q") ?? "");
+    setLibraryOpen(true);
+  }, []);
+
   const beginTrial = useServerFn(startTrial);
   const [trialEnd, setTrialEnd] = useState<number | null>(null);
   const [expired, setExpired] = useState(false);
