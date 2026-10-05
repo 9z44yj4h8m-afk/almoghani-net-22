@@ -77,8 +77,6 @@ function MoviesPage() {
               type="button"
               onClick={() => {
                 setFilter(f);
-                setIndex(0);
-                track.current?.scrollTo({ left: 0 });
               }}
               className={`rounded-full border px-4 py-1.5 text-sm font-bold ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
             >
