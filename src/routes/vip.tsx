@@ -8,7 +8,6 @@ import {
   Copy,
   ExternalLink,
   Film,
-  Home,
   Lock,
   Play,
   Search,
@@ -53,6 +52,7 @@ function VipPage() {
   const [pin, setPin] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [kind, setKind] = useState<Kind>("live");
+  const [libraryOpen, setLibraryOpen] = useState(false);
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
   const [group, setGroup] = useState("");
   const [q, setQ] = useState("");
@@ -105,63 +105,87 @@ function VipPage() {
     setPin(null);
   };
 
+  const openLibrary = (nextKind: Kind) => {
+    setKind(nextKind);
+    setLibraryOpen(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen bg-background pb-24" dir="rtl">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur-xl">
+    <div className="min-h-screen w-full overflow-x-hidden bg-vip-background text-vip-foreground" dir="rtl">
+      <header className="sticky top-0 z-30 border-b border-vip-foreground/10 bg-vip-background/95 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 pb-4 pt-5 sm:px-6">
           <div className="flex items-center gap-3">
-            <Link to="/movies" className="icon-button" aria-label="رجوع إلى الأفلام">
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+            {libraryOpen ? (
+              <Button variant="ghost" size="icon" onClick={() => setLibraryOpen(false)} className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى أقسام المكتبة">
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            ) : (
+              <Link to="/movies" className="grid h-9 w-9 place-items-center rounded-md border border-vip-foreground/15 text-vip-foreground" aria-label="رجوع إلى الأفلام">
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            )}
+            <div className="grid h-11 w-11 place-items-center rounded-lg bg-vip-purple text-vip-foreground shadow-lg shadow-vip-purple/25">
               <Tv className="h-6 w-6" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-extrabold text-accent">ALMOGHANI LIVE</p>
-              <h1 className="truncate text-xl font-black">المكتبة الخاصة</h1>
+              <p className="text-xs font-extrabold text-vip-cyan">ALMOGHANI LIVE</p>
+              <h1 className="truncate text-xl font-black">{libraryOpen ? activeTab.label : "المكتبة الخاصة"}</h1>
             </div>
-            <Button variant="ghost" size="icon" onClick={lock} aria-label="قفل المكتبة" title="قفل المكتبة">
+            <Button variant="ghost" size="icon" onClick={lock} className="text-vip-foreground/70 hover:bg-vip-foreground/10 hover:text-vip-foreground" aria-label="قفل المكتبة" title="قفل المكتبة">
               <Lock className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-5 sm:px-6">
-        <section className="grid grid-cols-2 gap-3" aria-label="أقسام المكتبة">
+      <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-6">
+        {!libraryOpen ? (
+        <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center pb-16" aria-label="أقسام المكتبة">
+          <div className="mb-8 text-center">
+            <p className="text-sm font-bold text-vip-cyan">اختر نوع المحتوى</p>
+            <h2 className="mt-1 text-2xl font-black sm:text-3xl">ماذا تريد أن تشاهد؟</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
           {TABS.map(({ k, label, eyebrow, Icon, activeClass }, index) => {
-            const active = kind === k;
+            const tileClass = k === "live"
+              ? "bg-vip-cyan"
+              : k === "movie"
+                ? "bg-vip-purple"
+                : "bg-[linear-gradient(145deg,var(--vip-purple),var(--vip-cyan))]";
             return (
               <Button
                 key={k}
                 type="button"
-                variant="outline"
-                onClick={() => setKind(k)}
-                className={`group h-auto min-w-0 justify-between overflow-hidden p-4 text-right transition-transform active:scale-[0.98] ${index === 0 ? "col-span-2 min-h-28" : "min-h-32 flex-col items-start"} ${active ? activeClass : "border-border bg-card text-card-foreground hover:bg-secondary"}`}
-                aria-pressed={active}
+                onClick={() => openLibrary(k)}
+                className={`group relative h-40 w-full overflow-hidden border-0 p-5 text-vip-foreground shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] sm:h-52 ${tileClass}`}
               >
-                <span className="flex min-w-0 flex-col items-start">
-                  <span className={`text-xs font-bold ${active ? "opacity-80" : "text-muted-foreground"}`}>{eyebrow}</span>
-                  <span className={`${index === 0 ? "text-2xl" : "text-lg"} font-black`}>{label}</span>
-                  <span className={`mt-1 text-xs ${active ? "opacity-80" : "text-muted-foreground"}`}>
-                    {active ? `${total.toLocaleString("ar")} نتيجة` : "اضغط للاستعراض"}
+                <span className="absolute -bottom-8 -left-5 h-32 w-32 rounded-full bg-vip-foreground/10" />
+                <span className="relative flex h-full w-full flex-col items-center justify-center gap-3 text-center">
+                  <span className="grid h-16 w-16 place-items-center rounded-full bg-vip-foreground/18 shadow-inner sm:h-20 sm:w-20">
+                    <Icon className="h-8 w-8 sm:h-10 sm:w-10" />
                   </span>
-                </span>
-                <span className={`grid shrink-0 place-items-center rounded-full ${index === 0 ? "h-14 w-14" : "h-11 w-11"} ${active ? "bg-background/20" : "bg-secondary"}`}>
-                  <Icon className={index === 0 ? "h-7 w-7" : "h-6 w-6"} />
+                  <span>
+                    <span className="block text-xl font-black sm:text-2xl">{label}</span>
+                    <span className="mt-1 block text-xs font-bold opacity-80">{eyebrow}</span>
+                  </span>
                 </span>
               </Button>
             );
           })}
+          </div>
+          <a href="https://almoghani.net" className="mt-8 text-center text-xs font-bold text-vip-foreground/45" dir="ltr">almoghani.net</a>
         </section>
+        ) : (
+        <>
 
-        <section className="mt-6" aria-label="البحث والتصنيف">
+        <section className="mt-6 min-w-0 overflow-hidden" aria-label="البحث والتصنيف">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-bold text-muted-foreground">تصفّح الآن</p>
+              <p className="text-xs font-bold text-vip-cyan">تصفّح الآن</p>
               <h2 className="text-lg font-black">{activeTab.label}</h2>
             </div>
-            <span className="rounded-md border border-border bg-card px-2.5 py-1 text-xs font-bold text-muted-foreground">
+            <span className="rounded-md border border-vip-foreground/10 bg-vip-surface px-2.5 py-1 text-xs font-bold text-vip-foreground/60">
               {busy && page === 0 ? "جارٍ التحميل…" : `${total.toLocaleString("ar")} عنصر`}
             </span>
           </div>
@@ -174,7 +198,7 @@ function VipPage() {
                 value={q}
                 onChange={(event) => setQ(event.target.value)}
                 placeholder="ابحث بالاسم…"
-                className="h-11 w-full rounded-lg border border-input bg-card pe-3 ps-10 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+                className="h-11 w-full rounded-lg border border-vip-foreground/10 bg-vip-surface pe-3 ps-10 text-sm text-vip-foreground outline-none transition-colors placeholder:text-vip-foreground/40 focus:border-vip-cyan focus:ring-2 focus:ring-vip-cyan/20"
               />
             </label>
             <label>
@@ -182,7 +206,7 @@ function VipPage() {
               <select
                 value={group}
                 onChange={(event) => setGroup(event.target.value)}
-                className="h-11 w-full rounded-lg border border-input bg-card px-3 text-sm font-bold outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
+                className="h-11 w-full rounded-lg border border-vip-foreground/10 bg-vip-surface px-3 text-sm font-bold text-vip-foreground outline-none focus:border-vip-cyan focus:ring-2 focus:ring-vip-cyan/20"
               >
                 <option value="">كل التصنيفات</option>
                 {groups.map((entry) => (
@@ -194,13 +218,13 @@ function VipPage() {
             </label>
           </div>
 
-          <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1">
+          <div className="no-scrollbar mt-3 flex w-full min-w-0 gap-2 overflow-x-auto pb-1">
             <Button
               type="button"
               size="sm"
-              variant={group === "" ? "default" : "outline"}
+              variant="outline"
               onClick={() => setGroup("")}
-              className="shrink-0"
+              className={`shrink-0 border-vip-foreground/10 text-vip-foreground ${group === "" ? "bg-vip-purple" : "bg-vip-surface hover:bg-vip-foreground/10"}`}
             >
               الكل
             </Button>
@@ -209,9 +233,9 @@ function VipPage() {
                 key={entry.name}
                 type="button"
                 size="sm"
-                variant={group === entry.name ? "default" : "outline"}
+                variant="outline"
                 onClick={() => setGroup(entry.name)}
-                className="shrink-0"
+                className={`max-w-52 shrink-0 overflow-hidden text-ellipsis border-vip-foreground/10 text-vip-foreground ${group === entry.name ? "bg-vip-purple" : "bg-vip-surface hover:bg-vip-foreground/10"}`}
               >
                 {entry.name}
               </Button>
@@ -226,9 +250,9 @@ function VipPage() {
                 type="button"
                 variant="ghost"
                 onClick={() => setPlaying(item)}
-                className="group h-auto w-full justify-start gap-3 border border-border bg-card p-3 text-right hover:border-primary hover:bg-secondary"
+                className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
-                <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-secondary">
+                <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
                   {item.logo ? (
                     <img
                       src={item.logo}
@@ -245,9 +269,9 @@ function VipPage() {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{item.name}</span>
-                  <span className="block truncate text-xs text-muted-foreground">{item.group}</span>
+                  <span className="block truncate text-xs text-vip-foreground/50">{item.group}</span>
                 </span>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:scale-105">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-vip-cyan text-vip-background transition-transform group-hover:scale-105">
                   <Play className="h-4 w-4" />
                 </span>
               </Button>
@@ -256,39 +280,19 @@ function VipPage() {
         </ul>
 
         {!busy && items.length === 0 && (
-          <div className="mt-5 border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
+          <div className="mt-5 border border-dashed border-vip-foreground/15 bg-vip-surface p-8 text-center text-sm text-vip-foreground/55">
             لا توجد نتائج مطابقة.
           </div>
         )}
 
         {items.length < total && (
-          <Button type="button" variant="outline" disabled={busy} onClick={() => setPage((current) => current + 1)} className="mx-auto mt-5 flex">
+          <Button type="button" variant="outline" disabled={busy} onClick={() => setPage((current) => current + 1)} className="mx-auto mt-5 flex border-vip-foreground/15 bg-vip-surface text-vip-foreground hover:bg-vip-foreground/10">
             {busy ? "جارٍ التحميل…" : "عرض المزيد"}
           </Button>
         )}
+        </>
+        )}
       </main>
-
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-6 py-3 backdrop-blur-xl sm:hidden" aria-label="تنقل المكتبة">
-        <div className="mx-auto flex max-w-sm items-center justify-around">
-          <Link to="/" className="mobile-nav-item">
-            <Home className="h-5 w-5" />
-            <span>الرئيسية</span>
-          </Link>
-          {TABS.map(({ k, label, Icon }) => (
-            <Button
-              key={k}
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setKind(k)}
-              className={`h-auto flex-col gap-1 px-2 py-0 text-[0.65rem] ${kind === k ? "text-primary" : "text-muted-foreground"}`}
-            >
-              <Icon className="h-5 w-5" />
-              <span>{label}</span>
-            </Button>
-          ))}
-        </div>
-      </nav>
 
       {playing && (
         <div className="fixed inset-0 z-[70] grid place-items-end bg-background/85 backdrop-blur-sm sm:place-items-center" onClick={() => setPlaying(null)}>
