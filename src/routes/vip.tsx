@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, Copy, ExternalLink, Lock, Play, Search, X } from "lucide-react";
-import { toast } from "sonner";
 import { PinPad } from "./movies";
 import { getLibraryGroups, searchLibrary } from "@/lib/iptv/library.functions";
 
@@ -81,7 +80,7 @@ function VipPage() {
       />
     );
 
-  const copy = (u: string) => navigator.clipboard.writeText(u).then(() => toast.success("تم نسخ الرابط"));
+  const copy = (u: string) => navigator.clipboard.writeText(u).then(() => alert("تم نسخ الرابط"));
 
   return (
     <div className="min-h-screen bg-background pb-16" dir="rtl">
