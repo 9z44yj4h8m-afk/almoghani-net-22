@@ -14,6 +14,9 @@ const SOURCES: Source[] = [
   { handle: "LionsgateMovies", name: "Lionsgate Movies", lang: "عالمي" },
   { handle: "ShoutStudios", name: "Shout! Studios", lang: "عالمي" },
   { handle: "FilmRiseMovies", name: "FilmRise Movies", lang: "عالمي" },
+  { handle: "RotanaCinema", name: "روتانا سينما", lang: "عربي" },
+  { handle: "MovieCentral", name: "Movie Central", lang: "عالمي" },
+  { handle: "Popcornflix", name: "Popcornflix", lang: "عالمي" },
 ];
 
 let cache: { at: number; list: Movie[] } | null = null;
