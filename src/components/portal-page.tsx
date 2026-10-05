@@ -8,6 +8,7 @@ import {
   Film,
   Home,
   ListVideo,
+  MessageCircle,
   MoonStar,
   Newspaper,
   Play,
