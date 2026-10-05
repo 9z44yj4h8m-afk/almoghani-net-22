@@ -14,6 +14,7 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as QuranRouteImport } from './routes/quran'
+import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
@@ -44,6 +45,11 @@ const QuranRoute = QuranRouteImport.update({
   path: '/quran',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubscriptionRoute = SubscriptionRouteImport.update({
+  id: '/subscription',
+  path: '/subscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/movies'
     | '/quran'
+    | '/subscription'
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/movies'
     | '/quran'
+    | '/subscription'
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/movies'
     | '/quran'
+    | '/subscription'
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   LiveRoute: typeof LiveRoute
   MoviesRoute: typeof MoviesRoute
   QuranRoute: typeof QuranRoute
+  SubscriptionRoute: typeof SubscriptionRoute
   VipRoute: typeof VipRoute
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuranRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subscription': {
+      id: '/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof SubscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vip': {
       id: '/vip'
       path: '/vip'
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveRoute: LiveRoute,
   MoviesRoute: MoviesRoute,
   QuranRoute: QuranRoute,
+  SubscriptionRoute: SubscriptionRoute,
   VipRoute: VipRoute,
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,

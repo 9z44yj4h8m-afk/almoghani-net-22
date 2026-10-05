@@ -35,7 +35,6 @@ import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
 import { Lock } from "lucide-react";
-import { PinPad } from "@/routes/movies";
 
 const sections: {
   slug: string;
@@ -86,7 +85,6 @@ export function PortalPage({ section }: { section?: string }) {
     // (section chips add #hash entries, and direct/installed-app opens have no previous page).
     navigate({ to: "/" });
   }
-  const [pinOpen, setPinOpen] = useState(false);
   const inactiveIds = useInactiveChannels();
   const inactiveChannels = channels.filter((c) => inactiveIds.includes(c.id));
 
@@ -184,6 +182,7 @@ export function PortalPage({ section }: { section?: string }) {
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
               <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
+              <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
               <Link to="/movies" className="text-sky transition-colors hover:text-primary">أفلام مميزة</Link>
               {sections.length > 1 && sections.map((s) => (
                 <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
@@ -312,19 +311,16 @@ export function PortalPage({ section }: { section?: string }) {
                 <button
                   key={t.name}
                   type="button"
-                  onClick={() => setPinOpen(true)}
+                  onClick={() => navigate({ to: "/vip" })}
                   className="relative flex aspect-video flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface p-3 text-center transition-colors hover:border-primary"
                 >
-                  <Lock className="absolute left-2 top-2 h-4 w-4 text-primary" />
+                  <span className="absolute left-2 top-2 rounded bg-primary/20 px-1.5 text-[10px] font-black text-primary">دقيقة مجانًا</span>
                   <span className={`font-display text-lg font-black sm:text-xl ${t.className}`}>{t.name}</span>
                   <span className="text-xs text-muted-foreground">{t.sub}</span>
                 </button>
               ))}
             </div>
           </section>
-        )}
-        {pinOpen && (
-          <PinPad onClose={() => setPinOpen(false)} onUnlock={() => { setPinOpen(false); navigate({ to: "/vip" }); }} />
         )}
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
