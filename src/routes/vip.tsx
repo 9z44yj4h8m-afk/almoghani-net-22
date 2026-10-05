@@ -141,7 +141,7 @@ function VipPage() {
 
       <ul className="divide-y divide-border">
         {items.map((it, i) => (
-          <li key={it.url + i} className="flex items-center gap-3 px-4 py-3">
+          <li key={it.url + i} onClick={() => setPlaying(it)} className="flex cursor-pointer items-center gap-3 px-4 py-3 active:bg-card">
             <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-card">
               {it.logo && <img src={it.logo} alt="" loading="lazy" className="h-full w-full object-contain" onError={(e) => (e.currentTarget.style.display = "none")} />}
             </div>
@@ -149,7 +149,7 @@ function VipPage() {
               <p className="truncate text-sm font-bold">{it.name}</p>
               <p className="truncate text-xs text-muted-foreground">{it.group}</p>
             </div>
-            <button type="button" onClick={() => setPlaying(it)} className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground" aria-label="تشغيل">
+            <button type="button" onClick={(e) => { e.stopPropagation(); setPlaying(it); }} className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground" aria-label="تشغيل">
               <Play className="h-4 w-4" />
             </button>
           </li>
@@ -170,11 +170,19 @@ function VipPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              سيرفر اشتراكك يبث بدون تشفير، لذلك المتصفح يمنع تشغيله داخل الموقع. شغّله بتطبيق مشغّل على جوالك:
-            </p>
+            <a href="https://almoghani.net" className="mt-1 block text-xs font-bold text-primary" dir="ltr">almoghani.net</a>
             <div className="mt-4 grid gap-2">
-              <a href={`vlc://${playing.url}`} className="flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-bold text-primary-foreground">
+              <a href={playing.url} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-bold text-primary-foreground">
+                <Play className="h-4 w-4" /> تشغيل
+              </a>
+              <a
+                href={
+                  /android/i.test(navigator.userAgent)
+                    ? `intent:${playing.url}#Intent;package=org.videolan.vlc;type=video/*;end`
+                    : `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(playing.url)}`
+                }
+                className="flex items-center justify-center gap-2 rounded-full border border-border py-3 font-bold"
+              >
                 <ExternalLink className="h-4 w-4" /> فتح في VLC
               </a>
               <a href={`outplayer://${playing.url}`} className="flex items-center justify-center gap-2 rounded-full border border-border py-3 font-bold">
