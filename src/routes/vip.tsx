@@ -145,6 +145,22 @@ function VipPage() {
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
   if (!activeTab) return null;
   const copy = (url: string) => navigator.clipboard.writeText(url).then(() => alert("تم نسخ الرابط"));
+  // App links must open from the top window (the preview runs inside a frame that blocks them),
+  // and each platform needs VLC's own link format.
+  const vlcLink = (url: string) => {
+    if (/android/i.test(navigator.userAgent)) {
+      const [scheme, rest] = url.split("://");
+      return `intent://${rest}#Intent;scheme=${scheme};type=video/*;package=org.videolan.vlc;end`;
+    }
+    return `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(url)}`;
+  };
+  const openExternal = (link: string) => {
+    try {
+      (window.top ?? window).location.href = link;
+    } catch {
+      window.location.href = link;
+    }
+  };
   const lock = () => {
     sessionStorage.removeItem("vip-pin");
     setPin(null);
@@ -412,15 +428,11 @@ function VipPage() {
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
-              <Button asChild size="lg" className="h-12 w-full">
-                <a href={`vlc://${playing.url}`}>
-                  <ExternalLink className="h-4 w-4" /> فتح في VLC
-                </a>
+              <Button type="button" size="lg" className="h-12 w-full" onClick={() => openExternal(vlcLink(playing.url))}>
+                <ExternalLink className="h-4 w-4" /> فتح في VLC
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-12 w-full">
-                <a href={`outplayer://${playing.url}`}>
-                  <ExternalLink className="h-4 w-4" /> فتح في Outplayer
-                </a>
+              <Button type="button" variant="outline" size="lg" className="h-12 w-full" onClick={() => openExternal(`outplayer://${playing.url}`)}>
+                <ExternalLink className="h-4 w-4" /> فتح في Outplayer
               </Button>
               <Button type="button" variant="ghost" size="lg" className="h-12 w-full" onClick={() => copy(playing.url)}>
                 <Copy className="h-4 w-4" /> نسخ رابط البث
