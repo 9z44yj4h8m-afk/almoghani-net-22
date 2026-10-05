@@ -64,6 +64,17 @@ const premiumTiles = [
   { name: "شاهد", sub: "مسلسلات وبرامج", className: "text-sky", channelId: "mbc-drama" },
 ];
 
+const netflixMovies = [
+  { name: "Schumacher 94 The Birth Of A Legend", logo: "https://up6.cc/2026/10/179096595812891.jpg" },
+  { name: "UNABOMBER", logo: "https://image.tmdb.org/t/p/w200/39aMkR8Y5vhCG9dTkjiqRl8AVqp.jpg" },
+  { name: "Go Team!", logo: "https://image.tmdb.org/t/p/w200/brPyXyvpYI87ybV3LXtaeLijVnw.jpg" },
+  { name: "Why Did I Get Married Again?", logo: "https://image.tmdb.org/t/p/w200/rwaxLuOkJ5mMvJU5juNaPcKADOW.jpg" },
+  { name: "Untold Mr. T: I Pity the Fool", logo: "https://image.tmdb.org/t/p/w200/zqL5x88i7loWlaCRJIxW0Wy48bB.jpg" },
+  { name: "Instadocs: The Decoy Plane", logo: "https://image.tmdb.org/t/p/w200/uItPhP1Joq94T8BYCqQbIyZ73kE.jpg" },
+];
+
+const NETFLIX_GROUP = "|| NETFLIX VOD I باقة نتفليكس ||";
+
 export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
   const [selected, setSelected] = useState(
@@ -349,6 +360,45 @@ export function PortalPage({ section }: { section?: string }) {
                   <span className={`font-display text-lg font-black sm:text-xl ${t.className}`}>{t.name}</span>
                   <span className="text-xs text-muted-foreground">{t.sub}</span>
                 </button>
+              ))}
+            </div>
+          </section>
+        )}
+        {previewMode && (
+          <section className="mx-auto max-w-7xl px-3 pt-8 sm:px-6 lg:px-8" aria-labelledby="netflix-movies-title">
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-black text-primary">المكتبة الخاصة</p>
+                <h2 id="netflix-movies-title" className="mt-1 flex items-center gap-2 font-display text-xl font-black sm:text-2xl">
+                  <Film className="h-5 w-5 text-primary" /> أفلام نتفليكس
+                </h2>
+              </div>
+              <a
+                href={`/vip?kind=movie&group=${encodeURIComponent(NETFLIX_GROUP)}`}
+                className="shrink-0 rounded-full border border-primary/70 px-4 py-2 text-xs font-black text-primary transition-colors hover:bg-primary/10"
+              >
+                عرض الكل
+              </a>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {netflixMovies.map((movie) => (
+                <a
+                  key={movie.name}
+                  href={`/vip?kind=movie&group=${encodeURIComponent(NETFLIX_GROUP)}&q=${encodeURIComponent(movie.name)}`}
+                  className="group min-w-0 overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:border-primary"
+                >
+                  <span className="relative block aspect-[2/3] overflow-hidden bg-surface-deep">
+                    <img src={movie.logo} alt={`ملصق ${movie.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <span className="absolute inset-0 bg-player-overlay opacity-40" />
+                    <span className="absolute bottom-2 left-2 grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
+                      <Play className="h-4 w-4 fill-current" />
+                    </span>
+                  </span>
+                  <span className="block min-w-0 p-3">
+                    <span className="block truncate text-sm font-black" dir="auto">{movie.name}</span>
+                    <span className="mt-1 block text-xs font-bold text-muted-foreground">شاهد من المكتبة</span>
+                  </span>
+                </a>
               ))}
             </div>
           </section>

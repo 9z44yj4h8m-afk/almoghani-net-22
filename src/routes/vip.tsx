@@ -70,6 +70,15 @@ function VipPage() {
   const fetchTitles = useServerFn(getLibraryTitles);
   const fetchItems = useServerFn(searchLibrary);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("kind") !== "movie") return;
+    setKind("movie");
+    setGroup(params.get("group") ?? "");
+    setQ(params.get("q") ?? "");
+    setLibraryOpen(true);
+  }, []);
+
   const beginTrial = useServerFn(startTrial);
   const [trialEnd, setTrialEnd] = useState<number | null>(null);
   const [expired, setExpired] = useState(false);
@@ -92,11 +101,11 @@ function VipPage() {
 
   useEffect(() => {
     if (!pin) return;
-    setGroup("");
     setSelectedTitle("");
     if (kind === "movie") {
       fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setPin(null));
     } else {
+      setGroup("");
       setGroups([]);
     }
   }, [pin, kind]);
@@ -169,6 +178,7 @@ function VipPage() {
 
   const openLibrary = (nextKind: Kind) => {
     setKind(nextKind);
+    setGroup("");
     setSelectedTitle("");
     setQ("");
     setLibraryOpen(true);
