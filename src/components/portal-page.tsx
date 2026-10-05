@@ -314,7 +314,7 @@ export function PortalPage({ section }: { section?: string }) {
                   onClick={() => navigate({ to: "/vip" })}
                   className="relative flex aspect-video flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface p-3 text-center transition-colors hover:border-primary"
                 >
-                  <span className="absolute left-2 top-2 rounded bg-primary/20 px-1.5 text-[10px] font-black text-primary">دقيقة مجانًا</span>
+                  <span className="absolute left-2 top-2 rounded bg-primary/20 px-1.5 text-[10px] font-black text-primary">تابع البث almoghani.net</span>
                   <span className={`font-display text-lg font-black sm:text-xl ${t.className}`}>{t.name}</span>
                   <span className="text-xs text-muted-foreground">{t.sub}</span>
                 </button>
