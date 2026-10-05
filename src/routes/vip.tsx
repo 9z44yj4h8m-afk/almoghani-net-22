@@ -16,8 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./movies";
-import { getLibraryGroups, getLibraryTitles, searchLibrary, startTrial } from "@/lib/iptv/library.functions";
-import { Paywall } from "@/components/paywall";
+import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 export const Route = createFileRoute("/vip")({
   head: () => ({
@@ -79,24 +78,11 @@ function VipPage() {
     setLibraryOpen(true);
   }, []);
 
-  const beginTrial = useServerFn(startTrial);
-  const [trialEnd, setTrialEnd] = useState<number | null>(null);
-  const [expired, setExpired] = useState(false);
-  const [askPin, setAskPin] = useState(false);
-
   useEffect(() => {
-    // Every Smarters item requires the PIN up front — no free trial.
-    void beginTrial;
     const saved = sessionStorage.getItem("vip-pin");
     if (saved) setPin(saved);
     setReady(true);
   }, []);
-
-  useEffect(() => {
-    if (!trialEnd) return;
-    const t = setTimeout(() => { setExpired(true); setPlaying(null); }, Math.max(0, trialEnd - Date.now()));
-    return () => clearTimeout(t);
-  }, [trialEnd]);
 
   useEffect(() => {
     if (!pin) return;
@@ -146,12 +132,11 @@ function VipPage() {
   if (!ready) return null;
   const unlocked = (_m: unknown, p: string) => {
     sessionStorage.setItem("vip-pin", p);
-    setPin(p); setTrialEnd(null); setExpired(false); setAskPin(false);
+    setPin(p);
   };
-  if (askPin || expired || !pin) {
+  if (!pin) {
     return <PinPad onClose={() => { window.location.href = "/"; }} onUnlock={unlocked} />;
   }
-  void Paywall;
 
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
   if (!activeTab) return null;
@@ -175,7 +160,6 @@ function VipPage() {
   const lock = () => {
     sessionStorage.removeItem("vip-pin");
     setPin(null);
-    setExpired(true);
   };
 
   const openLibrary = (nextKind: Kind) => {
