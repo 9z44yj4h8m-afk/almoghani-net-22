@@ -2,6 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
+  ArrowUpLeft,
   Baby,
   Bell,
   Clapperboard,
@@ -55,24 +56,19 @@ const sections: {
 export const liveSections = sections;
 
 const premiumTiles = [
-  { name: "beIN SPORTS 1", sub: "رياضية", className: "text-primary", channelId: "bein-xtra" },
-  { name: "SSC 1", sub: "رياضية", className: "text-sky", channelId: "saudi-sports" },
-  { name: "أبوظبي الرياضية", sub: "رياضية", className: "text-primary", channelId: "ktv-sport" },
-  { name: "الكأس", sub: "رياضية", className: "text-sky", channelId: "oman-sport" },
-  { name: "NETFLIX", sub: "أفلام ومسلسلات", className: "text-live", channelId: "ar-aflam" },
-  { name: "شاهد", sub: "مسلسلات وبرامج", className: "text-sky", channelId: "mbc-drama" },
-];
+  { name: "beIN SPORTS 1", description: "مباريات وبرامج رياضية مباشرة", channelId: "bein-xtra" },
+  { name: "SSC 1", description: "الرياضة السعودية وأبرز المنافسات", channelId: "saudi-sports" },
+  { name: "أبوظبي الرياضية", description: "بطولات وتحليلات رياضية مختارة", channelId: "ktv-sport" },
+  { name: "الكأس", description: "تغطية رياضية عربية على مدار اليوم", channelId: "oman-sport" },
+  { name: "NETFLIX", description: "أفلام ومسلسلات من المكتبة الخاصة", channelId: "ar-aflam" },
+  { name: "شاهد", description: "مسلسلات وبرامج عربية مختارة", channelId: "mbc-drama" },
+].map((tile) => ({ ...tile, channel: channels.find((channel) => channel.id === tile.channelId) }));
 
-const netflixMovies = [
-  { name: "Schumacher 94 The Birth Of A Legend", logo: "https://up6.cc/2026/10/179096595812891.jpg" },
-  { name: "UNABOMBER", logo: "https://image.tmdb.org/t/p/w200/39aMkR8Y5vhCG9dTkjiqRl8AVqp.jpg" },
-  { name: "Go Team!", logo: "https://image.tmdb.org/t/p/w200/brPyXyvpYI87ybV3LXtaeLijVnw.jpg" },
-  { name: "Why Did I Get Married Again?", logo: "https://image.tmdb.org/t/p/w200/rwaxLuOkJ5mMvJU5juNaPcKADOW.jpg" },
-  { name: "Untold Mr. T: I Pity the Fool", logo: "https://image.tmdb.org/t/p/w200/zqL5x88i7loWlaCRJIxW0Wy48bB.jpg" },
-  { name: "Instadocs: The Decoy Plane", logo: "https://image.tmdb.org/t/p/w200/uItPhP1Joq94T8BYCqQbIyZ73kE.jpg" },
-];
-
-const NETFLIX_GROUP = "|| NETFLIX VOD I باقة نتفليكس ||";
+const privateLibrarySections = [
+  { kind: "live", name: "البث المباشر", description: "جميع القنوات مرتبة داخل تصنيفات واضحة", Icon: Tv, imageChannelId: "saudi-sports" },
+  { kind: "movie", name: "الأفلام", description: "مكتبة أفلام عربية وعالمية في مكان واحد", Icon: Film, imageChannelId: "ar-aflam" },
+  { kind: "series", name: "المسلسلات", description: "المواسم والحلقات مجمعة حسب عنوان المسلسل", Icon: Clapperboard, imageChannelId: "mbc-drama" },
+] as const;
 
 export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
@@ -319,62 +315,78 @@ export function PortalPage({ section }: { section?: string }) {
         </section>
 
         {previewMode && (
-          <section className="mx-auto max-w-7xl px-3 pt-6 sm:px-6 lg:px-8">
-            <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-black sm:text-2xl">
-              <Lock className="h-5 w-5 text-primary" /> قنوات مميزة
-            </h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-              {premiumTiles.map((t) => (
+          <section className="bg-vip-background py-8 text-vip-foreground sm:py-11" aria-labelledby="featured-channels-title">
+            <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+              <div className="mb-4 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-extrabold text-vip-cyan">مختارة لك</p>
+                  <h2 id="featured-channels-title" className="mt-1 font-display text-xl font-black sm:text-3xl">قنوات مميزة</h2>
+                </div>
+                <span className="text-xs font-bold text-vip-foreground/55">اسحب للمزيد</span>
+              </div>
+              <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
+              {premiumTiles.map((tile) => (
                 <button
-                  key={t.name}
+                  key={tile.name}
                   type="button"
-                  onClick={() => startPremium(t.channelId)}
-                  className="relative flex aspect-video flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface p-3 text-center transition-colors hover:border-primary"
+                  onClick={() => startPremium(tile.channelId)}
+                  className="featured-channel-card group"
                 >
-                  <span className="absolute left-2 top-2 rounded bg-primary/20 px-1.5 text-[10px] font-black text-primary">تابع البث almoghani.net</span>
-                  <span className={`font-display text-lg font-black sm:text-xl ${t.className}`}>{t.name}</span>
-                  <span className="text-xs text-muted-foreground">{t.sub}</span>
+                  <span className="relative block aspect-video overflow-hidden bg-vip-background">
+                    {tile.channel && <img src={tile.channel.thumbnail} alt={`صورة ${tile.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />}
+                    <span className="absolute inset-0 bg-player-overlay" />
+                    <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-live px-2.5 py-1 text-[10px] font-black text-live-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-live-foreground animate-live-pulse" /> مباشر
+                    </span>
+                    <span className="absolute bottom-3 left-3 grid h-9 w-9 place-items-center rounded-full bg-vip-cyan text-vip-background">
+                      <Play className="h-4 w-4 fill-current" />
+                    </span>
+                  </span>
+                  <span className="block p-3.5">
+                    <span className="block truncate font-display text-base font-black sm:text-lg">{tile.name}</span>
+                    <span className="mt-1 block truncate text-xs font-semibold text-vip-foreground/60">{tile.description}</span>
+                  </span>
                 </button>
               ))}
+              </div>
             </div>
           </section>
         )}
         {previewMode && (
-          <section className="mx-auto max-w-7xl px-3 pt-8 sm:px-6 lg:px-8" aria-labelledby="netflix-movies-title">
-            <div className="mb-4 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-xs font-black text-primary">المكتبة الخاصة</p>
-                <h2 id="netflix-movies-title" className="mt-1 flex items-center gap-2 font-display text-xl font-black sm:text-2xl">
-                  <Film className="h-5 w-5 text-primary" /> أفلام نتفليكس
-                </h2>
+          <section className="bg-vip-background pb-10 text-vip-foreground sm:pb-14" aria-labelledby="private-library-title">
+            <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+              <div className="mb-4 flex items-end justify-between gap-3 border-t border-vip-foreground/10 pt-8">
+                <div>
+                  <p className="flex items-center gap-1.5 text-xs font-extrabold text-vip-cyan"><Lock className="h-3.5 w-3.5" /> محمية بالرقم السري</p>
+                  <h2 id="private-library-title" className="mt-1 font-display text-xl font-black sm:text-3xl">المكتبة الخاصة</h2>
+                </div>
+                <span className="text-xs font-bold text-vip-foreground/55">ثلاثة أقسام مستقلة</span>
               </div>
-              <a
-                href={`/vip?kind=movie&group=${encodeURIComponent(NETFLIX_GROUP)}`}
-                className="shrink-0 rounded-full border border-primary/70 px-4 py-2 text-xs font-black text-primary transition-colors hover:bg-primary/10"
-              >
-                عرض الكل
-              </a>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-              {netflixMovies.map((movie) => (
+              <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
+              {privateLibrarySections.map(({ kind, name, description, Icon, imageChannelId }) => {
+                const image = channels.find((channel) => channel.id === imageChannelId)?.thumbnail;
+                return (
                 <a
-                  key={movie.name}
-                  href={`/vip?kind=movie&group=${encodeURIComponent(NETFLIX_GROUP)}&q=${encodeURIComponent(movie.name)}`}
-                  className="group min-w-0 overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:border-primary"
+                  key={kind}
+                  href={`/vip?kind=${kind}`}
+                  className="private-library-card group"
                 >
-                  <span className="relative block aspect-[2/3] overflow-hidden bg-surface-deep">
-                    <img src={movie.logo} alt={`ملصق ${movie.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <span className="absolute inset-0 bg-player-overlay opacity-40" />
-                    <span className="absolute bottom-2 left-2 grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-                      <Play className="h-4 w-4 fill-current" />
+                  {image && <img src={image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-35 transition-transform duration-300 group-hover:scale-105" />}
+                  <span className="absolute inset-0 bg-[linear-gradient(to_left,var(--vip-background),color-mix(in_oklab,var(--vip-background)_72%,transparent),color-mix(in_oklab,var(--vip-purple)_18%,transparent))]" />
+                  <span className="relative flex min-h-[10.5rem] flex-col justify-between p-5">
+                    <span className="flex items-start justify-between gap-3">
+                      <span className="grid h-11 w-11 place-items-center rounded-md bg-vip-purple text-vip-foreground"><Icon className="h-5 w-5" /></span>
+                      <ArrowUpLeft className="h-5 w-5 text-vip-cyan transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1" />
+                    </span>
+                    <span>
+                      <span className="block font-display text-xl font-black">{name}</span>
+                      <span className="mt-1 block text-xs font-semibold text-vip-foreground/65">{description}</span>
                     </span>
                   </span>
-                  <span className="block min-w-0 p-3">
-                    <span className="block truncate text-sm font-black" dir="auto">{movie.name}</span>
-                    <span className="mt-1 block text-xs font-bold text-muted-foreground">شاهد من المكتبة</span>
-                  </span>
                 </a>
-              ))}
+                );
+              })}
+              </div>
             </div>
           </section>
         )}

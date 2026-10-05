@@ -71,10 +71,13 @@ function VipPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("kind") !== "movie") return;
-    setKind("movie");
-    setGroup(params.get("group") ?? "");
-    setQ(params.get("q") ?? "");
+    const requestedKind = params.get("kind");
+    if (requestedKind !== "live" && requestedKind !== "movie" && requestedKind !== "series") return;
+    setKind(requestedKind);
+    if (requestedKind === "movie") {
+      setGroup(params.get("group") ?? "");
+      setQ(params.get("q") ?? "");
+    }
     setLibraryOpen(true);
   }, []);
 
