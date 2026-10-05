@@ -39,7 +39,7 @@ function Cover({ id, alt, eager }: { id: string; alt: string; eager?: boolean })
   );
 }
 
-function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movie[]) => void }) {
+export function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movie[], pin: string) => void }) {
   const unlock = useServerFn(unlockPrivateMovies);
   const [pin, setPin] = useState("");
   const [error, setError] = useState(false);
@@ -54,7 +54,7 @@ function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movi
       setBusy(true);
       const r = await unlock({ data: { pin: next } });
       setBusy(false);
-      if (r.ok) onUnlock(r.movies);
+      if (r.ok) { sessionStorage.setItem("vip-pin", next); onUnlock(r.movies, next); }
       else {
         setError(true);
         setPin("");
@@ -147,7 +147,9 @@ function MoviesPage() {
           )}
         </div>
         {filter === "خاص" && list.length === 0 && (
-          <p className="mt-8 px-4 text-center text-sm text-muted-foreground">لا توجد أفلام خاصة بعد.</p>
+          <Link to="/vip" className="mx-4 mt-6 block rounded-2xl border border-primary bg-card p-5 text-center font-black text-primary">
+            افتح المكتبة الخاصة: بث مباشر • أفلام • مسلسلات ←
+          </Link>
         )}
 
         {/* Vertical list with compact covers */}
