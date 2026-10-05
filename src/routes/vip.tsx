@@ -112,7 +112,7 @@ function VipPage() {
   };
 
   return (
-    <div className="min-h-screen bg-vip-background text-vip-foreground" dir="rtl">
+    <div className="min-h-screen w-full overflow-x-hidden bg-vip-background text-vip-foreground" dir="rtl">
       <header className="sticky top-0 z-30 border-b border-vip-foreground/10 bg-vip-background/95 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 pb-4 pt-5 sm:px-6">
           <div className="flex items-center gap-3">
@@ -139,7 +139,7 @@ function VipPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-6">
         {!libraryOpen ? (
         <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center pb-16" aria-label="أقسام المكتبة">
           <div className="mb-8 text-center">
@@ -179,7 +179,7 @@ function VipPage() {
         ) : (
         <>
 
-        <section className="mt-6" aria-label="البحث والتصنيف">
+        <section className="mt-6 min-w-0 overflow-hidden" aria-label="البحث والتصنيف">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-xs font-bold text-vip-cyan">تصفّح الآن</p>
@@ -218,7 +218,7 @@ function VipPage() {
             </label>
           </div>
 
-          <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1">
+          <div className="no-scrollbar mt-3 flex w-full min-w-0 gap-2 overflow-x-auto pb-1">
             <Button
               type="button"
               size="sm"
@@ -235,7 +235,7 @@ function VipPage() {
                 size="sm"
                 variant="outline"
                 onClick={() => setGroup(entry.name)}
-                className={`shrink-0 border-vip-foreground/10 text-vip-foreground ${group === entry.name ? "bg-vip-purple" : "bg-vip-surface hover:bg-vip-foreground/10"}`}
+                className={`max-w-52 shrink-0 overflow-hidden text-ellipsis border-vip-foreground/10 text-vip-foreground ${group === entry.name ? "bg-vip-purple" : "bg-vip-surface hover:bg-vip-foreground/10"}`}
               >
                 {entry.name}
               </Button>
@@ -250,7 +250,7 @@ function VipPage() {
                 type="button"
                 variant="ghost"
                 onClick={() => setPlaying(item)}
-                className="group h-auto w-full justify-start gap-3 border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
+                className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
                 <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
                   {item.logo ? (
