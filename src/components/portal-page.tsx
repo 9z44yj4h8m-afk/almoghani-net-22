@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
 import { Lock } from "lucide-react";
+import { CONTACT_NAME, WHATSAPP_DISPLAY, WHATSAPP_URL } from "@/lib/subscription";
 
 const sections: {
   slug: string;
@@ -55,12 +56,12 @@ const sections: {
 export const liveSections = sections;
 
 const premiumTiles = [
-  { name: "beIN SPORTS 1", sub: "رياضية", className: "text-primary" },
-  { name: "SSC 1", sub: "رياضية", className: "text-sky" },
-  { name: "أبوظبي الرياضية", sub: "رياضية", className: "text-primary" },
-  { name: "الكأس", sub: "رياضية", className: "text-sky" },
-  { name: "NETFLIX", sub: "أفلام ومسلسلات", className: "text-live" },
-  { name: "شاهد", sub: "مسلسلات وبرامج", className: "text-sky" },
+  { name: "beIN SPORTS 1", sub: "رياضية", className: "text-primary", channelId: "bein-xtra" },
+  { name: "SSC 1", sub: "رياضية", className: "text-sky", channelId: "saudi-sports" },
+  { name: "أبوظبي الرياضية", sub: "رياضية", className: "text-primary", channelId: "ktv-sport" },
+  { name: "الكأس", sub: "رياضية", className: "text-sky", channelId: "oman-sport" },
+  { name: "NETFLIX", sub: "أفلام ومسلسلات", className: "text-live", channelId: "ar-aflam" },
+  { name: "شاهد", sub: "مسلسلات وبرامج", className: "text-sky", channelId: "mbc-drama" },
 ];
 
 export function PortalPage({ section }: { section?: string }) {
@@ -68,6 +69,23 @@ export function PortalPage({ section }: { section?: string }) {
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
+  const [trialId, setTrialId] = useState<string | null>(null);
+  const [trialOver, setTrialOver] = useState(false);
+  const trialLocked = trialOver && trialId === selected.id;
+  useEffect(() => {
+    if (!trialId) return;
+    setTrialOver(false);
+    const t = setTimeout(() => setTrialOver(true), 60_000);
+    return () => clearTimeout(t);
+  }, [trialId]);
+  function startPremium(channelId: string) {
+    const ch = channels.find((c) => c.id === channelId);
+    if (!ch) return;
+    setSelected(ch);
+    setTrialId(`${ch.id}`);
+    setTrialOver(false);
+    document.getElementById("player")?.scrollIntoView({ behavior: "smooth" });
+  }
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -281,7 +299,20 @@ export function PortalPage({ section }: { section?: string }) {
               </div>
             </div>
             <div className="player-shell animate-fade-up rounded-xl border-sky/60">
-              <LivePlayer key={selected.id} channel={selected} />
+              {trialLocked ? (
+                <div className="grid aspect-video w-full place-items-center bg-surface-deep p-6 text-center">
+                  <div>
+                    <Lock className="mx-auto h-10 w-10 text-primary" />
+                    <p className="mt-3 font-display text-3xl font-black">اشترك</p>
+                    <p className="mt-2 text-sm font-bold">للاشتراك تواصل whatsapp {WHATSAPP_DISPLAY} — {CONTACT_NAME}</p>
+                    <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="mt-4 inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 font-black text-primary-foreground">
+                      <MessageCircle className="h-5 w-5" /> اشترك الآن
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <LivePlayer key={selected.id} channel={selected} />
+              )}
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border bg-surface px-4 py-3 sm:px-5 sm:py-4">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-sky">
@@ -311,7 +342,7 @@ export function PortalPage({ section }: { section?: string }) {
                 <button
                   key={t.name}
                   type="button"
-                  onClick={() => navigate({ to: "/vip" })}
+                  onClick={() => startPremium(t.channelId)}
                   className="relative flex aspect-video flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface p-3 text-center transition-colors hover:border-primary"
                 >
                   <span className="absolute left-2 top-2 rounded bg-primary/20 px-1.5 text-[10px] font-black text-primary">تابع البث almoghani.net</span>
