@@ -39,7 +39,7 @@ function Cover({ id, alt, eager }: { id: string; alt: string; eager?: boolean })
   );
 }
 
-function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movie[]) => void }) {
+export function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movie[], pin: string) => void }) {
   const unlock = useServerFn(unlockPrivateMovies);
   const [pin, setPin] = useState("");
   const [error, setError] = useState(false);
@@ -54,7 +54,7 @@ function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movi
       setBusy(true);
       const r = await unlock({ data: { pin: next } });
       setBusy(false);
-      if (r.ok) onUnlock(r.movies);
+      if (r.ok) { sessionStorage.setItem("vip-pin", next); onUnlock(r.movies, next); }
       else {
         setError(true);
         setPin("");
