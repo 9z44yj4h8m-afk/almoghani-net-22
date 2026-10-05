@@ -34,6 +34,8 @@ import { LivePlayer } from "@/components/live-player";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
+import { Lock } from "lucide-react";
+import { PinPad } from "@/routes/movies";
 
 const sections: {
   slug: string;
@@ -52,6 +54,15 @@ const sections: {
 ];
 
 export const liveSections = sections;
+
+const premiumTiles = [
+  { name: "beIN SPORTS 1", sub: "رياضية", className: "text-primary" },
+  { name: "SSC 1", sub: "رياضية", className: "text-sky" },
+  { name: "أبوظبي الرياضية", sub: "رياضية", className: "text-primary" },
+  { name: "الكأس", sub: "رياضية", className: "text-sky" },
+  { name: "NETFLIX", sub: "أفلام ومسلسلات", className: "text-live" },
+  { name: "شاهد", sub: "مسلسلات وبرامج", className: "text-sky" },
+];
 
 export function PortalPage({ section }: { section?: string }) {
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
@@ -75,6 +86,7 @@ export function PortalPage({ section }: { section?: string }) {
     // (section chips add #hash entries, and direct/installed-app opens have no previous page).
     navigate({ to: "/" });
   }
+  const [pinOpen, setPinOpen] = useState(false);
   const inactiveIds = useInactiveChannels();
   const inactiveChannels = channels.filter((c) => inactiveIds.includes(c.id));
 
@@ -290,6 +302,30 @@ export function PortalPage({ section }: { section?: string }) {
           </div>
         </section>
 
+        {previewMode && (
+          <section className="mx-auto max-w-7xl px-3 pt-6 sm:px-6 lg:px-8">
+            <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-black sm:text-2xl">
+              <Lock className="h-5 w-5 text-primary" /> قنوات مميزة
+            </h2>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {premiumTiles.map((t) => (
+                <button
+                  key={t.name}
+                  type="button"
+                  onClick={() => setPinOpen(true)}
+                  className="relative flex aspect-video flex-col items-center justify-center gap-1 rounded-xl border border-border bg-surface p-3 text-center transition-colors hover:border-primary"
+                >
+                  <Lock className="absolute left-2 top-2 h-4 w-4 text-primary" />
+                  <span className={`font-display text-lg font-black sm:text-xl ${t.className}`}>{t.name}</span>
+                  <span className="text-xs text-muted-foreground">{t.sub}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+        {pinOpen && (
+          <PinPad onClose={() => setPinOpen(false)} onUnlock={() => { setPinOpen(false); navigate({ to: "/vip" }); }} />
+        )}
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
