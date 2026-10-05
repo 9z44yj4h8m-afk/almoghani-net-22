@@ -87,53 +87,33 @@ function MoviesPage() {
           ))}
         </div>
 
-        {/* One movie per screen: swipe to browse */}
-        <div
-          ref={track}
-          onScroll={onScroll}
-          className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[7%] pb-2 [scrollbar-width:none]"
-        >
+        {/* Vertical list with compact covers */}
+        <div className="mt-4 grid gap-3 px-4 lg:grid-cols-2">
           {list.map((m, i) => (
-            <article key={m.id} className="w-[86%] shrink-0 snap-center sm:w-[60%] lg:w-[40%]">
-              <button
-                type="button"
-                onClick={() => setPlaying(m)}
-                className="channel-card block w-full overflow-hidden text-right"
-              >
-                <span className="relative block aspect-[4/5] overflow-hidden bg-surface-deep sm:aspect-video">
-                  <Cover id={m.youtubeId} alt={m.title} eager={i < 2} />
-                  <span className="absolute inset-0 bg-player-overlay" />
-                  <span className="absolute inset-0 grid place-items-center">
-                    <span className="grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
-                      <Play className="h-7 w-7 fill-current" />
-                    </span>
-                  </span>
-                  <span className="absolute inset-x-0 bottom-0 p-4">
-                    <span className="block text-xl font-black leading-tight">{m.title}</span>
-                    <span className="mt-1 flex items-center gap-1.5 text-xs font-bold">
-                      <Clock className="h-3.5 w-3.5" /> {m.duration} · {m.lang}
-                    </span>
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => setPlaying(m)}
+              className="channel-card flex w-full items-stretch gap-3 overflow-hidden p-2 text-right"
+            >
+              <span className="relative block aspect-video w-36 shrink-0 overflow-hidden rounded-md bg-surface-deep sm:w-48">
+                <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
+                <span className="absolute inset-0 grid place-items-center">
+                  <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
+                    <Play className="h-4 w-4 fill-current" />
                   </span>
                 </span>
-                <span className="block p-4">
-                  <span className="line-clamp-2 block text-sm text-muted-foreground">{m.description}</span>
-                  <span className="mt-2 block text-xs text-primary">{m.source}</span>
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col py-1">
+                <span className="line-clamp-2 block text-base font-black leading-tight">{m.title}</span>
+                <span className="mt-1 flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" /> {m.duration} · {m.lang}
                 </span>
-              </button>
-            </article>
+                <span className="mt-1 line-clamp-1 block text-xs text-muted-foreground">{m.description}</span>
+                <span className="mt-auto block truncate text-xs text-primary">{m.source}</span>
+              </span>
+            </button>
           ))}
-        </div>
-
-        <div className="mt-3 flex items-center justify-center gap-4">
-          <button type="button" className="icon-button" aria-label="السابق" disabled={index === 0} onClick={() => go(index - 1)}>
-            <ChevronRight className="h-5 w-5" />
-          </button>
-          <span className="text-sm font-bold text-muted-foreground">
-            {Math.min(index + 1, list.length)} / {list.length}
-          </span>
-          <button type="button" className="icon-button" aria-label="التالي" disabled={index >= list.length - 1} onClick={() => go(index + 1)}>
-            <ChevronLeft className="h-5 w-5" />
-          </button>
         </div>
       </main>
 
