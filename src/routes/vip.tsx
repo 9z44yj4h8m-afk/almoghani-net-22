@@ -170,11 +170,19 @@ function VipPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              سيرفر اشتراكك يبث بدون تشفير، لذلك المتصفح يمنع تشغيله داخل الموقع. شغّله بتطبيق مشغّل على جوالك:
-            </p>
+            <a href="https://almoghani.net" className="mt-1 block text-xs font-bold text-primary" dir="ltr">almoghani.net</a>
             <div className="mt-4 grid gap-2">
-              <a href={`vlc://${playing.url}`} className="flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-bold text-primary-foreground">
+              <a href={playing.url} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-bold text-primary-foreground">
+                <Play className="h-4 w-4" /> تشغيل
+              </a>
+              <a
+                href={
+                  /android/i.test(navigator.userAgent)
+                    ? `intent:${playing.url}#Intent;package=org.videolan.vlc;type=video/*;end`
+                    : `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(playing.url)}`
+                }
+                className="flex items-center justify-center gap-2 rounded-full border border-border py-3 font-bold"
+              >
                 <ExternalLink className="h-4 w-4" /> فتح في VLC
               </a>
               <a href={`outplayer://${playing.url}`} className="flex items-center justify-center gap-2 rounded-full border border-border py-3 font-bold">
