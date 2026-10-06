@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
 import { useSiteConfig } from "@/lib/site-config";
+import { IosInstallBanner } from "@/components/ios-install-banner";
 
 function NotFoundComponent() {
   return (
@@ -130,7 +131,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle /><Outlet /></MemberProvider>
+      <MemberProvider><SiteDesignStyle /><Outlet /><IosInstallBanner /></MemberProvider>
     </QueryClientProvider>
   );
 }
