@@ -32,6 +32,7 @@ import { BroadcastHero } from "@/components/broadcast-hero";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
+import { LiveChat } from "@/components/live-chat";
 import { useCatalog, useSiteConfig, defaultTexts } from "@/lib/site-config";
 import { Lock } from "lucide-react";
 
@@ -266,6 +267,7 @@ export function PortalPage({ section }: { section?: string }) {
 
       <main className="pb-28 md:pb-12">
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
+        {!section && <LiveChat />}
 
         {previewMode && (
           <section className="bg-vip-background pb-10 text-vip-foreground sm:pb-14" aria-labelledby="private-library-title">
