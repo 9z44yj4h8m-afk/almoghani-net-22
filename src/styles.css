@@ -205,6 +205,14 @@
   &:active { transform: scale(0.985); }
 }
 
+@utility smarter-banner {
+  background: var(--surface-deep);
+}
+
+@utility smarter-banner-shade {
+  background: linear-gradient(to left, color-mix(in oklab, var(--surface-deep) 96%, transparent), color-mix(in oklab, var(--surface-deep) 78%, transparent) 45%, color-mix(in oklab, var(--surface-deep) 20%, transparent));
+}
+
 @utility empty-channel-row {
   display: flex;
   align-items: center;
