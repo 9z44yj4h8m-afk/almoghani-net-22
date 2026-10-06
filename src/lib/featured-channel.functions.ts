@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { featuredChannels } from "./featured-channels";
+import { featuredLogos } from "./featured-logos";
 
 const ALIASES: Record<string, string[]> = {
   "abu-dhabi-sports": ["abudhabi", "أبوظبي", "ابوظبي"],
@@ -24,7 +25,7 @@ export const getFeaturedChannels = createServerFn({ method: "GET" }).handler(asy
     const row = rows.find((entry) =>
       terms.some((term) => normalize(channel.kind === "live" ? entry[0] : entry[1]).includes(normalize(term))),
     );
-    items.push({ ...channel, logo: row?.[2]?.startsWith("https://") ? row[2] : "", available: !!row });
+    items.push({ ...channel, logo: featuredLogos[channel.id] ?? (row?.[2]?.startsWith("https://") ? row[2] : ""), available: !!row });
   }
   return items;
 });
@@ -40,5 +41,5 @@ export const getFeaturedChannel = createServerFn({ method: "GET" })
     const aliases: Record<string, string[]> = { "abu-dhabi-sports": ["abudhabi", "أبوظبي", "ابوظبي"], alkass: ["alkass", "الكاس", "الكأس"], shahid: ["shahid", "شاهد"] };
     const terms = aliases[channel.id] ?? [channel.query];
     const row = rows.find((entry) => terms.some((term) => normalize(channel.kind === "live" ? entry[0] : entry[1]).includes(normalize(term))));
-    return { ...channel, logo: row?.[2]?.startsWith("https://") ? row[2] : "", group: row?.[1] ?? "", available: !!row };
+    return { ...channel, logo: featuredLogos[channel.id] ?? (row?.[2]?.startsWith("https://") ? row[2] : ""), group: row?.[1] ?? "", available: !!row };
   });
