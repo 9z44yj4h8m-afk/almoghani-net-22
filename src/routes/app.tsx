@@ -68,6 +68,15 @@ function AppPage() {
               <Download className="h-5 w-5" /> ثبّت التطبيق الآن
             </button>
           ) : null}
+          <a
+            href="/download/almoghani-smarter.apk"
+            download="almoghani-smarter.apk"
+            className="mb-2 flex w-full items-center justify-center gap-2 rounded-xl border border-primary bg-primary/15 py-4 text-lg font-black"
+          >
+            <Download className="h-5 w-5" /> تحميل التطبيق (APK)
+          </a>
+          <p className="mb-4 text-center text-xs text-muted-foreground">بعد التحميل افتح الملف واسمح بالتثبيت من مصادر غير معروفة إذا طلب الجوال.</p>
+          <p className="mb-2 text-sm font-bold">أو ثبّته من المتصفح:</p>
           <ol className="grid gap-3">
             <Step n={1} icon={Smartphone}>افتح <b dir="ltr">almoghani.net</b> في متصفح Chrome.</Step>
             <Step n={2} icon={MoreVertical}>اضغط القائمة (⋮) أعلى الشاشة.</Step>
