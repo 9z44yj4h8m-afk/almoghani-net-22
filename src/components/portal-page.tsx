@@ -343,7 +343,7 @@ export function PortalPage({ section }: { section?: string }) {
             <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
               <div className="mb-4 flex items-end justify-between gap-3 border-t border-vip-foreground/10 pt-8">
                 <div>
-                  <p className="flex items-center gap-1.5 text-xs font-extrabold text-vip-cyan"><Lock className="h-3.5 w-3.5" /> محمية بالرقم السري</p>
+                  <p className="font-display text-xs font-extrabold text-vip-cyan" dir="ltr">Almoghani Smarter pro</p>
                   <h2 id="private-library-title" className="mt-1 font-display text-xl font-black sm:text-3xl">المكتبة الخاصة</h2>
                 </div>
                 <span className="text-xs font-bold text-vip-foreground/55">ثلاثة أقسام مستقلة</span>
