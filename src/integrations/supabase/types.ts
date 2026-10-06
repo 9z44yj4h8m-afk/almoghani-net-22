@@ -14,13 +14,55 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      member_library_sessions: {
+        Row: {
+          entered_at: string
+          session_id: string
+          unlocked: boolean
+          user_id: string
+        }
+        Insert: {
+          entered_at?: string
+          session_id: string
+          unlocked?: boolean
+          user_id: string
+        }
+        Update: {
+          entered_at?: string
+          session_id?: string
+          unlocked?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string
+          last_login_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          last_login_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          last_login_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      ensure_member_profile: { Args: never; Returns: undefined }
+      unlock_member_library: { Args: { p_pin: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
