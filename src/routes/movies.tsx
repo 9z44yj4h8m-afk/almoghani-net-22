@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Delete, Lock, Play, Unlock, X } from "lucide-react";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
+import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/movies")({
   loader: () => getFeaturedMovies(),
@@ -39,7 +40,9 @@ function Cover({ id, alt, eager }: { id: string; alt: string; eager?: boolean })
 }
 
 function MoviesPage() {
-  const all = Route.useLoaderData();
+  const loaded = Route.useLoaderData();
+  const { data: siteConfig } = useSiteConfig();
+  const all = applyMovieConfig(loaded, siteConfig);
   const [filter, setFilter] = useState<"الكل" | Movie["lang"]>("الكل");
   const [playing, setPlaying] = useState<Movie | null>(null);
   const list = filter === "الكل" ? all : all.filter((m) => m.lang === filter);
