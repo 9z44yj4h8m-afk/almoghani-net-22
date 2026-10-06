@@ -319,6 +319,13 @@ export function LivePlayer({ channel }: { channel: Channel }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings.quality]);
 
+  function togglePlay() {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play().catch(() => undefined);
+    else video.pause();
+  }
+
   function toggleFullscreen() {
     const el = shellRef.current;
     if (!el) return;
