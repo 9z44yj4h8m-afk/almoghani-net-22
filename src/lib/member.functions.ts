@@ -35,3 +35,17 @@ export const lockMemberLibrary = createServerFn({ method: "POST" })
     if (result.error) throw result.error;
     return { ok: true };
   });
+export const notifyOwnerNewMember = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const claims = context.claims as { email?: string; user_metadata?: { display_name?: string; full_name?: string } };
+    const { data: profile } = await context.supabase.from("profiles").select("display_name").eq("user_id", context.userId).maybeSingle();
+    try {
+      await sendTemplateEmail("new-member-request", "a0552525337@gmail.com", {
+        templateData: { name: profile?.display_name || claims.user_metadata?.display_name || claims.user_metadata?.full_name, email: claims.email, createdAt: new Date().toISOString().slice(0, 16).replace("T", " ") },
+        idempotencyKey: `new-member-request-${context.userId}`,
+      });
+    } catch (e) { console.error("owner notify failed", e); }
+    return { ok: true };
+  });

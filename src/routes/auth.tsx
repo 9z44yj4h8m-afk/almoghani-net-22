@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useMember } from "@/components/member-provider";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { notifyOwnerNewMember } from "@/lib/member.functions";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 import satelliteMark from "@/assets/satellite-mark.jpg";
 
@@ -25,6 +26,7 @@ function AuthPage() {
     if (params.get("error") || window.location.hash.includes("error")) return;
     void supabase.rpc("ensure_member_profile").then(({ error: profileError }) => {
       if (profileError) { setError("تعذّر حفظ بيانات العضو؛ أعد المحاولة."); return; }
+      void notifyOwnerNewMember().catch(() => {});
       const destination = sessionStorage.getItem("member-destination");
       sessionStorage.removeItem("member-destination");
       if (destination?.startsWith("/vip") && !destination.startsWith("//")) {
