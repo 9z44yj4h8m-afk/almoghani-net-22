@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppSidebar } from "@/components/app-sidebar";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import {
   Outlet,
   Link,
@@ -132,7 +133,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle /><AppSidebar /><div className="lg:pr-60"><Outlet /></div><IosInstallBanner /></MemberProvider>
+      <MemberProvider><SiteDesignStyle /><AppSidebar /><div className="lg:pr-60"><Outlet /></div><MobileBottomNav /><IosInstallBanner /></MemberProvider>
     </QueryClientProvider>
   );
 }

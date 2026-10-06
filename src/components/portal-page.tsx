@@ -29,6 +29,7 @@ import satelliteMark from "@/assets/satellite-mark.jpg";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
 import { BroadcastHero } from "@/components/broadcast-hero";
+import { BreakingTicker } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
@@ -267,6 +268,7 @@ export function PortalPage({ section }: { section?: string }) {
 
       <main className="pb-28 md:pb-12">
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
+        {!section && <BreakingTicker />}
         {!section && <LiveChat />}
 
         {previewMode && (
