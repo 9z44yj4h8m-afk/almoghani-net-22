@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { featuredChannels } from "@/lib/featured-channels";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 
-export const Route = createFileRoute("/featured/index")({
+export const Route = createFileRoute("/featured/")({
   head: () => ({
     meta: [
       { title: "القنوات المميزة — ALMOGHANI LIVE" },
