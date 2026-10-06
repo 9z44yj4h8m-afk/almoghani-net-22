@@ -131,7 +131,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle /><Outlet /><IosInstallBanner /></MemberProvider>
+      <MemberProvider><SiteDesignStyle /><AppSidebar /><div className="lg:pr-60"><Outlet /></div><IosInstallBanner /></MemberProvider>
     </QueryClientProvider>
   );
 }
