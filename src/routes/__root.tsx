@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Outlet,
   Link,
