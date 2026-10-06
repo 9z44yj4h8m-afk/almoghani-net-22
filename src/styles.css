@@ -388,4 +388,4 @@
 @utility news-ticker {
   animation: ticker 28s linear infinite;
 }
-@keyframes ticker { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes ticker { from { transform: translateX(-100%); } to { transform: translateX(100vw); } }

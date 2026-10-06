@@ -35,7 +35,7 @@ export function BreakingTicker() {
         العاجل
       </span>
       <div className="relative flex-1 overflow-hidden">
-        <p className="news-ticker absolute inset-y-0 flex items-center gap-2 whitespace-nowrap text-sm text-foreground">
+        <p className="news-ticker absolute inset-y-0 left-0 flex w-max items-center gap-2 whitespace-nowrap text-sm text-foreground">
           <span className="h-2 w-2 rounded-full bg-primary" />
           شاهد القنوات المباشرة والأفلام والقنوات المميزة على ALMOGHANI — للاشتراك تواصل واتساب 0557073007
         </p>
