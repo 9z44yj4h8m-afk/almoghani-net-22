@@ -3,7 +3,7 @@ import { ArrowUp, MessagesSquare, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 
-type Msg = { id: string; user_id: string; display_name: string; body: string; created_at: string };
+type Msg = { id: string; user_id: string | null; display_name: string; body: string; created_at: string };
 const EMOJIS = ["👏", "🔥", "💙", "✨"] as const;
 
 function ago(d: string) {
