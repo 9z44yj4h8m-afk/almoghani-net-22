@@ -37,11 +37,11 @@
 }
 
 :root {
-  --background: oklch(0.16 0.035 170);
+  --background: oklch(0.19 0.008 165);
   --foreground: oklch(0.97 0.01 258);
-  --surface: oklch(0.2 0.04 168);
-  --surface-deep: oklch(0.12 0.03 170);
-  --card: oklch(0.2 0.045 165);
+  --surface: oklch(0.24 0.012 165);
+  --surface-deep: oklch(0.14 0.007 165);
+  --card: oklch(0.24 0.012 165);
   --card-foreground: oklch(0.97 0.01 258);
   --primary: oklch(0.62 0.19 150);
   --primary-foreground: oklch(0.98 0.005 260);
@@ -58,10 +58,10 @@
   --live-foreground: oklch(0.99 0.005 260);
   --signal: oklch(0.62 0.24 20);
   --sky: oklch(0.82 0.13 85);
-  --vip-background: oklch(0.13 0.04 280);
-  --vip-surface: oklch(0.19 0.055 278);
-  --vip-purple: oklch(0.55 0.24 295);
-  --vip-cyan: oklch(0.7 0.14 225);
+  --vip-background: oklch(0.17 0.008 165);
+  --vip-surface: oklch(0.24 0.012 165);
+  --vip-purple: oklch(0.56 0.13 160);
+  --vip-cyan: oklch(0.8 0.13 85);
   --vip-foreground: oklch(0.98 0.01 255);
 }
 

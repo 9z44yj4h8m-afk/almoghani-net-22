@@ -15,10 +15,12 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PinPad } from "./movies";
+import { MemberLibraryGate } from "@/components/member-library-gate";
+import { InlineStream } from "@/components/inline-stream";
 import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 export const Route = createFileRoute("/vip")({
+  validateSearch: (search: Record<string, unknown>): { kind?: string | undefined; group?: string | undefined; q?: string | undefined } => ({ kind: typeof search["kind"] === "string" ? search["kind"] : undefined, group: typeof search["group"] === "string" ? search["group"] : undefined, q: typeof search["q"] === "string" ? search["q"] : undefined }),
   head: () => ({
     meta: [
       { title: "المكتبة الخاصة — ALMOGHANI LIVE" },
@@ -30,7 +32,7 @@ export const Route = createFileRoute("/vip")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: VipPage,
+  component: () => <MemberLibraryGate><VipPage /></MemberLibraryGate>,
 });
 
 type Kind = "live" | "movie" | "series";
@@ -50,8 +52,8 @@ const TABS: {
 ];
 
 function VipPage() {
-  const [pin, setPin] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
+  const pin = "member-session";
+  const [fetchError, setFetchError] = useState("");
   const [kind, setKind] = useState<Kind>("live");
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
@@ -78,20 +80,17 @@ function VipPage() {
       setGroup(params.get("group") ?? "");
       setQ(params.get("q") ?? "");
     }
+    if (requestedKind === "live" || requestedKind === "series") {
+      setSelectedTitle(params.get("group") ?? "");
+      setQ(params.get("q") ?? "");
+    }
     setLibraryOpen(true);
   }, []);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem("vip-pin");
-    if (saved) setPin(saved);
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
     if (!pin) return;
-    setSelectedTitle("");
     if (kind === "movie") {
-      fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setPin(null));
+      fetchGroups({ data: { pin, kind } }).then(setGroups).catch(() => setFetchError("تعذّر تحميل التصنيفات."));
     } else {
       setGroup("");
       setGroups([]);
@@ -107,6 +106,8 @@ function VipPage() {
         const result = await fetchItems({ data: { pin, kind, q, group: selectedTitle || group, page } });
         setItems((current) => (page === 0 ? result.items : [...current, ...result.items]));
         setTotal(result.total);
+      } catch {
+        setFetchError("تعذّر تحميل المحتوى؛ أعد المحاولة.");
       } finally {
         setBusy(false);
       }
@@ -123,6 +124,8 @@ function VipPage() {
         setTitles((current) => (page === 0 ? result.titles : [...current, ...result.titles]));
         setTitleTotal(result.total);
         setItems([]);
+      } catch {
+        setFetchError("تعذّر تحميل العناوين؛ أعد المحاولة.");
       } finally {
         setBusy(false);
       }
@@ -131,15 +134,6 @@ function VipPage() {
   }, [pin, kind, q, selectedTitle, page]);
 
   useEffect(() => setPage(0), [kind, q, group, selectedTitle]);
-
-  if (!ready) return null;
-  const unlocked = (_m: unknown, p: string) => {
-    sessionStorage.setItem("vip-pin", p);
-    setPin(p);
-  };
-  if (!pin) {
-    return <PinPad onClose={() => { window.location.href = "/"; }} onUnlock={unlocked} />;
-  }
 
   const activeTab = TABS.find((tab) => tab.k === kind) ?? TABS[0];
   if (!activeTab) return null;
@@ -160,11 +154,6 @@ function VipPage() {
       window.location.href = link;
     }
   };
-  const lock = () => {
-    sessionStorage.removeItem("vip-pin");
-    setPin(null);
-  };
-
   const openLibrary = (nextKind: Kind) => {
     setKind(nextKind);
     setGroup("");
@@ -195,14 +184,12 @@ function VipPage() {
               <p className="text-xs font-extrabold text-vip-cyan">ALMOGHANI LIVE</p>
               <h1 className="truncate text-xl font-black">{libraryOpen ? activeTab.label : "المكتبة الخاصة"}</h1>
             </div>
-            <Button variant="ghost" size="icon" onClick={lock} className="text-vip-foreground/70 hover:bg-vip-foreground/10 hover:text-vip-foreground" aria-label="قفل المكتبة" title="قفل المكتبة">
-              <Lock className="h-5 w-5" />
-            </Button>
           </div>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-6">
+        {fetchError && <p role="alert" className="mb-4 text-sm text-destructive">{fetchError}</p>}
         {!libraryOpen ? (
         <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center pb-16" aria-label="أقسام المكتبة">
           <div className="mb-8 text-center">
@@ -427,6 +414,7 @@ function VipPage() {
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
+              {playing.url.startsWith("https://") ? <InlineStream url={playing.url} /> : <p className="text-xs leading-6 text-muted-foreground">هذا المصدر لا يدعم التشغيل الآمن داخل الموقع؛ افتحه في أحد التطبيقين.</p>}
               <Button type="button" size="lg" className="h-12 w-full" onClick={() => openExternal(vlcLink(playing.url))}>
                 <ExternalLink className="h-4 w-4" /> فتح في VLC
               </Button>
