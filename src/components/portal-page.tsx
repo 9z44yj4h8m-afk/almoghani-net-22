@@ -179,7 +179,7 @@ export function PortalPage({ section }: { section?: string }) {
 
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
-              <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
+              <Link to="/contact" className="transition-colors hover:text-sky">للتواصل</Link>
               <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
               <Link to="/vip" search={{ kind: "live" }} className="text-sky transition-colors hover:text-primary">almoghani smarter</Link>
               <Link to="/live" className="transition-colors hover:text-sky">البث المباشر</Link>
@@ -385,6 +385,7 @@ export function PortalPage({ section }: { section?: string }) {
                 </span>
               </div>
             </Link>
+            <Link to="/contact" className="absolute bottom-4 left-4 rounded-full border border-primary/50 bg-background/70 px-4 py-2 text-xs font-black text-primary">للتواصل</Link>
           </section>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
             {sections.map((s, i) => {
@@ -531,7 +532,7 @@ export function PortalPage({ section }: { section?: string }) {
           <Play className="h-6 w-6 fill-current" />
         </a>
         <Link to="/chat" className="mobile-nav-item"><MessageCircle className="h-5 w-5" /><span>المحادثة</span></Link>
-        <Link to="/quran" className="mobile-nav-item"><Sparkles className="h-5 w-5" /><span>القرآن</span></Link>
+        <Link to="/contact" className="mobile-nav-item"><MessageCircle className="h-5 w-5" /><span>للتواصل</span></Link>
       </nav>
     </div>
   );
