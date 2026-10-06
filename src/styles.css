@@ -203,6 +203,7 @@
   &:hover { transform: translateY(-3px); border-color: var(--vip-cyan); box-shadow: 0 18px 44px color-mix(in oklab, var(--vip-purple) 25%, transparent); }
   &:active { transform: scale(0.985); }
 }
+@utility private-library-card {
   position: relative;
   flex: none;
   width: min(82vw, 22rem);
