@@ -37,33 +37,33 @@
 }
 
 :root {
-  --background: oklch(0.14 0.045 275);
+  --background: oklch(0.17 0.07 262);
   --foreground: oklch(0.97 0.01 258);
-  --surface: oklch(0.19 0.06 275);
-  --surface-deep: oklch(0.11 0.04 275);
-  --card: oklch(0.19 0.06 275 / 85%);
+  --surface: oklch(0.22 0.09 262);
+  --surface-deep: oklch(0.13 0.06 262);
+  --card: oklch(0.22 0.09 262 / 85%);
   --card-foreground: oklch(0.97 0.01 258);
-  --primary: oklch(0.6 0.28 305);
+  --primary: oklch(0.58 0.22 25);
   --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.24 0.07 280);
+  --secondary: oklch(0.26 0.1 262);
   --secondary-foreground: oklch(0.93 0.015 258);
-  --muted: oklch(0.23 0.05 278);
-  --muted-foreground: oklch(0.74 0.018 280);
-  --accent: oklch(0.8 0.15 205);
+  --muted: oklch(0.25 0.08 262);
+  --muted-foreground: oklch(0.78 0.04 255);
+  --accent: oklch(0.62 0.2 258);
   --accent-foreground: oklch(0.12 0.012 280);
-  --border: oklch(0.6 0.12 280 / 30%);
-  --input: oklch(0.3 0.035 280);
-  --ring: oklch(0.8 0.15 205);
+  --border: oklch(0.6 0.15 258 / 35%);
+  --input: oklch(0.3 0.09 262);
+  --ring: oklch(0.62 0.2 258);
   --live: oklch(0.62 0.24 20);
   --live-foreground: oklch(0.99 0.005 260);
   --signal: oklch(0.62 0.24 20);
-  --sky: oklch(0.8 0.15 205);
-  --vip-background: oklch(0.12 0.012 280);
-  --vip-surface: oklch(0.18 0.018 280);
-  --vip-purple: oklch(0.52 0.25 295);
-  --vip-cyan: oklch(0.8 0.15 205);
+  --sky: oklch(0.68 0.19 255);
+  --vip-background: oklch(0.17 0.07 262);
+  --vip-surface: oklch(0.22 0.09 262);
+  --vip-purple: oklch(0.5 0.22 22);
+  --vip-cyan: oklch(0.68 0.19 255);
   --vip-foreground: oklch(0.98 0.01 255);
-  --broadcast-gradient: linear-gradient(100deg, var(--primary), var(--vip-purple) 40%, var(--sky));
+  --broadcast-gradient: linear-gradient(100deg, var(--primary), var(--vip-purple));
   --broadcast-shadow: 0 0 24px color-mix(in oklab, var(--primary) 40%, transparent), 0 0 18px color-mix(in oklab, var(--sky) 28%, transparent);
   --arena-overlay: linear-gradient(to bottom, color-mix(in oklab, var(--background) 25%, transparent), color-mix(in oklab, var(--background) 38%, transparent) 65%, var(--background)), linear-gradient(90deg, color-mix(in oklab, var(--background) 80%, transparent), transparent 70%);
 }
@@ -384,3 +384,8 @@
   background: linear-gradient(90deg, color-mix(in oklab, var(--primary) 55%, transparent), color-mix(in oklab, var(--vip-purple) 35%, transparent));
   box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 70%, transparent), 0 0 18px color-mix(in oklab, var(--primary) 35%, transparent);
 }
+
+@utility news-ticker {
+  animation: ticker 28s linear infinite;
+}
+@keyframes ticker { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
