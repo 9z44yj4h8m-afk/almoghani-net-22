@@ -10,10 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as QuranRouteImport } from './routes/quran'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -23,6 +25,11 @@ import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -43,6 +50,11 @@ const MoviesRoute = MoviesRouteImport.update({
 const QuranRoute = QuranRouteImport.update({
   id: '/quran',
   path: '/quran',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubscriptionRoute = SubscriptionRouteImport.update({
@@ -73,10 +85,12 @@ const ApiPublicHlsRoute = ApiPublicHlsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -85,10 +99,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -98,10 +114,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
   '/live': typeof LiveRoute
   '/movies': typeof MoviesRoute
   '/quran': typeof QuranRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -112,10 +130,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/chat'
     | '/live'
     | '/movies'
     | '/quran'
+    | '/reset-password'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -124,10 +144,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/chat'
     | '/live'
     | '/movies'
     | '/quran'
+    | '/reset-password'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -136,10 +158,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/chat'
     | '/live'
     | '/movies'
     | '/quran'
+    | '/reset-password'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -149,10 +173,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ChatRoute: typeof ChatRoute
   LiveRoute: typeof LiveRoute
   MoviesRoute: typeof MoviesRoute
   QuranRoute: typeof QuranRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SubscriptionRoute: typeof SubscriptionRoute
   VipRoute: typeof VipRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -167,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -195,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/quran'
       fullPath: '/quran'
       preLoaderRoute: typeof QuranRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subscription': {
@@ -237,10 +277,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ChatRoute: ChatRoute,
   LiveRoute: LiveRoute,
   MoviesRoute: MoviesRoute,
   QuranRoute: QuranRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SubscriptionRoute: SubscriptionRoute,
   VipRoute: VipRoute,
   ApiChatRoute: ApiChatRoute,

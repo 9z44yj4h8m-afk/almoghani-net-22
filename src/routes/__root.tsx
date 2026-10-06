@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { MemberProvider } from "@/components/member-provider";
 
 function NotFoundComponent() {
   return (
@@ -81,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "ALMOGHANI LIVE" },
       { name: "description", content: "منصة عربية لمشاهدة البث المباشر داخل الموقع." },
       { name: "author", content: "ALMOGHANI LIVE" },
-      { name: "theme-color", content: "#0b1f1a" },
+      { name: "theme-color", content: "#151918" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
@@ -128,7 +129,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <MemberProvider><Outlet /></MemberProvider>
     </QueryClientProvider>
   );
 }
