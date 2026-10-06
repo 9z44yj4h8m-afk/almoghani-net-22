@@ -20,7 +20,7 @@ const TABS = ["channels", "movies", "members", "texts", "design", "schedule"] as
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>): { tab?: string } => ({ tab: typeof s["tab"] === "string" ? s["tab"] : undefined }),
+  validateSearch: (s: Record<string, unknown>): { tab?: string | undefined } => ({ tab: typeof s["tab"] === "string" ? s["tab"] : undefined }),
   head: () => ({ meta: [
     { title: "لوحة التحكم — ALMOGHANI" },
     { name: "description", content: "لوحة تحكم مالك موقع ALMOGHANI LIVE." },
@@ -51,7 +51,7 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <Tabs defaultValue={TABS.includes(tab as never) ? tab : "channels"} dir="rtl" className="mt-6">
+        <Tabs defaultValue={tab && TABS.includes(tab as never) ? tab : "channels"} dir="rtl" className="mt-6">
           <TabsList className="flex h-auto flex-wrap justify-start gap-1">
             <TabsTrigger value="channels">القنوات</TabsTrigger>
             <TabsTrigger value="movies">الأفلام</TabsTrigger>
