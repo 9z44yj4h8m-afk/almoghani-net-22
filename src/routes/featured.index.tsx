@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Lock, Play, Tv } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { featuredChannels } from "@/lib/featured-channels";
+import { getFeaturedChannels } from "@/lib/featured-channel.functions";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 
-export const Route = createFileRoute("/featured/")({
+export const Route = createFileRoute("/featured/index")({
+  loader: () => getFeaturedChannels(),
   head: () => ({
     meta: [
       { title: "القنوات المميزة — ALMOGHANI LIVE" },
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/featured/")({
 });
 
 function FeaturedIndex() {
+  const items = Route.useLoaderData();
   return (
     <div className="min-h-screen bg-background text-foreground" dir="rtl">
       <header className="border-b border-border bg-surface-deep/80 px-4 py-4 sm:px-6">
@@ -63,7 +65,7 @@ function FeaturedIndex() {
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredChannels.map((tile) => (
+          {items.map((tile) => (
             <Link
               key={tile.id}
               to="/featured/$channel"
@@ -71,13 +73,23 @@ function FeaturedIndex() {
               className="featured-grid-card group"
             >
               <span className="relative block aspect-video overflow-hidden bg-vip-background">
-                <img
-                  src={satelliteWorld}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-full object-cover opacity-70 transition-transform duration-300 group-hover:scale-105"
-                />
+                {tile.logo ? (
+                  <img
+                    src={tile.logo}
+                    alt={`شعار ${tile.name}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full bg-white/95 object-contain p-6"
+                  />
+                ) : (
+                  <img
+                    src={satelliteWorld}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover opacity-70 transition-transform duration-300 group-hover:scale-105"
+                  />
+                )}
                 <span className="absolute inset-0 bg-player-overlay" />
                 <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-live px-2.5 py-1 text-[10px] font-black text-live-foreground">
                   <span className="h-1.5 w-1.5 rounded-full bg-live-foreground animate-live-pulse" />
