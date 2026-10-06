@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Link } from "@tanstack/react-router";
 import { ArrowUp, MessagesSquare, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
@@ -24,6 +23,12 @@ export function LiveChat() {
   const [sending, setSending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const [guestName, setGuestName] = useState("");
+  const [myIds, setMyIds] = useState<string[]>([]);
+  useEffect(() => {
+    setGuestName(localStorage.getItem("chat-name") ?? "");
+    try { setMyIds(JSON.parse(localStorage.getItem("chat-mine") ?? "[]")); } catch { /* ignore */ }
+  }, []);
 
   useEffect(() => {
     void supabase.from("chat_messages").select("id,user_id,display_name,body,created_at").order("created_at", { ascending: false }).limit(50)
@@ -47,12 +52,14 @@ export function LiveChat() {
   async function send(e: FormEvent) {
     e.preventDefault();
     const body = text.trim();
-    if (!body || !user) return;
+    if (!body) return;
+    if (!user) localStorage.setItem("chat-name", guestName.trim().slice(0, 30));
     setSending(true); setError("");
-    const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300) }).select("id,user_id,display_name,body,created_at").single();
+    const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300), display_name: user ? "" : guestName.trim().slice(0, 30), user_id: user ? user.id : null }).select("id,user_id,display_name,body,created_at").single();
     setSending(false);
     if (err) { setError(err.message.includes("slow") ? "انتظر لحظات قبل الرسالة التالية." : "تعذّر الإرسال."); return; }
     setText("");
+    if (data && !user) { const ids = [...myIds, data.id].slice(-50); setMyIds(ids); localStorage.setItem("chat-mine", JSON.stringify(ids)); }
     if (data) setMsgs((m) => m.some((x) => x.id === data.id) ? m : [...m, data]);
   }
 
@@ -78,13 +85,13 @@ export function LiveChat() {
         <div ref={listRef} className="mt-4 max-h-96 space-y-5 overflow-y-auto py-2" aria-live="polite">
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
-            const mine = m.user_id === user?.id;
+            const mine = user ? m.user_id === user.id : myIds.includes(m.id);
             return (
               <div key={m.id} className="flex gap-3">
                 <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl font-black ${mine ? "bg-accent text-accent-foreground" : "bg-primary/25 text-foreground"}`}>{(m.display_name || "ع").trim().charAt(0)}</span>
                 <div className="min-w-0 flex-1">
                   <p className="flex items-center gap-2"><b>{mine ? "أنت" : m.display_name || "عضو"}</b><span className="text-xs text-muted-foreground">{ago(m.created_at)}</span>
-                    {(mine || isAdmin) && <button type="button" aria-label="حذف الرسالة" className="ms-auto text-muted-foreground hover:text-destructive" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 className="h-3.5 w-3.5" /></button>}
+                    {((mine && user) || isAdmin) && <button type="button" aria-label="حذف الرسالة" className="ms-auto text-muted-foreground hover:text-destructive" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 className="h-3.5 w-3.5" /></button>}
                   </p>
                   <p className="mt-1 break-words text-foreground/90">{m.body}</p>
                 </div>
@@ -101,14 +108,13 @@ export function LiveChat() {
           ))}
         </div>
 
-        {user ? (
-          <form onSubmit={send} className="mt-4 flex items-center gap-2 rounded-2xl border border-border bg-background/60 p-2">
+        <form onSubmit={send} className="mt-4 space-y-2">
+          {!user && <input value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} placeholder="اسمك (اختياري)" aria-label="اسمك" className="h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground" />}
+          <div className="flex items-center gap-2 rounded-2xl border border-border bg-background/60 p-2">
             <input value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب تعليقًا للجميع…" aria-label="اكتب تعليقًا" className="h-11 min-w-0 flex-1 bg-transparent px-3 text-foreground outline-none placeholder:text-muted-foreground" />
             <button type="submit" disabled={sending || !text.trim()} aria-label="إرسال" className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground disabled:opacity-50"><ArrowUp className="h-5 w-5" /></button>
-          </form>
-        ) : (
-          <Link to="/auth" onClick={() => sessionStorage.setItem("member-destination", "/")} className="mt-4 block rounded-2xl border border-border bg-background/60 p-4 text-center text-sm font-bold text-accent">سجّل الدخول لتكتب في الشات</Link>
-        )}
+          </div>
+        </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
       </div>
     </section>
