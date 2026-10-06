@@ -1,4 +1,4 @@
-import { Bell, Maximize, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
+import { Bell, Maximize, Pause, Play, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type Hls from "hls.js";
 import { useServerFn } from "@tanstack/react-start";
@@ -62,6 +62,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   const [attempt, setAttempt] = useState(0);
   const [reloadKey, setReloadKey] = useState(0);
   const [levels, setLevels] = useState<{ index: number; height: number }[]>([]);
+  const [paused, setPaused] = useState(false);
   const isHls = Boolean(channel.streamUrl);
   const [ytId, setYtId] = useState(channel.youtubeId);
   const resolveLive = useServerFn(resolveYoutubeLive);
@@ -165,6 +166,10 @@ export function LivePlayer({ channel }: { channel: Channel }) {
       stallTimer = window.setTimeout(drop, 15000);
     };
     const onEnded = () => drop();
+    const onPlayEvt = () => setPaused(false);
+    const onPauseEvt = () => setPaused(true);
+    video.addEventListener("play", onPlayEvt);
+    video.addEventListener("pause", onPauseEvt);
     video.addEventListener("playing", onPlaying);
     video.addEventListener("waiting", onWaiting);
     video.addEventListener("stalled", onWaiting);
@@ -221,6 +226,8 @@ export function LivePlayer({ channel }: { channel: Channel }) {
       destroyed = true;
       window.clearTimeout(startTimer);
       window.clearTimeout(stallTimer);
+      video.removeEventListener("play", onPlayEvt);
+      video.removeEventListener("pause", onPauseEvt);
       video.removeEventListener("playing", onPlaying);
       video.removeEventListener("waiting", onWaiting);
       video.removeEventListener("stalled", onWaiting);
@@ -326,21 +333,35 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   const VolumeIcon =
     settings.muted || settings.volume === 0 ? VolumeX : settings.volume < 50 ? Volume1 : Volume2;
   const heights = [...new Set(levels.map((l) => l.height))].sort((a, b) => b - a);
-  const ytSrc = `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1`;
+  const ytSrc = `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1&controls=0`;
 
   return (
     <div>
       <div ref={shellRef} className="relative aspect-video w-full overflow-hidden bg-surface-deep">
         {isHls ? (
-          <video
-            key={reloadKey}
-            ref={videoRef}
-            className="h-full w-full bg-surface-deep"
-            controls
-            autoPlay
-            muted
-            playsInline
-          />
+          <div className="relative h-full w-full">
+            <video
+              key={reloadKey}
+              ref={videoRef}
+              className="h-full w-full bg-surface-deep"
+              autoPlay
+              muted
+              playsInline
+              onClick={togglePlay}
+            />
+            <button
+              type="button"
+              onClick={togglePlay}
+              aria-label={paused ? "تشغيل البث" : "إيقاف البث مؤقتًا"}
+              className="absolute inset-0 grid place-items-center"
+            >
+              <span
+                className={`grid h-14 w-14 place-items-center rounded-full bg-background/60 text-foreground backdrop-blur transition-opacity duration-200 ${paused ? "opacity-100" : "opacity-0"}`}
+              >
+                {paused ? <Play className="h-6 w-6 fill-current" /> : <Pause className="h-6 w-6" />}
+              </span>
+            </button>
+          </div>
         ) : (
           <iframe
             key={reloadKey}
