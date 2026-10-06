@@ -1,15 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { PRIVATE_PIN } from "../private-movies.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const kind = z.enum(["live", "movie", "series"]);
 const pin = z.string().max(200);
-async function check(p: string) {
-  if (p === PRIVATE_PIN) return;
-  throw new Error("رقم سري خاطئ");
-}
-
 const requireLibraryAccess = requireSupabaseAuth;
 
 export const getLibraryGroups = createServerFn({ method: "POST" })

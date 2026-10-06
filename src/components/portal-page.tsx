@@ -27,9 +27,9 @@ import {
 import { type FormEvent, startTransition, useEffect, useState } from "react";
 import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 
-import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
-import mosqueBg from "@/assets/mosque-bg.png.asset.json";
-import riyadhBg from "@/assets/riyadh-bg.png.asset.json";
+import satelliteMark from "@/assets/satellite-mark.jpg";
+import satelliteWorld from "@/assets/satellite-world.jpg";
+import { featuredChannels } from "@/lib/featured-channels";
 import { InstallAppButton } from "@/components/install-app-button";
 import { LivePlayer } from "@/components/live-player";
 import { Button } from "@/components/ui/button";
@@ -55,14 +55,7 @@ const sections: {
 
 export const liveSections = sections;
 
-const premiumTiles = [
-  { name: "beIN SPORTS 1", description: "مباريات وبرامج رياضية مباشرة", channelId: "bein-xtra" },
-  { name: "SSC 1", description: "الرياضة السعودية وأبرز المنافسات", channelId: "saudi-sports" },
-  { name: "أبوظبي الرياضية", description: "بطولات وتحليلات رياضية مختارة", channelId: "ktv-sport" },
-  { name: "الكأس", description: "تغطية رياضية عربية على مدار اليوم", channelId: "oman-sport" },
-  { name: "NETFLIX", description: "أفلام ومسلسلات من المكتبة الخاصة", channelId: "ar-aflam" },
-  { name: "شاهد", description: "مسلسلات وبرامج عربية مختارة", channelId: "mbc-drama" },
-].map((tile) => ({ ...tile, channel: channels.find((channel) => channel.id === tile.channelId) }));
+const premiumTiles = featuredChannels;
 
 const privateLibrarySections = [
   { kind: "live", name: "البث المباشر", description: "جميع القنوات مرتبة داخل تصنيفات واضحة", Icon: Tv, imageChannelId: "saudi-sports" },
@@ -75,12 +68,6 @@ export function PortalPage({ section }: { section?: string }) {
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
-  function startPremium(channelId: string) {
-    const ch = channels.find((c) => c.id === channelId);
-    if (!ch) return;
-    setSelected(ch);
-    document.getElementById("player")?.scrollIntoView({ behavior: "smooth" });
-  }
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -183,7 +170,7 @@ export function PortalPage({ section }: { section?: string }) {
               </button>
             )}
             <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
-            <img src={kaabaEmblem} alt="" width={816} height={816} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
+            <img src={satelliteMark} alt="" width={1024} height={1024} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
             <span className="h-9 w-px bg-border" />
             <span className="min-w-0 text-center">
               <span className="block font-display text-xs font-bold text-foreground underline decoration-primary underline-offset-4">almoghani.net</span>
@@ -213,6 +200,7 @@ export function PortalPage({ section }: { section?: string }) {
             >
               <Search className="h-5 w-5" />
             </button>
+            <Button asChild variant="ghost" size="sm"><Link to="/auth">دخول الأعضاء</Link></Button>
             <InstallAppButton />
             <button type="button" className="icon-button hidden sm:grid" aria-label="التنبيهات" title="التنبيهات">
               <Bell className="h-5 w-5" />
@@ -280,7 +268,7 @@ export function PortalPage({ section }: { section?: string }) {
 
       <main className="pb-28 md:pb-12">
         <section id="player" className="relative border-b border-border/60">
-          <div className="hero-scene" style={{ backgroundImage: `url(${section === "islamic" ? mosqueBg.url : riyadhBg.url})` }} aria-hidden="true" />
+          <img src={satelliteWorld} width={1536} height={1024} className="hero-scene h-full w-full object-cover" alt="دش ورسيفر وأقمار صناعية وتلفزيونات" />
           <div className="relative mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
             <div className="mb-4 text-center sm:mb-7">
               <h1 className="gold-title font-display text-2xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
@@ -326,17 +314,17 @@ export function PortalPage({ section }: { section?: string }) {
               </div>
               <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
               {premiumTiles.map((tile) => (
-                <button
-                  key={tile.name}
-                  type="button"
-                  onClick={() => startPremium(tile.channelId)}
+                <Link
+                  key={tile.id}
+                  to="/featured/$channel"
+                  params={{ channel: tile.id }}
                   className="featured-channel-card group"
                 >
                   <span className="relative block aspect-video overflow-hidden bg-vip-background">
-                    {tile.channel && <img src={tile.channel.thumbnail} alt={`صورة ${tile.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />}
+                    <img src={satelliteWorld} alt={`مكتبة ${tile.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                     <span className="absolute inset-0 bg-player-overlay" />
                     <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-live px-2.5 py-1 text-[10px] font-black text-live-foreground">
-                      <span className="h-1.5 w-1.5 rounded-full bg-live-foreground animate-live-pulse" /> مباشر
+                      <span className="h-1.5 w-1.5 rounded-full bg-live-foreground animate-live-pulse" /> {tile.category}
                     </span>
                     <span className="absolute bottom-3 left-3 grid h-9 w-9 place-items-center rounded-full bg-vip-cyan text-vip-background">
                       <Play className="h-4 w-4 fill-current" />
@@ -346,7 +334,7 @@ export function PortalPage({ section }: { section?: string }) {
                     <span className="block truncate font-display text-base font-black sm:text-lg">{tile.name}</span>
                     <span className="mt-1 block truncate text-xs font-semibold text-vip-foreground/60">{tile.description}</span>
                   </span>
-                </button>
+                </Link>
               ))}
               </div>
             </div>

@@ -1,10 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Delete, Lock, Play, Unlock, X } from "lucide-react";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
-import { unlockPrivateMovies } from "@/lib/private-movies.functions";
 
 export const Route = createFileRoute("/movies")({
   loader: () => getFeaturedMovies(),
@@ -39,66 +38,11 @@ function Cover({ id, alt, eager }: { id: string; alt: string; eager?: boolean })
   );
 }
 
-export function PinPad({ onClose, onUnlock }: { onClose: () => void; onUnlock: (m: Movie[], pin: string) => void }) {
-  const unlock = useServerFn(unlockPrivateMovies);
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState(false);
-  const [busy, setBusy] = useState(false);
-
-  async function press(d: string) {
-    if (busy) return;
-    const next = (pin + d).slice(0, 4);
-    setPin(next);
-    setError(false);
-    if (next.length === 4) {
-      setBusy(true);
-      const r = await unlock({ data: { pin: next } });
-      setBusy(false);
-      if (r.ok) { sessionStorage.setItem("vip-pin", next); onUnlock(r.movies, next); }
-      else {
-        setError(true);
-        setPin("");
-        navigator.vibrate?.(200);
-      }
-    }
-  }
-
-  return (
-    <div className="fixed inset-0 z-[70] grid place-items-center bg-background/95 p-6 backdrop-blur" dir="rtl">
-      <div className={`w-full max-w-xs text-center ${error ? "animate-pulse" : ""}`}>
-        <Lock className="mx-auto h-10 w-10 text-primary" />
-        <h2 className="mt-3 text-xl font-black">أفلام خاصة</h2>
-        <p className="mt-1 text-sm text-muted-foreground">أدخل الرقم السري</p>
-        <div className="my-6 flex justify-center gap-3" dir="ltr">
-          {[0, 1, 2, 3].map((i) => (
-            <span key={i} className={`h-4 w-4 rounded-full border-2 ${error ? "border-destructive" : "border-primary"} ${i < pin.length ? "bg-primary" : ""}`} />
-          ))}
-        </div>
-        {error && <p className="-mt-3 mb-3 text-sm font-bold text-destructive">رقم سري خاطئ</p>}
-        <div className="grid grid-cols-3 gap-3" dir="ltr">
-          {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
-            <button key={d} type="button" onClick={() => press(d)} className="h-16 rounded-full border border-border bg-card text-2xl font-black active:bg-primary active:text-primary-foreground">
-              {d}
-            </button>
-          ))}
-          <button type="button" onClick={onClose} className="h-16 text-sm font-bold text-muted-foreground">إلغاء</button>
-          <button type="button" onClick={() => press("0")} className="h-16 rounded-full border border-border bg-card text-2xl font-black active:bg-primary active:text-primary-foreground">0</button>
-          <button type="button" onClick={() => setPin((p) => p.slice(0, -1))} className="grid h-16 place-items-center text-muted-foreground" aria-label="حذف">
-            <Delete className="h-6 w-6" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function MoviesPage() {
   const all = Route.useLoaderData();
-  const [filter, setFilter] = useState<"الكل" | Movie["lang"] | "خاص">("الكل");
+  const [filter, setFilter] = useState<"الكل" | Movie["lang"]>("الكل");
   const [playing, setPlaying] = useState<Movie | null>(null);
-  const [privateList, setPrivateList] = useState<Movie[] | null>(null);
-  const [askPin, setAskPin] = useState(false);
-  const list = filter === "خاص" ? privateList ?? [] : filter === "الكل" ? all : all.filter((m) => m.lang === filter);
+  const list = filter === "الكل" ? all : all.filter((m) => m.lang === filter);
 
   return (
     <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
@@ -126,32 +70,8 @@ function MoviesPage() {
               {f}
             </button>
           ))}
-          <button
-            type="button"
-            onClick={() => (privateList ? setFilter("خاص") : setAskPin(true))}
-            className={`flex items-center gap-1 rounded-full border px-4 py-1.5 text-sm font-bold ${filter === "خاص" ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
-          >
-            {privateList ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />} خاص
-          </button>
-          {privateList && (
-            <button
-              type="button"
-              onClick={() => {
-                setPrivateList(null);
-                setFilter("الكل");
-              }}
-              className="ms-auto text-xs font-bold text-muted-foreground"
-            >
-              قفل
-            </button>
-          )}
+          <Button asChild variant="outline" size="sm"><Link to="/vip" search={{ kind: "movie" }}><Lock className="h-3.5 w-3.5" /> خاص</Link></Button>
         </div>
-        {filter === "خاص" && list.length === 0 && (
-          <Link to="/vip" className="mx-4 mt-6 block rounded-2xl border border-primary bg-card p-5 text-center font-black text-primary">
-            افتح المكتبة الخاصة: بث مباشر • أفلام • مسلسلات ←
-          </Link>
-        )}
-
         {/* Vertical list with compact covers */}
         <div className="mt-4 grid gap-3 px-4 lg:grid-cols-2">
           {list.map((m, i) => (
@@ -181,17 +101,6 @@ function MoviesPage() {
           ))}
         </div>
       </main>
-
-      {askPin && (
-        <PinPad
-          onClose={() => setAskPin(false)}
-          onUnlock={(m) => {
-            setPrivateList(m);
-            setFilter("خاص");
-            setAskPin(false);
-          }}
-        />
-      )}
 
       {playing && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-background">

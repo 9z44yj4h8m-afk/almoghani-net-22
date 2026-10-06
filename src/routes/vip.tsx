@@ -20,7 +20,7 @@ import { InlineStream } from "@/components/inline-stream";
 import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 export const Route = createFileRoute("/vip")({
-  validateSearch: (search: Record<string, unknown>): { kind?: string; group?: string; q?: string } => ({ kind: typeof search.kind === "string" ? search.kind : undefined, group: typeof search.group === "string" ? search.group : undefined, q: typeof search.q === "string" ? search.q : undefined }),
+  validateSearch: (search: Record<string, unknown>): { kind?: string | undefined; group?: string | undefined; q?: string | undefined } => ({ kind: typeof search["kind"] === "string" ? search["kind"] : undefined, group: typeof search["group"] === "string" ? search["group"] : undefined, q: typeof search["q"] === "string" ? search["q"] : undefined }),
   head: () => ({
     meta: [
       { title: "المكتبة الخاصة — ALMOGHANI LIVE" },
