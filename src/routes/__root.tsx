@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
+import { useSiteConfig } from "@/lib/site-config";
 
 function NotFoundComponent() {
   return (
@@ -129,7 +130,19 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><Outlet /></MemberProvider>
+      <MemberProvider><SiteDesignStyle /><Outlet /></MemberProvider>
     </QueryClientProvider>
   );
+}
+
+const HEX = /^#[0-9a-fA-F]{6}$/;
+function SiteDesignStyle() {
+  const { data } = useSiteConfig();
+  const d = data?.design;
+  if (!d) return null;
+  const rules: string[] = [];
+  if (HEX.test(d.primary)) rules.push(`--primary:${d.primary};`);
+  if (HEX.test(d.accent)) rules.push(`--accent:${d.accent};--sky:${d.accent};--vip-cyan:${d.accent};--ring:${d.accent};`);
+  if (!rules.length) return null;
+  return <style>{`:root{${rules.join("")}}`}</style>;
 }

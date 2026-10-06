@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      channel_overrides: {
+        Row: {
+          category: string | null
+          channel_id: string
+          hidden: boolean
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          channel_id: string
+          hidden?: boolean
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          channel_id?: string
+          hidden?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       channel_schedules: {
         Row: {
           channel_id: string
@@ -41,6 +62,75 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_channels: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          logo: string
+          name: string
+          stream_url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string
+          id: string
+          logo?: string
+          name: string
+          stream_url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          logo?: string
+          name?: string
+          stream_url?: string
+        }
+        Relationships: []
+      }
+      custom_movies: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          title: string
+          youtube_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          title: string
+          youtube_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          title?: string
+          youtube_id?: string
+        }
+        Relationships: []
+      }
+      hidden_movies: {
+        Row: {
+          created_at: string
+          movie_id: string
+        }
+        Insert: {
+          created_at?: string
+          movie_id: string
+        }
+        Update: {
+          created_at?: string
+          movie_id?: string
+        }
+        Relationships: []
+      }
       member_library_sessions: {
         Row: {
           entered_at: string
@@ -62,24 +152,60 @@ export type Database = {
         }
         Relationships: []
       }
+      private_settings: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
           display_name: string
           last_login_at: string | null
+          suspended: boolean
           user_id: string
         }
         Insert: {
           created_at?: string
           display_name?: string
           last_login_at?: string | null
+          suspended?: boolean
           user_id: string
         }
         Update: {
           created_at?: string
           display_name?: string
           last_login_at?: string | null
+          suspended?: boolean
           user_id?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
         }
         Relationships: []
       }
@@ -106,6 +232,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_set_library_pin: { Args: { p_pin: string }; Returns: boolean }
+      admin_set_member_suspended: {
+        Args: { p_suspended: boolean; p_user: string }
+        Returns: boolean
+      }
       claim_owner_admin: { Args: never; Returns: boolean }
       ensure_member_profile: { Args: never; Returns: undefined }
       has_role: {

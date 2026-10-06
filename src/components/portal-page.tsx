@@ -31,7 +31,8 @@ import { InstallAppButton } from "@/components/install-app-button";
 import { BroadcastHero } from "@/components/broadcast-hero";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
-import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
+import { type Channel, type ChannelCategory } from "@/lib/channels";
+import { useCatalog, useSiteConfig, defaultTexts } from "@/lib/site-config";
 import { Lock } from "lucide-react";
 
 const sections: {
@@ -60,6 +61,10 @@ const privateLibrarySections = [
 ] as const;
 
 export function PortalPage({ section }: { section?: string }) {
+  const channels = useCatalog();
+  const { data: siteConfig } = useSiteConfig();
+  const texts = siteConfig?.texts ?? defaultTexts;
+  const bannerImage = siteConfig?.design.background?.startsWith("https://") ? siteConfig.design.background : satelliteWorld;
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
@@ -267,7 +272,7 @@ export function PortalPage({ section }: { section?: string }) {
             <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
               <div className="mb-4 flex items-end justify-between gap-3 border-t border-vip-foreground/10 pt-8">
                 <div>
-                  <p className="font-display text-xs font-extrabold text-vip-cyan" dir="ltr">Almoghani Smarter pro</p>
+                  <p className="font-display text-xs font-extrabold text-vip-cyan" dir="ltr">{texts.proLabel}</p>
                   <h2 id="private-library-title" className="mt-1 font-display text-xl font-black sm:text-3xl">المكتبة الخاصة</h2>
                 </div>
                 <Lock className="h-5 w-5 text-vip-cyan" aria-label="مكتبة الأعضاء" />
@@ -331,7 +336,7 @@ export function PortalPage({ section }: { section?: string }) {
             </details>
           )}
           <section className="smarter-banner relative isolate overflow-hidden border-y border-primary/50" aria-labelledby="smarter-banner-title">
-            <img src={satelliteWorld} alt="أقمار صناعية ودش ورسيفر وتلفزيونات" width={1536} height={1024} loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+            <img src={bannerImage} alt="أقمار صناعية ودش ورسيفر وتلفزيونات" width={1536} height={1024} loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
             <div className="smarter-banner-shade absolute inset-0 -z-10" />
             <Link
               to="/featured"
@@ -340,8 +345,8 @@ export function PortalPage({ section }: { section?: string }) {
             >
               <div>
                 <p className="mb-3 flex items-center gap-2 text-xs font-black text-accent"><Signal className="h-4 w-4" />almoghani.net</p>
-                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-4xl font-black leading-[1.05] sm:text-6xl">almoghani smarter</h2>
-                <p className="mt-3 text-2xl font-black text-foreground sm:text-3xl">جميع القنوات</p>
+                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-4xl font-black leading-[1.05] sm:text-6xl">{texts.bannerTitle}</h2>
+                <p className="mt-3 text-2xl font-black text-foreground sm:text-3xl">{texts.bannerSubtitle}</p>
                 <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-sky/50 bg-sky/10 px-4 py-2 text-sm font-black text-sky">
                   <Sparkles className="h-4 w-4" />
                   القنوات المميزة

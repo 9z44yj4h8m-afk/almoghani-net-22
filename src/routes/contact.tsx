@@ -1,14 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Mail, MessageCircle } from "lucide-react";
+import { ArrowRight, Mail, MessageCircle, AtSign, Camera, Ghost } from "lucide-react";
+import { useSiteConfig, defaultContacts } from "@/lib/site-config";
 
-// حسابات سناب/إكس/انستقرام تُضاف هنا عند وصولها من المالك؛ الفارغ لا يظهر.
-const contacts = [
-  { name: "واتساب", value: "0557073007", href: "https://wa.me/966557073007", icon: MessageCircle },
-  { name: "البريد", value: "a0552525337@gmail.com", href: "mailto:a0552525337@gmail.com", icon: Mail },
-  { name: "سناب شات", value: "", href: "", icon: null },
-  { name: "إكس (تويتر)", value: "", href: "", icon: null },
-  { name: "انستقرام", value: "", href: "", icon: null },
-];
+function buildContacts(c: typeof defaultContacts) {
+  const digits = c.whatsapp.replace(/\D/g, "").replace(/^0/, "966");
+  const handle = (v: string) => v.trim().replace(/^@/, "");
+  return [
+    { name: "واتساب", value: c.whatsapp, href: c.whatsapp ? `https://wa.me/${digits}` : "", icon: MessageCircle },
+    { name: "البريد", value: c.email, href: c.email ? `mailto:${c.email}` : "", icon: Mail },
+    { name: "سناب شات", value: c.snapchat, href: c.snapchat ? `https://www.snapchat.com/add/${handle(c.snapchat)}` : "", icon: Ghost },
+    { name: "إكس (تويتر)", value: c.x, href: c.x ? `https://x.com/${handle(c.x)}` : "", icon: AtSign },
+    { name: "انستقرام", value: c.instagram, href: c.instagram ? `https://instagram.com/${handle(c.instagram)}` : "", icon: Camera },
+  ];
+}
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [
@@ -23,7 +27,8 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const list = contacts.filter((c) => c.href);
+  const { data } = useSiteConfig();
+  const list = buildContacts(data?.contacts ?? defaultContacts).filter((c) => c.href);
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border px-6 py-4"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
