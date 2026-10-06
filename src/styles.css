@@ -37,32 +37,71 @@
 }
 
 :root {
-  --background: oklch(0.19 0.008 165);
+  --background: oklch(0.12 0.012 280);
   --foreground: oklch(0.97 0.01 258);
-  --surface: oklch(0.24 0.012 165);
-  --surface-deep: oklch(0.14 0.007 165);
-  --card: oklch(0.24 0.012 165);
+  --surface: oklch(0.18 0.018 280);
+  --surface-deep: oklch(0.1 0.01 280);
+  --card: oklch(0.18 0.018 280);
   --card-foreground: oklch(0.97 0.01 258);
-  --primary: oklch(0.62 0.19 150);
+  --primary: oklch(0.6 0.28 305);
   --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.25 0.05 165);
+  --secondary: oklch(0.23 0.045 295);
   --secondary-foreground: oklch(0.93 0.015 258);
-  --muted: oklch(0.23 0.035 168);
-  --muted-foreground: oklch(0.75 0.03 150);
-  --accent: oklch(0.8 0.13 85);
-  --accent-foreground: oklch(0.18 0.03 170);
-  --border: oklch(0.55 0.09 110 / 45%);
-  --input: oklch(0.32 0.05 165);
-  --ring: oklch(0.8 0.13 85);
+  --muted: oklch(0.23 0.02 280);
+  --muted-foreground: oklch(0.74 0.018 280);
+  --accent: oklch(0.8 0.15 205);
+  --accent-foreground: oklch(0.12 0.012 280);
+  --border: oklch(0.65 0.05 285 / 24%);
+  --input: oklch(0.3 0.035 280);
+  --ring: oklch(0.8 0.15 205);
   --live: oklch(0.62 0.24 20);
   --live-foreground: oklch(0.99 0.005 260);
   --signal: oklch(0.62 0.24 20);
-  --sky: oklch(0.82 0.13 85);
-  --vip-background: oklch(0.17 0.008 165);
-  --vip-surface: oklch(0.24 0.012 165);
-  --vip-purple: oklch(0.56 0.13 160);
-  --vip-cyan: oklch(0.8 0.13 85);
+  --sky: oklch(0.8 0.15 205);
+  --vip-background: oklch(0.12 0.012 280);
+  --vip-surface: oklch(0.18 0.018 280);
+  --vip-purple: oklch(0.52 0.25 295);
+  --vip-cyan: oklch(0.8 0.15 205);
   --vip-foreground: oklch(0.98 0.01 255);
+  --broadcast-gradient: linear-gradient(100deg, var(--primary), var(--vip-purple) 40%, var(--sky));
+  --broadcast-shadow: 0 0 24px color-mix(in oklab, var(--primary) 40%, transparent), 0 0 18px color-mix(in oklab, var(--sky) 28%, transparent);
+  --arena-overlay: linear-gradient(to bottom, color-mix(in oklab, var(--background) 25%, transparent), color-mix(in oklab, var(--background) 38%, transparent) 65%, var(--background)), linear-gradient(90deg, color-mix(in oklab, var(--background) 80%, transparent), transparent 70%);
+}
+
+@utility broadcast-button {
+  background: var(--broadcast-gradient);
+  box-shadow: var(--broadcast-shadow);
+  transition: filter 180ms ease, transform 180ms ease;
+  &:active { transform: scale(0.98); }
+}
+@utility arena-shade { background: var(--arena-overlay); }
+@utility arena-title {
+  background: linear-gradient(90deg, var(--primary), var(--foreground) 50%, var(--sky));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+@utility arena-feature {
+  color: var(--primary);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--primary) 15%, transparent);
+}
+@utility arena-player-frame {
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--foreground) 55%, var(--sky));
+  border-radius: 8px;
+  background: var(--surface-deep);
+  padding: 6px;
+  box-shadow: var(--broadcast-shadow), 0 0 0 5px color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+.arena-layout { display: grid; gap: 2rem; align-items: center; }
+.arena-intro { text-align: left; }
+@media (min-width: 1024px) {
+  .arena-layout { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.55fr); gap: 3rem; }
+  .broadcast-hero { min-height: 650px; display: grid; align-items: center; }
+}
+@media (max-width: 1023px) {
+  .arena-intro { text-align: center; }
+  .arena-intro > p:first-child { justify-content: center; }
 }
 
 @layer base {
@@ -158,7 +197,7 @@
   overflow: hidden;
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   border-color: color-mix(in oklab, var(--sky) 40%, var(--border));
   background: var(--card);
   color: var(--card-foreground);
@@ -304,7 +343,7 @@
 @utility portal-wordmark {
   font-family: "Sora", sans-serif;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--foreground);
   text-shadow: 0 3px 0 color-mix(in oklab, var(--primary) 70%, var(--background)), 0 0 24px color-mix(in oklab, var(--primary) 80%, transparent);
 }
@@ -326,7 +365,7 @@
     background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 15%, transparent), color-mix(in oklab, var(--background) 45%, transparent) 55%, var(--background)); }
 }
 @utility gold-title {
-  background: linear-gradient(180deg, oklch(0.95 0.08 95), oklch(0.78 0.14 80));
+  background: linear-gradient(180deg, var(--foreground), var(--sky));
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 3px 10px color-mix(in oklab, var(--background) 80%, transparent));
 }
