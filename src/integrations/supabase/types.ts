@@ -62,6 +62,45 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_messages: {
+        Row: {
+          body: string
+          created_at: string
+          display_name: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          user_id?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chat_reactions: {
+        Row: {
+          count: number
+          emoji: string
+        }
+        Insert: {
+          count?: number
+          emoji: string
+        }
+        Update: {
+          count?: number
+          emoji?: string
+        }
+        Relationships: []
+      }
       custom_channels: {
         Row: {
           category: string
@@ -232,6 +271,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_chat_reaction: { Args: { p_emoji: string }; Returns: number }
       admin_set_library_pin: { Args: { p_pin: string }; Returns: boolean }
       admin_set_member_suspended: {
         Args: { p_suspended: boolean; p_user: string }
