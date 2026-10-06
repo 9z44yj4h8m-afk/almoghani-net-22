@@ -169,7 +169,7 @@ export function PortalPage({ section }: { section?: string }) {
                 <ArrowRight className="h-5 w-5" />
               </button>
             )}
-            <a href="#player" className="flex min-w-0 items-center gap-3" aria-label="ALMOGHANI">
+            <a href="#player" className="flex min-w-0 shrink-0 items-center gap-3" aria-label="ALMOGHANI">
             <img src={satelliteMark} alt="" width={1024} height={1024} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
             <span className="h-9 w-px bg-border" />
             <span className="min-w-0 text-center">
@@ -184,9 +184,7 @@ export function PortalPage({ section }: { section?: string }) {
               <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
               <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
               <Link to="/movies" className="text-sky transition-colors hover:text-primary">أفلام مميزة</Link>
-              {sections.length > 1 && sections.map((s) => (
-                <Link key={s.slug} to="/channels/$section" params={{ section: s.slug }} className="transition-colors hover:text-sky" activeProps={{ className: "text-sky" }}>{s.title}</Link>
-              ))}
+              <Link to="/live" className="transition-colors hover:text-sky">البث المباشر</Link>
             </nav>
             <button
               type="button"

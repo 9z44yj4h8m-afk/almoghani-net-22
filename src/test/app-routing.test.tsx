@@ -6,6 +6,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { routeTree } from "@/routeTree.gen";
 
 function renderAt(path: string) {
+  // Browser unit tests mount route content, not Start's full-document shell.
+  routeTree.update({ shellComponent: ({ children }) => <>{children}</> });
   const queryClient = new QueryClient();
   const router = createRouter({
     routeTree,
