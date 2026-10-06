@@ -4,7 +4,6 @@ import {
   ArrowRight,
   ArrowUpLeft,
   Baby,
-  Bell,
   Clapperboard,
   Film,
   Home,
@@ -18,7 +17,6 @@ import {
   Sparkles,
   Trophy,
   Tv,
-  Volume2,
   WandSparkles,
   type LucideIcon,
   RefreshCw,
@@ -30,7 +28,7 @@ import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 import satelliteMark from "@/assets/satellite-mark.jpg";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
-import { LivePlayer } from "@/components/live-player";
+import { BroadcastHero } from "@/components/broadcast-hero";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { channels, type Channel, type ChannelCategory } from "@/lib/channels";
@@ -66,6 +64,7 @@ export function PortalPage({ section }: { section?: string }) {
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
+  const [playerActive, setPlayerActive] = useState(Boolean(section));
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -74,7 +73,7 @@ export function PortalPage({ section }: { section?: string }) {
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("channel");
     const found = id && channels.find((c) => c.id === id);
-    if (found) { setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
+    if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
   const searchWithAi = useServerFn(searchChannelsWithAi);
   const navigate = useNavigate();
@@ -143,18 +142,18 @@ export function PortalPage({ section }: { section?: string }) {
     // Scroll first (instant feedback), then swap the stream at lower priority so taps feel immediate.
     document.getElementById("player")?.scrollIntoView({ behavior: "auto", block: "start" });
     setSearchOpen(false);
+    setPlayerActive(true);
     startTransition(() => setSelected(channel));
   }
 
   if (!selected) return null;
   const previewMode = !section;
   const heroTitle = section === "live" || !section ? "القنوات المباشرة" : `قنوات ${visibleSections[0]?.title ?? ""} مباشرة`;
-  const heroSub = section === "islamic" ? "تلاوات وبرامج إيمانية على مدار الساعة" : "تابع القنوات المباشرة من مكان واحد";
 
   return (
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
+        <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-1 sm:gap-2">
             {section && (
               <button
@@ -168,23 +167,24 @@ export function PortalPage({ section }: { section?: string }) {
               </button>
             )}
             <a href="#player" className="flex min-w-0 shrink-0 items-center gap-3" aria-label="ALMOGHANI">
-            <img src={satelliteMark} alt="" width={1024} height={1024} className="h-11 w-11 shrink-0 rounded-full border border-primary object-cover" />
-            <span className="h-9 w-px bg-border" />
-            <span className="min-w-0 text-center">
-              <span className="block font-display text-xs font-bold text-foreground underline decoration-primary underline-offset-4">almoghani.net</span>
-              <span className="block truncate text-sm font-bold text-muted-foreground sm:text-base">صفحة شخصية من اجتهادي</span>
+            <img src={satelliteMark} alt="" width={1024} height={1024} className="h-10 w-10 shrink-0 rounded-md border border-primary/50 object-cover" />
+                        <span className="min-w-0 text-center">
+              <span className="block font-display text-base font-black text-foreground sm:text-lg">ALMOGHANI</span>
+              <span className="block truncate text-[10px] font-bold text-sky sm:text-xs">البث المباشر</span>
             </span>
           </a>
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
+              <Link to="/" className="border-b-2 border-primary py-2 text-primary">الرئيسية</Link>
               <Link to="/contact" className="transition-colors hover:text-sky">للتواصل</Link>
               <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
               <Link to="/vip" search={{ kind: "live" }} className="text-sky transition-colors hover:text-primary">almoghani smarter</Link>
               <Link to="/live" className="transition-colors hover:text-sky">البث المباشر</Link>
             </nav>
-            <button
+            <Button
+              variant="ghost" size="icon"
               type="button"
               onClick={() => {
                 setSearchOpen((value) => !value);
@@ -195,12 +195,9 @@ export function PortalPage({ section }: { section?: string }) {
               title="بحث"
             >
               <Search className="h-5 w-5" />
-            </button>
-            <Button asChild variant="ghost" size="sm"><Link to="/auth">دخول الأعضاء</Link></Button>
+            </Button>
+            <Button asChild variant="broadcast" size="sm" className="rounded-full px-4 font-bold"><Link to="/auth">تسجيل الدخول</Link></Button>
             <InstallAppButton />
-            <button type="button" className="icon-button hidden sm:grid" aria-label="التنبيهات" title="التنبيهات">
-              <Bell className="h-5 w-5" />
-            </button>
           </div>
         </div>
         {searchOpen && (
@@ -263,40 +260,7 @@ export function PortalPage({ section }: { section?: string }) {
       </header>
 
       <main className="pb-28 md:pb-12">
-        <section id="player" className="relative border-b border-border/60">
-          <img src={satelliteWorld} width={1536} height={1024} className="hero-scene h-full w-full object-cover" alt="دش ورسيفر وأقمار صناعية وتلفزيونات" />
-          <div className="relative mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
-            <div className="mb-4 text-center sm:mb-7">
-              <h1 className="gold-title font-display text-2xl font-black leading-tight sm:text-5xl">{heroTitle}</h1>
-              <p className="mt-2 text-sm font-bold text-foreground/90 sm:text-lg">{heroSub}</p>
-            </div>
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <p className="min-w-0 truncate font-display text-base font-black sm:text-xl">{selected.name}</p>
-              <div className="live-badge shrink-0">
-                <span className="h-2 w-2 rounded-full bg-live-foreground animate-live-pulse" />
-                LIVE
-              </div>
-            </div>
-            <div className="player-shell animate-fade-up rounded-xl border-sky/60">
-              <LivePlayer key={selected.id} channel={selected} />
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border bg-surface px-4 py-3 sm:px-5 sm:py-4">
-                <div className="flex min-w-0 items-center gap-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-sky">
-                    <Signal className="h-5 w-5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate font-bold">{selected.name}</p>
-                    <p className="truncate text-xs text-muted-foreground sm:text-sm">{selected.description}</p>
-                  </div>
-                </div>
-                <div className="hidden items-center gap-2 text-xs font-bold text-muted-foreground sm:flex">
-                  <Volume2 className="h-4 w-4 text-sky" />
-                  يعمل داخل الموقع
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
 
         {previewMode && (
           <section className="bg-vip-background pb-10 text-vip-foreground sm:pb-14" aria-labelledby="private-library-title">
@@ -306,7 +270,7 @@ export function PortalPage({ section }: { section?: string }) {
                   <p className="font-display text-xs font-extrabold text-vip-cyan" dir="ltr">Almoghani Smarter pro</p>
                   <h2 id="private-library-title" className="mt-1 font-display text-xl font-black sm:text-3xl">المكتبة الخاصة</h2>
                 </div>
-                <span className="text-xs font-bold text-vip-foreground/55">ثلاثة أقسام مستقلة</span>
+                <Lock className="h-5 w-5 text-vip-cyan" aria-label="مكتبة الأعضاء" />
               </div>
               <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
               {privateLibrarySections.map(({ kind, name, description, Icon, imageChannelId }) => {
