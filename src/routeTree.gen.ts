@@ -20,6 +20,7 @@ import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
+import { Route as FeaturedChannelRouteImport } from './routes/featured.$channel'
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 
 const IndexRoute = IndexRouteImport.update({
@@ -77,6 +78,11 @@ const ChannelsSectionRoute = ChannelsSectionRouteImport.update({
   path: '/channels/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeaturedChannelRoute = FeaturedChannelRouteImport.update({
+  id: '/featured/$channel',
+  path: '/featured/$channel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHlsRoute = ApiPublicHlsRouteImport.update({
   id: '/api/public/hls',
   path: '/api/public/hls',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/featured/$channel': typeof FeaturedChannelRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/featured/$channel': typeof FeaturedChannelRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
+  '/featured/$channel': typeof FeaturedChannelRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
+    | '/featured/$channel'
     | '/api/public/hls'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
+    | '/featured/$channel'
     | '/api/public/hls'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/api/chat'
     | '/channels/$section'
+    | '/featured/$channel'
     | '/api/public/hls'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   VipRoute: typeof VipRoute
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
+  FeaturedChannelRoute: typeof FeaturedChannelRoute
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
 }
 
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsSectionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/featured/$channel': {
+      id: '/featured/$channel'
+      path: '/featured/$channel'
+      fullPath: '/featured/$channel'
+      preLoaderRoute: typeof FeaturedChannelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hls': {
       id: '/api/public/hls'
       path: '/api/public/hls'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   VipRoute: VipRoute,
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,
+  FeaturedChannelRoute: FeaturedChannelRoute,
   ApiPublicHlsRoute: ApiPublicHlsRoute,
 }
 export const routeTree = rootRouteImport
