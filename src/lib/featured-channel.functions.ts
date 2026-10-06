@@ -11,12 +11,17 @@ const normalize = (value: string) => value.toLowerCase().replace(/[^\p{L}\p{N}]/
 
 export const getFeaturedChannels = createServerFn({ method: "GET" }).handler(async () => {
   const { loadKind } = await import("./iptv/library.server");
-  const rowsByKind: Record<string, string[][]> = {};
+  type Rows = Awaited<ReturnType<typeof loadKind>>;
+  const rowsByKind = new Map<string, Rows>();
   const items: Array<(typeof featuredChannels)[number] & { logo: string; available: boolean }> = [];
   for (const channel of featuredChannels) {
-    if (!rowsByKind[channel.kind]) rowsByKind[channel.kind] = await loadKind(channel.kind);
+    let rows = rowsByKind.get(channel.kind);
+    if (!rows) {
+      rows = await loadKind(channel.kind);
+      rowsByKind.set(channel.kind, rows);
+    }
     const terms = ALIASES[channel.id] ?? [channel.query];
-    const row = rowsByKind[channel.kind].find((entry) =>
+    const row = rows.find((entry) =>
       terms.some((term) => normalize(channel.kind === "live" ? entry[0] : entry[1]).includes(normalize(term))),
     );
     items.push({ ...channel, logo: row?.[2]?.startsWith("https://") ? row[2] : "", available: !!row });
