@@ -2,7 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Maximize, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import Hls from "hls.js";
 
-export function InlineStream({ url }: { url: string }) {
+// Live Xtream streams are requested as HLS; everything goes through the HTTPS relay.
+function relayed(raw: string) {
+  let u = raw;
+  if (/\/live\//.test(u) && /\.ts(?:\?|$)/i.test(u)) u = u.replace(/\.ts(\?|$)/i, ".m3u8$1");
+  return `/api/public/iptv?u=${encodeURIComponent(u)}`;
+}
+
+export function InlineStream({ url: rawUrl }: { url: string }) {
+  const url = rawUrl.startsWith("https://") && !rawUrl.includes("/live/") ? rawUrl : relayed(rawUrl);
+  const isHlsUrl = /\.m3u8(?:\?|$|%3F)/i.test(decodeURIComponent(url));
   const ref = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState(false);

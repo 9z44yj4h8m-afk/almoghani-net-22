@@ -414,13 +414,7 @@ function VipPage() {
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
-              {playing.url.startsWith("https://") ? <InlineStream url={playing.url} /> : <p className="text-xs leading-6 text-muted-foreground">هذا المصدر لا يدعم التشغيل الآمن داخل الموقع؛ افتحه في أحد التطبيقين.</p>}
-              <Button type="button" size="lg" className="h-12 w-full" onClick={() => openExternal(vlcLink(playing.url))}>
-                <ExternalLink className="h-4 w-4" /> فتح في VLC
-              </Button>
-              <Button type="button" variant="outline" size="lg" className="h-12 w-full" onClick={() => openExternal(`outplayer://${playing.url}`)}>
-                <ExternalLink className="h-4 w-4" /> فتح في Outplayer
-              </Button>
+              <InlineStream key={playing.url} url={playing.url} />
               <Button type="button" variant="ghost" size="lg" className="h-12 w-full" onClick={() => copy(playing.url)}>
                 <Copy className="h-4 w-4" /> نسخ رابط البث
               </Button>

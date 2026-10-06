@@ -27,6 +27,7 @@ import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
 import { Route as FeaturedIndexRouteImport } from './routes/featured.index'
 import { Route as FeaturedChannelRouteImport } from './routes/featured.$channel'
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
+import { Route as ApiPublicIptvRouteImport } from './routes/api/public/iptv'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -119,6 +120,11 @@ const ApiPublicHlsRoute = ApiPublicHlsRouteImport.update({
   path: '/api/public/hls',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicIptvRoute = ApiPublicIptvRouteImport.update({
+  id: '/api/public/iptv',
+  path: '/api/public/iptv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured/': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
+  '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
+  '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured/': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
+  '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured/'
     | '/api/public/hls'
+    | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured'
     | '/api/public/hls'
+    | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured/'
     | '/api/public/hls'
+    | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -275,6 +287,7 @@ export interface RootRouteChildren {
   FeaturedChannelRoute: typeof FeaturedChannelRoute
   FeaturedIndexRoute: typeof FeaturedIndexRoute
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
+  ApiPublicIptvRoute: typeof ApiPublicIptvRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHlsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/iptv': {
+      id: '/api/public/iptv'
+      path: '/api/public/iptv'
+      fullPath: '/api/public/iptv'
+      preLoaderRoute: typeof ApiPublicIptvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -435,6 +455,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeaturedChannelRoute: FeaturedChannelRoute,
   FeaturedIndexRoute: FeaturedIndexRoute,
   ApiPublicHlsRoute: ApiPublicHlsRoute,
+  ApiPublicIptvRoute: ApiPublicIptvRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
