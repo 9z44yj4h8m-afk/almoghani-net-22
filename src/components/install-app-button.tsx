@@ -1,7 +1,7 @@
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Link } from "@tanstack/react-router";
 
 type InstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -63,18 +63,8 @@ export function InstallAppButton() {
   }
 
   return (
-    <Popover>
-      <PopoverTrigger className={cls} aria-label="ثبّت التطبيق">
-        {label}
-      </PopoverTrigger>
-      <PopoverContent dir="rtl" className="w-72 border-border bg-surface text-right text-sm leading-7 text-foreground shadow-xl">
-        <p className="mb-1 font-black">أضف ALMOGHANI لشاشتك الرئيسية</p>
-        {isIos ? (
-          <p>افتح الموقع في Safari، اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».</p>
-        ) : (
-          <p>افتح قائمة المتصفح (⋮) ثم اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</p>
-        )}
-      </PopoverContent>
-    </Popover>
+    <Link to="/app" className={cls} aria-label="ثبّت التطبيق">
+      {label}
+    </Link>
   );
 }
