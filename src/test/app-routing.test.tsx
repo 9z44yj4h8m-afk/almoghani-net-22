@@ -8,7 +8,7 @@ import { routeTree } from "@/routeTree.gen";
 
 function renderAt(path: string) {
   // Browser unit tests mount route content, not Start's full-document shell.
-  routeTree.options.shellComponent = ({ children }: { children: ReactNode }) => <>{children}</>;
+  Object.assign(routeTree.options, { shellComponent: ({ children }: { children: ReactNode }) => <>{children}</> });
   vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
   const queryClient = new QueryClient();
   const router = createRouter({
