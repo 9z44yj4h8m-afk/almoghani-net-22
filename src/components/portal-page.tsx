@@ -183,7 +183,7 @@ export function PortalPage({ section }: { section?: string }) {
             <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
               <Link to="/quran" className="transition-colors hover:text-sky">القرآن الكريم</Link>
               <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
-              <Link to="/movies" className="text-sky transition-colors hover:text-primary">أفلام مميزة</Link>
+              <Link to="/vip" search={{ kind: "live" }} className="text-sky transition-colors hover:text-primary">almoghani smarter</Link>
               <Link to="/live" className="transition-colors hover:text-sky">البث المباشر</Link>
             </nav>
             <button
@@ -406,14 +406,19 @@ export function PortalPage({ section }: { section?: string }) {
               </ul>
             </details>
           )}
+          <section className="smarter-banner relative isolate overflow-hidden border-y border-primary/50" aria-labelledby="smarter-banner-title">
+            <img src={satelliteWorld} alt="أقمار صناعية ودش ورسيفر وتلفزيونات" width={1536} height={1024} loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+            <div className="smarter-banner-shade absolute inset-0 -z-10" />
+            <div className="flex min-h-64 flex-col items-start justify-center gap-5 px-6 py-9 sm:min-h-72 sm:px-12">
+              <div>
+                <p className="mb-3 flex items-center gap-2 text-xs font-bold text-accent"><Signal className="h-4 w-4" />almoghani.net</p>
+                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-3xl font-black leading-tight sm:text-5xl">almoghani smarter</h2>
+                <p className="mt-3 text-xl font-bold text-foreground sm:text-2xl">جميع القنوات</p>
+              </div>
+              <Button asChild size="lg"><Link to="/vip" search={{ kind: "live" }}><Tv className="h-5 w-5" />تابع البث<ArrowUpLeft className="h-4 w-4" /></Link></Button>
+            </div>
+          </section>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
-            <Link
-              to="/movies"
-              className="flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-black text-primary-foreground"
-            >
-              <Film className="h-4 w-4 shrink-0" />
-              <span className="whitespace-nowrap">أفلام مميزة</span>
-            </Link>
             {sections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
               return (
@@ -458,10 +463,11 @@ export function PortalPage({ section }: { section?: string }) {
                   )}
                   {section.slug === "movies" && (
                     <Link
-                      to="/movies"
+                      to="/vip"
+                      search={{ kind: "live" }}
                       className="shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-black text-primary-foreground"
                     >
-                      أفلام مميزة
+                      almoghani smarter
                     </Link>
                   )}
                 </div>
