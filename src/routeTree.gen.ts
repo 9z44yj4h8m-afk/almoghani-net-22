@@ -20,6 +20,7 @@ import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
+import { Route as FeaturedIndexRouteImport } from './routes/featured.index'
 import { Route as FeaturedChannelRouteImport } from './routes/featured.$channel'
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -79,6 +80,11 @@ const ChannelsSectionRoute = ChannelsSectionRouteImport.update({
   path: '/channels/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeaturedIndexRoute = FeaturedIndexRouteImport.update({
+  id: '/featured/',
+  path: '/featured/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FeaturedChannelRoute = FeaturedChannelRouteImport.update({
   id: '/featured/$channel',
   path: '/featured/$channel',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
+  '/featured/': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
+  '/featured': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
+  '/featured/': typeof FeaturedIndexRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
+    | '/featured/'
     | '/api/public/hls'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
+    | '/featured'
     | '/api/public/hls'
     | '/lovable/email/transactional/preview'
   id:
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
+    | '/featured/'
     | '/api/public/hls'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -209,6 +221,7 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
   FeaturedChannelRoute: typeof FeaturedChannelRoute
+  FeaturedIndexRoute: typeof FeaturedIndexRoute
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsSectionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/featured/': {
+      id: '/featured/'
+      path: '/featured'
+      fullPath: '/featured/'
+      preLoaderRoute: typeof FeaturedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/featured/$channel': {
       id: '/featured/$channel'
       path: '/featured/$channel'
@@ -329,6 +349,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,
   FeaturedChannelRoute: FeaturedChannelRoute,
+  FeaturedIndexRoute: FeaturedIndexRoute,
   ApiPublicHlsRoute: ApiPublicHlsRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
