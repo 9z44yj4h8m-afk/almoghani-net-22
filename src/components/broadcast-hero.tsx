@@ -5,7 +5,7 @@ import { LivePlayer } from "@/components/live-player";
 import type { Channel } from "@/lib/channels";
 
 export function BroadcastHero({ channel, active, onWatch, sectionTitle }: {
-  channel: Channel; active: boolean; onWatch: () => void; sectionTitle?: string;
+  channel: Channel; active: boolean; onWatch: () => void; sectionTitle?: string | undefined;
 }) {
   return <section id="player" className="broadcast-hero scroll-mt-24" dir="rtl">
     <div className="broadcast-screen">
