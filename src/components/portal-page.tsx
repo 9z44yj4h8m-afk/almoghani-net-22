@@ -385,7 +385,6 @@ export function PortalPage({ section }: { section?: string }) {
                 </span>
               </div>
             </Link>
-            </div>
           </section>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
             {sections.map((s, i) => {
