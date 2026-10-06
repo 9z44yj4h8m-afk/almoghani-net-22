@@ -25,3 +25,5 @@
 - Persist member names in profiles and gate all private library reads with authenticated, JWT-session-scoped unlock rows; shared PIN alone must never expose private content.
 - Keep featured subscription metadata separate from public streams and resolve library matches server-side; detail pages must never substitute unrelated channels or fabricate schedules.
 - Owner-editable site data (texts, contacts, design colors, extra/hidden channels and movies) lives in admin-only-write tables and is merged client-side via src/lib/site-config.ts on top of the static catalogs, so the code catalogs stay the fallback.
+
+- Keep the broadcast visual shell, wordmark, footer and four-item navigation in shared root components; page-specific content retains its existing routes and access guards so restyling never changes membership rules.

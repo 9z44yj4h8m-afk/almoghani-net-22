@@ -28,6 +28,10 @@ import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 import satelliteMark from "@/assets/satellite-mark.jpg";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
+import { BroadcastWordmark } from "@/components/broadcast-shell";
+import microphoneImage from "@/assets/broadcast-microphone.jpg";
+import headphonesImage from "@/assets/broadcast-headphones.jpg";
+import studioImage from "@/assets/broadcast-light.jpg";
 import { BroadcastHero } from "@/components/broadcast-hero";
 import { BreakingTicker } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
@@ -160,52 +164,11 @@ export function PortalPage({ section }: { section?: string }) {
   return (
     <div dir="rtl" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-1 sm:gap-2">
-            {section && (
-              <button
-                type="button"
-                onClick={goBack}
-                className="icon-button shrink-0"
-                aria-label="رجوع"
-                title="رجوع"
-              >
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            )}
-            <a href="#player" className="flex min-w-0 shrink-0 items-center gap-3" aria-label="ALMOGHANI">
-            <img src={satelliteMark} alt="" width={1024} height={1024} className="h-10 w-10 shrink-0 rounded-md border border-primary/50 object-cover" />
-                        <span className="min-w-0 text-center">
-              <span className="block font-display text-base font-black text-foreground sm:text-lg">ALMOGHANI</span>
-              <span className="block truncate text-[10px] font-bold text-sky sm:text-xs">البث المباشر</span>
-            </span>
-          </a>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-2">
-            <nav className="ml-3 hidden items-center gap-6 text-sm font-bold text-muted-foreground md:flex">
-              <Link to="/" className="border-b-2 border-primary py-2 text-primary">الرئيسية</Link>
-              <Link to="/contact" className="transition-colors hover:text-sky">للتواصل</Link>
-              <Link to="/subscription" className="text-primary transition-colors hover:text-sky">الاشتراك</Link>
-              <Link to="/vip" search={{ kind: "live" }} className="text-sky transition-colors hover:text-primary">almoghani smarter</Link>
-              <Link to="/live" className="transition-colors hover:text-sky">البث المباشر</Link>
-            </nav>
-            <Button
-              variant="ghost" size="icon"
-              type="button"
-              onClick={() => {
-                setSearchOpen((value) => !value);
-                setSearchError("");
-              }}
-              className="icon-button"
-              aria-label="بحث"
-              title="بحث"
-            >
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button asChild variant="broadcast" size="sm" className="rounded-full px-4 font-bold"><Link to="/auth">تسجيل الدخول</Link></Button>
-            <InstallAppButton />
-          </div>
+        <div className="broadcast-site-header">
+          <Link to="/" aria-label="ALMOGHANI LIVE"><BroadcastWordmark /></Link>
+          <Button variant="outline" onClick={() => { setSearchOpen(v => !v); setSearchError(""); }} className="broadcast-search-link" aria-label="بحث"><span>ابحث عن القنوات والبرامج…</span><Search /></Button>
+          <Link to="/" className="broadcast-mini-brand"><BroadcastWordmark compact /></Link>
+          {section && <Button variant="ghost" size="icon" onClick={goBack} aria-label="رجوع"><ArrowRight /></Button>}
         </div>
         {searchOpen && (
           <div className="mx-auto max-w-7xl animate-slide-down px-4 pb-4 sm:px-6 lg:px-8">
@@ -269,46 +232,20 @@ export function PortalPage({ section }: { section?: string }) {
       <main className="pb-28 md:pb-12">
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
         {!section && <BreakingTicker />}
-        {!section && <LiveChat />}
+
 
         {previewMode && (
-          <section className="bg-vip-background pb-10 text-vip-foreground sm:pb-14" aria-labelledby="private-library-title">
-            <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
-              <div className="mb-4 flex items-end justify-between gap-3 border-t border-vip-foreground/10 pt-8">
-                <div>
-                  <p className="font-display text-xs font-extrabold text-vip-cyan" dir="ltr">{texts.proLabel}</p>
-                  <h2 id="private-library-title" className="mt-1 font-display text-xl font-black sm:text-3xl">المكتبة الخاصة</h2>
-                </div>
-                <Lock className="h-5 w-5 text-vip-cyan" aria-label="مكتبة الأعضاء" />
-              </div>
-              <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
-              {privateLibrarySections.map(({ kind, name, description, Icon, imageChannelId }) => {
-                const image = channels.find((channel) => channel.id === imageChannelId)?.thumbnail;
-                return (
-                <a
-                  key={kind}
-                  href={`/vip?kind=${kind}`}
-                  className="private-library-card group"
-                >
-                  {image && <img src={image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-35 transition-transform duration-300 group-hover:scale-105" />}
-                  <span className="absolute inset-0 bg-[linear-gradient(to_left,var(--vip-background),color-mix(in_oklab,var(--vip-background)_72%,transparent),color-mix(in_oklab,var(--vip-purple)_18%,transparent))]" />
-                  <span className="relative flex min-h-[10.5rem] flex-col justify-between p-5">
-                    <span className="flex items-start justify-between gap-3">
-                      <span className="grid h-11 w-11 place-items-center rounded-md bg-vip-purple text-vip-foreground"><Icon className="h-5 w-5" /></span>
-                      <ArrowUpLeft className="h-5 w-5 text-vip-cyan transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1" />
-                    </span>
-                    <span>
-                      <span className="block font-display text-xl font-black">{name}</span>
-                      <span className="mt-1 block text-xs font-semibold text-vip-foreground/65">{description}</span>
-                    </span>
-                  </span>
-                </a>
-                );
-              })}
-              </div>
-            </div>
+          <section className="broadcast-destinations" aria-label="المكتبة الخاصة">
+            {privateLibrarySections.map(({ kind, name, description }, index) => (
+              <Link key={kind} to="/vip" search={{ kind }} className="broadcast-destination group">
+                <img src={[microphoneImage, headphonesImage, studioImage][index]} alt="" loading="lazy" width={1152} height={576} />
+                {index !== 1 && <span className={`destination-badge ${index === 2 ? "destination-exclusive" : ""}`}>{index === 0 ? "مباشر" : "حصري"}</span>}
+                <span className="destination-copy"><span className="destination-title">{kind === "movie" ? "مكتبة الأفلام" : name}<ArrowUpLeft /></span>{index === 0 && <span className="destination-description">{description}</span>}<span className="destination-enter">اضغط للدخول</span></span>
+              </Link>
+            ))}
           </section>
         )}
+        {!section && <LiveChat />}
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
@@ -498,15 +435,7 @@ export function PortalPage({ section }: { section?: string }) {
       >
         <MessageCircle className="h-5 w-5" />ALMOGHANI AI
       </Link>
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-20 grid-cols-5 items-end border-t border-border bg-background/95 px-2 pb-2 backdrop-blur-xl md:hidden" aria-label="التنقل السريع">
-        <a href="#player" className="mobile-nav-item text-primary"><Home className="h-5 w-5" /><span>البث</span></a>
-        <Link to="/movies" className="mobile-nav-item"><Film className="h-5 w-5" /><span>أفلام</span></Link>
-        <a href="#player" className="relative -top-5 mx-auto grid h-14 w-14 place-items-center rounded-full border-4 border-background bg-primary text-primary-foreground shadow-live" aria-label="شغّل البث">
-          <Play className="h-6 w-6 fill-current" />
-        </a>
-        <Link to="/chat" className="mobile-nav-item"><MessageCircle className="h-5 w-5" /><span>المحادثة</span></Link>
-        <Link to="/contact" className="mobile-nav-item"><MessageCircle className="h-5 w-5" /><span>للتواصل</span></Link>
-      </nav>
+
     </div>
   );
 }
