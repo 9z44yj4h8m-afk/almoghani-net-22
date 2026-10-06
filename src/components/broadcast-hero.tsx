@@ -8,19 +8,19 @@ export function BroadcastHero({ channel, active, onWatch, sectionTitle }: {
   channel: Channel;
   active: boolean;
   onWatch: () => void;
-  sectionTitle?: string;
+  sectionTitle?: string | undefined;
 }) {
   return (
     <section id="player" className="broadcast-hero relative isolate scroll-mt-20 overflow-hidden border-b border-border">
       <img src={arenaImage} alt="ساحة بث مضاءة بالبنفسجي والسماوي" width={1920} height={1024} fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover" />
       <div className="arena-shade absolute inset-0 -z-10" />
-      <div className="arena-layout mx-auto max-w-[1440px] px-5 py-9 sm:px-8 lg:px-12 lg:py-14" dir="ltr">
+      <div className="arena-layout mx-auto max-w-[1440px] px-5 py-6 sm:px-8 sm:py-9 lg:px-12 lg:py-14" dir="ltr">
         <div className="arena-intro min-w-0" dir="rtl">
-          <p className="mb-5 flex flex-wrap items-center justify-end gap-3 text-xs font-bold text-muted-foreground"><span>القنوات</span><span className="text-primary">·</span><span>الأفلام</span><span className="text-primary">·</span><span>عالم واحد</span></p>
+          <p className="mb-3 flex flex-wrap items-center justify-end gap-3 text-xs font-bold text-muted-foreground"><span>القنوات</span><span className="text-primary">·</span><span>الأفلام</span><span className="text-primary">·</span><span>عالم واحد</span></p>
           <p className="mb-3 font-display text-sm font-extrabold text-sky" dir="ltr">ALMOGHANI LIVE</p>
-          <h1 className="font-display text-4xl font-black leading-[1.45] sm:text-5xl lg:text-5xl">{sectionTitle ?? "البث المباشر"}<span className="arena-title block">كما ينبغي أن يكون</span></h1>
-          <p className="mt-4 text-base leading-8 text-muted-foreground">قنواتك المفضلة، الأخبار والرياضة والأفلام.<br className="hidden lg:block" /> كل ما تحب متابعته، في مكان واحد.</p>
-          <div className="mt-7 grid grid-cols-4 gap-3 border-t border-foreground/10 pt-6 lg:mt-9">
+          <h1 className="font-display text-3xl font-black leading-[1.45] sm:text-5xl lg:text-4xl xl:text-5xl">{sectionTitle ?? "البث المباشر"}<span className="arena-title block">كما ينبغي أن يكون</span></h1>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">قنواتك المفضلة، الأخبار والرياضة والأفلام.<br className="hidden lg:block" /> كل ما تحب متابعته، في مكان واحد.</p>
+          <div className="mt-4 grid grid-cols-4 gap-3 border-t border-foreground/10 pt-4 sm:mt-7 sm:pt-6 lg:mt-9">
             {[
               { Icon: Globe2, title: "من حول العالم", detail: "قنوات متنوعة" },
               { Icon: Trophy, title: "عالم الرياضة", detail: "أحداث ومنافسات" },
