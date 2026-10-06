@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getFeaturedChannels } from "@/lib/featured-channel.functions";
 import satelliteWorld from "@/assets/satellite-world.jpg";
 
-export const Route = createFileRoute("/featured/index")({
+export const Route = createFileRoute("/featured/")({
   loader: () => getFeaturedChannels(),
   head: () => ({
     meta: [
