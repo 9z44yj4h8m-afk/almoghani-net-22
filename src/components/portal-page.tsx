@@ -29,7 +29,6 @@ import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 
 import satelliteMark from "@/assets/satellite-mark.jpg";
 import satelliteWorld from "@/assets/satellite-world.jpg";
-import { featuredChannels } from "@/lib/featured-channels";
 import { InstallAppButton } from "@/components/install-app-button";
 import { LivePlayer } from "@/components/live-player";
 import { Button } from "@/components/ui/button";
@@ -55,7 +54,6 @@ const sections: {
 
 export const liveSections = sections;
 
-const premiumTiles = featuredChannels;
 
 const privateLibrarySections = [
   { kind: "live", name: "البث المباشر", description: "جميع القنوات مرتبة داخل تصنيفات واضحة", Icon: Tv, imageChannelId: "saudi-sports" },
@@ -301,44 +299,6 @@ export function PortalPage({ section }: { section?: string }) {
         </section>
 
         {previewMode && (
-          <section className="bg-vip-background py-8 text-vip-foreground sm:py-11" aria-labelledby="featured-channels-title">
-            <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
-              <div className="mb-4 flex items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-extrabold text-vip-cyan">مختارة لك</p>
-                  <h2 id="featured-channels-title" className="mt-1 font-display text-xl font-black sm:text-3xl">قنوات مميزة</h2>
-                </div>
-                <span className="text-xs font-bold text-vip-foreground/55">اسحب للمزيد</span>
-              </div>
-              <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:gap-4">
-              {premiumTiles.map((tile) => (
-                <Link
-                  key={tile.id}
-                  to="/featured/$channel"
-                  params={{ channel: tile.id }}
-                  className="featured-channel-card group"
-                >
-                  <span className="relative block aspect-video overflow-hidden bg-vip-background">
-                    <img src={satelliteWorld} alt={`مكتبة ${tile.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <span className="absolute inset-0 bg-player-overlay" />
-                    <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-live px-2.5 py-1 text-[10px] font-black text-live-foreground">
-                      <span className="h-1.5 w-1.5 rounded-full bg-live-foreground animate-live-pulse" /> {tile.category}
-                    </span>
-                    <span className="absolute bottom-3 left-3 grid h-9 w-9 place-items-center rounded-full bg-vip-cyan text-vip-background">
-                      <Play className="h-4 w-4 fill-current" />
-                    </span>
-                  </span>
-                  <span className="block p-3.5">
-                    <span className="block truncate font-display text-base font-black sm:text-lg">{tile.name}</span>
-                    <span className="mt-1 block truncate text-xs font-semibold text-vip-foreground/60">{tile.description}</span>
-                  </span>
-                </Link>
-              ))}
-              </div>
-            </div>
-          </section>
-        )}
-        {previewMode && (
           <section className="bg-vip-background pb-10 text-vip-foreground sm:pb-14" aria-labelledby="private-library-title">
             <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
               <div className="mb-4 flex items-end justify-between gap-3 border-t border-vip-foreground/10 pt-8">
@@ -409,13 +369,22 @@ export function PortalPage({ section }: { section?: string }) {
           <section className="smarter-banner relative isolate overflow-hidden border-y border-primary/50" aria-labelledby="smarter-banner-title">
             <img src={satelliteWorld} alt="أقمار صناعية ودش ورسيفر وتلفزيونات" width={1536} height={1024} loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
             <div className="smarter-banner-shade absolute inset-0 -z-10" />
-            <div className="flex min-h-64 flex-col items-start justify-center gap-5 px-6 py-9 sm:min-h-72 sm:px-12">
+            <Link
+              to="/featured"
+              className="group flex min-h-64 flex-col items-start justify-center gap-5 px-6 py-9 sm:min-h-72 sm:px-12"
+              aria-label="الدخول إلى قسم القنوات المميزة"
+            >
               <div>
-                <p className="mb-3 flex items-center gap-2 text-xs font-bold text-accent"><Signal className="h-4 w-4" />almoghani.net</p>
-                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-3xl font-black leading-tight sm:text-5xl">almoghani smarter</h2>
-                <p className="mt-3 text-xl font-bold text-foreground sm:text-2xl">جميع القنوات</p>
+                <p className="mb-3 flex items-center gap-2 text-xs font-black text-accent"><Signal className="h-4 w-4" />almoghani.net</p>
+                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-4xl font-black leading-[1.05] sm:text-6xl">almoghani smarter</h2>
+                <p className="mt-3 text-2xl font-black text-foreground sm:text-3xl">جميع القنوات</p>
+                <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-sky/50 bg-sky/10 px-4 py-2 text-sm font-black text-sky">
+                  <Sparkles className="h-4 w-4" />
+                  القنوات المميزة
+                  <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1" />
+                </span>
               </div>
-              <Button asChild size="lg"><Link to="/vip" search={{ kind: "live" }}><Tv className="h-5 w-5" />تابع البث<ArrowUpLeft className="h-4 w-4" /></Link></Button>
+            </Link>
             </div>
           </section>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
