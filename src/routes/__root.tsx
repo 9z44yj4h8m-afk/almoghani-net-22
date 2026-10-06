@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "ALMOGHANI LIVE" },
       { name: "description", content: "منصة عربية لمشاهدة البث المباشر داخل الموقع." },
       { name: "author", content: "ALMOGHANI LIVE" },
-      { name: "theme-color", content: "#151918" },
+      { name: "theme-color", content: "#090A18" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
