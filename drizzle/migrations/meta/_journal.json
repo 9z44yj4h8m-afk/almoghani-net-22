@@ -8,6 +8,13 @@
       "when": 1791272398779,
       "tag": "0000_member_profiles_library_sessions",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791282263363,
+      "tag": "0001_channel_schedules_admin",
+      "breakpoints": true
     }
   ]
 }
