@@ -19,7 +19,7 @@ export function InlineStream({ url: rawUrl }: { url: string }) {
   const [muted, setMuted] = useState(true);
   useEffect(() => {
     const video = ref.current;
-    if (!video || !url.startsWith("https://")) return;
+    if (!video) return;
     setError(false);
     setPaused(false);
     let hls: Hls | undefined;
@@ -27,7 +27,7 @@ export function InlineStream({ url: rawUrl }: { url: string }) {
     const onPause = () => setPaused(true);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
-    if (/\.m3u8(?:\?|$)/i.test(url) && Hls.isSupported()) {
+    if (isHlsUrl && Hls.isSupported()) {
       hls = new Hls();
       hls.loadSource(url);
       hls.attachMedia(video);
@@ -98,7 +98,7 @@ export function InlineStream({ url: rawUrl }: { url: string }) {
           </button>
         </div>
       </div>
-      {error && <p role="alert" className="mt-2 text-xs text-muted-foreground">تعذّر تشغيل المصدر؛ جرّب VLC أو Outplayer.</p>}
+      {error && <p role="alert" className="mt-2 text-xs text-muted-foreground">تعذّر تشغيل هذا المصدر الآن؛ أعد المحاولة بعد قليل.</p>}
     </div>
   );
 }
