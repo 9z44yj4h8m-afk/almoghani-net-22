@@ -1299,4 +1299,13 @@ export const channels: Channel[] = [
   { id: "sp-world-poker-tour", name: "World Poker Tour", category: "رياضية", streamUrl: "https://d2e00kr7m9coe4.cloudfront.net/scheduler/scheduleMaster/406.m3u8", thumbnail: "https://i.imgur.com/98kLMjj.png", description: "بث رياضي مباشر مفتوح — World Poker Tour" },
   { id: "sp-xfc-tv", name: "XFC TV", category: "رياضية", streamUrl: "https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=2247", thumbnail: "https://i.imgur.com/LcfzmG0.png", description: "بث رياضي مباشر مفتوح — XFC TV" },
   { id: "sp-inter-tv-italy", name: "Inter TV (Italy)", category: "رياضية", streamUrl: "https://d3k8wzt41aflvx.cloudfront.net/INTERTV/Live.m3u8", thumbnail: "https://i.imgur.com/FUTqh2L.png", description: "بث رياضي مباشر مفتوح — Inter TV (Italy)" },
+  { id: "yt-alaraby-news", name: "العربي أخبار", category: "إخبارية", youtubeId: "e2RgSa1Wt5o", thumbnail: "https://i.ytimg.com/vi/e2RgSa1Wt5o/hqdefault.jpg", description: "البث الحي المباشر لقناة العربي أخبار" },
+  { id: "yt-cnbc-arabia", name: "CNBC عربية", category: "إخبارية", youtubeId: "OLbqCS3OrPM", thumbnail: "https://i.ytimg.com/vi/OLbqCS3OrPM/hqdefault.jpg", description: "البث المباشر لقناة CNBC عربية" },
+  { id: "yt-almashhad", name: "المشهد", category: "إخبارية", youtubeId: "fvYBSnXrdEA", thumbnail: "https://i.ytimg.com/vi/fvYBSnXrdEA/hqdefault.jpg", description: "آخر الأخبار وأفضل البرامج من قناة المشهد" },
+  { id: "yt-toyor-aljanah", name: "طيور الجنة", category: "أطفال ووثائقي", youtubeId: "b9iZR_yTyGc", thumbnail: "https://i.ytimg.com/vi/b9iZR_yTyGc/hqdefault.jpg", description: "بث مباشر لقناة طيور الجنة" },
+  { id: "yt-watania-replay", name: "الوطنية التونسية Replay", category: "عامة", youtubeId: "JwB8RmsHOm8", thumbnail: "https://i.ytimg.com/vi/JwB8RmsHOm8/hqdefault.jpg", description: "بث مباشر من Watania Replay" },
+  { id: "yt-aljazeera-mubasher-24", name: "الجزيرة مباشر 24", category: "إخبارية", youtubeId: "8D5QY5gw_Xk", thumbnail: "https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg", description: "البث الحي لقناة الجزيرة مباشر" },
+  { id: "yt-alarabiya-business", name: "العربية Business", category: "إخبارية", youtubeId: "27TJ45U-HJ8", thumbnail: "https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg", description: "البث الحي المباشر من العربية Business" },
+  { id: "yt-alhiwar", name: "قناة الحوار", category: "عامة", youtubeId: "saUXXC-hXgI", thumbnail: "https://i.ytimg.com/vi/saUXXC-hXgI/hqdefault.jpg", description: "البث الحي لقناة الحوار" },
+  { id: "yt-mansour", name: "مغامرات منصور", category: "أطفال ووثائقي", youtubeId: "-Ye42cCA4Pg", thumbnail: "https://i.ytimg.com/vi/-Ye42cCA4Pg/hqdefault.jpg", description: "بث مباشر لمغامرات منصور على مدار الساعة" },
 ];
