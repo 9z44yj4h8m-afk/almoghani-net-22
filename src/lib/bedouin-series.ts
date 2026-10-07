@@ -13,8 +13,16 @@ import art11 from "@/assets/bedouin-drama/4NxyeTBliQU.jpg.asset.json";
 import episode6 from "@/assets/bedouin-drama/DWJRg_9YJSE.jpg.asset.json";
 import episode7 from "@/assets/bedouin-drama/3eacu9uK-4w.jpg.asset.json";
 import { awdaAbuTayeh } from "@/lib/awda-abu-tayeh";
+import { alNatheer } from "@/lib/al-natheer";
+import { dhiabHababAlReeh } from "@/lib/dhiab-habab-al-reeh";
+import { akhoSadaa } from "@/lib/akho-sadaa";
+import { ghadrAlZaman } from "@/lib/ghadr-al-zaman";
+import { alQaseer } from "@/lib/al-qaseer";
 
-export const bedouinSeries = [{
+export type BedouinEpisode = { youtubeId: string; title: string; number: number; image: string };
+export type BedouinSeries = { id: string; title: string; expectedEpisodeCount: number; playlistId?: string; episodes: BedouinEpisode[] };
+
+export const bedouinSeries: BedouinSeries[] = [{
   id: "dawas-al-layl",
   title: "دواس الليل",
   expectedEpisodeCount: 14,
@@ -35,5 +43,4 @@ export const bedouinSeries = [{
   { youtubeId: "27HWjqDmAKs", title: "المسلسل البدوي دواس الليل ـ الحلقة 2 الثانية كاملة HD", number: 2, image: art10.url },
   { youtubeId: "4NxyeTBliQU", title: "المسلسل البدوي دواس الليل ـ الحلقة 1 الأولى كاملة HD", number: 1, image: art11.url }
   ],
-}, awdaAbuTayeh];
-export type BedouinEpisode = (typeof bedouinSeries)[number]["episodes"][number];
+}, awdaAbuTayeh, alNatheer, dhiabHababAlReeh, akhoSadaa, ghadrAlZaman, alQaseer];
