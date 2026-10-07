@@ -13,7 +13,7 @@ import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
-  siteFonts, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
+  siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
 const TABS = ["overview", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
@@ -254,6 +254,8 @@ function DesignTab() {
   return <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); void save(design); }}>
     <label className="flex items-center gap-3"><input type="color" value={design.primary || "#9333ea"} onChange={(e) => setDesign({ ...design, primary: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الرئيسي</span></label>
     <label className="flex items-center gap-3"><input type="color" value={design.accent || "#22d3ee"} onChange={(e) => setDesign({ ...design, accent: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الثانوي</span></label>
+    <div className="grid gap-3 sm:grid-cols-2">{designColorFields.map((f) => <label key={f.key} className="flex items-center gap-3"><input type="color" value={design.colors?.[f.key] || f.def} onChange={(e) => setDesign({ ...design, colors: { ...design.colors, [f.key]: e.target.value } })} className="h-12 w-16 rounded" /><span className="font-bold">{f.label}</span></label>)}</div>
+    <label className="block space-y-1"><span className="text-sm font-bold">استدارة الزوايا: {design.radius ?? "افتراضي"}{design.radius !== undefined && "px"}</span><input type="range" min={0} max={32} step={2} value={design.radius ?? 12} onChange={(e) => setDesign({ ...design, radius: Number(e.target.value) })} className="w-full" /></label>
     <label className="block space-y-1"><span className="text-sm font-bold">خط النصوص</span><select className={input} value={design.fontBody ?? ""} onChange={(e) => setDesign({ ...design, fontBody: e.target.value })}><option value="">الافتراضي</option>{siteFonts.map((f) => <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>)}</select></label>
     <label className="block space-y-1"><span className="text-sm font-bold">خط العناوين</span><select className={input} value={design.fontHeading ?? ""} onChange={(e) => setDesign({ ...design, fontHeading: e.target.value })}><option value="">الافتراضي</option>{siteFonts.map((f) => <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>)}</select></label>
     <label className="block space-y-1"><span className="text-sm font-bold">حجم الخط: {design.fontScale ?? 100}%</span><input type="range" min={85} max={130} step={5} value={design.fontScale ?? 100} onChange={(e) => setDesign({ ...design, fontScale: Number(e.target.value) })} className="w-full" /></label>

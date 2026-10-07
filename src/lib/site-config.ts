@@ -5,7 +5,17 @@ import type { Movie } from "./movies";
 
 export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel: string };
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
-export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number };
+export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number; colors?: Record<string, string>; radius?: number };
+export const designColorFields = [
+  { key: "background", label: "لون الخلفية", def: "#0b1424", vars: ["--background", "--surface-deep"] },
+  { key: "card", label: "لون البطاقات", def: "#111c2e", vars: ["--card", "--surface"] },
+  { key: "foreground", label: "لون النص", def: "#f3f5fb", vars: ["--foreground", "--card-foreground"] },
+  { key: "muted", label: "لون النص الثانوي", def: "#9aa8d6", vars: ["--muted-foreground"] },
+  { key: "border", label: "لون الحدود", def: "#4a5d8a", vars: ["--border", "--input"] },
+  { key: "secondary", label: "لون الأزرار الثانوية", def: "#1a2740", vars: ["--secondary", "--muted"] },
+  { key: "gradient", label: "لون تدرّج الأزرار", def: "#c1272d", vars: ["--vip-purple"] },
+  { key: "live", label: "لون شارة مباشر", def: "#e0242f", vars: ["--live", "--signal"] },
+] as const;
 export const siteFonts = ["Cairo", "Tajawal", "Almarai", "IBM Plex Sans Arabic", "Noto Kufi Arabic", "Changa", "Readex Pro", "El Messiri"] as const;
 
 export type SiteAd = { enabled: boolean; image: string; link: string };
