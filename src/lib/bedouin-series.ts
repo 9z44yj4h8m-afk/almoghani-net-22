@@ -10,12 +10,13 @@ import art8 from "@/assets/bedouin-drama/_fZZvOwy-XA.jpg.asset.json";
 import art9 from "@/assets/bedouin-drama/PuVtWhhdfdw.jpg.asset.json";
 import art10 from "@/assets/bedouin-drama/27HWjqDmAKs.jpg.asset.json";
 import art11 from "@/assets/bedouin-drama/4NxyeTBliQU.jpg.asset.json";
+import episode6 from "@/assets/bedouin-drama/DWJRg_9YJSE.jpg.asset.json";
+import episode7 from "@/assets/bedouin-drama/3eacu9uK-4w.jpg.asset.json";
 
 export const bedouinSeries = [{
   id: "dawas-al-layl",
   title: "دواس الليل",
   playlistId: "PLdLJSN32o2ZFvnChN9Gij09pDTaM_K2JN",
-  missingEpisodes: [6, 7],
   episodes: [
   { youtubeId: "JiFBbINrPVU", title: "المسلسل البدوي دواس الليل ـ الحلقة 14 الرابعة عشر كاملة HD", number: 14, image: art0.url },
   { youtubeId: "Vi9b1vICSKc", title: "المسلسل البدوي دواس الليل ـ الحلقة 13 الثالثة عشر كاملة HD", number: 13, image: art1.url },
@@ -24,6 +25,8 @@ export const bedouinSeries = [{
   { youtubeId: "4T49jwNODaY", title: "المسلسل البدوي دواس الليل ـ الحلقة  10العاشرة كاملة HD", number: 10, image: art4.url },
   { youtubeId: "t73vq7kH7r8", title: "المسلسل البدوي دواس الليل ـ الحلقة 9 التاسعة كاملة HD", number: 9, image: art5.url },
   { youtubeId: "n0LkfGSzYs4", title: "المسلسل البدوي دواس الليل ـ الحلقة 8 السابع كاملة HD", number: 8, image: art6.url },
+  { youtubeId: "3eacu9uK-4w", title: "المسلسل البدوي دواس الليل الحلقة السابعة", number: 7, image: episode7.url },
+  { youtubeId: "DWJRg_9YJSE", title: "المسلسل البدوي دواس الليل الحلقة السادسة", number: 6, image: episode6.url },
   { youtubeId: "ttt3F5XcE78", title: "المسلسل البدوي دواس الليل ـ الحلقة 5 الخامسة كاملة HD", number: 5, image: art7.url },
   { youtubeId: "_fZZvOwy-XA", title: "المسلسل البدوي دواس الليل ـ الحلقة 4 الرابعة كاملة HD", number: 4, image: art8.url },
   { youtubeId: "PuVtWhhdfdw", title: "المسلسل البدوي دواس الليل ـ الحلقة 3 الثالثة كاملة HD", number: 3, image: art9.url },
