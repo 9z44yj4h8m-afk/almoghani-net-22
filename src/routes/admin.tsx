@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
+import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
@@ -41,12 +42,12 @@ function AdminPage() {
   const { user, ready } = useMember();
   const { tab } = Route.useSearch();
   const [admin, setAdmin] = useState<boolean | null>(null);
-  useEffect(() => { if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => setAdmin(!!data)); }, [user]);
+  useEffect(() => { setAdmin(null); if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => setAdmin(!!data)); }, [user]);
 
   if (!ready) return null;
-  if (!user) return <Center>سجّل الدخول بحساب المالك أولًا. <Link to="/auth" className="text-primary">دخول</Link></Center>;
+  if (!user) return <AdminPasswordLogin />;
   if (admin === null) return <Center>جارٍ التحقق…</Center>;
-  if (!admin) return <Center>هذه الصفحة لمالك الموقع فقط.</Center>;
+  if (!admin) return <AdminPasswordLogin />;
 
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
