@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Clock, Heart, Lock, Search, X } from "lucide-react";
+import { ArrowRight, Clock, Heart, Lock, Search, Shuffle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
@@ -52,6 +53,16 @@ function MoviesPage() {
   const [q, setQ] = useState("");
   const [favs, setFavs] = useState<string[]>([]);
   const [playing, setPlaying] = useState<Movie | null>(null);
+  const [muted, setMuted] = useState(true);
+  useEffect(() => {
+    const candidates = applyMovieConfig(loaded, siteConfig).filter((movie) => !lang || movie.lang === lang);
+    setPlaying(candidates[Math.floor(Math.random() * candidates.length)] ?? null);
+    setMuted(true);
+  }, [lang, loaded, siteConfig]);
+  function watch(movie: Movie) {
+    setMuted(false); setPlaying(movie);
+    document.getElementById("movie-player")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
   useEffect(() => { try { setFavs(JSON.parse(localStorage.getItem("movie-favs") ?? "[]")); } catch { /* ignore */ } }, []);
   const toggleFav = (id: string) => setFavs((f) => { const n = f.includes(id) ? f.filter((x) => x !== id) : [...f, id]; localStorage.setItem("movie-favs", JSON.stringify(n)); return n; });
   const list = all
@@ -61,6 +72,10 @@ function MoviesPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
       <main className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
+        {playing && <section id="movie-player" aria-label="شاشة الأفلام" className="mb-6 scroll-mt-24">
+          <div className="broadcast-screen design-gleam aspect-video"><iframe key={`${playing.youtubeId}-${muted}`} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&mute=${muted ? 1 : 0}&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><div className="min-w-0"><h2 className="font-bold">{playing.title}</h2><p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock className="h-3.5 w-3.5" />{playing.duration} · {playing.source}</p></div><Button variant="outline" size="sm" onClick={() => { const candidates = all.filter((m) => (!lang || m.lang === lang) && m.id !== playing.id); const next = candidates[Math.floor(Math.random() * candidates.length)]; if (next) { setPlaying(next); setMuted(true); } }}><Shuffle className="h-4 w-4" />فيلم عشوائي</Button></div>
+        </section>}
         <div className="flex items-center gap-2">
           <Link to="/" className="icon-button shrink-0" aria-label="رجوع"><ArrowRight className="h-5 w-5" /></Link>
           <label className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-sky/50 bg-surface-deep/70 px-4 py-3 focus-within:border-sky">
@@ -97,7 +112,7 @@ function MoviesPage() {
                     <Heart className={`h-5 w-5 ${favs.includes(m.id) ? "fill-primary text-primary" : "text-foreground"}`} />
                   </button>
                 </div>
-                <button type="button" onClick={() => setPlaying(m)} className="mt-auto rounded-lg bg-primary px-3 py-1.5 text-xs font-black text-primary-foreground shadow-live sm:px-5 sm:py-2 sm:text-base">شاهد الآن</button>
+                <Button type="button" onClick={() => watch(m)} className="mt-auto h-auto px-3 py-1.5 text-xs font-black shadow-live sm:px-5 sm:py-2 sm:text-base">شاهد الآن</Button>
               </div>
             </div>
           ))}
@@ -105,31 +120,6 @@ function MoviesPage() {
         {list.length === 0 && <p className="py-16 text-center text-muted-foreground">لا توجد أفلام مطابقة.</p>}
       </main>
 
-      {playing && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-background">
-          <div className="flex h-14 items-center gap-2 border-b border-border px-4">
-            <button type="button" className="icon-button" aria-label="إغلاق" onClick={() => setPlaying(null)}>
-              <X className="h-5 w-5" />
-            </button>
-            <h2 className="truncate font-bold">{playing.title}</h2>
-          </div>
-          <div className="aspect-video w-full bg-surface-deep">
-            <iframe
-              className="h-full w-full"
-              src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&playsinline=1&rel=0`}
-              title={playing.title}
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-            />
-          </div>
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground">{playing.description}</p>
-            <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Clock className="h-3.5 w-3.5" /> {playing.duration} · {playing.source}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

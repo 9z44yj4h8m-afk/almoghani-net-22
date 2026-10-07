@@ -69,6 +69,7 @@
   --vip-foreground: oklch(0.98 0.01 255);
   --broadcast-gradient: linear-gradient(100deg, var(--primary), var(--vip-purple));
   --broadcast-shadow: 0 4px 20px color-mix(in oklab, var(--primary) 12%, transparent);
+  --gleam-sweep: linear-gradient(110deg, transparent 38%, color-mix(in oklab, var(--foreground) 24%, transparent) 50%, transparent 62%);
   --arena-overlay: linear-gradient(to bottom, color-mix(in oklab, var(--background) 25%, transparent), color-mix(in oklab, var(--background) 38%, transparent) 65%, var(--background)), linear-gradient(90deg, color-mix(in oklab, var(--background) 80%, transparent), transparent 70%);
 }
 
@@ -388,6 +389,11 @@
 @keyframes ticker { from { transform: translateX(-100%); } to { transform: translateX(100vw); } }
 
 /* Shared news-broadcast identity */
+.design-gleam { position: relative; isolation: isolate; overflow: hidden; }
+.design-gleam::after { content: ""; position: absolute; inset: 0; background: var(--gleam-sweep); transform: translateX(-130%); animation: design-gleam 8s ease-in-out infinite; pointer-events: none; z-index: 2; }
+.broadcast-screen, #home-category-banners > a { box-shadow: 0 0 16px color-mix(in oklab, var(--sky) 18%, transparent); }
+@keyframes design-gleam { 0%, 65% { transform: translateX(-130%); } 90%, 100% { transform: translateX(130%); } }
+@media (prefers-reduced-motion: reduce) { .design-gleam::after { display: none; } }
 .broadcast-app { max-width: 1200px; margin-inline: auto; background: var(--background); }
 body { background: var(--surface-deep); }
 .broadcast-content > div { background: var(--background); }
