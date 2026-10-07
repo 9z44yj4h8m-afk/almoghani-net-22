@@ -39,7 +39,7 @@ function SectionsPage() {
           <Link
             key={c.title}
             to={c.to}
-            search={"search" in c ? (c.search as never) : undefined}
+            search={("search" in c ? c.search : {}) as never}
             className="group grid grid-cols-[1fr_auto] items-center gap-3 overflow-hidden rounded-2xl border border-sky/60 bg-surface-deep p-3 shadow-[0_0_24px_-8px_var(--color-sky)] transition hover:border-sky"
           >
             <div className="min-w-0 space-y-2 p-2">
