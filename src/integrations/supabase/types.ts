@@ -19,18 +19,21 @@ export type Database = {
           category: string | null
           channel_id: string
           hidden: boolean
+          name: string | null
           updated_at: string
         }
         Insert: {
           category?: string | null
           channel_id: string
           hidden?: boolean
+          name?: string | null
           updated_at?: string
         }
         Update: {
           category?: string | null
           channel_id?: string
           hidden?: boolean
+          name?: string | null
           updated_at?: string
         }
         Relationships: []
