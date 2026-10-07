@@ -4,7 +4,7 @@ import { DefaultChatTransport, type UIMessage } from "ai";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import kaabaEmblem from "@/assets/kaaba-emblem.jpg";
+import aiAssistantIcon from "@/assets/ai-assistant-icon.png";
 import {
   Conversation,
   ConversationContent,
@@ -79,7 +79,7 @@ function ChatPage() {
       <header className="border-b border-border/70 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-3xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-3">
-            <img src={kaabaEmblem} alt="" width={816} height={816} className="h-10 w-10 rounded-full border border-primary object-cover" />
+            <img src={aiAssistantIcon} alt="" width={1024} height={1024} className="h-10 w-10 rounded-full border border-primary object-cover" />
             <div>
               <h1 className="font-display text-base font-black">ALMOGHANI AI</h1>
               <p className="text-xs text-muted-foreground">مساعدك الذكي</p>
@@ -104,7 +104,7 @@ function ChatPage() {
         <ConversationContent className="mx-auto w-full max-w-3xl px-4">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center gap-4 py-16 text-center">
-              <img src={kaabaEmblem} alt="" width={816} height={816} className="h-20 w-20 rounded-3xl object-cover" />
+              <img src={aiAssistantIcon} alt="" width={1024} height={1024} className="h-20 w-20 rounded-3xl object-cover" />
               <h2 className="text-xl font-black">أهلًا بك، كيف أقدر أساعدك؟</h2>
               <div className="flex flex-wrap justify-center gap-2">
                 {SUGGESTIONS.map((s) => (
