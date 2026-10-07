@@ -1308,4 +1308,8 @@ export const channels: Channel[] = [
   { id: "yt-alarabiya-business", name: "العربية Business", category: "إخبارية", youtubeId: "27TJ45U-HJ8", thumbnail: "https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg", description: "البث الحي المباشر من العربية Business" },
   { id: "yt-alhiwar", name: "قناة الحوار", category: "عامة", youtubeId: "saUXXC-hXgI", thumbnail: "https://i.ytimg.com/vi/saUXXC-hXgI/hqdefault.jpg", description: "البث الحي لقناة الحوار" },
   { id: "yt-mansour", name: "مغامرات منصور", category: "أطفال ووثائقي", youtubeId: "-Ye42cCA4Pg", thumbnail: "https://i.ytimg.com/vi/-Ye42cCA4Pg/hqdefault.jpg", description: "بث مباشر لمغامرات منصور على مدار الساعة" },
+  { id: "yt-osratouna", name: "قناة أسرتنا", category: "أطفال ووثائقي", youtubeId: "mAWe88KE_aI", thumbnail: "https://i.ytimg.com/vi/mAWe88KE_aI/hqdefault.jpg", description: "بث مباشر لأغاني الأطفال من قناة أسرتنا" },
+  { id: "yt-masha-bear", name: "ماشا والدب", category: "أطفال ووثائقي", youtubeId: "S_6wjcgw1mk", thumbnail: "https://i.ytimg.com/vi/S_6wjcgw1mk/hqdefault.jpg", description: "بث مباشر لجميع حلقات ماشا والدب" },
+  { id: "yt-azzouz-joud", name: "عزوز وجود", category: "أطفال ووثائقي", youtubeId: "0NCEPjBqT_E", thumbnail: "https://i.ytimg.com/vi/0NCEPjBqT_E/hqdefault.jpg", description: "أغاني تعليمية لرياض الأطفال على مدار الساعة" },
+  { id: "yt-tamtam", name: "قناة طم طم", category: "أطفال ووثائقي", youtubeId: "c279_zPPG0w", thumbnail: "https://i.ytimg.com/vi/c279_zPPG0w/hqdefault.jpg", description: "بث مباشر لأغاني الأطفال من قناة طم طم" },
 ];
