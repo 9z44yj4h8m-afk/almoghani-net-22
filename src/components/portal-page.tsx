@@ -13,8 +13,6 @@ import {
   Newspaper,
   Play,
   Search,
-  Signal,
-  Sparkles,
   Trophy,
   Tv,
   WandSparkles,
@@ -26,7 +24,6 @@ import { type FormEvent, startTransition, useEffect, useState } from "react";
 import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 
 import satelliteMark from "@/assets/satellite-mark.jpg";
-import satelliteWorld from "@/assets/satellite-world.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
 import { BroadcastWordmark } from "@/components/broadcast-shell";
 import microphoneImage from "@/assets/broadcast-microphone.jpg";
