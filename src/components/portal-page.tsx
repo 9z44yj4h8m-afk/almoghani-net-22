@@ -148,10 +148,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   }
 
   function playChannel(channel: Channel) {
-    if (homepage) {
-      navigate({ to: "/live", search: { channel: channel.id } });
-      return;
-    }
     // Scroll first (instant feedback), then swap the stream at lower priority so taps feel immediate.
     document.getElementById("player")?.scrollIntoView({ behavior: "auto", block: "start" });
     setSearchOpen(false);
@@ -232,7 +228,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-28 md:pb-12">
-        {!homepage && <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />}
+        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
+        {homepage && <BreakingTicker />}
+        {homepage && <HomeAd />}
         {homepage && <HomeCategoryBanners />}
         {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
@@ -250,7 +248,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
             })}
           </section>
         )}
-        {!homepage && <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
               <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-black">
@@ -409,7 +407,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
               </section>
             );
           })}
-        </div>}
+        </div>
       </main>
 
       <Link

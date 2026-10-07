@@ -9,7 +9,7 @@ import general from "@/assets/home-categories/general.png.asset.json";
 
 export function HomeCategoryBanners() {
   return (
-    <section aria-label="أقسام المشاهدة" className="mx-auto max-w-4xl space-y-4 px-3 pt-5 sm:px-6">
+    <section aria-label="أقسام المشاهدة" className="mx-auto grid max-w-4xl grid-cols-2 gap-2 px-3 pt-5 sm:grid-cols-3 sm:gap-3 sm:px-6">
       {[
         { name: "الأفلام العربية", lang: "عربي" as const, image: arabicMovies.url },
         { name: "الأفلام الأجنبية", lang: "عالمي" as const, image: foreignMovies.url },
