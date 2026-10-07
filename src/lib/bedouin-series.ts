@@ -12,6 +12,7 @@ import art10 from "@/assets/bedouin-drama/27HWjqDmAKs.jpg.asset.json";
 import art11 from "@/assets/bedouin-drama/4NxyeTBliQU.jpg.asset.json";
 import episode6 from "@/assets/bedouin-drama/DWJRg_9YJSE.jpg.asset.json";
 import episode7 from "@/assets/bedouin-drama/3eacu9uK-4w.jpg.asset.json";
+import { awdaAbuTayeh } from "@/lib/awda-abu-tayeh";
 
 export const bedouinSeries = [{
   id: "dawas-al-layl",
@@ -33,5 +34,5 @@ export const bedouinSeries = [{
   { youtubeId: "27HWjqDmAKs", title: "المسلسل البدوي دواس الليل ـ الحلقة 2 الثانية كاملة HD", number: 2, image: art10.url },
   { youtubeId: "4NxyeTBliQU", title: "المسلسل البدوي دواس الليل ـ الحلقة 1 الأولى كاملة HD", number: 1, image: art11.url }
   ],
-}];
+}, awdaAbuTayeh];
 export type BedouinEpisode = (typeof bedouinSeries)[number]["episodes"][number];
