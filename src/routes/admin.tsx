@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
+import { SectionEditor } from "@/components/admin/section-editor";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
@@ -17,7 +18,7 @@ import {
   siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
-const TABS = ["overview", "content", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
+const TABS = ["overview", "sections", "content", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -63,6 +64,7 @@ function AdminPage() {
             <TabsTrigger value="members">الأعضاء</TabsTrigger>
             <TabsTrigger value="texts">النصوص والتواصل</TabsTrigger>
             <TabsTrigger value="design">التصميم</TabsTrigger>
+            <TabsTrigger value="sections">الصور والأقسام</TabsTrigger>
             <TabsTrigger value="schedule">مواعيد البث</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="mt-6"><OverviewTab /></TabsContent>
@@ -74,6 +76,7 @@ function AdminPage() {
           <TabsContent value="members" className="mt-6"><MembersTab /></TabsContent>
           <TabsContent value="texts" className="mt-6"><TextsTab /></TabsContent>
           <TabsContent value="design" className="mt-6"><DesignTab /></TabsContent>
+          <TabsContent value="sections" className="mt-6"><SectionEditor /></TabsContent>
           <TabsContent value="schedule" className="mt-6"><ScheduleManager /></TabsContent>
         </Tabs>
       </main>

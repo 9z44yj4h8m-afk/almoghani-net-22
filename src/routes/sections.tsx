@@ -4,6 +4,8 @@ import liveImg from "@/assets/section-live.jpg";
 import moviesImg from "@/assets/section-movies.jpg";
 import seriesImg from "@/assets/section-series.jpg";
 import privateImg from "@/assets/section-private.jpg";
+import { useSiteConfig } from "@/lib/site-config";
+import { getSectionCard } from "@/lib/section-content";
 
 export const Route = createFileRoute("/sections")({
   head: () => ({
@@ -27,32 +29,34 @@ const cards = [
 ];
 
 function SectionsPage() {
+  const { data } = useSiteConfig();
+  const content = data?.sectionContent;
   return (
     <main className="mx-auto max-w-3xl px-3 pb-28 pt-6 sm:px-6">
       <header className="mb-6 text-center">
-        <h1 className="font-display text-4xl font-black text-foreground sm:text-5xl">الأقسام</h1>
-        <p className="mt-2 text-muted-foreground">اختر ما تريد مشاهدته</p>
+        <h1 className="font-display text-4xl font-black text-foreground sm:text-5xl">{content?.pageTitle || "الأقسام"}</h1>
+        <p className="mt-2 text-muted-foreground">{content?.pageDescription ?? "اختر ما تريد مشاهدته"}</p>
         <span className="mx-auto mt-3 block h-0.5 w-14 rounded bg-sky" />
       </header>
       <div className="space-y-4">
-        {cards.map((c) => (
-          <Link
+        {["sections-live", "sections-movie", "sections-series", "sections-member"].map((id) => {
+          const c = getSectionCard(id, content);
+          return <a
             key={c.title}
-            to={c.to}
-            search={("search" in c ? c.search : {}) as never}
+            href={c.link}
             className="group grid grid-cols-[1fr_auto] items-center gap-3 overflow-hidden rounded-2xl border border-sky/60 bg-surface-deep p-3 shadow-[0_0_24px_-8px_var(--color-sky)] transition hover:border-sky"
           >
             <div className="min-w-0 space-y-2 p-2">
               <h2 className="font-display text-2xl font-black text-foreground sm:text-3xl">{c.title}</h2>
-              <p className="text-sm text-muted-foreground">{c.desc}</p>
+              <p className="text-sm text-muted-foreground">{c.description}</p>
               <span className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-black text-primary-foreground">
-                {c.cta}
+                {c.button}
                 <ChevronLeft className="h-4 w-4" />
               </span>
             </div>
-            <img src={c.img} alt="" loading="lazy" width={478} height={267} className="h-28 w-40 rounded-xl object-cover sm:h-36 sm:w-60" />
-          </Link>
-        ))}
+            <img src={c.image} alt="" loading="lazy" width={478} height={267} className="h-28 w-40 rounded-xl object-cover sm:h-36 sm:w-60" />
+          </a>;
+        })}
       </div>
     </main>
   );
