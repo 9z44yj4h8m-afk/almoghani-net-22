@@ -23,7 +23,7 @@ const cards = [
   { title: "البث المباشر", desc: "قنواتك المفضلة في مكان واحد", cta: "استعرض القنوات", img: liveImg, to: "/live" as const },
   { title: "مكتبة الأفلام", desc: "اكتشف عالم الأفلام", cta: "استعرض الأفلام", img: moviesImg, to: "/movies" as const },
   { title: "المسلسلات", desc: "تابع مسلسلاتك وحلقاتك المفضلة", cta: "استعرض المسلسلات", img: seriesImg, to: "/vip" as const, search: { kind: "series" } },
-  { title: "المكتبة الخاصة", desc: "محتوى خاص بالأعضاء", cta: "دخول الأعضاء", img: privateImg, to: "/vip" as const },
+  { title: "دخول الأعضاء", desc: "سجّل دخولك بحسابك", cta: "تسجيل الدخول", img: privateImg, to: "/auth" as const },
 ];
 
 function SectionsPage() {
