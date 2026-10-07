@@ -57,7 +57,7 @@ const TABS: {
   { k: "series", label: "المسلسلات", eyebrow: "جميع الحلقات", Icon: Clapperboard, activeClass: "bg-accent text-accent-foreground" },
 ];
 
-function VipPage({ initialGroup }: { initialGroup?: string }) {
+function VipPage({ initialGroup }: { initialGroup?: string | undefined }) {
   const pin = "member-session";
   const [fetchError, setFetchError] = useState("");
   const [kind, setKind] = useState<Kind>("live");
