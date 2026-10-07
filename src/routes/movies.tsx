@@ -6,6 +6,10 @@ import { getFeaturedMovies } from "@/lib/featured-movies.functions";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/movies")({
+  validateSearch: (search: Record<string, unknown>): { lang?: "عربي" | "عالمي" } => {
+    const lang = search['lang'];
+    return lang === "عربي" || lang === "عالمي" ? { lang } : {};
+  },
   loader: () => getFeaturedMovies(),
   head: () => ({
     meta: [
@@ -39,10 +43,12 @@ function Cover({ id, alt, eager }: { id: string; alt: string; eager?: boolean })
 }
 
 function MoviesPage() {
+  const { lang } = Route.useSearch();
   const loaded = Route.useLoaderData();
   const { data: siteConfig } = useSiteConfig();
   const all = applyMovieConfig(loaded, siteConfig);
-  const [filter, setFilter] = useState<"الكل" | Movie["lang"] | "المفضلة">("الكل");
+  const [filter, setFilter] = useState<"الكل" | Movie["lang"] | "المفضلة">(lang ?? "الكل");
+  useEffect(() => { setFilter(lang ?? "الكل"); }, [lang]);
   const [q, setQ] = useState("");
   const [favs, setFavs] = useState<string[]>([]);
   const [playing, setPlaying] = useState<Movie | null>(null);

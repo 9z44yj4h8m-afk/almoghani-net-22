@@ -37,6 +37,7 @@ import { getSectionCard } from "@/lib/section-content";
 import { SectionCardStyle } from "@/components/section-card-style";
 import { Lock } from "lucide-react";
 import { BedouinDramaBanner } from "@/components/bedouin-drama-banner";
+import { HomeCategoryBanners } from "@/components/home-category-banners";
 
 const sections: {
   slug: string;
@@ -63,7 +64,7 @@ const privateLibrarySections = [
   { kind: "series", name: "المسلسلات", description: "المواسم والحلقات مجمعة حسب عنوان المسلسل", Icon: Clapperboard, imageChannelId: "mbc-drama" },
 ] as const;
 
-export function PortalPage({ section }: { section?: string }) {
+export function PortalPage({ section, homepage = false }: { section?: string; homepage?: boolean }) {
   const channels = useCatalog();
   const { data: siteConfig } = useSiteConfig();
   const texts = siteConfig?.texts ?? defaultTexts;
@@ -147,6 +148,10 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   function playChannel(channel: Channel) {
+    if (homepage) {
+      navigate({ to: "/live", search: { channel: channel.id } });
+      return;
+    }
     // Scroll first (instant feedback), then swap the stream at lower priority so taps feel immediate.
     document.getElementById("player")?.scrollIntoView({ behavior: "auto", block: "start" });
     setSearchOpen(false);
@@ -155,7 +160,7 @@ export function PortalPage({ section }: { section?: string }) {
   }
 
   if (!selected) return null;
-  const previewMode = !section;
+  const previewMode = homepage;
   const heroTitle = section === "live" || !section ? "القنوات المباشرة" : `قنوات ${visibleSections[0]?.title ?? ""} مباشرة`;
 
   return (
@@ -227,10 +232,9 @@ export function PortalPage({ section }: { section?: string }) {
       </header>
 
       <main className="pb-28 md:pb-12">
-        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
-        {!section && <BreakingTicker />}
-        {!section && <HomeAd />}
-        {!section && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
+        {!homepage && <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />}
+        {homepage && <HomeCategoryBanners />}
+        {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
 
         {previewMode && (
@@ -246,7 +250,7 @@ export function PortalPage({ section }: { section?: string }) {
             })}
           </section>
         )}
-        <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+        {!homepage && <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
               <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-black">
@@ -405,7 +409,7 @@ export function PortalPage({ section }: { section?: string }) {
               </section>
             );
           })}
-        </div>
+        </div>}
       </main>
 
       <Link

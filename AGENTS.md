@@ -20,7 +20,7 @@
 - Reuse the existing /chat experience in the floating AI dialog through a same-origin embedded view without the site shell, so history and model transport remain identical.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
-- Keep the homepage player behind an explicit watch action, and activate it when a channel is selected, so the first view never depends on an unsolicited third-party embed loading.
+- Keep the homepage as image destinations with viewing on existing category/movie pages; homepage search selections deep-link to the shared /live player so no stream loads on the directory.
 - Ship the site as an installable web app via public/manifest.webmanifest (start_url /vip) with no service worker, so installs never serve stale cached files.
 - Relay streams whose CDN demands a specific Referer through /api/public/hls (host allow-list, playlists rewritten), because browsers cannot set Referer.
 - Build the featured-movies list server-side from official YouTube channel searches (getFeaturedMovies, 1h cache, full-length filter) with the hand-picked list in src/lib/movies.ts as fallback.
