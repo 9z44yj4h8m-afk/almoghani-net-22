@@ -73,8 +73,8 @@ export function ScheduleManager() {
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="space-y-1 text-sm">القناة<select className={input} value={r.channel_id} onChange={(e) => update(r, { channel_id: e.target.value })}>{!channels.some((c) => c.id === r.channel_id) && <option value={r.channel_id}>{r.channel_id}</option>}{channels.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
           <label className="space-y-1 text-sm">اسم البرنامج أو المباراة<input required maxLength={150} className={input} value={r.title} onChange={(e) => update(r, { title: e.target.value })} /></label>
-          <label className="space-y-1 text-sm">البداية<input required type="datetime-local" className={input} value={r.starts_at ? localTime(r.starts_at) : ""} onChange={(e) => update(r, { starts_at: e.target.value }))} /></label>
-          <label className="space-y-1 text-sm">النهاية (اختياري)<input type="datetime-local" className={input} value={r.ends_at ? localTime(r.ends_at) : ""} onChange={(e) => update(r, { ends_at: e.target.value || null }))} /></label>
+          <label className="space-y-1 text-sm">البداية<input required type="datetime-local" className={input} value={r.starts_at ? localTime(r.starts_at) : ""} onChange={(e) => update(r, { starts_at: e.target.value })} /></label>
+          <label className="space-y-1 text-sm">النهاية (اختياري)<input type="datetime-local" className={input} value={r.ends_at ? localTime(r.ends_at) : ""} onChange={(e) => update(r, { ends_at: e.target.value || null })} /></label>
         </div>
       </div>)}
     </fieldset>
