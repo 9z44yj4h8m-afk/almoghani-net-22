@@ -5,7 +5,8 @@ import type { Movie } from "./movies";
 
 export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel: string };
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
-export type SiteDesign = { primary: string; accent: string; background: string };
+export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number };
+export const siteFonts = ["Cairo", "Tajawal", "Almarai", "IBM Plex Sans Arabic", "Noto Kufi Arabic", "Changa", "Readex Pro", "El Messiri"] as const;
 
 export type SiteAd = { enabled: boolean; image: string; link: string };
 export type SiteTicker = { enabled: boolean; text: string };
@@ -28,7 +29,7 @@ export type SiteConfig = {
   ticker: SiteTicker;
   chat: SiteChat;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
-  overrides: { channel_id: string; hidden: boolean; category: string | null }[];
+  overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null }[];
   customMovies: { id: string; youtube_id: string; title: string; description: string }[];
   hiddenMovies: string[];
 };
@@ -37,7 +38,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
   const [settings, custom, overrides, movies, hidden] = await Promise.all([
     supabase.from("site_settings").select("key,value"),
     supabase.from("custom_channels").select("id,name,category,stream_url,logo,description").order("created_at"),
-    supabase.from("channel_overrides").select("channel_id,hidden,category"),
+    supabase.from("channel_overrides").select("channel_id,hidden,category,name"),
     supabase.from("custom_movies").select("id,youtube_id,title,description").order("created_at", { ascending: false }),
     supabase.from("hidden_movies").select("movie_id"),
   ]);
@@ -76,8 +77,10 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
   const base = baseChannels
     .filter((c) => !ov.get(c.id)?.hidden)
     .map((c) => {
-      const cat = ov.get(c.id)?.category;
-      return cat && channelCategories.includes(cat as ChannelCategory) ? { ...c, category: cat as ChannelCategory } : c;
+      const o = ov.get(c.id);
+      const cat = o?.category;
+      const named = o?.name ? { ...c, name: o.name } : c;
+      return cat && channelCategories.includes(cat as ChannelCategory) ? { ...named, category: cat as ChannelCategory } : named;
     });
   const extra: Channel[] = config.customChannels
     .filter((c) => !ov.get(c.id)?.hidden)
