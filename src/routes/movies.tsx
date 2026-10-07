@@ -6,9 +6,10 @@ import { getFeaturedMovies } from "@/lib/featured-movies.functions";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/movies")({
-  validateSearch: (search: Record<string, unknown>): { lang?: "عربي" | "عالمي" } => ({
-    lang: search.lang === "عربي" || search.lang === "عالمي" ? search.lang : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { lang?: "عربي" | "عالمي" } => {
+    const lang = search['lang'];
+    return lang === "عربي" || lang === "عالمي" ? { lang } : {};
+  },
   loader: () => getFeaturedMovies(),
   head: () => ({
     meta: [
