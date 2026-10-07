@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock, Delete, Lock, Play, Unlock, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, Clock, Heart, Lock, Search, X } from "lucide-react";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
@@ -43,66 +42,61 @@ function MoviesPage() {
   const loaded = Route.useLoaderData();
   const { data: siteConfig } = useSiteConfig();
   const all = applyMovieConfig(loaded, siteConfig);
-  const [filter, setFilter] = useState<"الكل" | Movie["lang"]>("الكل");
+  const [filter, setFilter] = useState<"الكل" | Movie["lang"] | "المفضلة">("الكل");
+  const [q, setQ] = useState("");
+  const [favs, setFavs] = useState<string[]>([]);
   const [playing, setPlaying] = useState<Movie | null>(null);
-  const list = filter === "الكل" ? all : all.filter((m) => m.lang === filter);
+  useEffect(() => { try { setFavs(JSON.parse(localStorage.getItem("movie-favs") ?? "[]")); } catch { /* ignore */ } }, []);
+  const toggleFav = (id: string) => setFavs((f) => { const n = f.includes(id) ? f.filter((x) => x !== id) : [...f, id]; localStorage.setItem("movie-favs", JSON.stringify(n)); return n; });
+  const list = all
+    .filter((m) => filter === "الكل" || (filter === "المفضلة" ? favs.includes(m.id) : m.lang === filter))
+    .filter((m) => !q.trim() || m.title.toLowerCase().includes(q.trim().toLowerCase()));
 
   return (
     <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4">
-          <Link to="/" className="icon-button shrink-0" aria-label="رجوع">
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-          <h1 className="text-lg font-black text-primary sm:text-xl">أفلام مميزة كاملة</h1>
-          <span className="ms-auto text-xs text-muted-foreground">{list.length} فيلم</span>
+      <main className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
+        <div className="flex items-center gap-2">
+          <Link to="/" className="icon-button shrink-0" aria-label="رجوع"><ArrowRight className="h-5 w-5" /></Link>
+          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-sky/50 bg-surface-deep/70 px-4 py-3 focus-within:border-sky">
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن فيلم..." className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground" />
+            <Search className="h-5 w-5 shrink-0 text-foreground" />
+          </label>
         </div>
-      </header>
 
-      <main className="mx-auto max-w-6xl pt-4">
-        <div className="flex gap-2 px-4">
-          {(["الكل", "عربي", "عالمي"] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => {
-                setFilter(f);
-              }}
-              className={`rounded-full border px-4 py-1.5 text-sm font-bold ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
-            >
-              {f}
-            </button>
+        <div className="mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-sky/40 p-2">
+          {(["الكل", "عربي", "عالمي", "المفضلة"] as const).map((f) => (
+            <button key={f} type="button" onClick={() => setFilter(f)}
+              className={`shrink-0 rounded-xl border px-5 py-2 text-sm font-black ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-sky/40 text-foreground"}`}>{f}</button>
           ))}
-          <Button asChild variant="outline" size="sm"><Link to="/vip" search={{ kind: "movie" }}><Lock className="h-3.5 w-3.5" /> خاص</Link></Button>
+          <Link to="/vip" search={{ kind: "movie" }} className="flex shrink-0 items-center gap-1.5 rounded-xl border border-sky/40 px-5 py-2 text-sm font-black"><Lock className="h-3.5 w-3.5" /> خاص</Link>
         </div>
-        {/* Vertical list with compact covers */}
-        <div className="mt-4 grid gap-3 px-4 lg:grid-cols-2">
+
+        <h1 className="mt-6 flex items-center gap-3 font-display text-2xl font-black sm:text-3xl">
+          <span className="h-8 w-1.5 rounded-full bg-primary" />أفلام مميزة كاملة
+          <span className="ms-auto text-xs font-bold text-muted-foreground">{list.length} فيلم</span>
+        </h1>
+
+        <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-3">
           {list.map((m, i) => (
-            <button
-              key={m.id}
-              type="button"
-              onClick={() => setPlaying(m)}
-              className="channel-card flex w-full items-stretch gap-3 overflow-hidden p-2 text-right"
-            >
-              <span className="relative block aspect-video w-36 shrink-0 self-start overflow-hidden rounded-md bg-surface-deep sm:w-48">
-                <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
-                <span className="absolute inset-0 grid place-items-center">
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
-                    <Play className="h-4 w-4 fill-current" />
+            <div key={m.id} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-sky/50 bg-surface-deep shadow-lg">
+              <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
+              <span className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--background)_92%,transparent)_0%,color-mix(in_oklab,var(--background)_55%,transparent)_45%,transparent_75%)]" />
+              <div className="absolute inset-0 flex flex-col items-start p-3">
+                <div className="flex w-full items-start gap-2">
+                  <span className="min-w-0 flex-1">
+                    <span className="line-clamp-2 block text-sm font-black leading-tight sm:text-lg">{m.title}</span>
+                    <span className="mt-1 block text-[11px] font-bold text-foreground/75 sm:text-sm">{m.lang} · {m.duration}</span>
                   </span>
-                </span>
-              </span>
-              <span className="flex min-w-0 flex-1 flex-col py-1">
-                <span className="line-clamp-2 block text-base font-black leading-tight">{m.title}</span>
-                <span className="mt-1 flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5" /> {m.duration} · {m.lang}
-                </span>
-                <span className="mt-1 line-clamp-1 block text-xs text-muted-foreground">{m.description}</span>
-                <span className="mt-auto block truncate text-xs text-primary">{m.source}</span>
-              </span>
-            </button>
+                  <button type="button" aria-label="المفضلة" onClick={() => toggleFav(m.id)} className="shrink-0">
+                    <Heart className={`h-5 w-5 ${favs.includes(m.id) ? "fill-primary text-primary" : "text-foreground"}`} />
+                  </button>
+                </div>
+                <button type="button" onClick={() => setPlaying(m)} className="mt-auto rounded-lg bg-primary px-3 py-1.5 text-xs font-black text-primary-foreground shadow-live sm:px-5 sm:py-2 sm:text-base">شاهد الآن</button>
+              </div>
+            </div>
           ))}
         </div>
+        {list.length === 0 && <p className="py-16 text-center text-muted-foreground">لا توجد أفلام مطابقة.</p>}
       </main>
 
       {playing && (
