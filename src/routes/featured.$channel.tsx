@@ -7,7 +7,7 @@ import satelliteWorld from "@/assets/satellite-world.jpg";
 
 export const Route = createFileRoute("/featured/$channel")({
   loader: async ({ params }) => { const data = await getFeaturedChannel({ data: { id: params.channel } }); if (!data) throw notFound(); return data; },
-  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.name ?? "قناة غير متوفرة"} — ALMOGHANI LIVE` }, { name: "description", content: loaderData?.description ?? "تفاصيل القناة المميزة." }, { property: "og:title", content: `${loaderData?.name ?? "قناة"} — ALMOGHANI LIVE` }, { property: "og:description", content: loaderData?.description ?? "قناة مميزة في مكتبة ALMOGHANI." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.name ?? "قناة غير متوفرة"} — المغني لايف` }, { name: "description", content: loaderData?.description ?? "تفاصيل القناة المميزة." }, { property: "og:title", content: `${loaderData?.name ?? "قناة"} — المغني لايف` }, { property: "og:description", content: loaderData?.description ?? "قناة مميزة في مكتبة المغني." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   errorComponent: () => <div className="p-8 text-center">تعذّر تحميل تفاصيل القناة.<Link to="/" className="block mt-4 text-primary">الرئيسية</Link></div>,
   notFoundComponent: () => <div className="p-8 text-center">القناة غير موجودة.<Link to="/" className="block mt-4 text-primary">الرئيسية</Link></div>,
   component: FeaturedDetail,

@@ -85,16 +85,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "ALMOGHANI LIVE" },
+      { title: "المغني لايف" },
       { name: "description", content: "منصة عربية لمشاهدة البث المباشر داخل الموقع." },
-      { name: "author", content: "ALMOGHANI LIVE" },
+      { name: "author", content: "المغني لايف" },
       { name: "theme-color", content: "#090A18" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "ALMOGHANI" },
+      { name: "apple-mobile-web-app-title", content: "المغني" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "المغني لايف" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://almoghani.net/#organization",
+              name: "المغني لايف",
+              alternateName: ["ALMOGHANI LIVE", "Almoghani Live", "almoghani.net"],
+              url: "https://almoghani.net",
+              logo: "https://almoghani.net/icon-512.png",
+              email: "ahmed@almoghani.net",
+              sameAs: ["https://x.com/Op430", "https://www.snapchat.com/add/Ls460g", "https://wa.me/966557073007"],
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://almoghani.net/#website",
+              url: "https://almoghani.net",
+              name: "المغني لايف",
+              alternateName: ["ALMOGHANI LIVE", "almoghani.net"],
+              inLanguage: "ar",
+              publisher: { "@id": "https://almoghani.net/#organization" },
+            },
+          ],
+        }),
+      },
     ],
     links: [
       {

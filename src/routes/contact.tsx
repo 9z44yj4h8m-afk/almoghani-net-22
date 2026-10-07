@@ -16,10 +16,10 @@ function buildContacts(c: typeof defaultContacts) {
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [
-    { title: "للتواصل — ALMOGHANI LIVE" },
-    { name: "description", content: "تواصل مع ALMOGHANI عبر واتساب والبريد وحسابات التواصل الاجتماعي." },
-    { property: "og:title", content: "للتواصل — ALMOGHANI LIVE" },
-    { property: "og:description", content: "واتساب والبريد وحسابات ALMOGHANI الرسمية." },
+    { title: "للتواصل — المغني لايف" },
+    { name: "description", content: "تواصل مع المغني عبر واتساب والبريد وحسابات التواصل الاجتماعي." },
+    { property: "og:title", content: "للتواصل — المغني لايف" },
+    { property: "og:description", content: "واتساب والبريد وحسابات المغني الرسمية." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),

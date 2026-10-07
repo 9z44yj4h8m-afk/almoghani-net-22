@@ -8,9 +8,9 @@ export const Route = createFileRoute("/featured/")({
   loader: () => getFeaturedChannels(),
   head: () => ({
     meta: [
-      { title: "القنوات المميزة — ALMOGHANI LIVE" },
+      { title: "القنوات المميزة — المغني لايف" },
       { name: "description", content: "قسم القنوات المميزة في almoghani smarter: beIN SPORTS وSSC وأبوظبي الرياضية والكأس ونتفليكس وشاهد." },
-      { property: "og:title", content: "القنوات المميزة — ALMOGHANI LIVE" },
+      { property: "og:title", content: "القنوات المميزة — المغني لايف" },
       { property: "og:description", content: "اختر قناة مميزة، شاهد تفاصيلها، ثم تابعها داخل المكتبة الخاصة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

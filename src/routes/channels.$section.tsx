@@ -8,8 +8,8 @@ export const Route = createFileRoute("/channels/$section")({
     return { title: s.title };
   },
   head: ({ loaderData }) => {
-    const t = loaderData ? `قنوات ${loaderData.title} — ALMOGHANI LIVE` : "القسم غير موجود";
-    const d = loaderData ? `شاهد قنوات ${loaderData.title} مباشرة داخل ALMOGHANI LIVE.` : "";
+    const t = loaderData ? `قنوات ${loaderData.title} — المغني لايف` : "القسم غير موجود";
+    const d = loaderData ? `شاهد قنوات ${loaderData.title} مباشرة داخل المغني لايف.` : "";
     return {
       meta: [
         { title: t },

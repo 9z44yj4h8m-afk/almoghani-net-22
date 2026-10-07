@@ -9,9 +9,9 @@ export const Route = createFileRoute("/movies")({
   loader: () => getFeaturedMovies(),
   head: () => ({
     meta: [
-      { title: "أفلام مميزة كاملة — ALMOGHANI LIVE" },
+      { title: "أفلام مميزة كاملة — المغني لايف" },
       { name: "description", content: "أحدث الأفلام الكاملة من قنوات روتانا والسبكي الرسمية، تُحدَّث تلقائيًا وتُشغَّل داخل الموقع." },
-      { property: "og:title", content: "أفلام مميزة كاملة — ALMOGHANI LIVE" },
+      { property: "og:title", content: "أفلام مميزة كاملة — المغني لايف" },
       { property: "og:description", content: "أحدث الأفلام الكاملة من القنوات الرسمية، تُحدَّث تلقائيًا." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

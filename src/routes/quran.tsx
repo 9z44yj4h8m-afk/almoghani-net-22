@@ -10,9 +10,9 @@ type Ayah = { numberInSurah: number; text: string };
 export const Route = createFileRoute("/quran")({
   head: () => ({
     meta: [
-      { title: "القرآن الكريم — ALMOGHANI" },
+      { title: "القرآن الكريم — المغني لايف" },
       { name: "description", content: "اقرأ سور القرآن الكريم واستمع إلى تلاوتها بصوت الشيخ مشاري العفاسي." },
-      { property: "og:title", content: "القرآن الكريم — ALMOGHANI" },
+      { property: "og:title", content: "القرآن الكريم — المغني" },
       { property: "og:description", content: "قراءة واستماع لسور القرآن الكريم كاملة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

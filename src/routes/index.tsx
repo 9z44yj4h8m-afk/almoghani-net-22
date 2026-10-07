@@ -4,12 +4,12 @@ import { PortalPage } from "@/components/portal-page";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ALMOGHANI LIVE — بث مباشر" },
+      { title: "المغني لايف — بث مباشر" },
       {
         name: "description",
-        content: "شاهد القنوات المباشرة داخل ALMOGHANI LIVE بواجهة عربية سريعة وواضحة.",
+        content: "شاهد القنوات المباشرة داخل المغني لايف بواجهة عربية سريعة وواضحة.",
       },
-      { property: "og:title", content: "ALMOGHANI LIVE — بث مباشر" },
+      { property: "og:title", content: "المغني لايف — بث مباشر" },
       {
         property: "og:description",
         content: "مشاهدة القنوات المباشرة من مشغّل واحد داخل الموقع.",

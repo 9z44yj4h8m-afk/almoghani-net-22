@@ -10,7 +10,7 @@ import satelliteWorld from "@/assets/satellite-world.jpg";
 import satelliteMark from "@/assets/satellite-mark.jpg";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "دخول الأعضاء — ALMOGHANI LIVE" }, { name: "description", content: "حسابك الشخصي للدخول إلى مكتبة ALMOGHANI الخاصة." }, { property: "og:title", content: "دخول الأعضاء — ALMOGHANI LIVE" }, { property: "og:description", content: "دخول الأعضاء وإنشاء حساب شخصي." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "دخول الأعضاء — المغني لايف" }, { name: "description", content: "حسابك الشخصي للدخول إلى مكتبة المغني الخاصة." }, { property: "og:title", content: "دخول الأعضاء — المغني لايف" }, { property: "og:description", content: "دخول الأعضاء وإنشاء حساب شخصي." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AuthPage,
 });
 
