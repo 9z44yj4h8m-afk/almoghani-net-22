@@ -37,7 +37,7 @@ export const Route = createFileRoute("/vip")({
 function SmartersPage() {
   const { kind } = Route.useSearch();
   const [watchGroup, setWatchGroup] = useState<string | null>(null);
-  if (watchGroup !== null || kind === "movie" || kind === "series") return <MemberLibraryGate><VipPage initialGroup={watchGroup ?? undefined} /></MemberLibraryGate>;
+  if (watchGroup !== null || kind === "movie" || kind === "series") return <MemberLibraryGate><VipPage initialGroup={watchGroup ?? undefined} onCatalog={() => setWatchGroup(null)} /></MemberLibraryGate>;
   return <SmartersCatalog onMemberWatch={setWatchGroup} />;
 }
 
@@ -57,7 +57,7 @@ const TABS: {
   { k: "series", label: "المسلسلات", eyebrow: "جميع الحلقات", Icon: Clapperboard, activeClass: "bg-accent text-accent-foreground" },
 ];
 
-function VipPage({ initialGroup }: { initialGroup?: string | undefined }) {
+function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefined; onCatalog: () => void }) {
   const pin = "member-session";
   const [fetchError, setFetchError] = useState("");
   const [kind, setKind] = useState<Kind>("live");
@@ -159,7 +159,7 @@ function VipPage({ initialGroup }: { initialGroup?: string | undefined }) {
         <div className="mx-auto max-w-6xl px-4 pb-4 pt-5 sm:px-6">
           <div className="flex items-center gap-3">
             {libraryOpen ? (
-              <Button asChild variant="ghost" size="icon" className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى قنوات سمارتر"><Link to="/vip" search={{ kind: "live" }} onClick={() => window.location.assign("/vip?kind=live")}>
+              <Button asChild variant="ghost" size="icon" className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى قنوات سمارتر"><Link to="/vip" search={{ kind: "live" }} onClick={onCatalog}>
                 <ArrowRight className="h-5 w-5" />
               </Link></Button>
             ) : (
