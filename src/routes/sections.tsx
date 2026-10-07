@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useSiteConfig } from "@/lib/site-config";
 import { getSectionCard } from "@/lib/section-content";
+import { SectionCardStyle } from "@/components/section-card-style";
 
 export const Route = createFileRoute("/sections")({
   head: () => ({
@@ -33,12 +34,14 @@ function SectionsPage() {
           return <a
             key={c.title}
             href={c.link}
-            className="group grid grid-cols-[1fr_auto] items-center gap-3 overflow-hidden rounded-2xl border border-sky/60 bg-surface-deep p-3 shadow-[0_0_24px_-8px_var(--color-sky)] transition hover:border-sky"
+            data-section-card={id}
+            className="section-page-card group grid grid-cols-[1fr_auto] items-center gap-3 overflow-hidden rounded-2xl border border-sky/60 bg-surface-deep p-3 shadow-[0_0_24px_-8px_var(--color-sky)] transition hover:border-sky"
           >
+            <SectionCardStyle id={id} card={c} />
             <div className="min-w-0 space-y-2 p-2">
-              <h2 className="font-display text-2xl font-black text-foreground sm:text-3xl">{c.title}</h2>
-              <p className="text-sm text-muted-foreground">{c.description}</p>
-              <span className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-black text-primary-foreground">
+              <h2 data-card-text="title" className="font-display text-2xl font-black text-foreground sm:text-3xl">{c.title}</h2>
+              <p data-card-text="description" className="text-sm text-muted-foreground">{c.description}</p>
+              <span data-card-text="button" className="inline-flex flex-wrap items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-black text-primary-foreground">
                 {c.button}
                 <ChevronLeft className="h-4 w-4" />
               </span>
