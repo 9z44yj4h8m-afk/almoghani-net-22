@@ -25,9 +25,9 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   validateSearch: (s: Record<string, unknown>): { tab?: string | undefined } => ({ tab: typeof s["tab"] === "string" ? s["tab"] : undefined }),
   head: () => ({ meta: [
-    { title: "لوحة التحكم — ALMOGHANI" },
-    { name: "description", content: "لوحة تحكم مالك موقع ALMOGHANI LIVE." },
-    { property: "og:title", content: "لوحة التحكم — ALMOGHANI" },
+    { title: "لوحة التحكم — المغني" },
+    { name: "description", content: "لوحة تحكم مالك موقع المغني لايف." },
+    { property: "og:title", content: "لوحة التحكم — المغني" },
     { property: "og:description", content: "إدارة القنوات والأفلام والأعضاء والتصميم." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

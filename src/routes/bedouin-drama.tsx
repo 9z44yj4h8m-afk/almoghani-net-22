@@ -6,10 +6,10 @@ import { bedouinSeries, type BedouinEpisode } from "@/lib/bedouin-series";
 
 export const Route = createFileRoute("/bedouin-drama")({
   head: () => ({ meta: [
-    { title: "البدوية دراما — المسلسلات البدوية | ALMOGHANI LIVE" },
+    { title: "البدوية دراما — المسلسلات البدوية | المغني لايف" },
     { name: "description", content: "شاهد النذير وذياب هباب الريح وأخو سعدى وغدر الزمان والقصير ودواس الليل وعودة أبو تايه، مع صور الحلقات المرتبة ومشغّل يوتيوب داخل الموقع." },
-    { property: "og:title", content: "البدوية دراما — ALMOGHANI LIVE" },
-    { property: "og:description", content: "سبعة مسلسلات بدوية في ALMOGHANI LIVE، مع الحلقات المتاحة بصورها وترتيبها ومشاهدتها داخل الموقع." },
+    { property: "og:title", content: "البدوية دراما — المغني لايف" },
+    { property: "og:description", content: "سبعة مسلسلات بدوية في المغني لايف، مع الحلقات المتاحة بصورها وترتيبها ومشاهدتها داخل الموقع." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

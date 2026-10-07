@@ -6,10 +6,10 @@ import { useSiteConfig, defaultChat } from "@/lib/site-config";
 export const Route = createFileRoute("/live-chat")({
   head: () => ({
     meta: [
-      { title: "الدردشة العامة — ALMOGHANI LIVE" },
-      { name: "description", content: "دردشة مباشرة مفتوحة لزوار ALMOGHANI LIVE بدون تسجيل دخول." },
-      { property: "og:title", content: "الدردشة العامة — ALMOGHANI LIVE" },
-      { property: "og:description", content: "تحدث مع متابعي البث المباشر على ALMOGHANI LIVE." },
+      { title: "الدردشة العامة — المغني لايف" },
+      { name: "description", content: "دردشة مباشرة مفتوحة لزوار المغني لايف بدون تسجيل دخول." },
+      { property: "og:title", content: "الدردشة العامة — المغني لايف" },
+      { property: "og:description", content: "تحدث مع متابعي البث المباشر على المغني لايف." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

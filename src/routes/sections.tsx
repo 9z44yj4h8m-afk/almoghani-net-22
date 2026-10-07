@@ -7,9 +7,9 @@ import { SectionCardStyle } from "@/components/section-card-style";
 export const Route = createFileRoute("/sections")({
   head: () => ({
     meta: [
-      { title: "الأقسام — ALMOGHANI LIVE" },
+      { title: "الأقسام — المغني لايف" },
       { name: "description", content: "اختر ما تريد مشاهدته: البث المباشر، مكتبة الأفلام، المسلسلات، والمكتبة الخاصة." },
-      { property: "og:title", content: "الأقسام — ALMOGHANI LIVE" },
+      { property: "og:title", content: "الأقسام — المغني لايف" },
       { property: "og:description", content: "البث المباشر والأفلام والمسلسلات والمكتبة الخاصة في مكان واحد." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

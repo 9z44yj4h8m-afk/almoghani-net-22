@@ -5,9 +5,9 @@ import { CONTACT_NAME, PROVIDER_URL, WHATSAPP_DISPLAY, WHATSAPP_URL } from "@/li
 export const Route = createFileRoute("/subscription")({
   head: () => ({
     meta: [
-      { title: "باقات الاشتراك — ALMOGHANI LIVE" },
+      { title: "باقات الاشتراك — المغني لايف" },
       { name: "description", content: "باقات اشتراك شهرية وسنوية: قنوات رياضية، أفلام ومسلسلات. للاشتراك تواصل واتساب." },
-      { property: "og:title", content: "باقات الاشتراك — ALMOGHANI LIVE" },
+      { property: "og:title", content: "باقات الاشتراك — المغني لايف" },
       { property: "og:description", content: "اشترك في الباقة الشهرية أو السنوية عبر واتساب." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

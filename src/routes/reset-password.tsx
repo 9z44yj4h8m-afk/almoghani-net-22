@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/reset-password")({ head: () => ({ meta: [{ title: "استعادة كلمة المرور — ALMOGHANI LIVE" }, { name: "description", content: "عيّن كلمة مرور جديدة لحساب ALMOGHANI." }, { property: "og:title", content: "استعادة كلمة المرور — ALMOGHANI LIVE" }, { property: "og:description", content: "إعادة تعيين كلمة مرور العضو." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }), component: ResetPassword });
+export const Route = createFileRoute("/reset-password")({ head: () => ({ meta: [{ title: "استعادة كلمة المرور — المغني لايف" }, { name: "description", content: "عيّن كلمة مرور جديدة لحساب المغني." }, { property: "og:title", content: "استعادة كلمة المرور — المغني لايف" }, { property: "og:description", content: "إعادة تعيين كلمة مرور العضو." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }), component: ResetPassword });
 function ResetPassword() {
   const [valid, setValid] = useState(false); const [password, setPassword] = useState(""); const [confirm, setConfirm] = useState(""); const [message, setMessage] = useState(""); const [busy, setBusy] = useState(false);
   useEffect(() => {

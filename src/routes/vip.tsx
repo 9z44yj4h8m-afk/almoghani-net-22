@@ -22,9 +22,9 @@ export const Route = createFileRoute("/vip")({
   validateSearch: (search: Record<string, unknown>): { kind?: string | undefined; group?: string | undefined; q?: string | undefined } => ({ kind: typeof search["kind"] === "string" ? search["kind"] : undefined, group: typeof search["group"] === "string" ? search["group"] : undefined, q: typeof search["q"] === "string" ? search["q"] : undefined }),
   head: () => ({
     meta: [
-      { title: "قنوات سمارتر — ALMOGHANI LIVE" },
+      { title: "قنوات سمارتر — المغني لايف" },
       { name: "description", content: "تصفّح قنوات Almoghani Smarter pro وسجّل الدخول للمشاهدة." },
-      { property: "og:title", content: "قنوات سمارتر — ALMOGHANI LIVE" },
+      { property: "og:title", content: "قنوات سمارتر — المغني لايف" },
       { property: "og:description", content: "قنوات سمارتر مرتبة حسب التصنيف؛ المشاهدة للأعضاء." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
