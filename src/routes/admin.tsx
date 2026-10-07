@@ -13,10 +13,10 @@ import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
-  defaultTexts, defaultContacts, defaultDesign, type SiteTexts, type SiteContacts, type SiteDesign,
+  defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
-const TABS = ["channels", "movies", "members", "texts", "design", "schedule"] as const;
+const TABS = ["overview", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -51,8 +51,11 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <Tabs defaultValue={tab && TABS.includes(tab as never) ? tab : "channels"} dir="rtl" className="mt-6">
+        <Tabs defaultValue={tab && TABS.includes(tab as never) ? tab : "overview"} dir="rtl" className="mt-6">
           <TabsList className="flex h-auto flex-wrap justify-start gap-1">
+            <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
+            <TabsTrigger value="ads">الإعلان والعاجل</TabsTrigger>
+            <TabsTrigger value="chat">الدردشة</TabsTrigger>
             <TabsTrigger value="channels">القنوات</TabsTrigger>
             <TabsTrigger value="movies">الأفلام</TabsTrigger>
             <TabsTrigger value="members">الأعضاء</TabsTrigger>
@@ -60,6 +63,9 @@ function AdminPage() {
             <TabsTrigger value="design">التصميم</TabsTrigger>
             <TabsTrigger value="schedule">مواعيد البث</TabsTrigger>
           </TabsList>
+          <TabsContent value="overview" className="mt-6"><OverviewTab /></TabsContent>
+          <TabsContent value="ads" className="mt-6"><AdsTab /></TabsContent>
+          <TabsContent value="chat" className="mt-6"><ChatTab /></TabsContent>
           <TabsContent value="channels" className="mt-6"><ChannelsTab /></TabsContent>
           <TabsContent value="movies" className="mt-6"><MoviesTab /></TabsContent>
           <TabsContent value="members" className="mt-6"><MembersTab /></TabsContent>
@@ -249,4 +255,66 @@ function DesignTab() {
 
 function Center({ children }: { children: React.ReactNode }) {
   return <div dir="rtl" className="grid min-h-screen place-items-center bg-background p-6 text-center text-foreground">{children}</div>;
+}
+
+function OverviewTab() {
+  const { data } = useSiteConfig();
+  const fetchMembers = useServerFn(listMembers);
+  const members = useQuery({ queryKey: ["admin-members"], queryFn: () => fetchMembers() });
+  const chat = useQuery({ queryKey: ["admin-chat-count"], queryFn: async () => (await supabase.from("chat_messages").select("id", { count: "exact", head: true })).count ?? 0 });
+  const hiddenCh = (data?.overrides ?? []).filter((o) => o.hidden).length;
+  const stats = [
+    ["القنوات الظاهرة", baseChannels.length + (data?.customChannels.length ?? 0) - hiddenCh],
+    ["القنوات المضافة", data?.customChannels.length ?? 0],
+    ["الأفلام", baseMovies.length + (data?.customMovies.length ?? 0) - (data?.hiddenMovies.length ?? 0)],
+    ["الأعضاء", members.data?.length ?? "…"],
+    ["الأعضاء الموقوفون", members.data?.filter((m) => m.suspended).length ?? "…"],
+    ["رسائل الدردشة", chat.data ?? "…"],
+  ] as const;
+  return <div className="space-y-6">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{stats.map(([l, v]) => <div key={l} className="rounded-2xl border border-border bg-card/50 p-4"><p className="text-sm text-muted-foreground">{l}</p><p className="mt-1 text-3xl font-black">{v}</p></div>)}</div>
+    <div className="flex flex-wrap gap-2">
+      <Button asChild variant="outline"><Link to="/">الرئيسية</Link></Button>
+      <Button asChild variant="outline"><Link to="/movies">الأفلام</Link></Button>
+      <Button asChild variant="outline"><Link to="/live-chat">الدردشة</Link></Button>
+      <Button asChild variant="outline"><Link to="/vip">المكتبة</Link></Button>
+    </div>
+  </div>;
+}
+
+function AdsTab() {
+  const { data } = useSiteConfig();
+  const refresh = useRefresh();
+  const [ad, setAd] = useState<SiteAd>(defaultAd);
+  const [ticker, setTicker] = useState<SiteTicker>(defaultTicker);
+  const [msg, setMsg] = useState("");
+  useEffect(() => { if (data) { setAd(data.ad); setTicker(data.ticker); } }, [data]);
+  return <form className="grid gap-4" onSubmit={async (e) => { e.preventDefault(); const a = await saveSetting("ad", ad); const b = await saveSetting("ticker", ticker); setMsg(a.error || b.error ? "تعذّر الحفظ." : "تم الحفظ ✓"); void refresh(); }}>
+    <h2 className="font-black">إعلان الصفحة الرئيسية</h2>
+    <label className="flex items-center gap-2"><input type="checkbox" checked={ad.enabled} onChange={(e) => setAd({ ...ad, enabled: e.target.checked })} /> إظهار الإعلان</label>
+    <label className="block space-y-1"><span className="text-sm font-bold">رابط صورة الإعلان (https — اتركه فارغًا لصورة الأفلام الحالية)</span><input className={input} dir="ltr" value={ad.image} onChange={(e) => setAd({ ...ad, image: e.target.value.trim() })} /></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">عند الضغط يفتح (مثل /movies أو رابط كامل)</span><input className={input} dir="ltr" value={ad.link} onChange={(e) => setAd({ ...ad, link: e.target.value.trim() })} /></label>
+    <h2 className="mt-4 font-black">شريط العاجل</h2>
+    <label className="flex items-center gap-2"><input type="checkbox" checked={ticker.enabled} onChange={(e) => setTicker({ ...ticker, enabled: e.target.checked })} /> إظهار شريط العاجل</label>
+    <textarea className={`${input} h-24 py-2`} maxLength={300} value={ticker.text} onChange={(e) => setTicker({ ...ticker, text: e.target.value })} />
+    <Button type="submit">حفظ</Button>
+    {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
+  </form>;
+}
+
+function ChatTab() {
+  const { data } = useSiteConfig();
+  const refresh = useRefresh();
+  const enabled = (data?.chat ?? defaultChat).enabled;
+  const msgs = useQuery({ queryKey: ["admin-chat"], queryFn: async () => (await supabase.from("chat_messages").select("id,display_name,body,created_at").order("created_at", { ascending: false }).limit(100)).data ?? [] });
+  return <div className="space-y-4">
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card/50 p-4">
+      <span className="flex-1 font-bold">الدردشة {enabled ? "مفعّلة" : "متوقفة"}</span>
+      <Button variant={enabled ? "outline" : "default"} onClick={async () => { await saveSetting("chat", { enabled: !enabled }); void refresh(); }}>{enabled ? "إيقاف" : "تشغيل"}</Button>
+    </div>
+    <ul className="divide-y divide-border">{(msgs.data ?? []).map((m) => <li key={m.id} className="flex items-start gap-2 py-3">
+      <span className="min-w-0 flex-1"><b>{m.display_name || "زائر"}</b> <span className="text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" })}</span><span className="block break-words">{m.body}</span></span>
+      <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("chat_messages").delete().eq("id", m.id); void msgs.refetch(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+    </li>)}</ul>
+  </div>;
 }

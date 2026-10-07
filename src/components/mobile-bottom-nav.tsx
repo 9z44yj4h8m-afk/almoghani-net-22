@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, LayoutGrid, MoreHorizontal, Heart } from "lucide-react";
+import { Home, LayoutGrid, MoreHorizontal, MessagesSquare } from "lucide-react";
+import { useSiteConfig, defaultTicker } from "@/lib/site-config";
 
 const items = [
   { to: "/", label: "الرئيسية", icon: Home },
   { to: "/sections", label: "الأقسام", icon: LayoutGrid },
-  { to: "/featured", label: "المفضلة", icon: Heart },
+  { to: "/live-chat", label: "الدردشة", icon: MessagesSquare },
   { to: "/contact", label: "المزيد", icon: MoreHorizontal },
 ] as const;
 
@@ -28,6 +29,9 @@ export function MobileBottomNav() {
 }
 
 export function BreakingTicker() {
+  const { data } = useSiteConfig();
+  const ticker = data?.ticker ?? defaultTicker;
+  if (!ticker.enabled) return null;
   return (
     <div className="reference-ticker flex items-stretch overflow-hidden border-y border-border bg-surface-deep">
       <span className="z-10 flex shrink-0 items-center bg-primary px-5 py-2 font-display text-lg font-black text-primary-foreground [clip-path:polygon(0_0,100%_0,100%_100%,12%_100%)]">
@@ -37,7 +41,7 @@ export function BreakingTicker() {
         <span className="ticker-wordmark" dir="ltr">ALMOGHANI <span>LIVE</span></span>
         <p className="news-ticker flex min-h-14 w-max items-center gap-2 whitespace-nowrap text-sm text-foreground">
           <span className="h-2 w-2 rounded-full bg-primary" />
-          شاهد القنوات المباشرة والأفلام والقنوات المميزة على ALMOGHANI — للاشتراك تواصل واتساب 0557073007
+          {ticker.text}
         </p>
       </div>
     </div>

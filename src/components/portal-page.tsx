@@ -34,8 +34,8 @@ import { BreakingTicker } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
-import { LiveChat } from "@/components/live-chat";
-import { useCatalog, useSiteConfig, defaultTexts } from "@/lib/site-config";
+import { useCatalog, useSiteConfig, defaultTexts, defaultAd } from "@/lib/site-config";
+import moviesAd from "@/assets/movies-ad.png.asset.json";
 import { Lock } from "lucide-react";
 
 const sections: {
@@ -228,6 +228,7 @@ export function PortalPage({ section }: { section?: string }) {
       <main className="pb-28 md:pb-12">
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
         {!section && <BreakingTicker />}
+        {!section && <HomeAd />}
 
 
         {previewMode && (
@@ -241,7 +242,6 @@ export function PortalPage({ section }: { section?: string }) {
             ))}
           </section>
         )}
-        {!section && <LiveChat />}
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
@@ -412,5 +412,18 @@ export function PortalPage({ section }: { section?: string }) {
       </Link>
 
     </div>
+  );
+}
+
+function HomeAd() {
+  const { data } = useSiteConfig();
+  const ad = data?.ad ?? defaultAd;
+  if (!ad.enabled) return null;
+  const image = ad.image.startsWith("https://") ? ad.image : moviesAd.url;
+  const img = <img src={image} alt="أفلام مميزة كاملة — شاهد الآن" width={1536} height={1024} loading="lazy" className="block w-full rounded-2xl border border-sky/50 shadow-xl transition-transform hover:scale-[1.01]" />;
+  return (
+    <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="إعلان">
+      {/^https?:\/\//.test(ad.link) ? <a href={ad.link} target="_blank" rel="noopener noreferrer">{img}</a> : <a href={ad.link.startsWith("/") ? ad.link : "/movies"}>{img}</a>}
+    </section>
   );
 }

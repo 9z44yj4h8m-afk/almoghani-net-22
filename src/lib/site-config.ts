@@ -7,6 +7,13 @@ export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel:
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
 export type SiteDesign = { primary: string; accent: string; background: string };
 
+export type SiteAd = { enabled: boolean; image: string; link: string };
+export type SiteTicker = { enabled: boolean; text: string };
+export type SiteChat = { enabled: boolean };
+export const defaultAd: SiteAd = { enabled: true, image: "", link: "/movies" };
+export const defaultTicker: SiteTicker = { enabled: true, text: "شاهد القنوات المباشرة والأفلام والقنوات المميزة على ALMOGHANI — للاشتراك تواصل واتساب 0557073007" };
+export const defaultChat: SiteChat = { enabled: true };
+
 export const defaultTexts: SiteTexts = { bannerTitle: "almoghani smarter", bannerSubtitle: "جميع القنوات", proLabel: "Almoghani Smarter pro" };
 export const defaultContacts: SiteContacts = { whatsapp: "0557073007", email: "a0552525337@gmail.com", snapchat: "", x: "", instagram: "" };
 export const defaultDesign: SiteDesign = { primary: "", accent: "", background: "" };
@@ -17,6 +24,9 @@ export type SiteConfig = {
   texts: SiteTexts;
   contacts: SiteContacts;
   design: SiteDesign;
+  ad: SiteAd;
+  ticker: SiteTicker;
+  chat: SiteChat;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
   overrides: { channel_id: string; hidden: boolean; category: string | null }[];
   customMovies: { id: string; youtube_id: string; title: string; description: string }[];
@@ -39,6 +49,9 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
     texts: get("texts", defaultTexts),
     contacts: get("contacts", defaultContacts),
     design: get("design", defaultDesign),
+    ad: get("ad", defaultAd),
+    ticker: get("ticker", defaultTicker),
+    chat: get("chat", defaultChat),
     customChannels: custom.data ?? [],
     overrides: overrides.data ?? [],
     customMovies: movies.data ?? [],
