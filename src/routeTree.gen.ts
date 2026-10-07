@@ -20,6 +20,7 @@ import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleAdminRouteImport } from './routes/schedule-admin'
+import { Route as SectionsRouteImport } from './routes/sections'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -85,6 +86,11 @@ const ScheduleAdminRoute = ScheduleAdminRouteImport.update({
   path: '/schedule-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SectionsRoute = SectionsRouteImport.update({
+  id: '/sections',
+  path: '/sections',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubscriptionRoute = SubscriptionRouteImport.update({
   id: '/subscription',
   path: '/subscription',
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
+  '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
+  '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
+  '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
   '/api/chat': typeof ApiChatRoute
@@ -213,6 +222,7 @@ export interface FileRouteTypes {
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
+    | '/sections'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
+    | '/sections'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
+    | '/sections'
     | '/subscription'
     | '/vip'
     | '/api/chat'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   QuranRoute: typeof QuranRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleAdminRoute: typeof ScheduleAdminRoute
+  SectionsRoute: typeof SectionsRoute
   SubscriptionRoute: typeof SubscriptionRoute
   VipRoute: typeof VipRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScheduleAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sections': {
+      id: '/sections'
+      path: '/sections'
+      fullPath: '/sections'
+      preLoaderRoute: typeof SectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subscription': {
       id: '/subscription'
       path: '/subscription'
@@ -448,6 +468,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuranRoute: QuranRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ScheduleAdminRoute: ScheduleAdminRoute,
+  SectionsRoute: SectionsRoute,
   SubscriptionRoute: SubscriptionRoute,
   VipRoute: VipRoute,
   ApiChatRoute: ApiChatRoute,
