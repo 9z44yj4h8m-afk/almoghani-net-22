@@ -6,10 +6,10 @@ import { bedouinSeries, type BedouinEpisode } from "@/lib/bedouin-series";
 
 export const Route = createFileRoute("/bedouin-drama")({
   head: () => ({ meta: [
-    { title: "البدوية دراما — دواس الليل | ALMOGHANI LIVE" },
-    { name: "description", content: "شاهد مسلسل دواس الليل في قسم البدوية دراما، مع صور الحلقات المتاحة في قائمة يوتيوب وتشغيلها داخل الموقع." },
+    { title: "البدوية دراما — المسلسلات البدوية | ALMOGHANI LIVE" },
+    { name: "description", content: "شاهد دواس الليل وعودة أبو تايه في قسم البدوية دراما، مع صور الحلقات ومشغّل يوتيوب داخل الموقع." },
     { property: "og:title", content: "البدوية دراما — ALMOGHANI LIVE" },
-    { property: "og:description", content: "مسلسل دواس الليل وحلقاته المتاحة في قائمة يوتيوب المرسلة." },
+    { property: "og:description", content: "دواس الليل وعودة أبو تايه: مسلسلات بدوية وحلقات مصوّرة داخل الموقع." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -50,7 +50,7 @@ function BedouinDramaPage() {
         <div className="aspect-video overflow-hidden rounded-lg border border-sky/50 bg-surface-deep"><iframe key={playing.youtubeId} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><h2 className="min-w-0 text-lg font-bold">{series.title} · الحلقة {playing.number}</h2><div className="flex items-center gap-2"><Button variant="outline" size="icon" aria-label="الحلقة السابقة" disabled={index <= 0} onClick={() => { const e = episodes[index - 1]; if (e) watch(e); }}><ChevronRight /></Button><Button variant="outline" size="icon" aria-label="الحلقة التالية" disabled={index >= episodes.length - 1} onClick={() => { const e = episodes[index + 1]; if (e) watch(e); }}><ChevronLeft /></Button><Button variant="ghost" onClick={() => setPlaying(null)}>إغلاق المشغّل</Button></div></div>
       </section>}
-      <section aria-label="حلقات دواس الليل" className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+      <section aria-label={`حلقات ${series.title}`} className="grid grid-cols-2 gap-3 lg:grid-cols-3">
         {episodes.filter((e) => `${e.title} ${e.number}`.includes(query.trim())).map((e) => <Button key={e.youtubeId} variant="ghost" aria-label={`شاهد الحلقة ${e.number}`} aria-pressed={e.youtubeId === playing?.youtubeId} onClick={() => watch(e)} className={`block h-auto w-full overflow-hidden whitespace-normal rounded-lg border bg-surface-deep p-0 text-right hover:border-sky ${e.youtubeId === playing?.youtubeId ? "border-primary" : "border-border"}`}>
           <span className="relative block aspect-video"><img src={e.image} alt={`${series.title} — الحلقة ${e.number}`} width={480} height={360} loading="lazy" decoding="async" className="h-full w-full object-cover" /><span className="absolute inset-0 bg-player-overlay" /><span className="absolute bottom-2 left-2 grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground"><Play className="h-4 w-4 fill-current" /></span></span>
           <span className="block p-3"><span className="block text-sm font-black sm:text-base">الحلقة {e.number}</span><span className="mt-1 block text-xs text-muted-foreground">{e.youtubeId === playing?.youtubeId ? "يُعرض الآن" : series.title}</span></span>
