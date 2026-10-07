@@ -1,20 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-export const configureOwnerPassword = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
-    if (!data) throw new Error("Forbidden");
-    const password = process.env['ADMIN_INITIAL_PASSWORD'];
-    if (!password) throw new Error("Password configuration unavailable");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.auth.admin.updateUserById(context.userId, { password });
-    if (error) throw new Error(`Unable to configure password: ${error.code ?? error.status}`);
-    return { ok: true };
-  });
 
 export const loginOwner = createServerFn({ method: "POST" })
   .inputValidator((data) => z.object({ password: z.string().min(1).max(128) }).parse(data))
