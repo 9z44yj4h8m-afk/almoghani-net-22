@@ -27,7 +27,7 @@ export const defaultTicker: SiteTicker = { enabled: true, text: "شاهد الق
 export const defaultChat: SiteChat = { enabled: true };
 
 export const defaultTexts: SiteTexts = { bannerTitle: "almoghani smarter", bannerSubtitle: "جميع القنوات", proLabel: "Almoghani Smarter pro" };
-export const defaultContacts: SiteContacts = { whatsapp: "0557073007", email: "a0552525337@gmail.com", snapchat: "", x: "", instagram: "" };
+export const defaultContacts: SiteContacts = { whatsapp: "0557073007", email: "ahmed@almoghani.net", snapchat: "Ls460g", x: "Op430", instagram: "" };
 export const defaultDesign: SiteDesign = { primary: "", accent: "", background: "" };
 
 export const channelCategories: ChannelCategory[] = ["إخبارية", "رياضية", "إسلامية", "مسلسلات وأفلام", "أفلام كاملة", "أطفال ووثائقي", "عامة"];
