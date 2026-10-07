@@ -7,6 +7,7 @@ import ssc from "@/assets/smarters-ssc-banner.jpg";
 import shahid from "@/assets/smarters-shahid-banner.jpg";
 import alkass from "@/assets/smarters-alkass-banner.jpg";
 import abudhabi from "@/assets/smarters-abudhabi-banner.jpg";
+import { BedouinDramaBanner } from "@/components/bedouin-drama-banner";
 
 const images: Record<string, string> = {
   "bein-sports-1": bein.url,
@@ -21,6 +22,7 @@ const order = ["bein-sports-1", "netflix", "ssc-1", "shahid", "alkass", "abu-dha
 
 export function SmartersBanners({ onBrowse }: { onBrowse: (query: string) => void }) {
   return <section aria-label="باقات قنوات سمارتر" className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+    <BedouinDramaBanner />
     {order.map((id, index) => {
       const channel = featuredChannels.find((item) => item.id === id);
       if (!channel) return null;

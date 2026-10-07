@@ -29,7 +29,7 @@ function SectionsPage() {
         <span className="mx-auto mt-3 block h-0.5 w-14 rounded bg-sky" />
       </header>
       <div className="space-y-4">
-        {["sections-live", "sections-movie", "sections-series", "sections-member"].map((id) => {
+        {["sections-live", "sections-movie", "sections-series", "sections-bedouin", "sections-member"].map((id) => {
           const c = getSectionCard(id, content);
           return <a
             key={c.title}

@@ -2,8 +2,10 @@ import liveImage from "@/assets/section-live.jpg";
 import moviesImage from "@/assets/section-movies.jpg";
 import seriesImage from "@/assets/section-series.jpg";
 import memberImage from "@/assets/section-private.jpg";
+import bedouinImage from "@/assets/bedouin-drama-banner.jpg";
 
 export const sectionDestinations = [
+  { value: "/bedouin-drama", label: "البدوية دراما" },
   { value: "/live", label: "البث المباشر" },
   { value: "/movies", label: "أفلام مميزة كاملة" },
   { value: "/vip?kind=live", label: "بث سمارتر" },
@@ -19,6 +21,7 @@ export type SectionCard = { title: string; description: string; button: string; 
 export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string };
 export const defaultSectionContent: SectionContent = { cards: {}, titles: {}, pageTitle: "الأقسام", pageDescription: "اختر ما تريد مشاهدته" };
 export const editableCards: { id: string; location: string; defaults: SectionCard }[] = [
+  { id: "sections-bedouin", location: "صفحة الأقسام · البدوية دراما", defaults: { title: "البدوية دراما", description: "المسلسلات البدوية وجميع حلقاتها", button: "استعرض المسلسلات", image: bedouinImage, link: "/bedouin-drama" } },
   { id: "home-live", location: "الرئيسية · البث", defaults: { title: "البث المباشر", description: "جميع القنوات مرتبة داخل تصنيفات واضحة", button: "اضغط للدخول", image: liveImage, link: "/vip?kind=live" } },
   { id: "home-movie", location: "الرئيسية · الأفلام", defaults: { title: "مكتبة الأفلام", description: "", button: "اضغط للدخول", image: moviesImage, link: "/vip?kind=movie" } },
   { id: "home-series", location: "الرئيسية · المسلسلات", defaults: { title: "المسلسلات", description: "", button: "اضغط للدخول", image: seriesImage, link: "/vip?kind=series" } },
