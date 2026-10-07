@@ -12,7 +12,7 @@ export const configureOwnerPassword = createServerFn({ method: "POST" })
     if (!password) throw new Error("Password configuration unavailable");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.auth.admin.updateUserById(context.userId, { password });
-    if (error) throw new Error("Unable to configure password");
+    if (error) throw new Error(`Unable to configure password: ${error.code ?? error.status}`);
     return { ok: true };
   });
 
