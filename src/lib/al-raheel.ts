@@ -1,3 +1,4 @@
+import art20x from "@/assets/al-raheel/lbpDuK-tXJ4.jpg.asset.json";
 import art0 from "@/assets/al-raheel/L_9dgg0x28s.jpg.asset.json";
 import art1 from "@/assets/al-raheel/3-8MLil_DUE.jpg.asset.json";
 import art2 from "@/assets/al-raheel/woCaSvTCZqg.jpg.asset.json";
@@ -53,6 +54,7 @@ export const alRaheel = {
     { youtubeId: "CErh7qZSyeI", title: "مسلسل الرحيل  | الحلقة 17 | بطولة: ياسر المصري - منذر رياحنه", number: 17, image: art16.url },
     { youtubeId: "6pUNkdUhi78", title: "مسلسل الرحيل  | الحلقة 18 | بطولة: ياسر المصري - منذر رياحنه", number: 18, image: art17.url },
     { youtubeId: "1j_Vx3A1sJ0", title: "مسلسل الرحيل  | الحلقة 19 | بطولة: ياسر المصري - منذر رياحنه", number: 19, image: art18.url },
+    { youtubeId: "lbpDuK-tXJ4", title: "مسلسل الرحيل | الحلقة 20 | بطولة: ياسر المصري - منذر رياحنه", number: 20, image: art20x.url },
     { youtubeId: "fENZLc4XB0s", title: "مسلسل الرحيل  | الحلقة 21 | بطولة: ياسر المصري - منذر رياحنه", number: 21, image: art19.url },
     { youtubeId: "JKwp51nlWro", title: "مسلسل الرحيل  | الحلقة 22 | بطولة: ياسر المصري - منذر رياحنه", number: 22, image: art20.url },
     { youtubeId: "fj9vdixERFU", title: "مسلسل الرحيل  | الحلقة 23 | بطولة: ياسر المصري - منذر رياحنه", number: 23, image: art21.url },
