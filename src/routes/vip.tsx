@@ -159,9 +159,9 @@ function VipPage({ initialGroup }: { initialGroup?: string | undefined }) {
         <div className="mx-auto max-w-6xl px-4 pb-4 pt-5 sm:px-6">
           <div className="flex items-center gap-3">
             {libraryOpen ? (
-              <Button variant="ghost" size="icon" onClick={() => setLibraryOpen(false)} className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى أقسام المكتبة">
+              <Button asChild variant="ghost" size="icon" className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى قنوات سمارتر"><Link to="/vip" search={{ kind: "live" }} onClick={() => window.location.assign("/vip?kind=live")}>
                 <ArrowRight className="h-5 w-5" />
-              </Button>
+              </Link></Button>
             ) : (
               <Link to="/movies" className="grid h-9 w-9 place-items-center rounded-md border border-vip-foreground/15 text-vip-foreground" aria-label="رجوع إلى الأفلام">
                 <ArrowRight className="h-5 w-5" />
