@@ -27,7 +27,8 @@ export function SmartersBanners({ onBrowse }: { onBrowse: (query: string) => voi
       const image = <img src={images[id]} alt={channel.kind === "live" ? `استعرض قنوات ${channel.name}` : `استعرض محتوى ${channel.name}`} width={1920} height={710} loading={index === 0 ? "eager" : "lazy"} decoding="async" className="block aspect-[1920/710] h-full w-full object-contain" />;
       const classes = "h-auto w-full overflow-hidden rounded-lg border border-sky/40 bg-surface-deep p-0 transition-transform hover:scale-[1.01] hover:border-sky focus-visible:ring-sky motion-reduce:transform-none";
       if (channel.kind !== "live") return <Button key={id} asChild variant="ghost" className={classes}><Link to="/vip" search={{ kind: channel.kind, q: channel.query }} aria-label={`استعرض محتوى ${channel.name}`}>{image}</Link></Button>;
-      const query = id === "bein-sports-1" ? "bein" : id === "ssc-1" ? "SSC" : channel.query;
+      if (id === "ssc-1") return <div key={id} className="min-w-0"><Button type="button" variant="ghost" disabled className={`${classes} disabled:opacity-70`} aria-label="قنوات SSC غير متاحة حاليًا">{image}</Button><p className="mt-1 text-center text-xs text-muted-foreground">قنوات SSC غير متاحة حاليًا في القائمة</p></div>;
+      const query = id === "bein-sports-1" ? "bein" : id === "alkass" ? "AL KASS" : channel.query;
       return <Button key={id} type="button" variant="ghost" className={classes} aria-label={`استعرض قنوات ${channel.name}`} onClick={() => onBrowse(query)}>{image}</Button>;
     })}
   </section>;
