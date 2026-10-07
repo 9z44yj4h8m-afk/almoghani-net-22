@@ -9,12 +9,16 @@ import general from "@/assets/home-categories/general.png.asset.json";
 
 export function HomeCategoryBanners() {
   return (
-    <section aria-label="أقسام المشاهدة" className="mx-auto grid max-w-4xl grid-cols-2 gap-2 px-3 pt-5 sm:grid-cols-3 sm:gap-3 sm:px-6">
+    <section
+      id="home-category-banners"
+      aria-label="أقسام المشاهدة"
+      className="mx-auto grid max-w-4xl scroll-mt-24 grid-cols-1 gap-3 px-3 pt-5 sm:px-6"
+    >
       {[
         { name: "الأفلام العربية", lang: "عربي" as const, image: arabicMovies.url },
         { name: "الأفلام الأجنبية", lang: "عالمي" as const, image: foreignMovies.url },
       ].map((item) => (
-        <Link key={item.lang} to="/movies" search={{ lang: item.lang }} aria-label={item.name} className="block overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-sky">
+        <Link key={item.lang} to="/movies" search={{ lang: item.lang }} aria-label={item.name} className="block overflow-hidden rounded-xl border border-sky/30 focus-visible:outline-2 focus-visible:outline-sky">
           <img src={item.image} alt={item.name} className="block h-auto w-full" fetchPriority="high" />
         </Link>
       ))}
@@ -25,7 +29,7 @@ export function HomeCategoryBanners() {
         { name: "القنوات الرياضية", slug: "sports", image: sports.url },
         { name: "القنوات العامة", slug: "general", image: general.url },
       ].map((item) => (
-        <Link key={item.slug} to="/channels/$section" params={{ section: item.slug }} aria-label={item.name} className="block overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-sky">
+        <Link key={item.slug} to="/channels/$section" params={{ section: item.slug }} aria-label={item.name} className="block overflow-hidden rounded-xl border border-sky/30 focus-visible:outline-2 focus-visible:outline-sky">
           <img src={item.image} alt={item.name} className="block h-auto w-full" loading="lazy" />
         </Link>
       ))}
