@@ -30,6 +30,7 @@ export const editableCards: { id: string; location: string; defaults: SectionCar
 export function getSectionCard(id: string, content?: SectionContent): SectionCard {
   const base = editableCards.find((c) => c.id === id)?.defaults ?? { title: "", description: "", button: "", image: liveImage, link: "/live" };
   const card = { ...base, ...content?.cards?.[id] };
+  if (!card.image) card.image = base.image;
   if (!sectionDestinations.some((d) => d.value === card.link)) card.link = base.link;
   if (!/^(https:\/\/|\/)/.test(card.image) || card.image.startsWith("//")) card.image = base.image;
   return card;

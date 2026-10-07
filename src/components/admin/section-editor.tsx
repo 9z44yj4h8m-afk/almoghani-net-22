@@ -22,7 +22,7 @@ export function SectionEditor() {
     e.preventDefault(); setBusy(true); setMessage("");
     try {
       for (const c of Object.values(content.cards)) {
-        if (c.image && !/^(https:\/\/|\/__l5e\/assets-v1\/)/.test(c.image)) throw new Error("رابط الصورة يجب أن يبدأ بـ https.");
+        if (c.image && !/^(https:\/\/|\/__l5e\/assets-v1\/)/.test(c.image) && !editableCards.some((item) => item.defaults.image === c.image)) throw new Error("رابط الصورة يجب أن يبدأ بـ https.");
       }
       const { error } = await supabase.from("site_settings").upsert({ key: "section-content", value: JSON.parse(JSON.stringify(content)), updated_at: new Date().toISOString() });
       if (error) throw new Error("تعذّر الحفظ؛ حاول مجددًا.");
@@ -35,11 +35,12 @@ export function SectionEditor() {
     <fieldset disabled={busy || isPending} className="space-y-6">
       <label className="block space-y-2">اختر البطاقة<select className={input} value={selected} onChange={(e) => { setSelected(e.target.value); setMessage(""); }}>{editableCards.map((c) => <option key={c.id} value={c.id}>{c.location}</option>)}</select></label>
       <img src={card.image} alt="معاينة صورة القسم" className="aspect-video w-full max-w-lg rounded-lg object-cover" />
+      <div className="flex flex-wrap gap-2">{editableCards.slice(3).map((item) => <Button key={item.id} type="button" variant={card.image === item.defaults.image ? "secondary" : "outline"} className="h-16 w-24 p-1" aria-label={`اختيار صورة ${item.defaults.title}`} title={item.defaults.title} onClick={() => update({ image: item.defaults.image })}><img src={item.defaults.image} alt="" className="h-full w-full rounded object-cover" /></Button>)}</div>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-1">عنوان البطاقة<input className={input} required maxLength={80} value={card.title} onChange={(e) => update({ title: e.target.value })} /></label>
         <label className="block space-y-1">كلام زر الدخول<input className={input} required maxLength={50} value={card.button} onChange={(e) => update({ button: e.target.value })} /></label>
         <label className="block space-y-1 sm:col-span-2">الكلام تحت العنوان<textarea className={input} maxLength={200} rows={2} value={card.description} onChange={(e) => update({ description: e.target.value })} /></label>
-        <label className="block space-y-1">رابط الصورة<input className={input} type="url" dir="ltr" value={content.cards[selected]?.image ?? ""} placeholder="https://…" onChange={(e) => update({ image: e.target.value })} /></label>
+        <label className="block space-y-1">رابط صورة جديدة<input className={input} type="url" dir="ltr" value={content.cards[selected]?.image?.startsWith("https://") ? content.cards[selected]?.image : ""} placeholder="https://…" onChange={(e) => update({ image: e.target.value })} /></label>
         <label className="block space-y-1">الصفحة عند الضغط<select className={input} value={card.link} onChange={(e) => update({ link: e.target.value })}>{sectionDestinations.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}</select></label>
       </div>
       <Button type="button" variant="outline" onClick={() => setContent((old) => { const cards = { ...old.cards }; delete cards[selected]; return { ...old, cards }; })}><RotateCcw />إرجاع البطاقة الأصلية</Button>
