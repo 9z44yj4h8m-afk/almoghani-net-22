@@ -22,6 +22,7 @@ function BedouinDramaPage() {
   const [query, setQuery] = useState("");
   const series = bedouinSeries.find((s) => s.id === opened);
   const episodes = series ? [...series.episodes].sort((a, b) => a.number - b.number) : [];
+  const missingNumbers = series ? Array.from({ length: series.expectedEpisodeCount }, (_, i) => i + 1).filter((number) => !episodes.some((e) => e.number === number)) : [];
   const index = episodes.findIndex((e) => e.youtubeId === playing?.youtubeId);
   function watch(episode: BedouinEpisode) {
     setPlaying(episode);
@@ -50,6 +51,7 @@ function BedouinDramaPage() {
         <div className="aspect-video overflow-hidden rounded-lg border border-sky/50 bg-surface-deep"><iframe key={playing.youtubeId} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><h2 className="min-w-0 text-lg font-bold">{series.title} · الحلقة {playing.number}</h2><div className="flex items-center gap-2"><Button variant="outline" size="icon" aria-label="الحلقة السابقة" disabled={index <= 0} onClick={() => { const e = episodes[index - 1]; if (e) watch(e); }}><ChevronRight /></Button><Button variant="outline" size="icon" aria-label="الحلقة التالية" disabled={index >= episodes.length - 1} onClick={() => { const e = episodes[index + 1]; if (e) watch(e); }}><ChevronLeft /></Button><Button variant="ghost" onClick={() => setPlaying(null)}>إغلاق المشغّل</Button></div></div>
       </section>}
+      {missingNumbers.length > 0 && <p className="mb-5 border-r-2 border-primary pr-3 text-sm text-muted-foreground">لم يتوفر رابط موثّق للحلقات: {missingNumbers.join("، ")}.</p>}
       <section aria-label={`حلقات ${series.title}`} className="grid grid-cols-2 gap-3 lg:grid-cols-3">
         {episodes.filter((e) => `${e.title} ${e.number}`.includes(query.trim())).map((e) => <Button key={e.youtubeId} variant="ghost" aria-label={`شاهد الحلقة ${e.number}`} aria-pressed={e.youtubeId === playing?.youtubeId} onClick={() => watch(e)} className={`block h-auto w-full overflow-hidden whitespace-normal rounded-lg border bg-surface-deep p-0 text-right hover:border-sky ${e.youtubeId === playing?.youtubeId ? "border-primary" : "border-border"}`}>
           <span className="relative block aspect-video"><img src={e.image} alt={`${series.title} — الحلقة ${e.number}`} width={480} height={360} loading="lazy" decoding="async" className="h-full w-full object-cover" /><span className="absolute inset-0 bg-player-overlay" /><span className="absolute bottom-2 left-2 grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground"><Play className="h-4 w-4 fill-current" /></span></span>

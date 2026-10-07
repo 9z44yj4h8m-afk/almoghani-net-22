@@ -30,6 +30,7 @@ import art27 from "@/assets/awda-abu-tayeh/Kjb9nBMvBWU.jpg.asset.json";
 export const awdaAbuTayeh = {
   id: "awda-abu-tayeh",
   title: "عودة أبو تايه",
+  expectedEpisodeCount: 30,
   episodes: [
     { youtubeId: "0nP1Iu4PFHY", title: "Odeh Abu Tayeh - Ep.1- مسلسل عوده أبو تايه - الحلقة الأولى", number: 1, image: art0.url },
     { youtubeId: "fgDdpiE9uuQ", title: "مسلسل عوده أبو تایه الحلقة ٢", number: 2, image: art1.url },

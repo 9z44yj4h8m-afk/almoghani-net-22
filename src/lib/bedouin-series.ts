@@ -17,6 +17,7 @@ import { awdaAbuTayeh } from "@/lib/awda-abu-tayeh";
 export const bedouinSeries = [{
   id: "dawas-al-layl",
   title: "دواس الليل",
+  expectedEpisodeCount: 14,
   playlistId: "PLdLJSN32o2ZFvnChN9Gij09pDTaM_K2JN",
   episodes: [
   { youtubeId: "JiFBbINrPVU", title: "المسلسل البدوي دواس الليل ـ الحلقة 14 الرابعة عشر كاملة HD", number: 14, image: art0.url },
