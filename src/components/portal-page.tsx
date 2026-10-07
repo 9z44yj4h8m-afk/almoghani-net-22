@@ -248,7 +248,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
             })}
           </section>
         )}
+        {!previewMode && (
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+
           {inactiveChannels.length > 0 && (
             <details className="rounded-xl border border-border bg-surface">
               <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-black">
@@ -408,6 +410,8 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
             );
           })}
         </div>
+        )}
+
       </main>
 
       <Link
