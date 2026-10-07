@@ -15,6 +15,7 @@
 - Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /live?channel=<id> and /channels/<section-slug> (slugs defined once in the sections array in portal-page).
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Keep the AI chat streaming through the /api/chat server route with history stored only in the visitor's browser, so no login or database is needed.
+- Reuse the existing /chat experience in the floating AI dialog through a same-origin embedded view without the site shell, so history and model transport remain identical.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
 - Keep the homepage player behind an explicit watch action, and activate it when a channel is selected, so the first view never depends on an unsolicited third-party embed loading.
