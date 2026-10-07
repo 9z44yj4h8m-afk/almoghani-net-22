@@ -1342,5 +1342,5 @@ export const channels: Channel[] = [
   { id: "yt-hart-29y2iq", name: "روتانا ستيشن", category: "عامة", youtubeId: "haRt_29y2iQ", thumbnail: "https://i.ytimg.com/vi/haRt_29y2iQ/hqdefault.jpg", description: "بث مباشر من روتانا" },
   { id: "asharq-news", name: "الشرق للأخبار", category: "إخبارية", streamUrl: "https://live-news.asharq.com/asharq.m3u8", thumbnail: "https://i.imgur.com/bqRC3sl.png", description: "البث المباشر لقناة الشرق للأخبار" },
   { id: "bloomberg-tv-europe", name: "Bloomberg TV", category: "إخبارية", streamUrl: "https://bloomberg.com/media-manifest/streams/eu.m3u8", thumbnail: "https://i.imgur.com/OuogLHx.png", description: "أخبار الاقتصاد والأسواق مباشرة" },
-  { id: "rt-arabic", name: "RT Arabic", category: "إخبارية", streamUrl: "https://rt-arb.rttv.com/live/rtarab/playlist.m3u8", thumbnail: "https://i.imgur.com/eMf2Owj.png", description: "البث المباشر لقناة RT عربي" },
+  { id: "rt-arabic", name: "RT Arabic", category: "إخبارية", streamUrl: "https://rt-arb.rttv.com/live/rtarab/playlist.m3u8", thumbnail: "", description: "البث المباشر لقناة RT عربي" },
 ];
