@@ -689,6 +689,14 @@ export const channels: Channel[] = [
     description: "بث رياضي مباشر — Al Iraqia Sport",
   },
   {
+    id: "al-iraqia-general",
+    name: "العراقية العامة",
+    category: "عامة",
+    streamUrl: "https://imn-live.esite-lab.com/hls/iraqia-general.m3u8",
+    thumbnail: "https://i.imgur.com/DrrlxTO.png",
+    description: "البث المباشر لقناة العراقية العامة من شبكة الإعلام العراقي",
+  },
+  {
     id: "sp-cbs-sports-golazo-network",
     name: "CBS Sports Golazo",
     category: "رياضية",
