@@ -584,6 +584,15 @@ export const channels: Channel[] = [
     description: "برامج وأرشيف الأردني",
   },
   {
+    id: "jordan-drama",
+    name: "دراما الأردن",
+    category: "مسلسلات وأفلام",
+    streamUrl: "https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8",
+    thumbnail:
+      "https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj",
+    description: "مسلسلات وأعمال الدراما الأردنية على مدار الساعة",
+  },
+  {
     id: "iqraa-quran",
     name: "اقرأ — القرآن",
     category: "إسلامية",
