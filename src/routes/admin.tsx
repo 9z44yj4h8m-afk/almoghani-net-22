@@ -8,6 +8,7 @@ import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScheduleManager } from "@/components/admin/schedule-manager";
+import { ContentManager } from "@/components/admin/content-manager";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
@@ -16,7 +17,7 @@ import {
   siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
-const TABS = ["overview", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
+const TABS = ["overview", "content", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -54,6 +55,7 @@ function AdminPage() {
         <Tabs defaultValue={tab && TABS.includes(tab as never) ? tab : "overview"} dir="rtl" className="mt-6">
           <TabsList className="flex h-auto flex-wrap justify-start gap-1">
             <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
+            <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
             <TabsTrigger value="ads">الإعلان والعاجل</TabsTrigger>
             <TabsTrigger value="chat">الدردشة</TabsTrigger>
             <TabsTrigger value="channels">القنوات</TabsTrigger>
@@ -64,6 +66,7 @@ function AdminPage() {
             <TabsTrigger value="schedule">مواعيد البث</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="mt-6"><OverviewTab /></TabsContent>
+          <TabsContent value="content" className="mt-6"><ContentManager /></TabsContent>
           <TabsContent value="ads" className="mt-6"><AdsTab /></TabsContent>
           <TabsContent value="chat" className="mt-6"><ChatTab /></TabsContent>
           <TabsContent value="channels" className="mt-6"><ChannelsTab /></TabsContent>
