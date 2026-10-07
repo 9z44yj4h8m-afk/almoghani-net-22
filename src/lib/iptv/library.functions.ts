@@ -6,6 +6,21 @@ const kind = z.enum(["live", "movie", "series"]);
 const pin = z.string().max(200);
 const requireLibraryAccess = requireSupabaseAuth;
 
+// Public metadata only; never use search(), which resolves credential-bearing URLs.
+export const browseSmartersChannels = createServerFn({ method: "GET" })
+  .inputValidator((d) => z.object({ q: z.string().max(100), group: z.string().max(200), page: z.number().int().min(0).max(5000) }).parse(d))
+  .handler(async ({ data }) => {
+    const { loadKind } = await import("./library.server");
+    const rows = await loadKind("live");
+    const q = data.q.trim().toLowerCase();
+    const hits = rows.filter((row) => (!data.group || row[1] === data.group) && (!q || `${row[0]} ${row[1]}`.toLowerCase().includes(q)));
+    return {
+      groups: [...new Set(rows.map((row) => row[1]))],
+      total: hits.length,
+      items: hits.slice(data.page * 60, (data.page + 1) * 60).map((row) => ({ name: row[0], group: row[1] })),
+    };
+  });
+
 export const getLibraryGroups = createServerFn({ method: "POST" })
   .middleware([requireLibraryAccess])
   .inputValidator((d) => z.object({ pin, kind }).parse(d))
