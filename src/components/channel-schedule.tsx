@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 type Item = { id: string; title: string; starts_at: string; ends_at: string | null };
 const fmt = (d: string) => new Date(d).toLocaleString("ar-SA", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 export function ChannelSchedule({ channelId }: { channelId: string }) {
-  const [items, setItems] = useState<Item[] | null>(null);
-  useEffect(() => {
+  const schedules = useQuery({ queryKey: ["channel-schedules", channelId], refetchInterval: 15000, queryFn: async () => {
     const since = new Date(Date.now() - 3 * 3600_000).toISOString();
-    void supabase.from("channel_schedules").select("id,title,starts_at,ends_at").eq("channel_id", channelId).gte("starts_at", since).order("starts_at").limit(50)
-      .then(({ data }) => setItems(data ?? []));
-  }, [channelId]);
-  if (items === null) return <p>جارٍ تحميل الجدول…</p>;
+    const { data, error } = await supabase.from("channel_schedules").select("id,title,starts_at,ends_at").eq("channel_id", channelId).gte("starts_at", since).order("starts_at").limit(50);
+    if (error) throw error;
+    return (data ?? []) as Item[];
+  } });
+  if (schedules.isPending) return <p>جارٍ تحميل الجدول…</p>;
+  if (schedules.isError) return <p>تعذّر تحميل جدول البث.</p>;
+  const items = schedules.data;
   if (!items.length) return <p>لا توجد مواعيد بث مضافة لهذه القناة حاليًا.</p>;
   return (
     <ul className="divide-y divide-border">
