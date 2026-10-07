@@ -18,7 +18,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
 import { designColorFields, useSiteConfig } from "@/lib/site-config";
 import { IosInstallBanner } from "@/components/ios-install-banner";
-import { FloatingAiChat } from "@/components/floating-ai-chat";
 
 function NotFoundComponent() {
   return (
@@ -166,7 +165,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="broadcast-app"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div><MobileBottomNav /><BroadcastFooter /></div><IosInstallBanner /><FloatingAiChat /></>}</MemberProvider>
+      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="broadcast-app"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div><MobileBottomNav /><BroadcastFooter /></div><IosInstallBanner /></>}</MemberProvider>
     </QueryClientProvider>
   );
 }
