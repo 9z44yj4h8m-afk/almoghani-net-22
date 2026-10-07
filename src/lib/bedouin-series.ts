@@ -18,9 +18,24 @@ import { dhiabHababAlReeh } from "@/lib/dhiab-habab-al-reeh";
 import { akhoSadaa } from "@/lib/akho-sadaa";
 import { ghadrAlZaman } from "@/lib/ghadr-al-zaman";
 import { alQaseer } from "@/lib/al-qaseer";
+import qaseerCover from "@/assets/bedouin-covers/al-qaseer.png.asset.json";
+import akhoCover from "@/assets/bedouin-covers/akho-sadaa.png.asset.json";
+import ghadrCover from "@/assets/bedouin-covers/ghadr-al-zaman.png.asset.json";
+import awdaCover from "@/assets/bedouin-covers/awda-abu-tayeh.png.asset.json";
+import natheerCover from "@/assets/bedouin-covers/al-natheer.png.asset.json";
+import dhiabCover from "@/assets/bedouin-covers/dhiab-habab-al-reeh.png.asset.json";
 
 export type BedouinEpisode = { youtubeId: string; title: string; number: number; image: string };
-export type BedouinSeries = { id: string; title: string; expectedEpisodeCount: number; playlistId?: string; episodes: BedouinEpisode[] };
+export type BedouinSeries = { id: string; title: string; expectedEpisodeCount: number; playlistId?: string; coverImage?: string; episodes: BedouinEpisode[] };
+
+const seriesCovers: Record<string, string> = {
+  "al-qaseer": qaseerCover.url,
+  "akho-sadaa": akhoCover.url,
+  "ghadr-al-zaman": ghadrCover.url,
+  "awda-abu-tayeh": awdaCover.url,
+  "al-natheer": natheerCover.url,
+  "dhiab-habab-al-reeh": dhiabCover.url,
+};
 
 export const bedouinSeries: BedouinSeries[] = [{
   id: "dawas-al-layl",
@@ -43,4 +58,7 @@ export const bedouinSeries: BedouinSeries[] = [{
   { youtubeId: "27HWjqDmAKs", title: "المسلسل البدوي دواس الليل ـ الحلقة 2 الثانية كاملة HD", number: 2, image: art10.url },
   { youtubeId: "4NxyeTBliQU", title: "المسلسل البدوي دواس الليل ـ الحلقة 1 الأولى كاملة HD", number: 1, image: art11.url }
   ],
-}, awdaAbuTayeh, alNatheer, dhiabHababAlReeh, akhoSadaa, ghadrAlZaman, alQaseer];
+}, awdaAbuTayeh, alNatheer, dhiabHababAlReeh, akhoSadaa, ghadrAlZaman, alQaseer].map((series) => {
+  const coverImage = seriesCovers[series.id];
+  return coverImage ? { ...series, coverImage } : series;
+});
