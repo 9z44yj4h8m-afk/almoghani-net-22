@@ -80,7 +80,7 @@ function MoviesPage() {
           {list.map((m, i) => (
             <div key={m.id} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-sky/50 bg-surface-deep shadow-lg">
               <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
-              <span className="absolute inset-0 bg-[linear-gradient(to_left,color-mix(in_oklab,var(--background)_85%,transparent),transparent_75%)]" />
+              <span className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--background)_92%,transparent)_0%,color-mix(in_oklab,var(--background)_55%,transparent)_45%,transparent_75%)]" />
               <div className="absolute inset-0 flex flex-col items-start p-3">
                 <div className="flex w-full items-start gap-2">
                   <span className="min-w-0 flex-1">
