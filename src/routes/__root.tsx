@@ -94,7 +94,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "المغني" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "المغني لايف" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://almoghani.net/#organization",
+              name: "المغني لايف",
+              alternateName: ["ALMOGHANI LIVE", "Almoghani Live", "almoghani.net"],
+              url: "https://almoghani.net",
+              logo: "https://almoghani.net/icon-512.png",
+              email: "ahmed@almoghani.net",
+              sameAs: ["https://x.com/Op430", "https://www.snapchat.com/add/Ls460g", "https://wa.me/966557073007"],
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://almoghani.net/#website",
+              url: "https://almoghani.net",
+              name: "المغني لايف",
+              alternateName: ["ALMOGHANI LIVE", "almoghani.net"],
+              inLanguage: "ar",
+              publisher: { "@id": "https://almoghani.net/#organization" },
+            },
+          ],
+        }),
+      },
     ],
     links: [
       {
