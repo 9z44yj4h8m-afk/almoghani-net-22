@@ -398,6 +398,17 @@ function VipPage() {
             </a>
             <div className="mt-5 grid gap-2">
               <InlineStream key={playing.url} url={playing.url} />
+              <Button type="button" size="lg" className="h-12 w-full" onClick={() => {
+                const u = playing.url;
+                window.location.href = /android/i.test(navigator.userAgent)
+                  ? `intent:${u}#Intent;package=org.videolan.vlc;type=video/*;S.title=${encodeURIComponent(playing.name)};end`
+                  : `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(u)}`;
+              }}>
+                <Play className="h-4 w-4" /> تشغيل في VLC
+              </Button>
+              <Button type="button" variant="outline" size="lg" className="h-12 w-full" onClick={() => { window.location.href = `outplayer://${playing.url}`; }}>
+                <Play className="h-4 w-4" /> تشغيل في Outplayer (آيفون)
+              </Button>
               <Button type="button" variant="ghost" size="lg" className="h-12 w-full" onClick={() => copy(playing.url)}>
                 <Copy className="h-4 w-4" /> نسخ رابط البث
               </Button>
