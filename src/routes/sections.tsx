@@ -1,9 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
-import liveImg from "@/assets/section-live.jpg";
-import moviesImg from "@/assets/section-movies.jpg";
-import seriesImg from "@/assets/section-series.jpg";
-import privateImg from "@/assets/section-private.jpg";
 import { useSiteConfig } from "@/lib/site-config";
 import { getSectionCard } from "@/lib/section-content";
 
@@ -20,13 +16,6 @@ export const Route = createFileRoute("/sections")({
   }),
   component: SectionsPage,
 });
-
-const cards = [
-  { title: "البث المباشر", desc: "قنواتك المفضلة في مكان واحد", cta: "استعرض القنوات", img: liveImg, to: "/live" as const },
-  { title: "مكتبة الأفلام", desc: "اكتشف عالم الأفلام", cta: "استعرض الأفلام", img: moviesImg, to: "/movies" as const },
-  { title: "المسلسلات", desc: "تابع مسلسلاتك وحلقاتك المفضلة", cta: "استعرض المسلسلات", img: seriesImg, to: "/vip" as const, search: { kind: "series" } },
-  { title: "دخول الأعضاء", desc: "سجّل دخولك بحسابك", cta: "تسجيل الدخول", img: privateImg, to: "/auth" as const },
-];
 
 function SectionsPage() {
   const { data } = useSiteConfig();

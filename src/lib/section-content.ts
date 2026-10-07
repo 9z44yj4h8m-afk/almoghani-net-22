@@ -28,7 +28,7 @@ export const editableCards: { id: string; location: string; defaults: SectionCar
   { id: "sections-member", location: "صفحة الأقسام · الأعضاء", defaults: { title: "دخول الأعضاء", description: "سجّل دخولك بحسابك", button: "تسجيل الدخول", image: memberImage, link: "/auth" } },
 ];
 export function getSectionCard(id: string, content?: SectionContent): SectionCard {
-  const base = editableCards.find((c) => c.id === id)?.defaults ?? editableCards[0].defaults;
+  const base = editableCards.find((c) => c.id === id)?.defaults ?? { title: "", description: "", button: "", image: liveImage, link: "/live" };
   const card = { ...base, ...content?.cards?.[id] };
   if (!sectionDestinations.some((d) => d.value === card.link)) card.link = base.link;
   if (!/^(https:\/\/|\/)/.test(card.image) || card.image.startsWith("//")) card.image = base.image;

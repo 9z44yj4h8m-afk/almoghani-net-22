@@ -12,7 +12,7 @@ export function SectionEditor() {
   const { data, isPending } = useSiteConfig();
   const qc = useQueryClient();
   const [content, setContent] = useState<SectionContent>(defaultSectionContent);
-  const [selected, setSelected] = useState(editableCards[0].id);
+  const [selected, setSelected] = useState("home-live");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => { if (data) setContent(data.sectionContent); }, [data]);
@@ -39,7 +39,7 @@ export function SectionEditor() {
         <label className="block space-y-1">عنوان البطاقة<input className={input} required maxLength={80} value={card.title} onChange={(e) => update({ title: e.target.value })} /></label>
         <label className="block space-y-1">كلام زر الدخول<input className={input} required maxLength={50} value={card.button} onChange={(e) => update({ button: e.target.value })} /></label>
         <label className="block space-y-1 sm:col-span-2">الكلام تحت العنوان<textarea className={input} maxLength={200} rows={2} value={card.description} onChange={(e) => update({ description: e.target.value })} /></label>
-        <label className="block space-y-1">رابط الصورة<input className={input} type="url" dir="ltr" value={content.cards[selected]?.image ?? ""} placeholder="https://…" onChange={(e) => update({ image: e.target.value || editableCards.find((c) => c.id === selected)?.defaults.image })} /></label>
+        <label className="block space-y-1">رابط الصورة<input className={input} type="url" dir="ltr" value={content.cards[selected]?.image ?? ""} placeholder="https://…" onChange={(e) => update({ image: e.target.value })} /></label>
         <label className="block space-y-1">الصفحة عند الضغط<select className={input} value={card.link} onChange={(e) => update({ link: e.target.value })}>{sectionDestinations.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}</select></label>
       </div>
       <Button type="button" variant="outline" onClick={() => setContent((old) => { const cards = { ...old.cards }; delete cards[selected]; return { ...old, cards }; })}><RotateCcw />إرجاع البطاقة الأصلية</Button>
