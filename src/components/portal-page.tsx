@@ -34,6 +34,7 @@ import { type Channel, type ChannelCategory } from "@/lib/channels";
 import { useCatalog, useSiteConfig, defaultTexts, defaultAd } from "@/lib/site-config";
 import moviesAd from "@/assets/movies-ad.png.asset.json";
 import { getSectionCard } from "@/lib/section-content";
+import { SectionCardStyle } from "@/components/section-card-style";
 import { Lock } from "lucide-react";
 
 const sections: {
@@ -234,10 +235,11 @@ export function PortalPage({ section }: { section?: string }) {
           <section className="broadcast-destinations" aria-label="أقسام سمارتر">
             {privateLibrarySections.map(({ kind }, index) => {
               const card = getSectionCard(`home-${kind}`, siteConfig?.sectionContent);
-              return <a key={kind} href={card.link} className="broadcast-destination group">
+              return <a key={kind} href={card.link} data-section-card={`home-${kind}`} className="broadcast-destination group">
+                <SectionCardStyle id={`home-${kind}`} card={card} />
                 <img src={card.image} alt="" loading="lazy" width={1152} height={576} />
                 {index !== 1 && <span className={`destination-badge ${index === 2 ? "destination-exclusive" : ""}`}>{index === 0 ? "مباشر" : "حصري"}</span>}
-                <span className="destination-copy"><span className="destination-title">{card.title}<ArrowUpLeft /></span>{card.description && <span className="destination-description">{card.description}</span>}<span className="destination-enter">{card.button}</span></span>
+                <span className="destination-copy"><span data-card-text="title" className="destination-title">{card.title}<ArrowUpLeft /></span>{card.description && <span data-card-text="description" className="destination-description">{card.description}</span>}<span data-card-text="button" className="destination-enter">{card.button}</span></span>
               </a>;
             })}
           </section>

@@ -15,7 +15,7 @@ export const sectionDestinations = [
   { value: "/contact", label: "التواصل" },
   { value: "/live-chat", label: "الدردشة" },
 ] as const;
-export type SectionCard = { title: string; description: string; button: string; image: string; link: string };
+export type SectionCard = { title: string; description: string; button: string; image: string; link: string; font?: string; titleSize?: number; descriptionSize?: number; buttonSize?: number; imageWidth?: number; imageHeight?: number; imageFit?: "cover" | "contain"; fontWeight?: number };
 export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string };
 export const defaultSectionContent: SectionContent = { cards: {}, titles: {}, pageTitle: "الأقسام", pageDescription: "اختر ما تريد مشاهدته" };
 export const editableCards: { id: string; location: string; defaults: SectionCard }[] = [
