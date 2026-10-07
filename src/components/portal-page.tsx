@@ -26,9 +26,6 @@ import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 import satelliteMark from "@/assets/satellite-mark.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
 import { BroadcastWordmark } from "@/components/broadcast-shell";
-import microphoneImage from "@/assets/section-live.jpg";
-import headphonesImage from "@/assets/section-movies.jpg";
-import studioImage from "@/assets/section-series.jpg";
 import { BroadcastHero } from "@/components/broadcast-hero";
 import { BreakingTicker } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
@@ -36,6 +33,7 @@ import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
 import { useCatalog, useSiteConfig, defaultTexts, defaultAd } from "@/lib/site-config";
 import moviesAd from "@/assets/movies-ad.png.asset.json";
+import { getSectionCard } from "@/lib/section-content";
 import { Lock } from "lucide-react";
 
 const sections: {
@@ -67,7 +65,8 @@ export function PortalPage({ section }: { section?: string }) {
   const channels = useCatalog();
   const { data: siteConfig } = useSiteConfig();
   const texts = siteConfig?.texts ?? defaultTexts;
-  const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
+  const configuredSections = sections.map((s) => ({ ...s, title: siteConfig?.sectionContent.titles[s.slug] || s.title }));
+  const visibleSections = section ? configuredSections.filter((s) => s.slug === section) : configuredSections;
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
@@ -233,13 +232,14 @@ export function PortalPage({ section }: { section?: string }) {
 
         {previewMode && (
           <section className="broadcast-destinations" aria-label="المكتبة الخاصة">
-            {privateLibrarySections.map(({ kind, name, description }, index) => (
-              <Link key={kind} to="/vip" search={{ kind }} className="broadcast-destination group">
-                <img src={[microphoneImage, headphonesImage, studioImage][index]} alt="" loading="lazy" width={1152} height={576} />
+            {privateLibrarySections.map(({ kind }, index) => {
+              const card = getSectionCard(`home-${kind}`, siteConfig?.sectionContent);
+              return <a key={kind} href={card.link} className="broadcast-destination group">
+                <img src={card.image} alt="" loading="lazy" width={1152} height={576} />
                 {index !== 1 && <span className={`destination-badge ${index === 2 ? "destination-exclusive" : ""}`}>{index === 0 ? "مباشر" : "حصري"}</span>}
-                <span className="destination-copy"><span className="destination-title">{kind === "movie" ? "مكتبة الأفلام" : name}<ArrowUpLeft /></span>{index === 0 && <span className="destination-description">{description}</span>}<span className="destination-enter">اضغط للدخول</span></span>
-              </Link>
-            ))}
+                <span className="destination-copy"><span className="destination-title">{card.title}<ArrowUpLeft /></span>{card.description && <span className="destination-description">{card.description}</span>}<span className="destination-enter">{card.button}</span></span>
+              </a>;
+            })}
           </section>
         )}
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -273,7 +273,7 @@ export function PortalPage({ section }: { section?: string }) {
             </details>
           )}
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
-            {sections.map((s, i) => {
+            {configuredSections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
               return (
                 <a

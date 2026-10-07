@@ -28,3 +28,4 @@
 
 - Keep the broadcast visual shell, wordmark, footer and four-item navigation in shared root components; page-specific content retains its existing routes and access guards so restyling never changes membership rules.
 - Keep bulk channel creation and editable broadcast schedules in the admin content manager using existing admin-RLS tables; validate streams before batch insertion and invalidate shared schedule queries after saves so public schedules stay current.
+- Store editable destination-card images, copy and allow-listed page destinations in site_settings with static defaults in section-content; keep category IDs unchanged when labels change so edits never alter stream grouping or access guards.
