@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowRight, Eye, EyeOff, Trash2 } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
-  defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
+  siteFonts, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
 const TABS = ["overview", "ads", "chat", "channels", "movies", "members", "texts", "design", "schedule"] as const;
@@ -98,14 +98,20 @@ function ChannelsTab() {
   ], [data]);
   const list = all.filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase())).slice(0, 80);
 
-  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null }) {
+  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null }) {
     const cur = overrides.get(id);
-    await supabase.from("channel_overrides").upsert({ channel_id: id, hidden: patch.hidden ?? cur?.hidden ?? false, category: patch.category !== undefined ? patch.category : cur?.category ?? null, updated_at: new Date().toISOString() });
+    await supabase.from("channel_overrides").upsert({ channel_id: id, hidden: patch.hidden ?? cur?.hidden ?? false, category: patch.category !== undefined ? patch.category : cur?.category ?? null, name: patch.name !== undefined ? patch.name : cur?.name ?? null, updated_at: new Date().toISOString() });
     void refresh();
   }
   async function setCategory(c: { id: string; custom: boolean }, category: string) {
     if (c.custom) { await supabase.from("custom_channels").update({ category }).eq("id", c.id); void refresh(); }
     else void setOverride(c.id, { category });
+  }
+  async function rename(c: { id: string; name: string; custom: boolean }) {
+    const v = window.prompt("الاسم الجديد للقناة", c.name)?.trim().slice(0, 80);
+    if (!v || v === c.name) return;
+    if (c.custom) { await supabase.from("custom_channels").update({ name: v }).eq("id", c.id); void refresh(); }
+    else void setOverride(c.id, { name: v });
   }
   async function add(e: React.FormEvent) {
     e.preventDefault(); setMsg(""); setBusy(true);
@@ -134,9 +140,11 @@ function ChannelsTab() {
         {list.map((c) => {
           const o = overrides.get(c.id); const hidden = !!o?.hidden;
           const category = c.custom ? c.category : o?.category ?? c.category;
+          const name = c.custom ? c.name : o?.name || c.name;
           return <li key={c.id} className={`flex flex-wrap items-center gap-2 py-3 ${hidden ? "opacity-50" : ""}`}>
-            <span className="min-w-0 flex-1 font-bold">{c.name}{c.custom && <span className="ms-2 text-xs text-accent">مضافة</span>}</span>
+            <span className="min-w-0 flex-1 font-bold">{name}{c.custom && <span className="ms-2 text-xs text-accent">مضافة</span>}</span>
             <select className="h-9 rounded-lg border border-border bg-card px-2 text-sm" value={category} onChange={(e) => setCategory(c, e.target.value)}>{channelCategories.map((x) => <option key={x}>{x}</option>)}</select>
+            <Button size="icon" variant="ghost" aria-label="تعديل الاسم" onClick={() => rename({ ...c, name })}><Pencil className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label={hidden ? "إظهار" : "إخفاء"} onClick={() => setOverride(c.id, { hidden: !hidden })}>{hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
             {c.custom && <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("custom_channels").delete().eq("id", c.id); void refresh(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
           </li>;
@@ -178,7 +186,7 @@ function MoviesTab() {
       {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
     </form>
     <ul className="divide-y divide-border">
-      {(data?.customMovies ?? []).map((m) => <li key={m.id} className="flex items-center gap-2 py-3"><span className="flex-1 font-bold">{m.title}<span className="ms-2 text-xs text-accent">مضاف</span></span><Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("custom_movies").delete().eq("id", m.id); void refresh(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button></li>)}
+      {(data?.customMovies ?? []).map((m) => <li key={m.id} className="flex items-center gap-2 py-3"><span className="flex-1 font-bold">{m.title}<span className="ms-2 text-xs text-accent">مضاف</span></span><Button size="icon" variant="ghost" aria-label="تعديل" onClick={async () => { const t = window.prompt("عنوان الفيلم", m.title)?.trim(); if (!t) return; const d = window.prompt("الوصف", m.description) ?? m.description; await supabase.from("custom_movies").update({ title: t.slice(0, 150), description: d.trim().slice(0, 400) }).eq("id", m.id); void refresh(); }}><Pencil className="h-4 w-4" /></Button><Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("custom_movies").delete().eq("id", m.id); void refresh(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button></li>)}
       {baseMovies.map((m) => <li key={m.id} className={`flex items-center gap-2 py-3 ${hidden.has(m.id) ? "opacity-50" : ""}`}><span className="flex-1">{m.title}</span><Button size="icon" variant="ghost" aria-label={hidden.has(m.id) ? "إظهار" : "إخفاء"} onClick={() => toggle(m.id)}>{hidden.has(m.id) ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button></li>)}
     </ul>
   </div>;
@@ -246,6 +254,10 @@ function DesignTab() {
   return <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); void save(design); }}>
     <label className="flex items-center gap-3"><input type="color" value={design.primary || "#9333ea"} onChange={(e) => setDesign({ ...design, primary: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الرئيسي</span></label>
     <label className="flex items-center gap-3"><input type="color" value={design.accent || "#22d3ee"} onChange={(e) => setDesign({ ...design, accent: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الثانوي</span></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">خط النصوص</span><select className={input} value={design.fontBody ?? ""} onChange={(e) => setDesign({ ...design, fontBody: e.target.value })}><option value="">الافتراضي</option>{siteFonts.map((f) => <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>)}</select></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">خط العناوين</span><select className={input} value={design.fontHeading ?? ""} onChange={(e) => setDesign({ ...design, fontHeading: e.target.value })}><option value="">الافتراضي</option>{siteFonts.map((f) => <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>)}</select></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">حجم الخط: {design.fontScale ?? 100}%</span><input type="range" min={85} max={130} step={5} value={design.fontScale ?? 100} onChange={(e) => setDesign({ ...design, fontScale: Number(e.target.value) })} className="w-full" /></label>
+    <p className="rounded-xl border border-border p-4" style={{ fontFamily: design.fontBody || undefined }}><b style={{ fontFamily: design.fontHeading || undefined }}>معاينة العنوان</b><br />هذا مثال على شكل النص في الموقع.</p>
     <label className="block space-y-1"><span className="text-sm font-bold">صورة خلفية البنر (رابط https)</span><input className={input} dir="ltr" placeholder="https://…" value={design.background} onChange={(e) => setDesign({ ...design, background: e.target.value.trim() })} /></label>
     {design.background.startsWith("https://") && <img src={design.background} alt="معاينة الخلفية" className="h-40 w-full rounded-xl object-cover" />}
     <div className="flex gap-2"><Button type="submit">حفظ</Button><Button type="button" variant="outline" onClick={() => { setDesign(defaultDesign); void save(defaultDesign); }}>إرجاع التصميم الأصلي</Button></div>

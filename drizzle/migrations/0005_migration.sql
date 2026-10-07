@@ -1,0 +1,1 @@
+ALTER TABLE public.channel_overrides ADD COLUMN IF NOT EXISTS name text;

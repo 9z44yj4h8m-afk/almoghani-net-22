@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Amiri+Quran&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Amiri+Quran&family=Tajawal:wght@400;700;900&family=Almarai:wght@400;700;800&family=Noto+Kufi+Arabic:wght@400;700;900&family=Changa:wght@400;700;800&family=Readex+Pro:wght@400;700&family=El+Messiri:wght@400;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -146,6 +146,13 @@ function SiteDesignStyle() {
   const rules: string[] = [];
   if (HEX.test(d.primary)) rules.push(`--primary:${d.primary};`);
   if (HEX.test(d.accent)) rules.push(`--accent:${d.accent};--sky:${d.accent};--vip-cyan:${d.accent};--ring:${d.accent};`);
-  if (!rules.length) return null;
-  return <style>{`:root{${rules.join("")}}`}</style>;
+  const safe = (f?: string) => (f && /^[A-Za-z ]{2,40}$/.test(f) ? f : "");
+  const body = safe(d.fontBody), heading = safe(d.fontHeading);
+  const scale = typeof d.fontScale === "number" && d.fontScale >= 85 && d.fontScale <= 130 ? d.fontScale : 0;
+  let extra = "";
+  if (body) extra += `body,.font-sans{font-family:"${body}",sans-serif !important;}`;
+  if (heading) extra += `h1,h2,h3,.font-display{font-family:"${heading}",sans-serif !important;}`;
+  if (scale) extra += `html{font-size:${scale}%;}`;
+  if (!rules.length && !extra) return null;
+  return <style>{`${rules.length ? `:root{${rules.join("")}}` : ""}${extra}`}</style>;
 }
