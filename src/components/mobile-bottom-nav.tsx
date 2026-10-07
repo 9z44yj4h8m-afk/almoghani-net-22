@@ -34,9 +34,14 @@ export function BreakingTicker() {
   if (!ticker.enabled) return null;
   return (
     <div className="reference-ticker flex items-stretch overflow-hidden border-y border-border bg-surface-deep">
-      <span className="z-10 flex shrink-0 items-center bg-primary px-5 py-2 font-display text-lg font-black text-primary-foreground [clip-path:polygon(0_0,100%_0,100%_100%,12%_100%)]">
-        العاجل
-      </span>
+      <button
+        type="button"
+        onClick={() => document.getElementById("home-category-banners")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+        className="z-10 flex shrink-0 items-center bg-primary px-5 py-2 font-display text-lg font-black text-primary-foreground [clip-path:polygon(0_0,100%_0,100%_100%,12%_100%)]"
+        aria-label="الانتقال إلى الأقسام"
+      >
+        القائمة
+      </button>
       <div className="relative flex-1 overflow-hidden">
         <span className="ticker-wordmark" dir="ltr">ALMOGHANI <span>LIVE</span></span>
         <p className="news-ticker flex min-h-14 w-max items-center gap-2 whitespace-nowrap text-sm text-foreground">
