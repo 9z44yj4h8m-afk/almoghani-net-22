@@ -13,8 +13,6 @@ import {
   Newspaper,
   Play,
   Search,
-  Signal,
-  Sparkles,
   Trophy,
   Tv,
   WandSparkles,
@@ -26,7 +24,6 @@ import { type FormEvent, startTransition, useEffect, useState } from "react";
 import { markActive, useInactiveChannels } from "@/lib/inactive-channels";
 
 import satelliteMark from "@/assets/satellite-mark.jpg";
-import satelliteWorld from "@/assets/satellite-world.jpg";
 import { InstallAppButton } from "@/components/install-app-button";
 import { BroadcastWordmark } from "@/components/broadcast-shell";
 import microphoneImage from "@/assets/broadcast-microphone.jpg";
@@ -70,7 +67,6 @@ export function PortalPage({ section }: { section?: string }) {
   const channels = useCatalog();
   const { data: siteConfig } = useSiteConfig();
   const texts = siteConfig?.texts ?? defaultTexts;
-  const bannerImage = siteConfig?.design.background?.startsWith("https://") ? siteConfig.design.background : satelliteWorld;
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
@@ -276,27 +272,6 @@ export function PortalPage({ section }: { section?: string }) {
               </ul>
             </details>
           )}
-          <section className="smarter-banner relative isolate overflow-hidden border-y border-primary/50" aria-labelledby="smarter-banner-title">
-            <img src={bannerImage} alt="أقمار صناعية ودش ورسيفر وتلفزيونات" width={1536} height={1024} loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
-            <div className="smarter-banner-shade absolute inset-0 -z-10" />
-            <Link
-              to="/featured"
-              className="group flex min-h-64 flex-col items-start justify-center gap-5 px-6 py-9 sm:min-h-72 sm:px-12"
-              aria-label="الدخول إلى قسم القنوات المميزة"
-            >
-              <div>
-                <p className="mb-3 flex items-center gap-2 text-xs font-black text-accent"><Signal className="h-4 w-4" />almoghani.net</p>
-                <h2 id="smarter-banner-title" dir="ltr" className="font-display text-4xl font-black leading-[1.05] sm:text-6xl">{texts.bannerTitle}</h2>
-                <p className="mt-3 text-2xl font-black text-foreground sm:text-3xl">{texts.bannerSubtitle}</p>
-                <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-sky/50 bg-sky/10 px-4 py-2 text-sm font-black text-sky">
-                  <Sparkles className="h-4 w-4" />
-                  القنوات المميزة
-                  <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1" />
-                </span>
-              </div>
-            </Link>
-            <Link to="/contact" className="absolute bottom-4 left-4 rounded-full border border-primary/50 bg-background/70 px-4 py-2 text-xs font-black text-primary">للتواصل</Link>
-          </section>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
             {sections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
