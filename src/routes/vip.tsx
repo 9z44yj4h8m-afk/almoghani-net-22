@@ -16,22 +16,30 @@ import {
 import { Button } from "@/components/ui/button";
 import { MemberLibraryGate } from "@/components/member-library-gate";
 import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
+import { SmartersCatalog } from "@/components/smarters-catalog";
 
 export const Route = createFileRoute("/vip")({
   validateSearch: (search: Record<string, unknown>): { kind?: string | undefined; group?: string | undefined; q?: string | undefined } => ({ kind: typeof search["kind"] === "string" ? search["kind"] : undefined, group: typeof search["group"] === "string" ? search["group"] : undefined, q: typeof search["q"] === "string" ? search["q"] : undefined }),
   head: () => ({
     meta: [
-      { title: "المكتبة الخاصة — ALMOGHANI LIVE" },
-      { name: "description", content: "مكتبة خاصة محمية برقم سري: بث مباشر وأفلام ومسلسلات." },
-      { property: "og:title", content: "المكتبة الخاصة — ALMOGHANI LIVE" },
-      { property: "og:description", content: "قسم خاص محمي برقم سري." },
+      { title: "قنوات سمارتر — ALMOGHANI LIVE" },
+      { name: "description", content: "تصفّح قنوات Almoghani Smarter pro وسجّل الدخول للمشاهدة." },
+      { property: "og:title", content: "قنوات سمارتر — ALMOGHANI LIVE" },
+      { property: "og:description", content: "قنوات سمارتر مرتبة حسب التصنيف؛ المشاهدة للأعضاء." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <MemberLibraryGate><VipPage /></MemberLibraryGate>,
+  component: SmartersPage,
 });
+
+function SmartersPage() {
+  const { kind } = Route.useSearch();
+  const [watchGroup, setWatchGroup] = useState<string | null>(null);
+  if (watchGroup !== null || kind === "movie" || kind === "series") return <MemberLibraryGate><VipPage initialGroup={watchGroup ?? undefined} onCatalog={() => setWatchGroup(null)} /></MemberLibraryGate>;
+  return <SmartersCatalog onMemberWatch={setWatchGroup} />;
+}
 
 type Kind = "live" | "movie" | "series";
 type Item = { name: string; group: string; logo: string; url: string };
@@ -49,17 +57,17 @@ const TABS: {
   { k: "series", label: "المسلسلات", eyebrow: "جميع الحلقات", Icon: Clapperboard, activeClass: "bg-accent text-accent-foreground" },
 ];
 
-function VipPage() {
+function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefined; onCatalog: () => void }) {
   const pin = "member-session";
   const [fetchError, setFetchError] = useState("");
   const [kind, setKind] = useState<Kind>("live");
-  const [libraryOpen, setLibraryOpen] = useState(false);
+  const [libraryOpen, setLibraryOpen] = useState(true);
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
   const [group, setGroup] = useState("");
   const [q, setQ] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const [titles, setTitles] = useState<LibraryTitle[]>([]);
-  const [selectedTitle, setSelectedTitle] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState(initialGroup ?? "");
   const [total, setTotal] = useState(0);
   const [titleTotal, setTitleTotal] = useState(0);
   const [page, setPage] = useState(0);
@@ -79,7 +87,7 @@ function VipPage() {
       setQ(params.get("q") ?? "");
     }
     if (requestedKind === "live" || requestedKind === "series") {
-      setSelectedTitle(params.get("group") ?? "");
+      setSelectedTitle(initialGroup ?? params.get("group") ?? "");
       setQ(params.get("q") ?? "");
     }
     setLibraryOpen(true);
@@ -151,9 +159,9 @@ function VipPage() {
         <div className="mx-auto max-w-6xl px-4 pb-4 pt-5 sm:px-6">
           <div className="flex items-center gap-3">
             {libraryOpen ? (
-              <Button variant="ghost" size="icon" onClick={() => setLibraryOpen(false)} className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى أقسام المكتبة">
+              <Button asChild variant="ghost" size="icon" className="border border-vip-foreground/15 text-vip-foreground hover:bg-vip-foreground/10" aria-label="العودة إلى قنوات سمارتر"><Link to="/vip" search={{ kind: "live" }} onClick={onCatalog}>
                 <ArrowRight className="h-5 w-5" />
-              </Button>
+              </Link></Button>
             ) : (
               <Link to="/movies" className="grid h-9 w-9 place-items-center rounded-md border border-vip-foreground/15 text-vip-foreground" aria-label="رجوع إلى الأفلام">
                 <ArrowRight className="h-5 w-5" />
@@ -164,7 +172,7 @@ function VipPage() {
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-extrabold text-vip-cyan">ALMOGHANI LIVE</p>
-              <h1 className="truncate text-xl font-black">{libraryOpen ? activeTab.label : "المكتبة الخاصة"}</h1>
+              <h1 className="truncate text-xl font-black">{libraryOpen ? activeTab.label : "Almoghani Smarter pro"}</h1>
             </div>
           </div>
         </div>

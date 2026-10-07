@@ -231,7 +231,7 @@ export function PortalPage({ section }: { section?: string }) {
 
 
         {previewMode && (
-          <section className="broadcast-destinations" aria-label="المكتبة الخاصة">
+          <section className="broadcast-destinations" aria-label="أقسام سمارتر">
             {privateLibrarySections.map(({ kind }, index) => {
               const card = getSectionCard(`home-${kind}`, siteConfig?.sectionContent);
               return <a key={kind} href={card.link} className="broadcast-destination group">
