@@ -18,7 +18,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
 import { designColorFields, useSiteConfig } from "@/lib/site-config";
 import { IosInstallBanner } from "@/components/ios-install-banner";
-import { FloatingAiChat } from "@/components/floating-ai-chat";
 
 function NotFoundComponent() {
   return (
