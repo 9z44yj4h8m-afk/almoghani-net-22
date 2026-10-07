@@ -36,6 +36,7 @@ import moviesAd from "@/assets/movies-ad.png.asset.json";
 import { getSectionCard } from "@/lib/section-content";
 import { SectionCardStyle } from "@/components/section-card-style";
 import { Lock } from "lucide-react";
+import { BedouinDramaBanner } from "@/components/bedouin-drama-banner";
 
 const sections: {
   slug: string;
@@ -229,6 +230,7 @@ export function PortalPage({ section }: { section?: string }) {
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
         {!section && <BreakingTicker />}
         {!section && <HomeAd />}
+        {!section && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
 
         {previewMode && (
