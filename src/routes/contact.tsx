@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Mail, MessageCircle, AtSign, Camera, Ghost } from "lucide-react";
+import { Mail, MessageCircle, AtSign, Camera, Ghost, Home, ExternalLink, Radio } from "lucide-react";
 import { useSiteConfig, defaultContacts } from "@/lib/site-config";
 
 function buildContacts(c: typeof defaultContacts) {
@@ -26,25 +26,51 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
+const tiles: Record<string, string> = {
+  "واتساب": "bg-whatsapp text-foreground",
+  "البريد": "bg-mail text-foreground",
+  "سناب شات": "bg-snap text-background",
+  "إكس (تويتر)": "bg-xbrand text-foreground border border-sky/50",
+  "انستقرام": "bg-primary text-primary-foreground",
+};
+const labels: Record<string, string> = { "واتساب": "الواتساب", "البريد": "البريد الإلكتروني", "سناب شات": "Snapchat", "إكس (تويتر)": "تويتر" };
+
+function Logo({ small }: { small?: boolean }) {
+  return (
+    <span dir="ltr" className={`inline-flex items-center gap-1 font-black tracking-tight ${small ? "text-lg" : "text-2xl"}`}>
+      ALMOGHANI<span className="text-primary">LIVE</span><Radio className="h-4 w-4 text-primary" />
+    </span>
+  );
+}
+
 function ContactPage() {
   const { data } = useSiteConfig();
   const list = buildContacts(data?.contacts ?? defaultContacts).filter((c) => c.href);
   return (
-    <div dir="rtl" className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border px-6 py-4"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
-      <main className="mx-auto max-w-xl px-6 py-12">
-        <h1 className="font-display text-4xl font-black">للتواصل</h1>
-        <p className="mt-3 text-muted-foreground">almoghani smarter — نسعد بتواصلك في أي وقت.</p>
-        <div className="mt-8 grid gap-3">
+    <div dir="rtl" className="min-h-screen bg-background px-4 py-6 text-foreground">
+      <div className="mx-auto max-w-xl rounded-[2rem] border-2 border-sky/70 bg-background/80 p-5 shadow-[0_0_30px_-5px_var(--sky)]">
+        <header className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 rounded-xl border border-sky/60 px-3 py-1.5 text-sm font-bold"><Home className="h-4 w-4" />الرئيسية</Link>
+          <Logo />
+        </header>
+        <h1 className="mt-8 text-center font-display text-5xl font-black text-primary [text-shadow:0_0_20px_var(--primary)]">تواصل معنا</h1>
+        <div className="mt-3 flex items-center justify-center gap-3 text-lg font-bold">
+          <span className="h-px w-12 bg-primary" />يسعدنا تواصلك<span className="h-px w-12 bg-primary" />
+        </div>
+        <div className="mt-8 grid gap-4">
           {list.map((c) => { const Icon = c.icon ?? MessageCircle; return (
-            <a key={c.name} href={c.href} target="_blank" rel="noreferrer" className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary">
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/15 text-primary"><Icon className="h-6 w-6" /></span>
-              <span><span className="block font-black">{c.name}</span><span dir="ltr" className="text-sm text-muted-foreground">{c.value}</span></span>
+            <a key={c.name} href={c.href} target="_blank" rel="noreferrer" className="flex items-center gap-4 rounded-3xl border-2 border-sky/70 bg-card/60 p-4 shadow-[0_0_18px_-6px_var(--sky)] transition hover:border-sky">
+              <span className={`grid h-16 w-16 shrink-0 place-items-center rounded-2xl ${tiles[c.name] ?? "bg-primary"}`}><Icon className="h-9 w-9" /></span>
+              <span className="min-w-0 flex-1 border-r border-sky/30 pr-4">
+                <span className="block text-xl font-black">{labels[c.name] ?? c.name}</span>
+                <span dir="ltr" className="block truncate text-lg font-black">{c.value}</span>
+              </span>
+              <ExternalLink className="h-6 w-6 shrink-0 text-sky" />
             </a>); })}
         </div>
-        <Link to="/featured" className="mt-8 block rounded-2xl border border-sky/40 bg-sky/10 p-5 text-center font-black text-sky">almoghani smarter — جميع القنوات</Link>
-        <Link to="/admin" className="mt-3 block rounded-2xl border border-primary/50 bg-primary/10 p-5 text-center font-black text-primary">لوحة التحكم</Link>
-      </main>
+        <Link to="/" className="mx-auto mt-8 flex w-fit items-center gap-2 rounded-2xl border border-primary bg-primary px-8 py-3 font-black text-primary-foreground shadow-[0_0_20px_-4px_var(--primary)]"><Home className="h-5 w-5" />العودة إلى الرئيسية</Link>
+        <div className="mt-6 text-center"><Logo small /></div>
+      </div>
     </div>
   );
 }
