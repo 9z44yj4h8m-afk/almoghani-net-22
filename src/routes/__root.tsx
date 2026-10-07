@@ -15,7 +15,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
-import { useSiteConfig } from "@/lib/site-config";
+import { designColorFields, useSiteConfig } from "@/lib/site-config";
 import { IosInstallBanner } from "@/components/ios-install-banner";
 
 function NotFoundComponent() {
@@ -146,12 +146,14 @@ function SiteDesignStyle() {
   const rules: string[] = [];
   if (HEX.test(d.primary)) rules.push(`--primary:${d.primary};`);
   if (HEX.test(d.accent)) rules.push(`--accent:${d.accent};--sky:${d.accent};--vip-cyan:${d.accent};--ring:${d.accent};`);
+  for (const f of designColorFields) { const v = d.colors?.[f.key]; if (v && HEX.test(v)) for (const n of f.vars) rules.push(`${n}:${v};`); }
   const safe = (f?: string) => (f && /^[A-Za-z ]{2,40}$/.test(f) ? f : "");
   const body = safe(d.fontBody), heading = safe(d.fontHeading);
   const scale = typeof d.fontScale === "number" && d.fontScale >= 85 && d.fontScale <= 130 ? d.fontScale : 0;
   let extra = "";
   if (body) extra += `body,.font-sans{font-family:"${body}",sans-serif !important;}`;
   if (heading) extra += `h1,h2,h3,.font-display{font-family:"${heading}",sans-serif !important;}`;
+  if (typeof d.radius === "number" && d.radius >= 0 && d.radius <= 32) extra += `.rounded-lg,.rounded-xl,.rounded-2xl,.rounded-3xl{border-radius:${d.radius}px !important;}`;
   if (scale) extra += `html{font-size:${scale}%;}`;
   if (!rules.length && !extra) return null;
   return <style>{`${rules.length ? `:root{${rules.join("")}}` : ""}${extra}`}</style>;
