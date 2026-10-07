@@ -23,7 +23,7 @@ export function SectionEditor() {
     e.preventDefault(); setBusy(true); setMessage("");
     try {
       for (const c of Object.values(content.cards)) {
-        if (c.image && !/^(https:\/\/|\/__l5e\/assets-v1\/)/.test(c.image) && !editableCards.some((item) => item.defaults.image === c.image)) throw new Error("رابط الصورة يجب أن يبدأ بـ https.");
+        if (c.image && !/^(https:\/\/|\/__l5e\/assets-v1\/|\/assets\/|\/src\/assets\/)/.test(c.image) && !editableCards.some((item) => item.defaults.image === c.image)) throw new Error("رابط الصورة يجب أن يبدأ بـ https.");
       }
       const { error } = await supabase.from("site_settings").upsert({ key: "section-content", value: JSON.parse(JSON.stringify(content)), updated_at: new Date().toISOString() });
       if (error) throw new Error("تعذّر الحفظ؛ حاول مجددًا.");
