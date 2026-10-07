@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberLibraryGate } from "@/components/member-library-gate";
-import { InlineStream } from "@/components/inline-stream";
 import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 export const Route = createFileRoute("/vip")({
@@ -397,7 +396,7 @@ function VipPage() {
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
-              <InlineStream key={playing.url} url={playing.url} />
+              <p className="rounded-lg border border-border bg-secondary/40 p-3 text-xs leading-6 text-muted-foreground">سيرفر المزوّد يمنع التشغيل داخل المتصفح، شغّل الفيلم أو القناة في تطبيق VLC (أندرويد وآيفون) أو Outplayer (آيفون).</p>
               <Button type="button" size="lg" className="h-12 w-full" onClick={() => {
                 const u = playing.url;
                 window.location.href = /android/i.test(navigator.userAgent)
