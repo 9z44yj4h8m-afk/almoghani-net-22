@@ -67,7 +67,6 @@ export function PortalPage({ section }: { section?: string }) {
   const channels = useCatalog();
   const { data: siteConfig } = useSiteConfig();
   const texts = siteConfig?.texts ?? defaultTexts;
-  const bannerImage = siteConfig?.design.background?.startsWith("https://") ? siteConfig.design.background : satelliteWorld;
   const visibleSections = section ? sections.filter((s) => s.slug === section) : sections;
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
