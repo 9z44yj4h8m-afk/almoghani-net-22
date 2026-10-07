@@ -1,13 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, UserRound } from "lucide-react";
+import { Home, UserRound, LockKeyhole, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMember } from "@/components/member-provider";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { notifyOwnerNewMember } from "@/lib/member.functions";
-import satelliteWorld from "@/assets/satellite-world.jpg";
-import satelliteMark from "@/assets/satellite-mark.jpg";
+import loginArtwork from "@/assets/member-screen/login-art.jpg.asset.json";
+import { AiChatPanel } from "@/components/ai-chat-panel";
 import { MemberPlatforms } from "@/components/member-platforms";
 
 export const Route = createFileRoute("/auth")({
@@ -20,6 +20,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false); const [message, setMessage] = useState(""); const [error, setError] = useState("");
   useEffect(() => {
     if (!ready || !user) return;
@@ -36,7 +37,7 @@ function AuthPage() {
       }
     });
   }, [user?.id, ready, navigate]);
-  const inputClass = "h-12 w-full rounded-md border border-input bg-surface px-3 text-foreground outline-none focus:border-primary";
+  const inputClass = "member-screen-input";
   async function submit(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setError(""); setMessage("");
     try {
@@ -55,24 +56,27 @@ function AuthPage() {
     } catch { setError(mode === "login" ? "تعذّر الدخول؛ تحقق من البريد وكلمة المرور وتأكيد حسابك." : "تعذّر إتمام الطلب؛ تحقق من البيانات وحاول مجددًا."); }
     finally { setBusy(false); }
   }
-  return <div className="relative min-h-screen bg-background text-foreground" dir="rtl">
-    <img src={satelliteWorld} alt="" width={1536} height={1024} className="absolute inset-0 h-full w-full object-cover opacity-30" />
-    <main className="relative mx-auto flex max-w-md flex-col px-6 py-12">
-      <Link to="/" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground"><ArrowRight className="h-4 w-4" />الرئيسية</Link>
-      <img src={satelliteMark} alt="ALMOGHANI" width={1024} height={1024} className="mb-5 h-20 w-20 rounded-lg" />
-      <p className="font-display text-sm font-bold text-accent">ALMOGHANI LIVE</p>
-      <h1 className="mt-2 text-3xl font-black">{mode === "signup" ? "إنشاء حساب عضو" : mode === "forgot" ? "استعادة كلمة المرور" : "دخول الأعضاء"}</h1>
-      {user ? <p role="status" className="mt-6 font-bold text-sky">تم تسجيل الدخول</p> : <><form onSubmit={submit} className="mt-6 space-y-4">
-        {mode === "signup" && <label className="block space-y-1.5"><span className="text-sm">اسم العضو</span><input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} maxLength={80} minLength={2} required autoComplete="name" /></label>}
-        <label className="block space-y-1.5"><span className="text-sm">البريد الإلكتروني</span><input type="email" dir="ltr" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" /></label>
-        {mode !== "forgot" && <label className="block space-y-1.5"><span className="text-sm">كلمة المرور الشخصية</span><input type="password" className={inputClass} value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required autoComplete={mode === "signup" ? "new-password" : "current-password"} /></label>}
-        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}{message && <p role="status" className="text-sm text-primary">{message}</p>}
-        <Button type="submit" size="lg" disabled={busy} className="w-full"><UserRound className="h-4 w-4" />{busy ? "جارٍ الإرسال…" : mode === "signup" ? "إنشاء الحساب" : mode === "forgot" ? "إرسال رابط الاستعادة" : "دخول"}</Button>
-      </form>
-      {mode !== "forgot" && <Button variant="outline" size="lg" className="mt-3" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/auth` }); if (result.error) setError("تعذّر الدخول عبر Google."); } catch { setError("تعذّر الدخول عبر Google."); } finally { setBusy(false); } }}>المتابعة باستخدام Google</Button>}
-      <div className="mt-4 flex flex-wrap justify-center gap-2"><Button variant="ghost" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setError(""); setMessage(""); }}>{mode === "signup" ? "لدي حساب" : "إنشاء حساب"}</Button><Button variant="ghost" onClick={() => { setMode(mode === "forgot" ? "login" : "forgot"); setError(""); setMessage(""); }}>{mode === "forgot" ? "العودة للدخول" : "نسيت كلمة المرور"}</Button></div>
-      </>}
+  return <div className="member-studio-page" dir="rtl">
+    <main className="member-studio-layout">
+      <section className="member-login-screen">
+        <img src={loginArtwork.url} alt="ALMOGHANI LIVE — دخول الأعضاء" className="member-studio-art" />
+        <div className="member-login-body">
+          <h1 className="text-center text-3xl font-black">{mode === "signup" ? "إنشاء حساب" : mode === "forgot" ? "استعادة كلمة المرور" : "تسجيل الدخول"}</h1>
+          <p className="mt-2 text-center text-lg text-muted-foreground">مرحبًا بعودتك</p>
+          {user ? <p role="status" className="member-form mt-6 text-center font-bold text-sky">تم تسجيل الدخول</p> : <form onSubmit={submit} className="member-form mt-6 space-y-5">
+            {mode === "signup" && <label className="block space-y-2"><span className="flex items-center gap-2 font-bold"><UserRound className="h-5 w-5" />اسم العضو</span><input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} maxLength={80} minLength={2} required autoComplete="name" placeholder="أدخل اسم العضو" /></label>}
+            <label className="block space-y-2"><span className="flex items-center gap-2 font-bold"><UserRound className="h-5 w-5" />البريد الإلكتروني</span><input type="email" dir="ltr" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" placeholder="أدخل البريد الإلكتروني" /></label>
+            {mode !== "forgot" && <label className="block space-y-2"><span className="flex items-center gap-2 font-bold"><LockKeyhole className="h-5 w-5" />كلمة المرور</span><div className="relative"><input type={showPassword ? "text" : "password"} className={`${inputClass} pl-12`} value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required autoComplete={mode === "signup" ? "new-password" : "current-password"} placeholder="كلمة المرور" /><Button type="button" size="icon" variant="ghost" className="absolute left-2 top-3" aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff /> : <Eye />}</Button></div></label>}
+            {error && <p role="alert" className="text-sm text-signal">{error}</p>}{message && <p role="status" className="text-sm text-sky">{message}</p>}
+            <Button type="submit" size="lg" disabled={busy} className="member-red-action w-full">{busy ? "جارٍ الإرسال…" : mode === "signup" ? "إنشاء الحساب" : mode === "forgot" ? "إرسال رابط الاستعادة" : "تسجيل الدخول"}</Button>
+            {mode !== "forgot" && <Button type="button" variant="outline" className="w-full" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/auth` }); if (result.error) setError("تعذّر الدخول عبر Google."); } catch { setError("تعذّر الدخول عبر Google."); } finally { setBusy(false); } }}>المتابعة باستخدام Google</Button>}
+            <div className="flex flex-wrap justify-center gap-2"><Button type="button" variant="link" className="text-sky" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setError(""); setMessage(""); }}>{mode === "signup" ? "لدي حساب" : "إنشاء حساب"}</Button><Button type="button" variant="link" className="text-sky" onClick={() => { setMode(mode === "forgot" ? "login" : "forgot"); setError(""); setMessage(""); }}>{mode === "forgot" ? "العودة للدخول" : "نسيت كلمة المرور؟"}</Button></div>
+          </form>}
+          <Button asChild variant="link" className="mx-auto mt-6 flex text-muted-foreground"><Link to="/"><Home />العودة للرئيسية</Link></Button>
+        </div>
+      </section>
+      <section aria-label="شاشة ALMOGHANI AI" className="member-chat-area"><AiChatPanel embedded /></section>
     </main>
-    <div className="relative pb-8"><MemberPlatforms /></div>
+    <MemberPlatforms />
   </div>;
 }
