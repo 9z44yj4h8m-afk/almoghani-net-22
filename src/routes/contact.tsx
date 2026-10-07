@@ -43,6 +43,7 @@ function ContactPage() {
             </a>); })}
         </div>
         <Link to="/featured" className="mt-8 block rounded-2xl border border-sky/40 bg-sky/10 p-5 text-center font-black text-sky">almoghani smarter — جميع القنوات</Link>
+        <Link to="/admin" className="mt-3 block rounded-2xl border border-primary/50 bg-primary/10 p-5 text-center font-black text-primary">لوحة التحكم</Link>
       </main>
     </div>
   );
