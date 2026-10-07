@@ -27,6 +27,8 @@ import awdaCover from "@/assets/bedouin-covers/awda-abu-tayeh.png.asset.json";
 import natheerCover from "@/assets/bedouin-covers/al-natheer.png.asset.json";
 import dhiabCover from "@/assets/bedouin-covers/dhiab-habab-al-reeh.png.asset.json";
 import dawasCover from "@/assets/bedouin-covers/dawas-al-layl.png.asset.json";
+import jalwatCover from "@/assets/bedouin-covers/jalwat-rakan.png.asset.json";
+import raheelCover from "@/assets/bedouin-covers/al-raheel.png.asset.json";
 
 export type BedouinEpisode = { youtubeId: string; title: string; number: number; image: string };
 export type BedouinSeries = { id: string; title: string; expectedEpisodeCount: number; playlistId?: string; coverImage?: string; episodes: BedouinEpisode[] };
@@ -39,6 +41,8 @@ const seriesCovers: Record<string, string> = {
   "al-natheer": natheerCover.url,
   "dhiab-habab-al-reeh": dhiabCover.url,
   "dawas-al-layl": dawasCover.url,
+  "jalwat-rakan": jalwatCover.url,
+  "al-raheel": raheelCover.url,
 };
 
 export const bedouinSeries: BedouinSeries[] = [{
