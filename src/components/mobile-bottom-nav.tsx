@@ -3,7 +3,7 @@ import { Home, LayoutGrid, MoreHorizontal, Heart } from "lucide-react";
 
 const items = [
   { to: "/", label: "الرئيسية", icon: Home },
-  { to: "/live", label: "الأقسام", icon: LayoutGrid },
+  { to: "/sections", label: "الأقسام", icon: LayoutGrid },
   { to: "/featured", label: "المفضلة", icon: Heart },
   { to: "/contact", label: "المزيد", icon: MoreHorizontal },
 ] as const;
