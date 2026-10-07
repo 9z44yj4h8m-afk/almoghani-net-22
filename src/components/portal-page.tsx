@@ -31,10 +31,9 @@ import { BreakingTicker } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
-import { useCatalog, useSiteConfig, defaultTexts, defaultAd } from "@/lib/site-config";
-import moviesAd from "@/assets/movies-ad.png.asset.json";
-import { getSectionCard } from "@/lib/section-content";
-import { SectionCardStyle } from "@/components/section-card-style";
+import { useCatalog, useSiteConfig, defaultTexts } from "@/lib/site-config";
+import memberEntry from "@/assets/home-entry/member.png.asset.json";
+import chatEntry from "@/assets/home-entry/chat.png.asset.json";
 import { Lock } from "lucide-react";
 import { BedouinDramaBanner } from "@/components/bedouin-drama-banner";
 import { HomeCategoryBanners } from "@/components/home-category-banners";
@@ -58,12 +57,6 @@ const sections: {
 export const liveSections = sections;
 
 
-const privateLibrarySections = [
-  { kind: "live", name: "البث المباشر", description: "جميع القنوات مرتبة داخل تصنيفات واضحة", Icon: Tv, imageChannelId: "saudi-sports" },
-  { kind: "movie", name: "الأفلام", description: "مكتبة أفلام عربية وعالمية في مكان واحد", Icon: Film, imageChannelId: "ar-aflam" },
-  { kind: "series", name: "المسلسلات", description: "المواسم والحلقات مجمعة حسب عنوان المسلسل", Icon: Clapperboard, imageChannelId: "mbc-drama" },
-] as const;
-
 export function PortalPage({ section, homepage = false }: { section?: string; homepage?: boolean }) {
   const channels = useCatalog();
   const { data: siteConfig } = useSiteConfig();
@@ -73,7 +66,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   const [selected, setSelected] = useState(
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
-  const [playerActive, setPlayerActive] = useState(Boolean(section));
+  const [playerActive, setPlayerActive] = useState(!homepage);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -230,24 +223,11 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       <main className="pb-28 md:pb-12">
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
         {homepage && <BreakingTicker />}
-        {homepage && <HomeAd />}
+        {homepage && <HomeEntries />}
         {homepage && <HomeCategoryBanners />}
         {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
 
-        {previewMode && (
-          <section className="broadcast-destinations" aria-label="أقسام سمارتر">
-            {privateLibrarySections.map(({ kind }, index) => {
-              const card = getSectionCard(`home-${kind}`, siteConfig?.sectionContent);
-              return <a key={kind} href={card.link} data-section-card={`home-${kind}`} className="broadcast-destination group">
-                <SectionCardStyle id={`home-${kind}`} card={card} />
-                <img src={card.image} alt="" loading="lazy" width={1152} height={576} />
-                {index !== 1 && <span className={`destination-badge ${index === 2 ? "destination-exclusive" : ""}`}>{index === 0 ? "مباشر" : "حصري"}</span>}
-                <span className="destination-copy"><span data-card-text="title" className="destination-title">{card.title}<ArrowUpLeft /></span>{card.description && <span data-card-text="description" className="destination-description">{card.description}</span>}<span data-card-text="button" className="destination-enter">{card.button}</span></span>
-              </a>;
-            })}
-          </section>
-        )}
         {!previewMode && (
         <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
 
@@ -425,15 +405,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   );
 }
 
-function HomeAd() {
-  const { data } = useSiteConfig();
-  const ad = data?.ad ?? defaultAd;
-  if (!ad.enabled) return null;
-  const image = ad.image.startsWith("https://") ? ad.image : moviesAd.url;
-  const img = <img src={image} alt="أفلام مميزة كاملة — شاهد الآن" width={1536} height={1024} loading="lazy" className="block w-full rounded-2xl border border-sky/50 shadow-xl transition-transform hover:scale-[1.01]" />;
-  return (
-    <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="إعلان">
-      {/^https?:\/\//.test(ad.link) ? <a href={ad.link} target="_blank" rel="noopener noreferrer">{img}</a> : <a href={ad.link.startsWith("/") ? ad.link : "/movies"}>{img}</a>}
-    </section>
-  );
+function HomeEntries() {
+  return <section className="mx-auto grid max-w-4xl gap-3 px-3 pt-5 sm:px-6" aria-label="الأعضاء والمساعد الذكي">
+    <Link to="/auth" aria-label="دخول الأعضاء" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={memberEntry.url} alt="دخول الأعضاء — تسجيل الدخول" width={1920} height={712} className="block h-auto w-full" /></Link>
+    <Link to="/chat" aria-label="Chat ALMOGHANI AI" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={chatEntry.url} alt="Chat ALMOGHANI AI — ابدأ المحادثة" width={1920} height={712} loading="lazy" className="block h-auto w-full" /></Link>
+  </section>;
 }
