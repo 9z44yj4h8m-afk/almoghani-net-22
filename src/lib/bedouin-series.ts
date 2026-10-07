@@ -58,4 +58,7 @@ export const bedouinSeries: BedouinSeries[] = [{
   { youtubeId: "27HWjqDmAKs", title: "المسلسل البدوي دواس الليل ـ الحلقة 2 الثانية كاملة HD", number: 2, image: art10.url },
   { youtubeId: "4NxyeTBliQU", title: "المسلسل البدوي دواس الليل ـ الحلقة 1 الأولى كاملة HD", number: 1, image: art11.url }
   ],
-}, awdaAbuTayeh, alNatheer, dhiabHababAlReeh, akhoSadaa, ghadrAlZaman, alQaseer].map((series) => ({ ...series, coverImage: seriesCovers[series.id] }));
+}, awdaAbuTayeh, alNatheer, dhiabHababAlReeh, akhoSadaa, ghadrAlZaman, alQaseer].map((series) => {
+  const coverImage = seriesCovers[series.id];
+  return coverImage ? { ...series, coverImage } : series;
+});
