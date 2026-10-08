@@ -91,17 +91,18 @@ async function generate(system: string, prompt: string) {
 
 const RULES = "رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك وبدون أي تشكيل أو فتحات أو ضمات أو سكون.";
 
-async function recent() {
+async function recent(roomId: string | null = null) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data } = await supabaseAdmin.from("chat_messages").select("display_name, body").order("created_at", { ascending: false }).limit(8);
+  const query = supabaseAdmin.from("chat_messages").select("display_name, body");
+  const { data } = await (roomId ? query.eq("room_id", roomId) : query.is("room_id", null)).order("created_at", { ascending: false }).limit(8);
   return (data ?? []).reverse().map((m) => `${m.display_name ?? "زائر"}: ${m.body}`).join("\n");
 }
 
-async function post(name: string, body: string) {
+async function post(name: string, body: string, roomId: string | null = null) {
   body = withoutArabicDiacritics(body);
   if (!body) return false;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { error } = await supabaseAdmin.from("chat_messages").insert({ body, display_name: name, user_id: null });
+  const { error } = await supabaseAdmin.from("chat_messages").insert({ body, display_name: name, user_id: null, room_id: roomId });
   return !error;
 }
 
@@ -122,18 +123,21 @@ export const botReply = createServerFn({ method: "POST" })
     if (!cfg.enabled || !cfg.replyEnabled) return { ok: false };
     const [a, b] = pick(2) as [Bot, Bot];
     let author = data.author || "زائر";
+    let roomId: string | null = null;
     if (data.messageId) {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      const { data: row } = await supabaseAdmin.from("chat_messages").select("display_name").eq("id", data.messageId).maybeSingle();
+      const { data: row } = await supabaseAdmin.from("chat_messages").select("display_name,room_id").eq("id", data.messageId).maybeSingle();
+      if (!row) return { ok: false };
+      roomId = row.room_id;
       if (row?.display_name?.trim()) author = row.display_name.trim();
     }
-    const history = await recent();
+    const history = await recent(roomId);
     const first = await say(cfg, `أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`, author);
-    const ok = await post(a.name, first);
+    const ok = await post(a.name, first, roomId);
     if (ok && Math.random() < 0.6) {
       await wait(2500);
       const second = await say(cfg, `أنت ${b.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${b.style}. علّق على كلام ${author} و${a.name}. ${RULES}`, `${author}: ${data.body}\n${a.name}: ${first}`, author);
-      await post(b.name, second);
+      await post(b.name, second, roomId);
     }
     return { ok };
   });
