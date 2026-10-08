@@ -77,7 +77,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
-  useEffect(() => { if (voice) prefetchVoiceTurn(); }, [voice]);
+  useEffect(() => { prefetchVoiceTurn(); }, [voice]);
   voiceOnRef.current = false; // voice page uses VoiceRoom turns instead
   useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const [myIds, setMyIds] = useState<string[]>([]);
@@ -174,7 +174,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
         <div className="classic-chat-masthead" dir="ltr">
           <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
         </div>
-        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); if (voice) unlockVoiceAudio(); setEntered(true); }}>
+        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); unlockVoiceAudio(); if (!voice) setVoiceOn(true); setEntered(true); }}>
           {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="w-full">الشات الكتابي</Button>}
           <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار</label>
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />

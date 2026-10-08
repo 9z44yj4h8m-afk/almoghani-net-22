@@ -21,13 +21,13 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         const cfg = normalizeVoiceChat(row?.value);
         if (!cfg.enabled) return new Response("disabled", { status: 403, headers: { "X-Voice-Disabled": "1" } });
         const { name, text, female } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
-        const voice = cfg.botVoices[name] ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices);
+        const voice = cfg.botVoices[name] ?? (fast === true && female ? "Achernar" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices);
         const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
           method: "POST",
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             model: "google/gemini-3.1-flash-tts-preview",
-            contents: [{ role: "user", parts: [{ text: `قلها بلهجة خليجية ودودة وعفوية: ${text}` }] }],
+            contents: [{ role: "user", parts: [{ text: `${fast === true && female ? "قوليها بصوت بنت ناعم وهادئ ورقيق، بلهجة خليجية ودودة" : "قلها بلهجة خليجية ودودة وعفوية"}: ${text}` }] }],
             generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
             stream_format: "audio",
           }),
