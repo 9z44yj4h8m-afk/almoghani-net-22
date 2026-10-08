@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ArrowUp, MessagesSquare, Trash2 } from "lucide-react";
+import { Send, Smile, Trash2, Users, MessageCircle, LogOut } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import chatRoses from "@/assets/chat-roses.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 import { botReply, botBanter } from "@/lib/chat-bots.functions";
@@ -30,6 +33,11 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   const [guestName, setGuestName] = useState("");
   const [myIds, setMyIds] = useState<string[]>([]);
   const [botLine, setBotLine] = useState(BOT_LINES[0]);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [peopleQuery, setPeopleQuery] = useState("");
+  const [sideTab, setSideTab] = useState<"people" | "room">("people");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const names = [...new Set(msgs.map((m) => m.display_name || "عضو"))].filter((name) => name.includes(peopleQuery));
   useEffect(() => {
     let i = 0;
     const t = setInterval(() => { i = (i + 1) % BOT_LINES.length; setBotLine(BOT_LINES[i]); }, 90000);
@@ -86,54 +94,54 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   }
 
   return (
-    <section dir="rtl" aria-labelledby="live-chat-title" className={bare ? "mx-auto w-full max-w-3xl px-3 py-4" : "mx-auto max-w-3xl px-3 py-8 sm:px-6"}>
-      <div className="rounded-[2rem] border border-border bg-card/70 p-5 shadow-xl backdrop-blur sm:p-6">
-        <p className="text-xs font-bold tracking-wide text-muted-foreground">تفاعل الجمهور</p>
-        <h2 id="live-chat-title" className="mt-1 flex items-center gap-3 font-display text-3xl font-black">
-          الشات
-          <span className="flex items-center gap-1 text-sm font-bold text-accent"><span className="h-2 w-2 rounded-full bg-accent" />{msgs.length}</span>
-        </h2>
-
-        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-primary/40 bg-primary/10 p-4">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/20 text-primary"><MessagesSquare className="h-5 w-5" /></span>
-          <div><p className="font-black">حديث المشاهدين</p><p className="text-xs text-muted-foreground">كل الآراء مرحب بها، كن لطيفًا.</p></div>
+    <section dir="rtl" aria-labelledby="live-chat-title" className={`classic-chat ${bare ? "classic-chat-bare" : "classic-chat-page"}`}>
+      <div className="classic-chat-frame">
+        <div className="classic-chat-masthead" dir="ltr">
+          <img src={chatRoses} alt="" width={1152} height={576} />
+          <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
+          <img src={chatRoses} alt="" width={1152} height={576} />
         </div>
-
-        <div ref={listRef} className="mt-4 max-h-96 space-y-5 overflow-y-auto py-2" aria-live="polite">
-          <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/20 text-lg"><MessagesSquare className="h-5 w-5" /></span><div><p className="flex items-center gap-2"><b>بوت المغني</b></p><p className="mt-1 text-foreground/90">{botLine}</p></div></div>
+        <div className="classic-chat-workspace">
+        <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
+          <div className="classic-chat-system">{botLine}</div>
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
             return (
-              <div key={m.id} className="flex gap-3">
-                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl font-black ${mine ? "bg-accent text-accent-foreground" : "bg-primary/25 text-foreground"}`}>{(m.display_name || "ع").trim().charAt(0)}</span>
+              <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
+                <span className="classic-chat-avatar">{(m.display_name || "ع").trim().charAt(0)}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-2"><b>{mine ? "أنت" : m.display_name || "عضو"}</b><span className="text-xs text-muted-foreground">{ago(m.created_at)}</span>
-                    {((mine && user) || isAdmin) && <button type="button" aria-label="حذف الرسالة" className="ms-auto text-muted-foreground hover:text-destructive" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 className="h-3.5 w-3.5" /></button>}
+                  <p className="classic-chat-message-meta"><b>{m.display_name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
+                    {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
                   </p>
-                  <p className="mt-1 break-words text-foreground/90">{m.body}</p>
+                  <p className="classic-chat-body">{m.body}</p>
                 </div>
               </div>
             );
           })}
         </div>
-
-        <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
-          {EMOJIS.map((e) => (
-            <button key={e} type="button" onClick={() => react(e)} className="flex items-center gap-2 rounded-xl bg-background/60 px-3 py-2 text-sm font-bold text-muted-foreground transition hover:bg-primary/15" aria-label={`تفاعل ${e}`}>
-              <span className="text-lg">{e}</span>{reactions[e] ?? 0}
-            </button>
-          ))}
-        </div>
-
-        <form onSubmit={send} className="mt-4 space-y-2">
-          {!user && <input value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} placeholder="اسمك (اختياري)" aria-label="اسمك" className="h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground" />}
-          <div className="flex items-center gap-2 rounded-2xl border border-border bg-background/60 p-2">
-            <input value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب تعليقًا للجميع…" aria-label="اكتب تعليقًا" className="h-11 min-w-0 flex-1 bg-transparent px-3 text-foreground outline-none placeholder:text-muted-foreground" />
-            <button type="submit" disabled={sending || !text.trim()} aria-label="إرسال" className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground disabled:opacity-50"><ArrowUp className="h-5 w-5" /></button>
+        <aside className="classic-chat-sidebar" aria-label="الأسماء والغرف">
+          <div className="classic-chat-tabs" role="tablist" aria-label="قائمة الدردشة">
+            <Button role="tab" aria-selected={sideTab === "people"} className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}><Users />المستخدمون</Button>
+            <Button role="tab" aria-selected={sideTab === "room"} className="classic-chat-control" variant="secondary" onClick={() => setSideTab("room")}><MessageCircle />غرف</Button>
           </div>
+          {sideTab === "people" ? <>
+            <label className="classic-chat-filter"><span>الأسماء المشاركة ({names.length})</span><input aria-label="بحث عن اسم" placeholder="بحث عن اسم…" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /></label>
+            <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span className="classic-chat-avatar">{name.trim().charAt(0)}</span><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
+          </> : <div className="classic-chat-room"><MessageCircle /><b>الدردشة العامة</b><span>{msgs.length} رسالة</span><Button className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}>دخول الغرفة</Button></div>}
+        </aside>
+        </div>
+        <form onSubmit={send} className="classic-chat-compose">
+          {!user && <input value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} placeholder="اسمك (اختياري)" aria-label="اسمك" className="classic-chat-name" />}
+          <div className="classic-chat-compose-row">
+            <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك…" aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
+            <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}><Smile /></Button>
+            <div className="classic-chat-actions"><Button asChild className="classic-chat-exit"><Link to="/"><LogOut />خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control" disabled={sending || !text.trim()} aria-label="إرسال"><Send />{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
+          </div>
+          {showEmoji && <div className="classic-chat-emojis">{["😊", "😂", "🌹", ...EMOJIS].map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
+        <footer className="classic-chat-footer" dir="ltr"><span>ALMOGHANI <b>LIVE</b></span><small dir="rtl">الدردشة العامة</small></footer>
       </div>
     </section>
   );

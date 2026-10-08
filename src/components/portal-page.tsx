@@ -158,7 +158,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
         <div className="broadcast-site-header">
           <Link to="/" aria-label="ALMOGHANI LIVE"><BroadcastWordmark /></Link>
           <Button variant="outline" onClick={() => { setSearchOpen(v => !v); setSearchError(""); }} className="broadcast-search-link" aria-label="بحث"><span>ابحث عن القنوات والبرامج…</span><Search /></Button>
-          <Link to="/" className="broadcast-mini-brand"><BroadcastWordmark compact /></Link>
+          {homepage ? <Button asChild variant="broadcast" className="home-chat-entry"><Link to="/chat"><MessageCircle />الدردشة</Link></Button> : <Link to="/" className="broadcast-mini-brand"><BroadcastWordmark compact /></Link>}
           {section && <Button variant="ghost" size="icon" onClick={goBack} aria-label="رجوع"><ArrowRight /></Button>}
         </div>
         {searchOpen && (
@@ -393,13 +393,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
         )}
 
       </main>
-
-      <Link
-        to="/chat"
-        className="fixed bottom-6 left-4 z-40 hidden items-center gap-2 rounded-full border border-primary/70 bg-gradient-to-l from-primary to-primary/80 px-4 py-3 font-display text-sm font-black text-primary-foreground shadow-live transition-transform hover:-translate-y-0.5 md:flex"
-      >
-        <MessageCircle className="h-5 w-5" />ALMOGHANI AI
-      </Link>
 
     </div>
   );
