@@ -1,15 +1,15 @@
 export const chatSizes = [
-  { key: "frameHeight", label: "طول الشات كامل", min: 360, max: 1400, fallback: 700 },
-  { key: "frameWidth", label: "عرض الشات كامل", min: 320, max: 1800, fallback: 1450 },
+  { key: "frameHeight", label: "طول الشات كامل", min: 360, max: 1400, fallback: 590 },
+  { key: "frameWidth", label: "عرض الشات كامل", min: 320, max: 1800, fallback: 840 },
   { key: "height", label: "ارتفاع الرسائل", min: 280, max: 800, fallback: 440 },
-  { key: "fontSize", label: "مقاس خط الرسائل", min: 12, max: 24, fallback: 15 },
-  { key: "avatarSize", label: "مقاس صور الأسماء", min: 24, max: 60, fallback: 37 },
+  { key: "fontSize", label: "مقاس خط الرسائل", min: 12, max: 24, fallback: 12 },
+  { key: "avatarSize", label: "مقاس صور الأسماء", min: 24, max: 60, fallback: 24 },
   { key: "iconSize", label: "مقاس أيقونات الأزرار", min: 16, max: 36, fallback: 20 },
   { key: "sidebarWidth", label: "عرض قائمة الأسماء", min: 110, max: 320, fallback: 270 },
   { key: "radius", label: "استدارة الزوايا", min: 0, max: 20, fallback: 4 },
 ] as const;
 export const chatColors = [
-  { key: "paper", label: "خلفية الرسائل", fallback: "#fafafa" },
+  { key: "paper", label: "خلفية الرسائل", fallback: "#eeeeee" },
   { key: "ink", label: "نص الرسائل", fallback: "#202020" },
   { key: "steel", label: "الإطار والأزرار", fallback: "#29313d" },
   { key: "edge", label: "حدود الشات", fallback: "#606977" },
@@ -25,9 +25,9 @@ export type ChatAppearance = {
   sendIcon: string; smileIcon: string; avatarIcon: string; emojis: string[];
 };
 export const defaultChatAppearance: ChatAppearance = {
-  frameHeight: 700, frameWidth: 1450,
-  height: 440, fontSize: 15, avatarSize: 37, iconSize: 20, sidebarWidth: 270, radius: 4,
-  paper: "#fafafa", ink: "#202020", steel: "#29313d", edge: "#606977", name: "#353c8b",
+  frameHeight: 590, frameWidth: 840,
+  height: 440, fontSize: 12, avatarSize: 24, iconSize: 20, sidebarWidth: 270, radius: 4,
+  paper: "#eeeeee", ink: "#202020", steel: "#29313d", edge: "#606977", name: "#353c8b",
   showRoses: true, showSidebar: true, showAvatars: true,
    sendIcon: "default", smileIcon: "default", avatarIcon: "default", emojis: [...requestedChatEmojis, "😊", "🌹", "👏", "🔥", "💙", "✨"],
 };

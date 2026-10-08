@@ -180,14 +180,16 @@ const OPENERS = ["هلا والله ومسهلا، نورتوا الغرفة ا�
 export async function voiceMonologue(previous = "", heard = "", fast = false, openers: string[] = OPENERS) {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
   // Two girl performers drop in between chats: one sings, one recites poetry (original words, never copied lyrics).
-  if (!fast && !heard && Math.random() < 0.35) {
+  if (fast || (!heard && Math.random() < 0.35)) {
     const performers = [{ name: "نغم 🎶", mode: "sing" as const }, { name: "قصيدة 🌹", mode: "poem" as const }].filter((p) => p.name !== previous);
-    const p = performers[Math.floor(Math.random() * performers.length)]!;
+    const p = fast ? performers.find((performer) => performer.mode === "sing") : performers[Math.floor(Math.random() * performers.length)];
+    if (!p) throw new Error("Missing voice performer");
     const text = await generate(
       "أنت بنت في غرفة صوتية بموقع المغني لايف. اكتبي كلمات أصلية من تأليفك فقط، لا تنقلي أغاني أو قصائد موجودة، بدون تشكيل.",
       p.mode === "sing" ? "اكتبي مقطع غنائي قصير رومانسي باللهجة الخليجية (أربعة أسطر قصيرة، نحو 35 كلمة). اكتبي الكلمات فقط." : "اكتبي أبيات شعر نبطي غزلي رقيق (أربعة أبيات، نحو 35 كلمة). اكتبي الأبيات فقط.",
     );
-    if (text) return { name: p.name, female: true, mode: p.mode, text: withoutArabicDiacritics(text) };
+    const lyrics = text || (fast ? "يا هلا باللي لفانا، نور ليلتنا وزانا\nيا نسيم الليل غني، والفرح يسكن معانا\nنجمة تضحك في سمانا، والمحبة في لقانا\nيا هلا وكل الغلا، للي شاركنا غنانا" : "");
+    if (lyrics) return { name: p.name, female: true, mode: p.mode, text: withoutArabicDiacritics(lyrics) };
   }
   let pool = cfg.bots.filter((b) => b.name !== previous);
   // The opening voice is always a girl's, so the room starts with a soft female voice.
