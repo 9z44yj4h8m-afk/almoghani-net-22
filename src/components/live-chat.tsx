@@ -6,6 +6,9 @@ import chatRoses from "@/assets/chat-roses.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 import { botReply, botBanter } from "@/lib/chat-bots.functions";
+import { useSiteConfig } from "@/lib/site-config";
+import { defaultChatAppearance } from "@/lib/chat-appearance";
+import { ChatAppearanceStyle } from "@/components/chat-appearance-style";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
 
@@ -23,6 +26,8 @@ function ago(d: string) {
 export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { display_name: string; body: string }) => void; bare?: boolean } = {}) {
   const incomingRef = useRef(onIncoming); incomingRef.current = onIncoming;
   const { user } = useMember();
+  const { data: siteConfig } = useSiteConfig();
+  const appearance = siteConfig?.chatAppearance ?? defaultChatAppearance;
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [reactions, setReactions] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
@@ -95,6 +100,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
 
   return (
     <section dir="rtl" aria-labelledby="live-chat-title" className={`classic-chat ${bare ? "classic-chat-bare" : "classic-chat-page"}`}>
+      <ChatAppearanceStyle config={appearance} />
       <div className="classic-chat-frame">
         <div className="classic-chat-masthead" dir="ltr">
           <img src={chatRoses} alt="" width={1152} height={576} />
@@ -109,7 +115,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
             return (
               <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
-                <span className="classic-chat-avatar">{(m.display_name || "ع").trim().charAt(0)}</span>
+                <span className="classic-chat-avatar">{appearance.avatarIcon === "default" ? (m.display_name || "ع").trim().charAt(0) : appearance.avatarIcon}</span>
                 <div className="min-w-0 flex-1">
                   <p className="classic-chat-message-meta"><b>{m.display_name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
@@ -127,7 +133,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           </div>
           {sideTab === "people" ? <>
             <label className="classic-chat-filter"><span>الأسماء المشاركة ({names.length})</span><input aria-label="بحث عن اسم" placeholder="بحث عن اسم…" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /></label>
-            <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span className="classic-chat-avatar">{name.trim().charAt(0)}</span><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
+            <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span className="classic-chat-avatar">{appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon}</span><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
           </> : <div className="classic-chat-room"><MessageCircle /><b>الدردشة العامة</b><span>{msgs.length} رسالة</span><Button className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}>دخول الغرفة</Button></div>}
         </aside>
         </div>
@@ -135,10 +141,10 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           {!user && <input value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} placeholder="اسمك (اختياري)" aria-label="اسمك" className="classic-chat-name" />}
           <div className="classic-chat-compose-row">
             <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك…" aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
-            <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}><Smile /></Button>
-            <div className="classic-chat-actions"><Button asChild className="classic-chat-exit"><Link to="/"><LogOut />خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control" disabled={sending || !text.trim()} aria-label="إرسال"><Send />{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
+            <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>{appearance.smileIcon === "default" ? <Smile /> : <span>{appearance.smileIcon}</span>}</Button>
+            <div className="classic-chat-actions"><Button asChild className="classic-chat-exit"><Link to="/"><LogOut />خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control" disabled={sending || !text.trim()} aria-label="إرسال">{appearance.sendIcon === "default" ? <Send /> : <span>{appearance.sendIcon}</span>}{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
           </div>
-          {showEmoji && <div className="classic-chat-emojis">{["😊", "😂", "🌹", ...EMOJIS].map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
+          {showEmoji && <div className="classic-chat-emojis">{appearance.emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
         <footer className="classic-chat-footer" dir="ltr"><span>ALMOGHANI <b>LIVE</b></span><small dir="rtl">الدردشة العامة</small></footer>
