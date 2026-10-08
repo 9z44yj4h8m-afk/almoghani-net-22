@@ -6,12 +6,16 @@ export function ChatAppearanceStyle({ config, scope = ".classic-chat" }: { confi
 ${scope} .classic-chat-frame,${scope} .classic-chat-messages{border-radius:var(--chat-radius)}
 ${scope} .classic-chat-body{font-size:var(--chat-font)}
 ${scope} .classic-chat-avatar{width:var(--chat-avatar);height:var(--chat-avatar)}
-${scope} .classic-chat-actions svg{width:var(--chat-icon);height:var(--chat-icon)}
+${scope} .classic-chat-actions svg,${scope} .classic-chat-tabs svg{width:var(--chat-icon);height:var(--chat-icon)}
+${scope} .classic-chat-actions button>span{font-size:var(--chat-icon)}
+${scope} .classic-chat-smile svg{width:calc(var(--chat-icon) * 1.5);height:calc(var(--chat-icon) * 1.5)}
+${scope} .classic-chat-smile>span{font-size:calc(var(--chat-icon) * 1.5)}
 ${scope} .classic-chat-messages{color:var(--chat-ink)}
 ${scope} .classic-chat-message-meta b{color:var(--chat-name)}
 ${!c.showRoses ? `${scope} .classic-chat-masthead img{visibility:hidden}` : ""}
 ${!c.showAvatars ? `${scope} .classic-chat-avatar{display:none}` : ""}
 ${!c.showSidebar ? `${scope} .classic-chat-sidebar{display:none}${scope} .classic-chat-workspace{grid-template-columns:minmax(0,1fr)!important}` : ""}
-@media(min-width:641px){${scope}:not(.classic-chat-embedded .classic-chat) .classic-chat-workspace{height:${c.height}px;${c.showSidebar ? `grid-template-columns:minmax(0,1fr) ${c.sidebarWidth}px;` : ""}}}
+${scope} .classic-chat-workspace{height:${c.height}px}
+@media(min-width:641px){${scope}:not(.classic-chat-embedded .classic-chat) .classic-chat-workspace{${c.showSidebar ? `grid-template-columns:minmax(0,1fr) ${c.sidebarWidth}px;` : ""}}}
 @media(max-width:640px){${scope} .classic-chat-workspace{height:${c.height}px}${scope} .classic-chat-body{font-size:min(var(--chat-font),18px)}${scope} .classic-chat-avatar{width:min(var(--chat-avatar),34px);height:min(var(--chat-avatar),34px)}}`}</style>;
 }
