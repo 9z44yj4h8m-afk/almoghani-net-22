@@ -43,6 +43,7 @@ export type SiteConfig = {
   chatAppearance: ChatAppearance;
   botAvatars: Record<string, string>;
   chatNames: string[];
+  botNameAliases: Record<string, string>;
   sectionContent: SectionContent;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
   overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null }[];
@@ -72,6 +73,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
     chatAppearance: normalizeChatAppearance(get("chat-appearance", defaultChatAppearance)),
     botAvatars: Object.fromEntries(((settings.data?.find((r) => r.key === "chat_bots")?.value as { bots?: { name: string; avatar?: string }[] } | undefined)?.bots ?? []).filter((b) => b.name && b.avatar).map((b) => [b.name, b.avatar ?? ""])),
     chatNames: ((settings.data?.find((r) => r.key === "chat_bots")?.value as { bots?: { name: string }[] } | undefined)?.bots ?? []).map((b) => b.name).filter(Boolean),
+    botNameAliases: Object.fromEntries(((settings.data?.find((r) => r.key === "chat_bots")?.value as { bots?: { name: string; aliases?: string[] }[] } | undefined)?.bots ?? []).flatMap((b) => (b.aliases ?? []).map((alias) => [alias, b.name]))),
     sectionContent: get("section-content", defaultSectionContent),
     customChannels: custom.data ?? [],
     overrides: overrides.data ?? [],
