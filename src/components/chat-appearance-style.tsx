@@ -16,5 +16,5 @@ ${!c.showRoses ? `${scope} .classic-chat-masthead img{visibility:hidden}` : ""}
 ${!c.showAvatars ? `${scope} .classic-chat-avatar{display:none}` : ""}
 ${!c.showSidebar ? `${scope} .classic-chat-sidebar{display:none}${scope} .classic-chat-workspace{grid-template-columns:minmax(0,1fr)!important}` : ""}
 ${scope} .classic-chat-workspace{height:${c.height}px;${c.showSidebar ? `grid-template-columns:minmax(0,1fr) clamp(26%,${c.sidebarWidth}px,32%);` : ""}}
-@media(max-width:640px){${scope} .classic-chat-workspace{height:${c.height}px}${scope} .classic-chat-body{font-size:min(var(--chat-font),18px)}${scope} .classic-chat-avatar{width:min(var(--chat-avatar),34px);height:min(var(--chat-avatar),34px)}}`}</style>;
+@media(max-width:640px){${scope} .classic-chat-workspace{height:${c.height}px}${scope} .classic-chat-body{font-size:min(var(--chat-font),18px)}${scope} .classic-chat-avatar{width:min(var(--chat-avatar),40px);height:min(var(--chat-avatar),40px)}}`}</style>;
 }

@@ -16,7 +16,7 @@
 
 - Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /live?channel=<id> and /channels/<section-slug> (slugs defined once in the sections array in portal-page).
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
-- Keep the AI chat streaming through the /api/chat server route with history stored only in the visitor's browser, so no login or database is needed.
+- Public chat rooms use chat_rooms and bounded RPC creation; scope history, realtime and bot replies by room_id to isolate conversations.
 - Reuse LiveChat with nickname entry, messages, bot replies and notifications; /chat and /live-chat use a standalone shell to match the reference, /auth embeds it; never restore the floating launcher.
 - Store chat appearance and bots in admin-write site_settings; bot aliases preserve old message names after renaming. Private bot-avatars uses admin writes and signed reads, never public buckets.
 - Normalize bot message vocalization through the shared chat-text helper on write and historical display; preserve visitor text and decorative names so cleanup does not alter identities.

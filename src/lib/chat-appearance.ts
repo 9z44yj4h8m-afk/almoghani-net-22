@@ -14,6 +14,7 @@ export const chatColors = [
   { key: "name", label: "لون الاسم", fallback: "#353c8b" },
 ] as const;
 export const chatIconChoices = ["default", "🌹", "😊", "💬", "⭐", "❤️", "👑", "⚽", "🎬", "✨"] as const;
+export const requestedChatEmojis = ["😎", "👍🏻", "🌺", "💃🏻", "🙈", "🤣", "😳", "😘", "😩", "😭", "😂", "😴", "😍", "😔", "☎️", "😡", "📍", "👯", "✌🏻", "😝", "🤓", "😱", "😓", "👄", "💋", "👁️", "👩🏼‍🍳", "🧑🏼‍🎤", "🙆🏼‍♀️"];
 export type ChatAppearance = {
   height: number; fontSize: number; avatarSize: number; iconSize: number; sidebarWidth: number; radius: number;
   paper: string; ink: string; steel: string; edge: string; name: string;
@@ -24,7 +25,7 @@ export const defaultChatAppearance: ChatAppearance = {
   height: 440, fontSize: 15, avatarSize: 37, iconSize: 20, sidebarWidth: 270, radius: 4,
   paper: "#fafafa", ink: "#202020", steel: "#29313d", edge: "#606977", name: "#353c8b",
   showRoses: true, showSidebar: true, showAvatars: true,
-  sendIcon: "default", smileIcon: "default", avatarIcon: "default", emojis: ["😊", "😂", "🌹", "👏", "🔥", "💙", "✨"],
+   sendIcon: "default", smileIcon: "default", avatarIcon: "default", emojis: [...requestedChatEmojis, "😊", "🌹", "👏", "🔥", "💙", "✨"],
 };
 export function normalizeChatAppearance(raw: Partial<ChatAppearance> = {}): ChatAppearance {
   const c = { ...defaultChatAppearance };
