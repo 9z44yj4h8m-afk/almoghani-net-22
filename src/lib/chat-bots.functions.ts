@@ -176,11 +176,12 @@ export const adminPostChat = createServerFn({ method: "POST" })
 
 // Voice-room turn: one bot speaks ~20 seconds; text is only spoken, never posted to the chat.
 const FEMALE = /^(تحب|أم|شابة|هادئة|خفيفة|اجتماعية|عاشقة|لطيفة|طيبة|تتابع|تسأل)/;
-export async function voiceMonologue(previous = "", heard = "") {
+const OPENERS = ["هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية", "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟", "مساكم الله بالخير يا جماعة، حياكم في المغني لايف، تفضلوا وخذوا راحتكم والمايك يدور على الكل"];
+export async function voiceMonologue(previous = "", heard = "", fast = false) {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
   const pool = cfg.bots.filter((b) => b.name !== previous);
   const bot = pool[Math.floor(Math.random() * pool.length)] ?? cfg.bots[0]!;
-  const text = await generate(
+  const text = fast ? OPENERS[Math.floor(Math.random() * OPENERS.length)]! : await generate(
     `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
     `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
   );
