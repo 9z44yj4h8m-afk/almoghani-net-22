@@ -13,6 +13,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ChatAppearanceStyle } from "@/components/chat-appearance-style";
 import { BotAvatar } from "@/components/bot-avatar";
 import { withoutArabicDiacritics } from "@/lib/chat-text";
+import { useChatControl, useChatBans, isActiveBan, defaultChatControl } from "@/lib/chat-control";
+import { Home, Settings, LogOut } from "lucide-react";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
 
@@ -20,7 +22,7 @@ type Msg = { id: string; user_id: string | null; display_name: string; body: str
 type Room = { id: string; name: string };
 const EMOJIS = ["👏", "🔥", "💙", "✨"] as const;
 
-function ago(d: string) {
+export function ago(d: string) {
   const s = Math.max(0, (Date.now() - new Date(d).getTime()) / 1000);
   if (s < 60) return "الآن";
   if (s < 3600) return `قبل ${Math.floor(s / 60)}د`;
@@ -36,6 +38,8 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const appearance = siteConfig?.chatAppearance ?? defaultChatAppearance;
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [voiceOn, setVoiceOn] = useState(false);
+  const control = useChatControl().data ?? defaultChatControl;
+  const bans = useChatBans().data ?? [];
   const [reactions, setReactions] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -77,6 +81,8 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
+  const myBan = bans.find((b) => isActiveBan(b) && b.name.trim().toLowerCase() === guestName.trim().toLowerCase());
+  const bannedOut = !!myBan && myBan.kind === "ban";
   useEffect(() => { prefetchVoiceTurn(); }, [voice]);
   voiceOnRef.current = false; // voice page uses VoiceRoom turns instead
   useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
@@ -146,7 +152,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
     setSending(true); setError("");
     const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300), display_name: guestName.trim().slice(0, 30), user_id: user ? user.id : null, room_id: roomId }).select("id,user_id,display_name,body,created_at,room_id").single();
     setSending(false);
-    if (err) { setError(err.message.includes("slow") ? "انتظر لحظات قبل الرسالة التالية." : "تعذّر الإرسال."); return; }
+    if (err) { setError(err.message.includes("chat_banned") ? "تم كتمك من الإدارة ولا يمكنك الكتابة حاليًا." : err.message.includes("slow") ? "انتظر لحظات قبل الرسالة التالية." : "تعذّر الإرسال."); return; }
     setText("");
     if (data && !user) { const ids = [...myIds, data.id].slice(-50); setMyIds(ids); localStorage.setItem("chat-mine", JSON.stringify(ids)); }
     if (data) setMsgs((m) => m.some((x) => x.id === data.id) ? m : [...m, data]);
@@ -172,18 +178,24 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
       <ChatAppearanceStyle config={appearance} />
       <div className="classic-chat-frame">
         <div className="classic-chat-masthead" dir="ltr">
-          <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
+          <h2 id="live-chat-title">ALMOGHANI <span>CHAT</span></h2>
+          <span className="classic-chat-status"><i />متصل</span>
         </div>
-        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); unlockVoiceAudio(); if (!voice) setVoiceOn(true); setEntered(true); }}>
+        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name || bannedOut) return; setGuestName(name); localStorage.setItem("chat-name", name); unlockVoiceAudio(); if (!voice) setVoiceOn(true); setEntered(true); }}>
           {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="w-full">الشات الكتابي</Button>}
           <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار</label>
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
           {voice ? <Button type="submit" disabled={!guestName.trim()} className="w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
+          {bannedOut && <p role="alert" className="text-sm font-bold text-destructive">هذا الاسم محظور من الدردشة.</p>}
           {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
-        </form> : voice ? <VoiceRoom avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
+        </form> : voice ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
         <div className="classic-chat-workspace">
+        <div className="classic-chat-main">
+        <div className="classic-chat-roombar"><Users aria-hidden="true" /><b>{activeRoom}</b><span><i />{names.length} متصل الآن</span></div>
+        {control.announcement && <p className="classic-chat-announcement">📌 {control.announcement}</p>}
         <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
           <div className="classic-chat-system sr-only">{botLine}</div>
+          {control.hideMessages ? <p className="py-6 text-center text-sm font-bold">الرسائل مخفية مؤقتًا من الإدارة.</p> : <>
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
@@ -192,7 +204,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
               <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
                 <BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? (name || "ع").trim().charAt(0) : appearance.avatarIcon} />
                 <div className="min-w-0 flex-1">
-                  <p className="classic-chat-message-meta"><b>{name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
+                  <p className="classic-chat-message-meta"><b>{name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{new Date(m.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Riyadh" })}</time>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
                   </p>
                   {(() => { const isBot = !!(siteConfig?.chatNames.includes(name) || siteConfig?.botNameAliases[m.display_name] || siteConfig?.botAvatars[name]); return <p className="classic-chat-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}{isBot && <Button type="button" variant="ghost" size="icon-xs" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}</p>; })()}
@@ -200,6 +212,8 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
               </div>
             );
           })}
+          </>}
+        </div>
         </div>
         <aside className="classic-chat-sidebar" aria-label="الأسماء والغرف">
           <div className="classic-chat-tabs" role="tablist" aria-label="قائمة الدردشة">
@@ -212,7 +226,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           </> : <div className="classic-chat-room"><MessageCircle /><b>{activeRoom}</b><select aria-label="اختيار الغرفة" className="member-screen-input w-full text-xs" value={selectedRoomId ?? ""} onChange={(e) => setSelectedRoomId(e.target.value || null)}><option value="">الدردشة العامة</option>{rooms.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomId(selectedRoomId); setSideTab("people"); }}>دخول الغرفة</Button><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomError(""); setCreateOpen(true); }}><Plus />إنشاء غرفة</Button></div>}
         </aside>
         </div>
-        {voiceOn && <VoiceRoom compact avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} onClose={() => setVoiceOn(false)} />}
+        {voiceOn && control.voiceOpen && <VoiceRoom compact micsOpen={control.micsOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} onClose={() => setVoiceOn(false)} />}
         <form onSubmit={send} className="classic-chat-compose">
           <p className="sr-only">{guestName}</p>
           <div className="classic-chat-compose-row">
@@ -223,6 +237,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           {showEmoji && <div className="classic-chat-emojis">{emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
+        <nav className="classic-chat-bottomnav" aria-label="تنقل الدردشة"><Link to="/"><Home />الرئيسية</Link><button type="button" onClick={() => setSideTab("room")}><MessageCircle />الغرف</button><button type="button" onClick={() => setSideTab("people")}><Users />الأعضاء</button><Link to="/contact"><Settings />تواصل</Link><Link to="/" className="classic-chat-bottomnav-exit"><LogOut />خروج</Link></nav>
         </>}
         <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent dir="rtl" className="w-[calc(100%-2rem)] max-w-sm"><DialogTitle>إنشاء غرفة</DialogTitle><form onSubmit={createRoom} className="grid gap-4"><label htmlFor="new-chat-room">اسم الغرفة</label><input id="new-chat-room" className="member-screen-input" minLength={2} maxLength={40} required value={roomName} onChange={(e) => setRoomName(e.target.value)} autoFocus /><Button type="submit" disabled={creating || roomName.trim().length < 2}><Plus />{creating ? "جارٍ الإنشاء…" : "إنشاء"}</Button>{roomError && <p role="alert" className="text-sm text-destructive">{roomError}</p>}</form></DialogContent></Dialog>
         <footer className="classic-chat-footer" dir="ltr"><Link to="/contact" aria-label="للتواصل مع إدارة الموقع"><img src={contactBanner.url} alt="للتواصل مع إدارة الموقع" width={469} height={98} /></Link><span>ALMOGHANI <b>LIVE</b></span></footer>
