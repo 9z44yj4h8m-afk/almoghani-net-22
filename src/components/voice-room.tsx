@@ -32,7 +32,11 @@ async function fetchTurn(previous: string, heard = "", fast = false): Promise<Tu
 }
 
 /** Voice-only room: the mic passes in turn (20s each) between bots and visitors who ask for it; nothing spoken is written. */
-export function VoiceRoom({ avatars, guestName, compact = false, onClose }: { avatars: Record<string, string>; guestName: string; compact?: boolean; onClose?: () => void }) {
+export function VoiceRoom(props: { avatars: Record<string, string>; guestName: string; compact?: boolean; onClose?: () => void; micsOpen?: boolean; closed?: boolean }) {
+  if (props.closed) return <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الغرفة الصوتية مغلقة حاليًا من الإدارة.</p></div>;
+  return <VoiceRoomInner {...props} />;
+}
+function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen = true }: { avatars: Record<string, string>; guestName: string; compact?: boolean; onClose?: () => void; micsOpen?: boolean }) {
   const me = guestName || "أنت";
   const [speaker, setSpeaker] = useState("");
   const [speakers, setSpeakers] = useState<string[]>([]);
@@ -136,6 +140,7 @@ export function VoiceRoom({ avatars, guestName, compact = false, onClose }: { av
   }, [me]);
 
   useEffect(() => { if (audioRef.current) audioRef.current.muted = muted; }, [muted]);
+  useEffect(() => { if (!micsOpen) { handRef.current = false; setHandUp(false); } }, [micsOpen]);
   const myTurn = speaker === me && !waiting;
 
   if (disabled) return compact ? <p className="p-2 text-center text-xs font-bold">الشات الصوتي متوقف حاليًا.</p> : <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
@@ -146,7 +151,7 @@ export function VoiceRoom({ avatars, guestName, compact = false, onClose }: { av
         {waiting ? <><Loader2 className="size-3 animate-spin" />ينتقل المايك…</> : myTurn ? <><span className="animate-pulse">🎤</span>دورك، تكلم الآن {left}ث</> : <><span className="animate-pulse">🎤</span><span className="truncate">{speaker}</span></>}
       </p>
       {myTurn ? <Button size="sm" variant="secondary" onClick={() => { handRef.current = false; }}><MicOff />إنهاء</Button>
-        : <Button size="sm" variant="secondary" onClick={() => void raiseHand()} aria-pressed={handUp}>{handUp ? <><Hand />إلغاء</> : <><Mic />اطلب المايك</>}</Button>}
+        : !micsOpen ? <span className="text-xs font-bold">المايكات مغلقة</span> : <Button size="sm" variant="secondary" onClick={() => void raiseHand()} aria-pressed={handUp}>{handUp ? <><Hand />إلغاء</> : <><Mic />اطلب المايك</>}</Button>}
       <Button size="sm" variant="secondary" onClick={() => setMuted((m) => !m)} aria-label={muted ? "تشغيل الصوت" : "كتم الصوت"}>{muted ? <VolumeX /> : <Volume2 />}</Button>
       {onClose && <Button size="sm" variant="secondary" onClick={onClose}>إيقاف الصوتي</Button>}
       {micError && <p className="w-full text-xs text-destructive">{micError}</p>}
@@ -175,7 +180,7 @@ export function VoiceRoom({ avatars, guestName, compact = false, onClose }: { av
         <p className="flex items-center justify-center gap-1 text-xs">{waiting ? <><Loader2 className="size-3 animate-spin" />ينتقل المايك…</> : myTurn ? <><Mic className="size-3" />دورك، تكلم الآن</> : <><Volume2 className="size-3" />يتكلم {speaker}</>}</p>
         {myTurn ? (
           <Button className="classic-chat-control" variant="secondary" onClick={() => { handRef.current = false; }}><MicOff />إنهاء دوري</Button>
-        ) : (
+        ) : !micsOpen ? <p className="text-center text-xs font-bold">المايكات مغلقة من الإدارة</p> : (
           <Button className="classic-chat-control" variant="secondary" onClick={() => void raiseHand()} aria-pressed={handUp}>{handUp ? <><Hand />بانتظار دورك (إلغاء)</> : <><Mic />اطلب المايك</>}</Button>
         )}
         {micError && <p className="text-xs text-destructive">{micError}</p>}
