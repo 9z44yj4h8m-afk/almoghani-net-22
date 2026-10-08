@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowUp, MessagesSquare, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
-import { botReply } from "@/lib/chat-bots.functions";
+import { botReply, botBanter } from "@/lib/chat-bots.functions";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
 
@@ -33,6 +33,12 @@ export function LiveChat() {
     let i = 0;
     const t = setInterval(() => { i = (i + 1) % BOT_LINES.length; setBotLine(BOT_LINES[i]); }, 90000);
     return () => clearInterval(t);
+  }, []);
+  useEffect(() => {
+    const run = () => { if (document.visibilityState === "visible") void botBanter().catch(() => {}); };
+    const first = setTimeout(run, 8000);
+    const t = setInterval(run, 60000);
+    return () => { clearTimeout(first); clearInterval(t); };
   }, []);
   useEffect(() => {
     setGuestName(localStorage.getItem("chat-name") ?? "");
@@ -70,7 +76,7 @@ export function LiveChat() {
     setText("");
     if (data && !user) { const ids = [...myIds, data.id].slice(-50); setMyIds(ids); localStorage.setItem("chat-mine", JSON.stringify(ids)); }
     if (data) setMsgs((m) => m.some((x) => x.id === data.id) ? m : [...m, data]);
-    if (Math.random() < 0.6) void botReply({ data: { body: body.slice(0, 300), author: user ? "عضو" : guestName.trim().slice(0, 30) } }).catch(() => {});
+    void botReply({ data: { body: body.slice(0, 300), author: user ? "عضو" : guestName.trim().slice(0, 30) } }).catch(() => {});
   }
 
   async function react(emoji: string) {
