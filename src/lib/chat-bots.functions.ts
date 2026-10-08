@@ -14,7 +14,7 @@ export const botReply = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false };
-    const bot = BOTS[Math.floor(Math.random() * BOTS.length)];
+    const bot = BOTS[Math.floor(Math.random() * BOTS.length)] ?? BOTS[0];
     const { createOpenAI } = await import("@ai-sdk/openai");
     const { streamText } = await import("ai");
     const { createLovableAiGatewayRunIdFetch } = await import("@/lib/ai/run-id.server");
