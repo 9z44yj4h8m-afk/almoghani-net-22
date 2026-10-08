@@ -173,3 +173,15 @@ export const adminPostChat = createServerFn({ method: "POST" })
     if (!isAdmin) throw new Error("Forbidden");
     return { ok: await post(data.name, data.body) };
   });
+
+// Voice-room turn: one bot speaks ~20 seconds; text is only spoken, never posted to the chat.
+export async function voiceMonologue(previous = "") {
+  const cfg = await loadConfig(); BOT_POOL = cfg.bots;
+  const pool = cfg.bots.filter((b) => b.name !== previous);
+  const bot = pool[Math.floor(Math.random() * pool.length)] ?? cfg.bots[0]!;
+  const text = await generate(
+    `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
+    `${previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
+  );
+  return { name: bot.name, text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
+}
