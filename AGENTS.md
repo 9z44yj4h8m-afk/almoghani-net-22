@@ -18,7 +18,7 @@
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Keep the AI chat streaming through the /api/chat server route with history stored only in the visitor's browser, so no login or database is needed.
 - Reuse the shared LiveChat presentation on /chat, /live-chat and inside /auth while preserving its persisted messages, bot replies and opt-in notifications; never reintroduce a floating chat launcher.
-- Store chat appearance in a separate admin-write site_settings entry and apply validated scoped tokens to shared chat views; keep appearance saves independent from chat enablement and bot settings.
+- Keep chat appearance independent in admin-write site_settings. Bot avatar paths live in chat_bots; private bot-avatars storage uses admin writes and signed reads because public buckets are blocked.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.
