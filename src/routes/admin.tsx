@@ -13,7 +13,7 @@ import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
-import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
+import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
   siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
