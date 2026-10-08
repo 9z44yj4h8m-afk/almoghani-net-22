@@ -86,13 +86,13 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
     if (!body || !entered) return;
     if (!user) localStorage.setItem("chat-name", guestName.trim().slice(0, 30));
     setSending(true); setError("");
-    const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300), display_name: user ? "" : guestName.trim().slice(0, 30), user_id: user ? user.id : null }).select("id,user_id,display_name,body,created_at").single();
+    const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300), display_name: guestName.trim().slice(0, 30), user_id: user ? user.id : null }).select("id,user_id,display_name,body,created_at").single();
     setSending(false);
     if (err) { setError(err.message.includes("slow") ? "انتظر لحظات قبل الرسالة التالية." : "تعذّر الإرسال."); return; }
     setText("");
     if (data && !user) { const ids = [...myIds, data.id].slice(-50); setMyIds(ids); localStorage.setItem("chat-mine", JSON.stringify(ids)); }
     if (data) setMsgs((m) => m.some((x) => x.id === data.id) ? m : [...m, data]);
-    void botReply({ data: { body: body.slice(0, 300), author: user ? "عضو" : guestName.trim().slice(0, 30), ...(data ? { messageId: data.id } : {}) } }).catch(() => {});
+    void botReply({ data: { body: body.slice(0, 300), author: guestName.trim().slice(0, 30), ...(data ? { messageId: data.id } : {}) } }).catch(() => {});
   }
 
   async function react(emoji: string) {
