@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Bell, BellOff, CheckCheck } from "lucide-react";
 import { useRef, useState } from "react";
 
-import aiAssistantIcon from "@/assets/ai-assistant-icon.png";
 import { LiveChat } from "@/components/live-chat";
 import { Button } from "@/components/ui/button";
 
@@ -30,14 +29,12 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
   }
 
   return (
-    <div dir="rtl" className={embedded ? "member-ai-screen flex flex-col overflow-y-auto text-foreground" : "flex min-h-dvh flex-col bg-background text-foreground"}>
+    <div dir="rtl" className={embedded ? "member-ai-screen classic-chat-embedded flex flex-col text-foreground" : "classic-chat-shell flex flex-col bg-background text-foreground"}>
       <header className="border-b border-border/70 bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-3xl items-center justify-between gap-3 px-4">
+        <div className="mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-3">
-            <img src={aiAssistantIcon} alt="" width={1024} height={1024} className="h-10 w-10 rounded-full border border-primary object-cover" />
             <div>
-              <h2 className="font-display text-base font-black">ALMOGHANI AI</h2>
-              <p className="text-xs text-muted-foreground">شات حي مع الأعضاء</p>
+              <h1 className="font-display text-base font-black">الدردشة</h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
