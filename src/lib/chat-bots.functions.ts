@@ -2,41 +2,98 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 export const BOTS = [
-  { name: "بوت المغني", style: "مرح وودود، يرحب بالناس ويسولف عن البث والقنوات" },
-  { name: "بوت الرياضة", style: "عاشق للكرة والرياضة، يسولف عن المباريات بحماس دون اختلاق نتائج" },
-  { name: "بوت السوالف", style: "بدوي خفيف الدم يحب المسلسلات البدوية والقصص والأمثال" },
+  { name: "أبو فهد", style: "كبير ورزين، يحب المسلسلات البدوية والأمثال" },
+  { name: "سلطان", style: "عاشق للكرة، متحمس للمباريات دون اختلاق نتائج" },
+  { name: "نورة", style: "تحب الأفلام والمسلسلات وتنصح بالأعمال" },
+  { name: "خالد", style: "مرح يحب المزح والضحك" },
+  { name: "ريم", style: "هادئة ولطيفة تسأل الناس عن يومهم" },
+  { name: "بندر", style: "متابع للأخبار ويسولف عنها بعموم دون اختلاق" },
+  { name: "مشاري", style: "شاب يحب القنوات الرياضية والتحدي" },
+  { name: "أم سعود", style: "طيبة تحب المسلسلات الخليجية والطبخ" },
+  { name: "فيصل", style: "يحب السفر والقنوات الوثائقية" },
+  { name: "لولو", style: "خفيفة دم تحب الكرتون والأطفال" },
+  { name: "ناصر", style: "بدوي يحب الشعر النبطي والقصص" },
+  { name: "عبدالله", style: "رايق يحب السوالف العامة والقهوة" },
+  { name: "هيا", style: "تحب الأفلام العربية القديمة" },
+  { name: "تركي", style: "يحب المصارعة والأكشن" },
+  { name: "سارة", style: "اجتماعية ترحب بالجدد" },
 ] as const;
 
+const pick = (n: number) => [...BOTS].sort(() => Math.random() - 0.5).slice(0, n);
+
+async function generate(system: string, prompt: string) {
+  const apiKey = process.env["LOVABLE_API_KEY"];
+  if (!apiKey) return "";
+  const { createOpenAI } = await import("@ai-sdk/openai");
+  const { streamText } = await import("ai");
+  const { createLovableAiGatewayRunIdFetch } = await import("@/lib/ai/run-id.server");
+  const provider = createOpenAI({
+    baseURL: "https://ai.gateway.lovable.dev/v1",
+    apiKey,
+    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
+    fetch: createLovableAiGatewayRunIdFetch().fetch,
+  });
+  let text = "";
+  try {
+    const result = streamText({
+      model: provider.responses("openai/gpt-6-astra"),
+      system,
+      prompt,
+      providerOptions: { openai: { store: false, forceReasoning: true, reasoningEffort: "low", reasoningSummary: "auto", include: ["reasoning.encrypted_content"] } },
+    });
+    for await (const chunk of result.textStream) text += chunk;
+  } catch { return ""; }
+  return text.trim().slice(0, 300);
+}
+
+const RULES = "رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك.";
+
+async function recent() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.from("chat_messages").select("display_name, body").order("created_at", { ascending: false }).limit(8);
+  return (data ?? []).reverse().map((m) => `${m.display_name ?? "زائر"}: ${m.body}`).join("\n");
+}
+
+async function post(name: string, body: string) {
+  if (!body) return false;
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { error } = await supabaseAdmin.from("chat_messages").insert({ body, display_name: name, user_id: null });
+  return !error;
+}
+
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const input = z.object({ body: z.string().trim().min(1).max(300), author: z.string().max(30).optional() });
 
+// Always answer the sender, then sometimes a second bot joins in.
 export const botReply = createServerFn({ method: "POST" })
   .inputValidator((d) => input.parse(d))
   .handler(async ({ data }) => {
-    const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) return { ok: false };
-    const bot = BOTS[Math.floor(Math.random() * BOTS.length)] ?? BOTS[0];
-    const { createOpenAI } = await import("@ai-sdk/openai");
-    const { streamText } = await import("ai");
-    const { createLovableAiGatewayRunIdFetch } = await import("@/lib/ai/run-id.server");
-    const provider = createOpenAI({
-      baseURL: "https://ai.gateway.lovable.dev/v1",
-      apiKey,
-      headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-      fetch: createLovableAiGatewayRunIdFetch().fetch,
-    });
-    let text = "";
-    try {
-      const result = streamText({
-        model: provider.responses("openai/gpt-6-astra"),
-        system: `أنت ${bot.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${bot.style}. رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. لا تتظاهر بأنك إنسان.`,
-        prompt: `${data.author || "زائر"}: ${data.body}`,
-        providerOptions: { openai: { store: false, forceReasoning: true, reasoningEffort: "low", reasoningSummary: "auto", include: ["reasoning.encrypted_content"] } },
-      });
-      for await (const chunk of result.textStream) text += chunk;
-    } catch { return { ok: false }; }
-    text = text.trim().slice(0, 300);
-    if (!text) return { ok: false };
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("chat_messages").insert({ body: text, display_name: bot.name, user_id: null });
-    return { ok: !error };
+    const [a, b] = pick(2);
+    const author = data.author || "زائر";
+    const history = await recent();
+    const first = await generate(`أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`);
+    const ok = await post(a.name, first);
+    if (ok && Math.random() < 0.6) {
+      await wait(2500);
+      const second = await generate(`أنت ${b.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${b.style}. علّق على كلام ${author} و${a.name}. ${RULES}`, `${author}: ${data.body}\n${a.name}: ${first}`);
+      await post(b.name, second);
+    }
+    return { ok };
   });
+
+// Bots chatting among themselves.
+export const botBanter = createServerFn({ method: "POST" }).handler(async () => {
+  const [a, b, c] = pick(3);
+  const history = await recent();
+  const m1 = await generate(`أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${b.name}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
+  if (!(await post(a.name, m1))) return { ok: false };
+  await wait(3000);
+  const m2 = await generate(`أنت ${b.name}. شخصيتك: ${b.style}. رد على ${a.name}. ${RULES}`, `${a.name}: ${m1}`);
+  await post(b.name, m2);
+  if (Math.random() < 0.5) {
+    await wait(3000);
+    const m3 = await generate(`أنت ${c.name}. شخصيتك: ${c.style}. ادخل السالفة وعلّق. ${RULES}`, `${a.name}: ${m1}\n${b.name}: ${m2}`);
+    await post(c.name, m3);
+  }
+  return { ok: true };
+});
