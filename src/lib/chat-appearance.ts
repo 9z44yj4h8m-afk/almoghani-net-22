@@ -1,4 +1,6 @@
 export const chatSizes = [
+  { key: "frameHeight", label: "طول الشات كامل", min: 360, max: 1400, fallback: 700 },
+  { key: "frameWidth", label: "عرض الشات كامل", min: 320, max: 1800, fallback: 1450 },
   { key: "height", label: "ارتفاع الرسائل", min: 280, max: 800, fallback: 440 },
   { key: "fontSize", label: "مقاس خط الرسائل", min: 12, max: 24, fallback: 15 },
   { key: "avatarSize", label: "مقاس صور الأسماء", min: 24, max: 60, fallback: 37 },
@@ -16,12 +18,14 @@ export const chatColors = [
 export const chatIconChoices = ["default", "🌹", "😊", "💬", "⭐", "❤️", "👑", "⚽", "🎬", "✨"] as const;
 export const requestedChatEmojis = ["😎", "👍🏻", "🌺", "💃🏻", "🙈", "🤣", "😳", "😘", "😩", "😭", "😂", "😴", "😍", "😔", "☎️", "😡", "📍", "👯", "✌🏻", "😝", "🤓", "😱", "😓", "👄", "💋", "👁️", "👩🏼‍🍳", "🧑🏼‍🎤", "🙆🏼‍♀️"];
 export type ChatAppearance = {
+  frameHeight: number; frameWidth: number;
   height: number; fontSize: number; avatarSize: number; iconSize: number; sidebarWidth: number; radius: number;
   paper: string; ink: string; steel: string; edge: string; name: string;
   showRoses: boolean; showSidebar: boolean; showAvatars: boolean;
   sendIcon: string; smileIcon: string; avatarIcon: string; emojis: string[];
 };
 export const defaultChatAppearance: ChatAppearance = {
+  frameHeight: 700, frameWidth: 1450,
   height: 440, fontSize: 15, avatarSize: 37, iconSize: 20, sidebarWidth: 270, radius: 4,
   paper: "#fafafa", ink: "#202020", steel: "#29313d", edge: "#606977", name: "#353c8b",
   showRoses: true, showSidebar: true, showAvatars: true,
