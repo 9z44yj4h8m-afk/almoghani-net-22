@@ -160,7 +160,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const embeddedChat = useRouterState({ select: (state) => state.location.pathname === "/chat" && state.location.searchStr.includes("floating=1") });
+  const embeddedChat = useRouterState({ select: (state) => state.location.pathname === "/chat" || state.location.pathname === "/live-chat" });
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -2,7 +2,7 @@ import { normalizeChatAppearance, type ChatAppearance } from "@/lib/chat-appeara
 
 export function ChatAppearanceStyle({ config, scope = ".classic-chat" }: { config: ChatAppearance; scope?: ".classic-chat" | ".chat-editor-preview" }) {
   const c = normalizeChatAppearance(config);
-  return <style>{`${scope}{--chat-paper:${c.paper};--chat-ink:${c.ink};--chat-steel:${c.steel};--chat-edge:${c.edge};--chat-name:${c.name};--chat-font:${c.fontSize}px;--chat-avatar:${c.avatarSize}px;--chat-icon:${c.iconSize}px;--chat-radius:${c.radius}px}
+  return <style>{`${scope}{--chat-paper:${c.paper};--chat-ink:${c.ink};--chat-steel:${c.steel};--chat-edge:${c.edge};--chat-name:${c.name};--chat-font:${c.fontSize}px;--chat-avatar:${c.avatarSize}px;--chat-icon:${c.iconSize}px;--chat-radius:${c.radius}px;--chat-sidebar-width:${c.sidebarWidth}px}
 ${scope} .classic-chat-frame,${scope} .classic-chat-messages{border-radius:var(--chat-radius)}
 ${scope} .classic-chat-body{font-size:var(--chat-font)}
 ${scope} .classic-chat-avatar{width:var(--chat-avatar);height:var(--chat-avatar)}
