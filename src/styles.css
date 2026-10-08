@@ -680,7 +680,7 @@ body { background: var(--surface-deep); }
 .classic-chat-bottomnav svg { width: 24px; height: 24px; }
 .classic-chat-bottomnav .classic-chat-bottomnav-exit { margin-inline-start: auto; border: 1px solid rgb(255 255 255 / .8); border-radius: 8px; }
 @media (max-width: 640px) {
-  .classic-chat-page .classic-chat-frame { height: calc(100dvh - 70px); min-height: 0; }
+  .classic-chat-page .classic-chat-frame { height: calc(100svh - 170px); max-height: 780px; min-height: 0; }
   .classic-chat .classic-chat-masthead { height: 48px; padding: 0 10px; }
   .classic-chat .classic-chat-masthead h2 { font-size: 22px !important; }
   .classic-chat-status { font-size: 13px; }
