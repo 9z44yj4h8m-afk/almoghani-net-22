@@ -25,6 +25,7 @@ import { Route as ScheduleAdminRouteImport } from './routes/schedule-admin'
 import { Route as SectionsRouteImport } from './routes/sections'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as VipRouteImport } from './routes/vip'
+import { Route as VoiceChatRouteImport } from './routes/voice-chat'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
 import { Route as FeaturedIndexRouteImport } from './routes/featured.index'
@@ -114,6 +115,11 @@ const VipRoute = VipRouteImport.update({
   path: '/vip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VoiceChatRoute = VoiceChatRouteImport.update({
+  id: '/voice-chat',
+  path: '/voice-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
+  '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
+  '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
   '/vip': typeof VipRoute
+  '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/sections'
     | '/subscription'
     | '/vip'
+    | '/voice-chat'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/sections'
     | '/subscription'
     | '/vip'
+    | '/voice-chat'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/sections'
     | '/subscription'
     | '/vip'
+    | '/voice-chat'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -333,6 +345,7 @@ export interface RootRouteChildren {
   SectionsRoute: typeof SectionsRoute
   SubscriptionRoute: typeof SubscriptionRoute
   VipRoute: typeof VipRoute
+  VoiceChatRoute: typeof VoiceChatRoute
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
   FeaturedChannelRoute: typeof FeaturedChannelRoute
@@ -457,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/voice-chat': {
+      id: '/voice-chat'
+      path: '/voice-chat'
+      fullPath: '/voice-chat'
+      preLoaderRoute: typeof VoiceChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -533,6 +553,7 @@ const rootRouteChildren: RootRouteChildren = {
   SectionsRoute: SectionsRoute,
   SubscriptionRoute: SubscriptionRoute,
   VipRoute: VipRoute,
+  VoiceChatRoute: VoiceChatRoute,
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,
   FeaturedChannelRoute: FeaturedChannelRoute,

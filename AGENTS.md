@@ -16,10 +16,6 @@
 
 - Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /live?channel=<id> and /channels/<section-slug> (slugs defined once in the sections array in portal-page).
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
-- Public chat rooms use chat_rooms and bounded RPC creation; scope history, realtime and bot replies by room_id to isolate conversations.
-- Reuse LiveChat with nickname entry, messages, bot replies and notifications; /chat and /live-chat use a standalone shell to match the reference, /auth embeds it; never restore the floating launcher.
-- Store chat appearance and bots in admin-write site_settings; bot aliases preserve old message names after renaming. Private bot-avatars uses admin writes and signed reads, never public buckets.
-- Normalize bot message vocalization through the shared chat-text helper on write and historical display; preserve visitor text and decorative names so cleanup does not alter identities.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.
