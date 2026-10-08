@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Send, Smile, Trash2, Users, MessageCircle, LogOut } from "lucide-react";
+import { Send, Smile, Trash2, Users, MessageCircle, LogOut, ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import chatRoses from "@/assets/chat-roses.jpg";
@@ -37,13 +37,14 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   const [isAdmin, setIsAdmin] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
+  const [entered, setEntered] = useState(false);
   const [myIds, setMyIds] = useState<string[]>([]);
   const [botLine, setBotLine] = useState(BOT_LINES[0]);
   const [showEmoji, setShowEmoji] = useState(false);
   const [peopleQuery, setPeopleQuery] = useState("");
   const [sideTab, setSideTab] = useState<"people" | "room">("people");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const names = [...new Set(msgs.map((m) => m.display_name || "عضو"))].filter((name) => name.includes(peopleQuery));
+  const names = [...new Set([...(siteConfig?.chatNames ?? []), ...msgs.map((m) => m.display_name || "عضو")])].filter((name) => name.includes(peopleQuery));
   useEffect(() => {
     let i = 0;
     const t = setInterval(() => { i = (i + 1) % BOT_LINES.length; setBotLine(BOT_LINES[i]); }, 90000);
@@ -82,7 +83,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   async function send(e: FormEvent) {
     e.preventDefault();
     const body = text.trim();
-    if (!body) return;
+    if (!body || !entered) return;
     if (!user) localStorage.setItem("chat-name", guestName.trim().slice(0, 30));
     setSending(true); setError("");
     const { data, error: err } = await supabase.from("chat_messages").insert({ body: body.slice(0, 300), display_name: user ? "" : guestName.trim().slice(0, 30), user_id: user ? user.id : null }).select("id,user_id,display_name,body,created_at").single();
@@ -105,9 +106,15 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
       <div className="classic-chat-frame">
         <div className="classic-chat-masthead" dir="ltr">
           <img src={chatRoses} alt="" width={1152} height={576} />
-          <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
+          <h2 id="live-chat-title">ALMOGHANI</h2>
           <img src={chatRoses} alt="" width={1152} height={576} />
         </div>
+        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); setEntered(true); }}>
+          <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار للدخول للدردشه</label>
+          <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
+          <Button type="submit" disabled={!guestName.trim()} className="w-full">دخول</Button>
+          {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
+        </form> : <>
         <div className="classic-chat-workspace">
         <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
           <div className="classic-chat-system">{botLine}</div>
@@ -139,7 +146,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
         </aside>
         </div>
         <form onSubmit={send} className="classic-chat-compose">
-          {!user && <input value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} placeholder="اسمك (اختياري)" aria-label="اسمك" className="classic-chat-name" />}
+          <p className="mb-2 text-sm font-bold">{guestName}</p>
           <div className="classic-chat-compose-row">
             <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك…" aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
             <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>{appearance.smileIcon === "default" ? <Smile /> : <span>{appearance.smileIcon}</span>}</Button>
@@ -148,6 +155,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           {showEmoji && <div className="classic-chat-emojis">{appearance.emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
+        </>}
         <footer className="classic-chat-footer" dir="ltr"><span>ALMOGHANI <b>LIVE</b></span><small dir="rtl">الدردشة العامة</small></footer>
       </div>
     </section>

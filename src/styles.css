@@ -526,6 +526,8 @@ body { background: var(--surface-deep); }
 .contact-studio-icon { width: 66px; height: 66px; display: grid; place-items: center; border-radius: 50%; flex-shrink: 0; }
 .contact-studio-value { display: block; font-size: 26px; font-weight: 900; overflow-wrap: anywhere; line-height: 1.4; }
 .classic-chat-shell { min-height: 720px; }
+.classic-chat-entry { display: grid; gap: 16px; width: min(100%, 420px); margin: 40px auto; padding: 20px 12px; text-align: center; }
+.classic-chat-entry label { font-weight: 800; font-size: 18px; }
 .classic-chat { width: 100%; min-width: 0; padding: 12px; }
 .classic-chat-page { max-width: 1150px; margin: auto; padding-block: 24px; }
 .classic-chat-frame { border: 3px solid var(--chat-edge); padding: 8px; border-radius: 4px; background: var(--chat-metal); box-shadow: var(--chat-bevel); }
