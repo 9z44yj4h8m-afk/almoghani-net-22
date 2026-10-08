@@ -21,6 +21,13 @@ ${CATALOG}
 
 عند الأسئلة الشرعية كن دقيقًا ومحترمًا، ولا تنسب حديثًا أو قولًا لا تتأكد من صحته، وانصح بالرجوع لأهل العلم في الفتاوى.`;
 
+const PERSONA_STYLE: Record<string, string> = {
+  default: "",
+  bedouin: "أنت بوت سوالف بدوي خفيف الدم، تسولف باللهجة البدوية/الخليجية، تحب القصص والأمثال والمسلسلات البدوية في صفحة /bedouin-drama.",
+  sports: "أنت بوت رياضي متحمس تسولف عن الكرة والرياضة باللهجة الخليجية، ولا تخترع نتائج أو مواعيد مباريات.",
+  movies: "أنت بوت سينمائي تسولف عن الأفلام والمسلسلات وتقترح من قسم /movies والقنوات المتاحة فقط.",
+};
+
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
@@ -29,12 +36,15 @@ export const Route = createFileRoute("/api/chat")({
         if (!apiKey) return new Response("الخدمة غير مهيأة حاليًا.", { status: 500 });
 
         let messages: UIMessage[];
+        let persona = "default";
         try {
           const body = (await request.json()) as { messages?: unknown };
           if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 100) {
             return new Response("طلب غير صالح.", { status: 400 });
           }
           messages = body.messages as UIMessage[];
+          const p = (body as { persona?: unknown }).persona;
+          if (typeof p === "string" && p in PERSONA_STYLE) persona = p;
         } catch {
           return new Response("طلب غير صالح.", { status: 400 });
         }
@@ -49,7 +59,7 @@ export const Route = createFileRoute("/api/chat")({
 
         const result = streamText({
           model: provider.responses("openai/gpt-6-astra"),
-          system: SYSTEM,
+          system: SYSTEM + (PERSONA_STYLE[persona] ? `\n\n## الشخصية الحالية\n${PERSONA_STYLE[persona]}` : ""),
           messages: await convertToModelMessages(messages),
           abortSignal: request.signal,
           providerOptions: {
