@@ -71,6 +71,7 @@ export type Database = {
           created_at: string
           display_name: string
           id: string
+          room_id: string | null
           user_id: string | null
         }
         Insert: {
@@ -78,6 +79,7 @@ export type Database = {
           created_at?: string
           display_name?: string
           id?: string
+          room_id?: string | null
           user_id?: string | null
         }
         Update: {
@@ -85,9 +87,18 @@ export type Database = {
           created_at?: string
           display_name?: string
           id?: string
+          room_id?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       chat_reactions: {
         Row: {
@@ -101,6 +112,27 @@ export type Database = {
         Update: {
           count?: number
           emoji?: string
+        }
+        Relationships: []
+      }
+      chat_rooms: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -281,6 +313,21 @@ export type Database = {
         Returns: boolean
       }
       claim_owner_admin: { Args: never; Returns: boolean }
+      create_chat_room: {
+        Args: { p_name: string }
+        Returns: {
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "chat_rooms"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       ensure_member_profile: { Args: never; Returns: undefined }
       has_role: {
         Args: {
