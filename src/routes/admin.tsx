@@ -13,7 +13,7 @@ import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
-import { listMembers, checkStreamUrl } from "@/lib/admin.functions";
+import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
   siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
@@ -201,10 +201,50 @@ function MoviesTab() {
 
 function MembersTab() {
   const fetchMembers = useServerFn(listMembers);
+  const fetchRoles = useServerFn(listRoles);
+  const fetchByEmail = useServerFn(findMemberByEmail);
+  const setRole = useServerFn(setMemberRole);
+  const qc = useQueryClient();
   const members = useQuery({ queryKey: ["admin-members"], queryFn: () => fetchMembers() });
+  const roles = useQuery({ queryKey: ["admin-roles"], queryFn: () => fetchRoles() });
   const [pin, setPin] = useState(""); const [msg, setMsg] = useState("");
+  const [email, setEmail] = useState(""); const [roleMsg, setRoleMsg] = useState(""); const [roleBusy, setRoleBusy] = useState(false);
+  const roleMap = useMemo(() => {
+    const m = new Map<string, "admin" | "user">();
+    for (const r of roles.data ?? []) if (r.role === "admin" || !m.has(r.user_id)) m.set(r.user_id, r.role);
+    return m;
+  }, [roles.data]);
+  async function changeRole(userId: string, role: "admin" | "user") {
+    setRoleMsg("");
+    try {
+      await setRole({ data: { userId, role } });
+      setRoleMsg("تم حفظ الصلاحية ✓");
+      void qc.invalidateQueries({ queryKey: ["admin-roles"] });
+    } catch (e) { setRoleMsg(e instanceof Error && e.message ? e.message : "تعذّر الحفظ."); }
+  }
+  async function addByEmail(e: React.FormEvent) {
+    e.preventDefault(); setRoleMsg(""); setRoleBusy(true);
+    try {
+      const hit = await fetchByEmail({ data: { email } });
+      if (!hit) { setRoleMsg("لا يوجد حساب بهذا البريد — يجب أن يسجّل في الموقع أولًا."); return; }
+      await setRole({ data: { userId: hit.userId, role: "admin" } });
+      setRoleMsg("تم منحه صلاحية المشرف ✓");
+      setEmail("");
+      void qc.invalidateQueries({ queryKey: ["admin-roles"] });
+    } catch (err) { setRoleMsg(err instanceof Error && err.message ? err.message : "تعذّر الحفظ."); }
+    finally { setRoleBusy(false); }
+  }
   const fmt = (d: string | null) => d ? new Date(d).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : "—";
   return <div className="space-y-8">
+    <div className="grid gap-3 rounded-2xl border border-border bg-card/50 p-4">
+      <h2 className="font-black">الصلاحيات</h2>
+      <p className="text-sm text-muted-foreground">اختر «مشرف» لمن يريد الدخول للوحة التحكم، أو «عضو» لمن يريد البث والمكتبة فقط.</p>
+      <form className="flex flex-wrap items-end gap-3" onSubmit={addByEmail}>
+        <label className="flex-1 space-y-1"><span className="text-sm font-bold">منح صلاحية مشرف بالبريد</span><input className={input} dir="ltr" type="email" placeholder="email@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} /></label>
+        <Button type="submit" disabled={roleBusy}>{roleBusy ? "جارٍ…" : "منح مشرف"}</Button>
+      </form>
+      {roleMsg && <p className="text-sm text-muted-foreground">{roleMsg}</p>}
+    </div>
     <form className="flex flex-wrap items-end gap-3 rounded-2xl border border-border bg-card/50 p-4" onSubmit={async (e) => {
       e.preventDefault(); setMsg("");
       const { error } = await supabase.rpc("admin_set_library_pin", { p_pin: pin });
@@ -216,10 +256,13 @@ function MembersTab() {
     </form>
     {members.isPending ? <p className="text-muted-foreground">جارٍ التحميل…</p> : members.isError ? <p className="text-destructive">تعذّر تحميل الأعضاء.</p> :
       members.data.length === 0 ? <p className="text-muted-foreground">لا يوجد أعضاء بعد.</p> :
-      <ul className="divide-y divide-border">{members.data.map((m) => <li key={m.user_id} className="flex flex-wrap items-center gap-3 py-3">
+      <ul className="divide-y divide-border">{members.data.map((m) => {
+        const r = roleMap.get(m.user_id) ?? "user";
+        return <li key={m.user_id} className="flex flex-wrap items-center gap-3 py-3">
         <span className="min-w-0 flex-1"><b>{m.display_name || "عضو"}</b>{m.suspended && <span className="ms-2 text-xs text-destructive">موقوف</span>}<span dir="ltr" className="block text-xs text-muted-foreground">{m.email}</span><span className="block text-xs text-muted-foreground">التسجيل: {fmt(m.created_at)} · آخر دخول: {fmt(m.last_login_at)}</span></span>
+        <select className="h-9 rounded-lg border border-border bg-card px-2 text-sm" aria-label="الصلاحية" value={r} onChange={(e) => void changeRole(m.user_id, e.target.value === "admin" ? "admin" : "user")}><option value="user">عضو</option><option value="admin">مشرف</option></select>
         <Button size="sm" variant={m.suspended ? "default" : "outline"} onClick={async () => { await supabase.rpc("admin_set_member_suspended", { p_user: m.user_id, p_suspended: !m.suspended }); void members.refetch(); }}>{m.suspended ? "إعادة التفعيل" : "إيقاف"}</Button>
-      </li>)}</ul>}
+      </li>; })}</ul>}
   </div>;
 }
 
