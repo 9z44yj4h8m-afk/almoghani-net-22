@@ -648,6 +648,7 @@ body { background: var(--surface-deep); }
 .classic-chat-compose-row textarea { height: 76px; border-radius: 8px; border-width: 2px; }
 .classic-chat-smile { height: 76px; background: var(--chat-reference-cyan); border-radius: 16px; box-shadow: var(--chat-reference-bevel); }
 .classic-chat-smile > span { font-size: 46px; line-height: 1; }
+.classic-chat-smile svg { fill: var(--snap); stroke: var(--chat-ink); width: 46px; height: 46px; }
 .classic-chat-actions { direction: ltr; grid-template-columns: 1fr 1fr; gap: 5px; }
 .classic-chat-actions > * { height: 34px; font-size: 26px; font-weight: 900; }
 .classic-chat-actions .classic-chat-send { grid-column: 1 / -1; background: var(--chat-reference-metal); }
