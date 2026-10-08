@@ -20,14 +20,14 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         const { data: row } = await supabaseAdmin.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
         const cfg = normalizeVoiceChat(row?.value);
         if (!cfg.enabled) return new Response("disabled", { status: 403, headers: { "X-Voice-Disabled": "1" } });
-        const { name, text, female } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
-        const voice = cfg.botVoices[name] ?? (fast === true && female ? "Leda" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices);
+        const { name, text, female, mode } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
+        const voice = cfg.botVoices[name] ?? (mode === "sing" ? "Leda" : mode === "poem" ? "Achernar" : null) ?? (fast === true && female ? "Leda" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices);
         const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
           method: "POST",
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             model: "google/gemini-3.1-flash-tts-preview",
-            contents: [{ role: "user", parts: [{ text: `${fast === true && female ? "قوليها بصوت بنت شابة ناعم وعذب ورقيق جدا، بنبرة هادئة حالمة كأنها تدندن، بلهجة خليجية ودودة" : "قلها بلهجة خليجية ودودة وعفوية"}: ${text}` }] }],
+            contents: [{ role: "user", parts: [{ text: `${mode === "sing" ? "غنيها بصوت بنت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب خليجي، مدّي الكلمات كأنك تغنين" : mode === "poem" ? "ألقيها بصوت بنت ناعم رقيق، بإلقاء شعري هادئ مؤثر ووقفات بين الأبيات" : fast === true && female ? "قوليها بصوت بنت شابة ناعم وعذب ورقيق جدا، بنبرة هادئة حالمة كأنها تدندن، بلهجة خليجية ودودة" : "قلها بلهجة خليجية ودودة وعفوية"}: ${text}` }] }],
             generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
             stream_format: "audio",
           }),
