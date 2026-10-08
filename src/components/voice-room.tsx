@@ -59,7 +59,7 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
     const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
     if (blob.size < 2000) return "";
     const form = new FormData();
-    form.append("file", new File([blob], `turn.${blob.type.includes("mp4") ? "m4a" : blob.type.includes("ogg") ? "ogg" : "webm"}`, { type: blob.type.split(";")[0] }));
+    form.append("file", new File([blob], `turn.${blob.type.includes("mp4") ? "m4a" : blob.type.includes("ogg") ? "ogg" : "webm"}`, { type: blob.type.split(";")[0] ?? "audio/webm" }));
     try {
       const res = await fetch("/api/public/voice-listen", { method: "POST", body: form });
       return res.ok ? ((await res.json()) as { text?: string }).text ?? "" : "";
