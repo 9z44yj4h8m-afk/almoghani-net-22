@@ -19,7 +19,8 @@ export const BOTS = [
   { name: "سارة", style: "اجتماعية ترحب بالجدد" },
 ] as const;
 
-const pick = (n: number) => [...BOTS].sort(() => Math.random() - 0.5).slice(0, n);
+type Bot = (typeof BOTS)[number];
+const pick = (n: number): Bot[] => { const s = [...BOTS].sort(() => Math.random() - 0.5); return Array.from({ length: n }, (_, i) => s[i] ?? BOTS[0]); };
 
 async function generate(system: string, prompt: string) {
   const apiKey = process.env["LOVABLE_API_KEY"];
@@ -68,7 +69,7 @@ const input = z.object({ body: z.string().trim().min(1).max(300), author: z.stri
 export const botReply = createServerFn({ method: "POST" })
   .inputValidator((d) => input.parse(d))
   .handler(async ({ data }) => {
-    const [a, b] = pick(2);
+    const [a, b] = pick(2) as [Bot, Bot];
     const author = data.author || "زائر";
     const history = await recent();
     const first = await generate(`أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`);
@@ -83,7 +84,7 @@ export const botReply = createServerFn({ method: "POST" })
 
 // Bots chatting among themselves.
 export const botBanter = createServerFn({ method: "POST" }).handler(async () => {
-  const [a, b, c] = pick(3);
+  const [a, b, c] = pick(3) as [Bot, Bot, Bot];
   const history = await recent();
   const m1 = await generate(`أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${b.name}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
   if (!(await post(a.name, m1))) return { ok: false };
