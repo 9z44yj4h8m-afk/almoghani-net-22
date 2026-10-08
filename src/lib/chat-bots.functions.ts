@@ -39,7 +39,7 @@ export const BOTS = [
   { name: "فاطمة", style: "تحب مسلسلات الخليج وتنصح بالأعمال" },
 ] as const;
 
-type Bot = { name: string; style: string };
+type Bot = { name: string; style: string; avatar?: string };
 export type ChatBotsConfig = { enabled: boolean; replyEnabled: boolean; banterEnabled: boolean; useAi: boolean; bots: Bot[]; replies: string[] };
 export const defaultChatBots: ChatBotsConfig = { enabled: true, replyEnabled: true, banterEnabled: true, useAi: true, bots: [...BOTS], replies: [] };
 

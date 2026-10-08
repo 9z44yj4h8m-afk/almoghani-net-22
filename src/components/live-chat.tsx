@@ -9,6 +9,7 @@ import { botReply, botBanter } from "@/lib/chat-bots.functions";
 import { useSiteConfig } from "@/lib/site-config";
 import { defaultChatAppearance } from "@/lib/chat-appearance";
 import { ChatAppearanceStyle } from "@/components/chat-appearance-style";
+import { BotAvatar } from "@/components/bot-avatar";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
 
@@ -115,7 +116,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
             return (
               <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
-                <span className="classic-chat-avatar">{appearance.avatarIcon === "default" ? (m.display_name || "ع").trim().charAt(0) : appearance.avatarIcon}</span>
+                <BotAvatar name={m.display_name} path={siteConfig?.botAvatars[m.display_name]} fallback={appearance.avatarIcon === "default" ? (m.display_name || "ع").trim().charAt(0) : appearance.avatarIcon} />
                 <div className="min-w-0 flex-1">
                   <p className="classic-chat-message-meta"><b>{m.display_name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
@@ -133,7 +134,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           </div>
           {sideTab === "people" ? <>
             <label className="classic-chat-filter"><span>الأسماء المشاركة ({names.length})</span><input aria-label="بحث عن اسم" placeholder="بحث عن اسم…" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /></label>
-            <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span className="classic-chat-avatar">{appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon}</span><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
+            <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon} /><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
           </> : <div className="classic-chat-room"><MessageCircle /><b>الدردشة العامة</b><span>{msgs.length} رسالة</span><Button className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}>دخول الغرفة</Button></div>}
         </aside>
         </div>

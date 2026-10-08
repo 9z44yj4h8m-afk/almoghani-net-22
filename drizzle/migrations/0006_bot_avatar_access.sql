@@ -1,0 +1,4 @@
+CREATE POLICY "Bot avatars public read" ON storage.objects FOR SELECT TO anon, authenticated USING (bucket_id = 'bot-avatars');
+CREATE POLICY "Bot avatars admin insert" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'bot-avatars' AND public.has_role(auth.uid(), 'admin') AND lower(storage.extension(name)) IN ('jpg','jpeg','png','webp','gif'));
+CREATE POLICY "Bot avatars admin delete" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'bot-avatars' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Bot avatars admin update" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'bot-avatars' AND public.has_role(auth.uid(), 'admin')) WITH CHECK (bucket_id = 'bot-avatars' AND public.has_role(auth.uid(), 'admin') AND lower(storage.extension(name)) IN ('jpg','jpeg','png','webp','gif'));
