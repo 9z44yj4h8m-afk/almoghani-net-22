@@ -93,7 +93,7 @@ export function LiveChat() {
         </div>
 
         <div ref={listRef} className="mt-4 max-h-96 space-y-5 overflow-y-auto py-2" aria-live="polite">
-          <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/20 text-lg">🤖</span><div><p className="flex items-center gap-2"><b>بوت المغني</b><span className="rounded bg-accent/20 px-1.5 text-[10px] font-bold text-accent">بوت</span></p><p className="mt-1 text-foreground/90">{botLine}</p></div></div>
+          <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/20 text-lg">🤖</span><div><p className="flex items-center gap-2"><b>بوت المغني</b></p><p className="mt-1 text-foreground/90">{botLine}</p></div></div>
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
@@ -101,7 +101,7 @@ export function LiveChat() {
               <div key={m.id} className="flex gap-3">
                 <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl font-black ${mine ? "bg-accent text-accent-foreground" : "bg-primary/25 text-foreground"}`}>{(m.display_name || "ع").trim().charAt(0)}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-2"><b>{mine ? "أنت" : m.display_name || "عضو"}</b>{m.display_name.startsWith("🤖") && <span className="rounded bg-accent/20 px-1.5 text-[10px] font-bold text-accent">بوت</span>}<span className="text-xs text-muted-foreground">{ago(m.created_at)}</span>
+                  <p className="flex items-center gap-2"><b>{mine ? "أنت" : m.display_name || "عضو"}</b><span className="text-xs text-muted-foreground">{ago(m.created_at)}</span>
                     {((mine && user) || isAdmin) && <button type="button" aria-label="حذف الرسالة" className="ms-auto text-muted-foreground hover:text-destructive" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 className="h-3.5 w-3.5" /></button>}
                   </p>
                   <p className="mt-1 break-words text-foreground/90">{m.body}</p>
