@@ -54,7 +54,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   }
   const queueRef = useRef<string[]>([]);
   const playingRef = useRef(false);
-  const voiceOnRef = useRef(false); voiceOnRef.current = voice && entered;
+  const voiceOnRef = useRef(false);
   async function drainQueue() {
     if (playingRef.current) return;
     playingRef.current = true;
@@ -72,10 +72,11 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   }
   const isBotName = (raw: string) => { const n = siteConfig?.botNameAliases[raw] ?? raw; return !!(siteConfig?.chatNames.includes(n) || siteConfig?.botNameAliases[raw] || siteConfig?.botAvatars[n]); };
   const isBotRef = useRef(isBotName); isBotRef.current = isBotName;
-  useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
+  voiceOnRef.current = voice && entered;
+  useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const [myIds, setMyIds] = useState<string[]>([]);
   const [botLine, setBotLine] = useState(BOT_LINES[0]);
   const [showEmoji, setShowEmoji] = useState(false);
