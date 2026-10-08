@@ -34,6 +34,7 @@ import { Route as ApiPublicBotVoiceRouteImport } from './routes/api/public/bot-v
 import { Route as ApiPublicBotVoiceTurnRouteImport } from './routes/api/public/bot-voice-turn'
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 import { Route as ApiPublicIptvRouteImport } from './routes/api/public/iptv'
+import { Route as ApiPublicVoiceListenRouteImport } from './routes/api/public/voice-listen'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -161,6 +162,11 @@ const ApiPublicIptvRoute = ApiPublicIptvRouteImport.update({
   path: '/api/public/iptv',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicVoiceListenRoute = ApiPublicVoiceListenRouteImport.update({
+  id: '/api/public/voice-listen',
+  path: '/api/public/voice-listen',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
+  '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
+  '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
+  '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
+    | '/api/public/voice-listen'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
+    | '/api/public/voice-listen'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
+    | '/api/public/voice-listen'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   ApiPublicBotVoiceTurnRoute: typeof ApiPublicBotVoiceTurnRoute
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
   ApiPublicIptvRoute: typeof ApiPublicIptvRoute
+  ApiPublicVoiceListenRoute: typeof ApiPublicVoiceListenRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -546,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicIptvRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/voice-listen': {
+      id: '/api/public/voice-listen'
+      path: '/api/public/voice-listen'
+      fullPath: '/api/public/voice-listen'
+      preLoaderRoute: typeof ApiPublicVoiceListenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -582,6 +602,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicBotVoiceTurnRoute: ApiPublicBotVoiceTurnRoute,
   ApiPublicHlsRoute: ApiPublicHlsRoute,
   ApiPublicIptvRoute: ApiPublicIptvRoute,
+  ApiPublicVoiceListenRoute: ApiPublicVoiceListenRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
