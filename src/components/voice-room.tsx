@@ -145,7 +145,7 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
 
   if (disabled) return compact ? <p className="p-2 text-center text-xs font-bold">الشات الصوتي متوقف حاليًا.</p> : <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
   if (compact) return (
-    <div className="flex flex-wrap items-center gap-2 border-t border-border bg-card p-2 text-card-foreground" aria-live="polite" aria-label="الشات الصوتي">
+    <div className="classic-chat-voice-strip" aria-live="polite" aria-label="الشات الصوتي">
       {speaker ? <BotAvatar name={speaker} path={avatars[speaker]} fallback={speaker.trim().charAt(0) || "؟"} /> : <Loader2 className="size-4 animate-spin" />}
       <p className="flex min-w-0 flex-1 items-center gap-1 text-sm font-bold">
         {waiting ? <><Loader2 className="size-3 animate-spin" />ينتقل المايك…</> : myTurn ? <><span className="animate-pulse">🎤</span>دورك، تكلم الآن {left}ث</> : <><span className="animate-pulse">🎤</span><span className="truncate">{speaker}</span></>}

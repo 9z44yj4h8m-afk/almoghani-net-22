@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Save, Trash2 } from "lucide-react";
+import { Plus, Save, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
@@ -13,6 +13,53 @@ export function VoiceChatManager() {
   const [opener, setOpener] = useState("");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let alive = true;
+    for (const key of ["song", "poem"] as const) {
+      const path = cfg.recordings[key];
+      if (!path) { setPreviews((v) => ({ ...v, [key]: "" })); continue; }
+      void supabase.storage.from("chat-recordings").createSignedUrl(path, 3600).then(({ data }) => {
+        if (alive) setPreviews((v) => ({ ...v, [key]: data?.signedUrl ?? "" }));
+      });
+    }
+    return () => { alive = false; };
+  }, [cfg.recordings.song, cfg.recordings.poem]);
+
+  async function uploadRecording(key: "song" | "poem", file?: File) {
+    if (!file) return;
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!ext || !["mp3", "wav", "m4a", "ogg", "webm"].includes(ext) || !file.type.startsWith("audio/") || file.size > 20 * 1024 * 1024) {
+      setNote("اختر تسجيل MP3 أو WAV أو M4A أو OGG أو WebM بحجم لا يتجاوز 20 ميجابايت."); return;
+    }
+    setUploading(true); setNote("");
+    const path = `recordings/${crypto.randomUUID()}.${ext}`;
+    try {
+      const { error } = await supabase.storage.from("chat-recordings").upload(path, file, { contentType: file.type });
+      if (error) throw error;
+      const next = normalizeVoiceChat({ ...cfg, recordings: { ...cfg.recordings, [key]: path } });
+      const { error: saveError } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
+      if (saveError) { await supabase.storage.from("chat-recordings").remove([path]); throw saveError; }
+      const old = cfg.recordings[key]; setCfg(next);
+      if (old) await supabase.storage.from("chat-recordings").remove([old]);
+      setNote("تم رفع التسجيل وحفظه ✓");
+    } catch { setNote("تعذّر رفع التسجيل وحفظه؛ حاول مجددًا."); }
+    finally { setUploading(false); }
+  }
+
+  async function removeRecording(key: "song" | "poem") {
+    const path = cfg.recordings[key]; setUploading(true);
+    const next = normalizeVoiceChat({ ...cfg, recordings: { ...cfg.recordings, [key]: "" } });
+    try {
+      const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
+      if (error) throw error;
+      setCfg(next); if (path) await supabase.storage.from("chat-recordings").remove([path]);
+      setNote("تم حذف التسجيل ✓");
+    } catch { setNote("تعذّر حذف التسجيل."); }
+    finally { setUploading(false); }
+  }
 
   useEffect(() => {
     void supabase.from("site_settings").select("key,value").in("key", ["voice_chat", "chat_bots"]).then(({ data }) => {
@@ -38,9 +85,21 @@ export function VoiceChatManager() {
   return <section className="space-y-5 border-y border-border py-6" aria-label="الشات الصوتي">
     <div className="flex flex-wrap items-center justify-between gap-3">
       <h2 className="text-xl font-black">الشات الصوتي</h2>
-      <Button type="button" disabled={busy} onClick={save}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الشات الصوتي"}</Button>
+      <Button type="button" disabled={busy || uploading} onClick={save}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الشات الصوتي"}</Button>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
+    <div className="grid gap-4 sm:grid-cols-2">
+      {(["song", "poem"] as const).map((key) => <div key={key} className="space-y-3 border border-border p-4 rounded-lg">
+        <h3 className="font-black">{key === "song" ? "تسجيل نغم · الغناء" : "تسجيل قصيدة · الشعر"}</h3>
+        <p className="text-sm text-muted-foreground">{cfg.recordings[key] ? "تسجيل محفوظ" : "لم يرفع تسجيل بعد"}</p>
+        {previews[key] && <audio controls preload="metadata" src={previews[key]} className="w-full" aria-label={`معاينة تسجيل ${key === "song" ? "نغم" : "قصيدة"}`} />}
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" disabled={busy || uploading} onClick={() => document.getElementById(`recording-${key}`)?.click()}><Upload />{cfg.recordings[key] ? "استبدال التسجيل" : "رفع تسجيل"}</Button>
+          <input id={`recording-${key}`} className="hidden" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,audio/webm,.mp3,.m4a" aria-label={`تسجيل ${key === "song" ? "نغم" : "قصيدة"}`} onChange={(e) => { void uploadRecording(key, e.target.files?.[0]); e.target.value = ""; }} />
+          {cfg.recordings[key] && <Button type="button" variant="outline" size="icon" disabled={busy || uploading} aria-label={`حذف تسجيل ${key}`} onClick={() => void removeRecording(key)}><Trash2 /></Button>}
+        </div>
+      </div>)}
+    </div>
     <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-card/50 p-4">
       <span className="flex-1 font-bold">الشات الصوتي {cfg.enabled ? "مفعّل" : "متوقف"}</span>
       <Button variant={cfg.enabled ? "outline" : "default"} onClick={() => update({ enabled: !cfg.enabled })}>{cfg.enabled ? "إيقاف" : "تشغيل"}</Button>
