@@ -632,7 +632,7 @@ body { background: var(--surface-deep); }
   --chat-window-light: #ffffff; --chat-window-muted: #888888;
   --chat-window-bevel: inset 1px 1px 0 var(--chat-window-highlight), inset -1px -1px 0 var(--chat-window-edge);
 }
-.classic-chat { font-family: Arial, sans-serif; container-type: inline-size; }
+.classic-chat { --chat-paper:var(--chat-window-paper) !important; --chat-ink:var(--chat-window-ink) !important; --chat-name:var(--chat-window-ink) !important; font-family: Arial, sans-serif; container-type: inline-size; }
 .classic-chat .classic-chat-frame { display:flex; flex-direction:column; padding:8px; overflow:hidden; border:2px solid var(--chat-window-blue); border-radius:4px; background:var(--chat-window-body); box-shadow:var(--chat-window-bevel); color:var(--chat-window-ink); }
 .classic-chat .classic-chat-masthead { flex:none; height:28px; margin:-8px -8px 8px; padding:0 7px; gap:12px; border:0; background:linear-gradient(var(--chat-window-blue),var(--chat-window-blue-deep)); color:var(--chat-window-light); }
 .classic-chat .classic-chat-masthead h2 { font-family:Arial,sans-serif !important; font-size:14px !important; padding:0; color:var(--chat-window-light); letter-spacing:0; }
