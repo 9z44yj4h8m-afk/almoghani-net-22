@@ -119,7 +119,7 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
 
       <div className="mx-auto flex w-full max-w-3xl flex-wrap gap-2 px-4 py-2" role="group" aria-label="اختر شخصية البوت">
         {PERSONAS.map((p) => (
-          <Button key={p.id} type="button" size="sm" variant={persona === p.id ? "default" : "outline"} aria-pressed={persona === p.id} onClick={() => { personaRef.current = p.id; setPersona(p.id); }}>🤖 {p.label}</Button>
+          <Button key={p.id} type="button" size="sm" variant={persona === p.id ? "default" : "outline"} aria-pressed={persona === p.id} onClick={() => { personaRef.current = p.id; setPersona(p.id); }}>{p.label}</Button>
         ))}
       </div>
       {notificationNote && <p role="status" className="border-b border-sky/40 px-4 py-2 text-xs text-muted-foreground">{notificationNote}</p>}
