@@ -178,7 +178,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
           {voice ? <Button type="submit" disabled={!guestName.trim()} className="w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
-        </form> : voice ? <VoiceRoom avatars={siteConfig?.botAvatars ?? {}} /> : <>
+        </form> : voice ? <VoiceRoom avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
         <div className="classic-chat-workspace">
         <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
           <div className="classic-chat-system sr-only">{botLine}</div>
