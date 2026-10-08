@@ -15,10 +15,10 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { previous, heard } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string };
+        const { previous, heard, fast } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string; fast?: boolean };
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return new Response("not configured", { status: 500 });
-        const { name, text, female } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400));
+        const { name, text, female } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true);
         const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
           method: "POST",
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },

@@ -1,4 +1,4 @@
-import { VoiceRoom } from "@/components/voice-room";
+import { VoiceRoom, prefetchVoiceTurn } from "@/components/voice-room";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -76,6 +76,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
+  useEffect(() => { if (voice) prefetchVoiceTurn(); }, [voice]);
   voiceOnRef.current = false; // voice page uses VoiceRoom turns instead
   useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const [myIds, setMyIds] = useState<string[]>([]);

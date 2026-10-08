@@ -8,9 +8,13 @@ const TURN_MS = 20000;
 type Turn = { name: string; url: string };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function fetchTurn(previous: string, heard = ""): Promise<Turn | null> {
+// The opening turn is requested as soon as the voice page opens, so sound starts the moment the visitor enters.
+let firstTurn: Promise<Turn | null> | null = null;
+export function prefetchVoiceTurn() { firstTurn ??= fetchTurn("", "", true); }
+
+async function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | null> {
   try {
-    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard }) });
+    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast }) });
     if (!res.ok) return null;
     const name = decodeURIComponent(res.headers.get("X-Bot-Name") ?? "");
     return { name, url: URL.createObjectURL(await res.blob()) };
@@ -72,7 +76,8 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
     const show = (name: string) => { setSpeaker(name); setSpeakers((s) => [name, ...s.filter((x) => x !== name)].slice(0, 10)); };
     (async () => {
       let previous = "";
-      let next = fetchTurn("");
+      prefetchVoiceTurn();
+      let next = firstTurn!; firstTurn = null;
       while (alive) {
         const turn = await next;
         if (!alive) break;
