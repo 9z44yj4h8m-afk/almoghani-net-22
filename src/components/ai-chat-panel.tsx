@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Bell, BellOff, CheckCheck } from "lucide-react";
+import { ExternalLink, Bell, BellOff, CheckCheck } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { LiveChat } from "@/components/live-chat";
@@ -34,12 +34,12 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
         <div className="mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="font-display text-base font-black">الدردشة</h1>
+              <h1 dir="ltr" className="font-display text-base font-black">ALMOGHANI</h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Button type="button" variant="outline" size="icon" onClick={toggleNotifications} aria-label={notifications ? "إيقاف إشعارات الرد" : "تفعيل إشعارات الرد"} aria-pressed={notifications}>{notifications ? <Bell /> : <BellOff />}</Button>
-            {!embedded && <Link to="/" className="icon-button" aria-label="الرئيسية"><ArrowRight className="h-5 w-5" /></Link>}
+            <Button asChild variant="outline" size="sm"><Link to="/" target="_blank" rel="noopener noreferrer" aria-label="الرئيسية في صفحة جديدة"><ExternalLink className="h-4 w-4" />الرئيسية</Link></Button>
           </div>
         </div>
       </header>
