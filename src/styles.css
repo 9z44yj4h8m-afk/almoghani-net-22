@@ -574,6 +574,7 @@ body { background: var(--surface-deep); }
 .classic-chat-compose-row textarea:focus { border-color: var(--chat-reference-cyan); }
 .classic-chat-smile { height: 76px; padding: 0; background: var(--chat-reference-cyan); border: 3px solid var(--chat-edge); border-radius: 16px; box-shadow: var(--chat-reference-bevel); }
 .classic-chat-smile > span { font-family: "Apple Color Emoji","Segoe UI Emoji",sans-serif; font-size: 48px !important; line-height: 1; }
+.classic-chat .classic-chat-smile svg { width: 52px; height: 52px; fill: var(--snap); stroke: var(--chat-ink); stroke-width: 1.7; }
 .classic-chat-actions { display: grid; direction: ltr; grid-template-columns: 1fr 1fr; grid-template-rows: 34px 36px; gap: 5px; min-width: 0; }
 .classic-chat-actions > * { min-width: 0; height: 100%; padding: 0 3px; font-family: Arial,sans-serif; font-size: 26px; font-weight: 900; }
 .classic-chat-exit { background: var(--chat-reference-red); color: var(--chat-reference-light); border: 2px solid var(--chat-edge); box-shadow: var(--chat-reference-bevel); }
@@ -613,6 +614,7 @@ body { background: var(--surface-deep); }
  .classic-chat-compose-row textarea { height: 60px; font-size: 12px; padding: 4px; }
  .classic-chat-smile { height: 60px; border-width: 2px; border-radius: 9px; }
  .classic-chat-smile > span { font-size: 28px !important; }
+ .classic-chat .classic-chat-smile svg { width: 28px; height: 28px; }
  .classic-chat-actions { grid-template-rows: 27px 29px; gap: 4px; }
  .classic-chat-actions > * { font-size: 16px; }
 }
