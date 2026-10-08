@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
+- Store performer recordings in private chat-recordings with admin-only storage policies and voice_chat settings; the public voice endpoint serves only configured paths, so visitors cannot access arbitrary private files.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
 - Keep public YouTube dramas in per-series metadata modules merged by one typed catalog with ordered episodes and a public /bedouin-drama page; never mix these videos with private IPTV streams or claim they are a live channel.
 - Keep optional series cover artwork separate from episode thumbnails in the typed drama catalog; render cover banners intact without duplicate overlays so episode imagery stays unchanged.
