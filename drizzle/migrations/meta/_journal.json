@@ -50,6 +50,13 @@
       "when": 1791452017501,
       "tag": "0006_bot_avatar_access",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791454822655,
+      "tag": "0007_chat_nickname_entry",
+      "breakpoints": true
     }
   ]
 }
