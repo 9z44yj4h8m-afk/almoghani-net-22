@@ -1,6 +1,6 @@
 import { VoiceRoom, prefetchVoiceTurn, unlockVoiceAudio } from "@/components/voice-room";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink } from "lucide-react";
+import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink, Mic, MicOff } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
@@ -35,6 +35,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const { data: siteConfig } = useSiteConfig();
   const appearance = siteConfig?.chatAppearance ?? defaultChatAppearance;
   const [msgs, setMsgs] = useState<Msg[]>([]);
+  const [voiceOn, setVoiceOn] = useState(false);
   const [reactions, setReactions] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -211,12 +212,13 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           </> : <div className="classic-chat-room"><MessageCircle /><b>{activeRoom}</b><select aria-label="اختيار الغرفة" className="member-screen-input w-full text-xs" value={selectedRoomId ?? ""} onChange={(e) => setSelectedRoomId(e.target.value || null)}><option value="">الدردشة العامة</option>{rooms.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomId(selectedRoomId); setSideTab("people"); }}>دخول الغرفة</Button><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomError(""); setCreateOpen(true); }}><Plus />إنشاء غرفة</Button></div>}
         </aside>
         </div>
+        {voiceOn && <VoiceRoom compact avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} onClose={() => setVoiceOn(false)} />}
         <form onSubmit={send} className="classic-chat-compose">
           <p className="sr-only">{guestName}</p>
           <div className="classic-chat-compose-row">
             <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك…" aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
              <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>{appearance.smileIcon === "default" || appearance.smileIcon === "🙂" ? <Smile aria-hidden="true" /> : <span>{appearance.smileIcon}</span>}</Button>
-            <div className="classic-chat-actions"><Button type="button" variant="secondary" className="classic-chat-control classic-chat-pictures" onClick={() => setShowEmoji((v) => !v)} aria-expanded={showEmoji}>الصور</Button><Button asChild className="classic-chat-exit"><Link to="/">خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control classic-chat-send" disabled={sending || !text.trim()} aria-label="إرسال">{appearance.sendIcon !== "default" && <span>{appearance.sendIcon}</span>}{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
+            <div className="classic-chat-actions"><Button type="button" variant="secondary" className="classic-chat-control classic-chat-pictures" onClick={() => setShowEmoji((v) => !v)} aria-expanded={showEmoji}>الصور</Button><Button type="button" variant="secondary" className="classic-chat-control" aria-pressed={voiceOn} onClick={() => { if (!voiceOn) { prefetchVoiceTurn(); unlockVoiceAudio(); } setVoiceOn((v) => !v); }}>{voiceOn ? <MicOff /> : <Mic />}{voiceOn ? "إيقاف المايك" : "المايك"}</Button><Button asChild className="classic-chat-exit"><Link to="/">خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control classic-chat-send" disabled={sending || !text.trim()} aria-label="إرسال">{appearance.sendIcon !== "default" && <span>{appearance.sendIcon}</span>}{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
           </div>
           {showEmoji && <div className="classic-chat-emojis">{emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
