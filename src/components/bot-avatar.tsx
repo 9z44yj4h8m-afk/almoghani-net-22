@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export function BotAvatar({ path, name, fallback }: { path?: string; name: string; fallback: string }) {
+export function BotAvatar({ path, name, fallback }: { path?: string | undefined; name: string; fallback: string }) {
   const safePath = path && /^avatars\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|gif)$/.test(path) ? path : "";
   const { data } = useQuery({
     queryKey: ["bot-avatar", safePath], enabled: !!safePath,
