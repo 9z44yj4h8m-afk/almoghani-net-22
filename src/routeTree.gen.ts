@@ -31,6 +31,7 @@ import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
 import { Route as FeaturedIndexRouteImport } from './routes/featured.index'
 import { Route as FeaturedChannelRouteImport } from './routes/featured.$channel'
 import { Route as ApiPublicBotVoiceRouteImport } from './routes/api/public/bot-voice'
+import { Route as ApiPublicBotVoiceTurnRouteImport } from './routes/api/public/bot-voice-turn'
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 import { Route as ApiPublicIptvRouteImport } from './routes/api/public/iptv'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -145,6 +146,11 @@ const ApiPublicBotVoiceRoute = ApiPublicBotVoiceRouteImport.update({
   path: '/api/public/bot-voice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicBotVoiceTurnRoute = ApiPublicBotVoiceTurnRouteImport.update({
+  id: '/api/public/bot-voice-turn',
+  path: '/api/public/bot-voice-turn',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHlsRoute = ApiPublicHlsRouteImport.update({
   id: '/api/public/hls',
   path: '/api/public/hls',
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured/': typeof FeaturedIndexRoute
   '/api/public/bot-voice': typeof ApiPublicBotVoiceRoute
+  '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured': typeof FeaturedIndexRoute
   '/api/public/bot-voice': typeof ApiPublicBotVoiceRoute
+  '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -240,6 +248,7 @@ export interface FileRoutesById {
   '/featured/$channel': typeof FeaturedChannelRoute
   '/featured/': typeof FeaturedIndexRoute
   '/api/public/bot-voice': typeof ApiPublicBotVoiceRoute
+  '/api/public/bot-voice-turn': typeof ApiPublicBotVoiceTurnRoute
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -269,6 +278,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured/'
     | '/api/public/bot-voice'
+    | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
@@ -296,6 +306,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured'
     | '/api/public/bot-voice'
+    | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
@@ -323,6 +334,7 @@ export interface FileRouteTypes {
     | '/featured/$channel'
     | '/featured/'
     | '/api/public/bot-voice'
+    | '/api/public/bot-voice-turn'
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/lovable/email/transactional/preview'
@@ -351,6 +363,7 @@ export interface RootRouteChildren {
   FeaturedChannelRoute: typeof FeaturedChannelRoute
   FeaturedIndexRoute: typeof FeaturedIndexRoute
   ApiPublicBotVoiceRoute: typeof ApiPublicBotVoiceRoute
+  ApiPublicBotVoiceTurnRoute: typeof ApiPublicBotVoiceTurnRoute
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
   ApiPublicIptvRoute: typeof ApiPublicIptvRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -512,6 +525,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicBotVoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/bot-voice-turn': {
+      id: '/api/public/bot-voice-turn'
+      path: '/api/public/bot-voice-turn'
+      fullPath: '/api/public/bot-voice-turn'
+      preLoaderRoute: typeof ApiPublicBotVoiceTurnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hls': {
       id: '/api/public/hls'
       path: '/api/public/hls'
@@ -559,6 +579,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeaturedChannelRoute: FeaturedChannelRoute,
   FeaturedIndexRoute: FeaturedIndexRoute,
   ApiPublicBotVoiceRoute: ApiPublicBotVoiceRoute,
+  ApiPublicBotVoiceTurnRoute: ApiPublicBotVoiceTurnRoute,
   ApiPublicHlsRoute: ApiPublicHlsRoute,
   ApiPublicIptvRoute: ApiPublicIptvRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

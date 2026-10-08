@@ -1,3 +1,4 @@
+import { VoiceRoom } from "@/components/voice-room";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -75,7 +76,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
-  voiceOnRef.current = voice && entered;
+  voiceOnRef.current = false; // voice page uses VoiceRoom turns instead
   useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const [myIds, setMyIds] = useState<string[]>([]);
   const [botLine, setBotLine] = useState(BOT_LINES[0]);
@@ -104,7 +105,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
     return () => clearInterval(t);
   }, []);
   useEffect(() => {
-    const run = () => { if (!roomId && document.visibilityState === "visible") void botBanter().catch(() => {}); };
+    const run = () => { if (!voice && !roomId && document.visibilityState === "visible") void botBanter().catch(() => {}); };
     const first = setTimeout(run, 8000);
     const t = setInterval(run, voice && entered ? 20000 : 60000);
     return () => { clearTimeout(first); clearInterval(t); };
@@ -177,7 +178,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
           {voice ? <Button type="submit" disabled={!guestName.trim()} className="w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
-        </form> : <>
+        </form> : voice ? <VoiceRoom avatars={siteConfig?.botAvatars ?? {}} /> : <>
         <div className="classic-chat-workspace">
         <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
           <div className="classic-chat-system sr-only">{botLine}</div>
