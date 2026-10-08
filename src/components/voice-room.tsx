@@ -32,7 +32,7 @@ async function fetchTurn(previous: string, heard = "", fast = false): Promise<Tu
 }
 
 /** Voice-only room: the mic passes in turn (20s each) between bots and visitors who ask for it; nothing spoken is written. */
-export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, string>; guestName: string }) {
+export function VoiceRoom({ avatars, guestName, compact = false, onClose }: { avatars: Record<string, string>; guestName: string; compact?: boolean; onClose?: () => void }) {
   const me = guestName || "أنت";
   const [speaker, setSpeaker] = useState("");
   const [speakers, setSpeakers] = useState<string[]>([]);
@@ -138,7 +138,20 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
   useEffect(() => { if (audioRef.current) audioRef.current.muted = muted; }, [muted]);
   const myTurn = speaker === me && !waiting;
 
-  if (disabled) return <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
+  if (disabled) return compact ? <p className="p-2 text-center text-xs font-bold">الشات الصوتي متوقف حاليًا.</p> : <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
+  if (compact) return (
+    <div className="flex flex-wrap items-center gap-2 border-t border-border bg-card p-2 text-card-foreground" aria-live="polite" aria-label="الشات الصوتي">
+      {speaker ? <BotAvatar name={speaker} path={avatars[speaker]} fallback={speaker.trim().charAt(0) || "؟"} /> : <Loader2 className="size-4 animate-spin" />}
+      <p className="flex min-w-0 flex-1 items-center gap-1 text-sm font-bold">
+        {waiting ? <><Loader2 className="size-3 animate-spin" />ينتقل المايك…</> : myTurn ? <><span className="animate-pulse">🎤</span>دورك، تكلم الآن {left}ث</> : <><span className="animate-pulse">🎤</span><span className="truncate">{speaker}</span></>}
+      </p>
+      {myTurn ? <Button size="sm" variant="secondary" onClick={() => { handRef.current = false; }}><MicOff />إنهاء</Button>
+        : <Button size="sm" variant="secondary" onClick={() => void raiseHand()} aria-pressed={handUp}>{handUp ? <><Hand />إلغاء</> : <><Mic />اطلب المايك</>}</Button>}
+      <Button size="sm" variant="secondary" onClick={() => setMuted((m) => !m)} aria-label={muted ? "تشغيل الصوت" : "كتم الصوت"}>{muted ? <VolumeX /> : <Volume2 />}</Button>
+      {onClose && <Button size="sm" variant="secondary" onClick={onClose}>إيقاف الصوتي</Button>}
+      {micError && <p className="w-full text-xs text-destructive">{micError}</p>}
+    </div>
+  );
   return (
     <div className="classic-chat-workspace">
       <div className="classic-chat-messages" aria-live="polite" aria-label="المتحدثون في الشات الصوتي">
