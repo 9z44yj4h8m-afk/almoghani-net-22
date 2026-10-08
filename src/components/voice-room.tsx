@@ -5,19 +5,20 @@ import { Button } from "@/components/ui/button";
 import { BotAvatar } from "@/components/bot-avatar";
 
 const TURN_MS = 20000;
-type Turn = { name: string; url: string };
+type Turn = { name: string; url: string; ms: number } | { disabled: true };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // The opening turn is requested as soon as the voice page opens, so sound starts the moment the visitor enters.
-let firstTurn: Promise<Turn | null> | null = null;
-export function prefetchVoiceTurn() { firstTurn ??= fetchTurn("", "", true); }
+let early: Promise<Turn | null>[] = [];
+export function prefetchVoiceTurn() { if (!early.length) early = [fetchTurn("", "", true), fetchTurn("")]; }
 
 async function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | null> {
   try {
     const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast }) });
+    if (res.headers.get("X-Voice-Disabled")) return { disabled: true };
     if (!res.ok) return null;
     const name = decodeURIComponent(res.headers.get("X-Bot-Name") ?? "");
-    return { name, url: URL.createObjectURL(await res.blob()) };
+    return { name, ms: Number(res.headers.get("X-Turn-Ms")) || TURN_MS, url: URL.createObjectURL(await res.blob()) };
   } catch { return null; }
 }
 
@@ -28,6 +29,7 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
   const [speakers, setSpeakers] = useState<string[]>([]);
   const [muted, setMuted] = useState(false);
   const [waiting, setWaiting] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [handUp, setHandUp] = useState(false);
   const [left, setLeft] = useState(0);
   const [micError, setMicError] = useState("");
@@ -74,28 +76,32 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
     let alive = true;
     let failures = 0;
     const show = (name: string) => { setSpeaker(name); setSpeakers((s) => [name, ...s.filter((x) => x !== name)].slice(0, 10)); };
+    prefetchVoiceTurn();
+    let queue = early; early = [];
+    const drop = () => { for (const p of queue) void p.then((t) => t && "url" in t && URL.revokeObjectURL(t.url)); queue = []; };
     (async () => {
       let previous = "";
-      prefetchVoiceTurn();
-      let next = firstTurn!; firstTurn = null;
+      // Two turns are always prepared ahead, so the next voice starts the instant the current one ends.
+      const topUp = () => { while (queue.length < 2) queue.push(fetchTurn(previous)); };
       while (alive) {
-        const turn = await next;
+        topUp();
+        const turn = await queue.shift()!;
         if (!alive) break;
+        if (turn && "disabled" in turn) { setDisabled(true); break; }
         if (!turn) {
           failures++;
           await sleep(Math.min(30000, 3000 * 2 ** failures));
-          next = fetchTurn(previous);
           continue;
         }
         failures = 0;
         previous = turn.name;
-        if (!handRef.current) next = fetchTurn(previous); // prepare the next bot while this one talks
+        if (!handRef.current) topUp();
         show(turn.name); setWaiting(false);
         const audio = new Audio(turn.url);
         audioRef.current = audio;
         audio.muted = mutedRef.current;
         await new Promise<void>((done) => {
-          const stop = setTimeout(() => { audio.pause(); done(); }, TURN_MS);
+          const stop = setTimeout(() => { audio.pause(); done(); }, turn.ms);
           audio.onended = () => { clearTimeout(stop); done(); };
           audio.onerror = () => { clearTimeout(stop); done(); };
           audio.play().catch(() => { clearTimeout(stop); done(); });
@@ -108,19 +114,20 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
           handRef.current = false; setHandUp(false);
           previous = me;
           setWaiting(true);
-          void next.then((t) => t && URL.revokeObjectURL(t.url));
-          next = fetchTurn(me, heard);
+          drop();
+          queue.push(fetchTurn(me, heard));
           continue;
         }
         setWaiting(true);
       }
     })();
-    return () => { alive = false; handRef.current = false; audioRef.current?.pause(); streamRef.current?.getTracks().forEach((t) => t.stop()); };
+    return () => { alive = false; drop(); handRef.current = false; audioRef.current?.pause(); streamRef.current?.getTracks().forEach((t) => t.stop()); };
   }, [me]);
 
   useEffect(() => { if (audioRef.current) audioRef.current.muted = muted; }, [muted]);
   const myTurn = speaker === me && !waiting;
 
+  if (disabled) return <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
   return (
     <div className="classic-chat-workspace">
       <div className="classic-chat-messages" aria-live="polite" aria-label="المتحدثون في الشات الصوتي">
