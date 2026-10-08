@@ -184,7 +184,7 @@ export async function voiceMonologue(previous = "", heard = "", fast = false, op
     const performers = [{ name: "نغم 🎶", mode: "sing" as const }, { name: "قصيدة 🌹", mode: "poem" as const }].filter((p) => p.name !== previous);
     const p = fast ? performers.find((performer) => performer.mode === "sing") : performers[Math.floor(Math.random() * performers.length)];
     if (!p) throw new Error("Missing voice performer");
-    const text = await generate(
+    const text = fast ? "يا هلا باللي لفانا، نور ليلتنا وزانا\nيا نسيم الليل غني، والفرح يسكن معانا\nنجمة تضحك في سمانا، والمحبة في لقانا\nيا هلا وكل الغلا، للي شاركنا غنانا" : await generate(
       "أنت بنت في غرفة صوتية بموقع المغني لايف. اكتبي كلمات أصلية من تأليفك فقط، لا تنقلي أغاني أو قصائد موجودة، بدون تشكيل.",
       p.mode === "sing" ? "اكتبي مقطع غنائي قصير رومانسي باللهجة الخليجية (أربعة أسطر قصيرة، نحو 35 كلمة). اكتبي الكلمات فقط." : "اكتبي أبيات شعر نبطي غزلي رقيق (أربعة أبيات، نحو 35 كلمة). اكتبي الأبيات فقط.",
     );
