@@ -93,7 +93,7 @@ export function LiveChat() {
         </div>
 
         <div ref={listRef} className="mt-4 max-h-96 space-y-5 overflow-y-auto py-2" aria-live="polite">
-          <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/20 text-lg">🤖</span><div><p className="flex items-center gap-2"><b>بوت المغني</b></p><p className="mt-1 text-foreground/90">{botLine}</p></div></div>
+          <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/20 text-lg"><MessagesSquare className="h-5 w-5" /></span><div><p className="flex items-center gap-2"><b>بوت المغني</b></p><p className="mt-1 text-foreground/90">{botLine}</p></div></div>
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
