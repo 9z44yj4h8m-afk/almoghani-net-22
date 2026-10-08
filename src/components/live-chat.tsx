@@ -44,7 +44,8 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   const [peopleQuery, setPeopleQuery] = useState("");
   const [sideTab, setSideTab] = useState<"people" | "room">("people");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const names = [...new Set([...(siteConfig?.chatNames ?? []), ...msgs.map((m) => m.display_name || "عضو")])].filter((name) => name.includes(peopleQuery));
+  const displayName = (name: string) => siteConfig?.botNameAliases[name] ?? name;
+  const names = [...new Set([...(siteConfig?.chatNames ?? []), ...msgs.map((m) => displayName(m.display_name) || "عضو")])].filter((name) => name.includes(peopleQuery));
   useEffect(() => {
     let i = 0;
     const t = setInterval(() => { i = (i + 1) % BOT_LINES.length; setBotLine(BOT_LINES[i]); }, 90000);
@@ -121,11 +122,12 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
+            const name = displayName(m.display_name);
             return (
               <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
-                <BotAvatar name={m.display_name} path={siteConfig?.botAvatars[m.display_name]} fallback={appearance.avatarIcon === "default" ? (m.display_name || "ع").trim().charAt(0) : appearance.avatarIcon} />
+                <BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? (name || "ع").trim().charAt(0) : appearance.avatarIcon} />
                 <div className="min-w-0 flex-1">
-                  <p className="classic-chat-message-meta"><b>{m.display_name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
+                  <p className="classic-chat-message-meta"><b>{name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
                   </p>
                   <p className="classic-chat-body">{m.body}</p>
