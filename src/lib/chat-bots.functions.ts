@@ -15,20 +15,26 @@ export const botReply = createServerFn({ method: "POST" })
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false };
     const bot = BOTS[Math.floor(Math.random() * BOTS.length)];
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: `أنت ${bot.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${bot.style}. رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. لا تتظاهر بأنك إنسان.` },
-          { role: "user", content: `${data.author || "زائر"}: ${data.body}` },
-        ],
-      }),
+    const { createOpenAI } = await import("@ai-sdk/openai");
+    const { streamText } = await import("ai");
+    const { createLovableAiGatewayRunIdFetch } = await import("@/lib/ai/run-id.server");
+    const provider = createOpenAI({
+      baseURL: "https://ai.gateway.lovable.dev/v1",
+      apiKey,
+      headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
+      fetch: createLovableAiGatewayRunIdFetch().fetch,
     });
-    if (!res.ok) return { ok: false };
-    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-    const text = json.choices?.[0]?.message?.content?.trim().slice(0, 300);
+    let text = "";
+    try {
+      const result = streamText({
+        model: provider.responses("openai/gpt-6-astra"),
+        system: `أنت ${bot.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${bot.style}. رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. لا تتظاهر بأنك إنسان.`,
+        prompt: `${data.author || "زائر"}: ${data.body}`,
+        providerOptions: { openai: { store: false, forceReasoning: true, reasoningEffort: "low", reasoningSummary: "auto", include: ["reasoning.encrypted_content"] } },
+      });
+      for await (const chunk of result.textStream) text += chunk;
+    } catch { return { ok: false }; }
+    text = text.trim().slice(0, 300);
     if (!text) return { ok: false };
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("chat_messages").insert({ body: text, display_name: bot.name, user_id: null });
