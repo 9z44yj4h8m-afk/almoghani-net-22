@@ -179,6 +179,16 @@ const FEMALE = /^(تحب|أم|شابة|هادئة|خفيفة|اجتماعية|ع
 const OPENERS = ["هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية", "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟", "مساكم الله بالخير يا جماعة، حياكم في المغني لايف، تفضلوا وخذوا راحتكم والمايك يدور على الكل"];
 export async function voiceMonologue(previous = "", heard = "", fast = false, openers: string[] = OPENERS) {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
+  // Two girl performers drop in between chats: one sings, one recites poetry (original words, never copied lyrics).
+  if (!fast && !heard && Math.random() < 0.35) {
+    const performers = [{ name: "نغم 🎶", mode: "sing" as const }, { name: "قصيدة 🌹", mode: "poem" as const }].filter((p) => p.name !== previous);
+    const p = performers[Math.floor(Math.random() * performers.length)]!;
+    const text = await generate(
+      "أنت بنت في غرفة صوتية بموقع المغني لايف. اكتبي كلمات أصلية من تأليفك فقط، لا تنقلي أغاني أو قصائد موجودة، بدون تشكيل.",
+      p.mode === "sing" ? "اكتبي مقطع غنائي قصير رومانسي باللهجة الخليجية (أربعة أسطر قصيرة، نحو 35 كلمة). اكتبي الكلمات فقط." : "اكتبي أبيات شعر نبطي غزلي رقيق (أربعة أبيات، نحو 35 كلمة). اكتبي الأبيات فقط.",
+    );
+    if (text) return { name: p.name, female: true, mode: p.mode, text: withoutArabicDiacritics(text) };
+  }
   let pool = cfg.bots.filter((b) => b.name !== previous);
   // The opening voice is always a girl's, so the room starts with a soft female voice.
   if (fast) { const girls = pool.filter((b) => FEMALE.test(b.style.trim())); if (girls.length) pool = girls; }
@@ -187,5 +197,5 @@ export async function voiceMonologue(previous = "", heard = "", fast = false, op
     `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
     `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
   );
-  return { name: bot.name, female: FEMALE.test(bot.style.trim()), text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
+  return { name: bot.name, female: FEMALE.test(bot.style.trim()), mode: "talk" as "talk" | "sing" | "poem", text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
 }
