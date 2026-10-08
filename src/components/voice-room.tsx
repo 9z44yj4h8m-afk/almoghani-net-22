@@ -12,6 +12,15 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 let early: Promise<Turn | null>[] = [];
 export function prefetchVoiceTurn() { if (!early.length) early = [fetchTurn("", "", true), fetchTurn("")]; }
 
+// Phones only allow sound from an element first played during a tap, so one shared element is unlocked on the enter button and reused for every turn.
+const SILENT = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=";
+let shared: HTMLAudioElement | null = null;
+export function unlockVoiceAudio() {
+  shared ??= new Audio();
+  shared.src = SILENT;
+  void shared.play().catch(() => {});
+}
+
 async function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | null> {
   try {
     const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast }) });
@@ -97,7 +106,9 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
         previous = turn.name;
         if (!handRef.current) topUp();
         show(turn.name); setWaiting(false);
-        const audio = new Audio(turn.url);
+        shared ??= new Audio();
+        const audio = shared;
+        audio.src = turn.url;
         audioRef.current = audio;
         audio.muted = mutedRef.current;
         await new Promise<void>((done) => {
