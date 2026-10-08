@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { channels as baseChannels, type Channel, type ChannelCategory } from "./channels";
 import type { Movie } from "./movies";
 import { defaultSectionContent, type SectionContent } from "./section-content";
+import { defaultChatAppearance, normalizeChatAppearance, type ChatAppearance } from "./chat-appearance";
 
 export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel: string };
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
@@ -39,6 +40,7 @@ export type SiteConfig = {
   ad: SiteAd;
   ticker: SiteTicker;
   chat: SiteChat;
+  chatAppearance: ChatAppearance;
   sectionContent: SectionContent;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
   overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null }[];
@@ -65,6 +67,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
     ad: get("ad", defaultAd),
     ticker: get("ticker", defaultTicker),
     chat: get("chat", defaultChat),
+    chatAppearance: normalizeChatAppearance(get("chat-appearance", defaultChatAppearance)),
     sectionContent: get("section-content", defaultSectionContent),
     customChannels: custom.data ?? [],
     overrides: overrides.data ?? [],
