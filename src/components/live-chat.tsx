@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Plus, Smile, Trash2, Users, MessageCircle, ExternalLink } from "lucide-react";
+import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
@@ -38,6 +38,19 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [voiceLoading, setVoiceLoading] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  async function playVoice(id: string) {
+    audioRef.current?.pause();
+    setVoiceLoading(id);
+    try {
+      const res = await fetch("/api/public/bot-voice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messageId: id }) });
+      if (!res.ok) throw new Error();
+      const audio = new Audio(URL.createObjectURL(await res.blob()));
+      audioRef.current = audio;
+      await audio.play();
+    } catch { setError("تعذّر تشغيل الصوت، حاول لاحقًا."); } finally { setVoiceLoading(null); }
+  }
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
@@ -155,7 +168,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
                   <p className="classic-chat-message-meta"><b>{name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{ago(m.created_at)}</time>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
                   </p>
-                  <p className="classic-chat-body">{siteConfig?.chatNames.includes(name) || siteConfig?.botNameAliases[m.display_name] || siteConfig?.botAvatars[name] ? withoutArabicDiacritics(m.body) : m.body}</p>
+                  {(() => { const isBot = !!(siteConfig?.chatNames.includes(name) || siteConfig?.botNameAliases[m.display_name] || siteConfig?.botAvatars[name]); return <p className="classic-chat-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}{isBot && <Button type="button" variant="ghost" size="icon-xs" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}</p>; })()}
                 </div>
               </div>
             );
