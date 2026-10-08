@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,7 +27,8 @@ function ago(d: string) {
   return `قبل ${Math.floor(s / 86400)}ي`;
 }
 
-export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { display_name: string; body: string }) => void; bare?: boolean } = {}) {
+export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncoming?: (m: { display_name: string; body: string }) => void; bare?: boolean; voice?: boolean } = {}) {
+  const navigate = useNavigate();
   const incomingRef = useRef(onIncoming); incomingRef.current = onIncoming;
   const { user } = useMember();
   const { data: siteConfig } = useSiteConfig();
@@ -51,6 +52,27 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
       await audio.play();
     } catch { setError("تعذّر تشغيل الصوت، حاول لاحقًا."); } finally { setVoiceLoading(null); }
   }
+  const queueRef = useRef<string[]>([]);
+  const playingRef = useRef(false);
+  const voiceOnRef = useRef(false); voiceOnRef.current = voice && entered;
+  async function drainQueue() {
+    if (playingRef.current) return;
+    playingRef.current = true;
+    while (voiceOnRef.current && queueRef.current.length) {
+      const id = queueRef.current.shift()!;
+      try {
+        const res = await fetch("/api/public/bot-voice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messageId: id }) });
+        if (!res.ok) continue;
+        const audio = new Audio(URL.createObjectURL(await res.blob()));
+        audioRef.current = audio;
+        await new Promise<void>((done) => { audio.onended = () => done(); audio.onerror = () => done(); audio.play().catch(() => done()); });
+      } catch { /* skip this line */ }
+    }
+    playingRef.current = false;
+  }
+  const isBotName = (raw: string) => { const n = siteConfig?.botNameAliases[raw] ?? raw; return !!(siteConfig?.chatNames.includes(n) || siteConfig?.botNameAliases[raw] || siteConfig?.botAvatars[n]); };
+  const isBotRef = useRef(isBotName); isBotRef.current = isBotName;
+  useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
@@ -83,9 +105,9 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
   useEffect(() => {
     const run = () => { if (!roomId && document.visibilityState === "visible") void botBanter().catch(() => {}); };
     const first = setTimeout(run, 8000);
-    const t = setInterval(run, 60000);
+    const t = setInterval(run, voice && entered ? 20000 : 60000);
     return () => { clearTimeout(first); clearInterval(t); };
-  }, [roomId]);
+  }, [roomId, voice, entered]);
   useEffect(() => {
     setGuestName(localStorage.getItem("chat-name") ?? "");
     try { setMyIds(JSON.parse(localStorage.getItem("chat-mine") ?? "[]")); } catch { /* ignore */ }
@@ -98,7 +120,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
       .then(({ data }) => { if (alive) setMsgs((data ?? []).reverse()); });
     void supabase.from("chat_reactions").select("emoji,count").then(({ data }) => setReactions(Object.fromEntries((data ?? []).map((r) => [r.emoji, Number(r.count)]))));
     const ch = supabase.channel(`live-chat-${roomId ?? "general"}`)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => { const n = p.new as Msg; if ((n.room_id ?? null) !== roomId || m.some((x) => x.id === n.id)) return m; incomingRef.current?.(n); return [...m.slice(-99), n]; }))
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => { const n = p.new as Msg; if ((n.room_id ?? null) !== roomId || m.some((x) => x.id === n.id)) return m; incomingRef.current?.(n); if (voiceOnRef.current && isBotRef.current(n.display_name)) { queueRef.current = [...queueRef.current.slice(-4), n.id]; void drainQueue(); } return [...m.slice(-99), n]; }))
       .on("postgres_changes", { event: "DELETE", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => m.filter((x) => x.id !== (p.old as { id: string }).id)))
       .on("postgres_changes", { event: "*", schema: "public", table: "chat_reactions" }, (p) => { const r = p.new as { emoji: string; count: number }; if (r?.emoji) setReactions((x) => ({ ...x, [r.emoji]: Number(r.count) })); })
       .subscribe();
@@ -149,9 +171,10 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
           <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
         </div>
         {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); setEntered(true); }}>
-          <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار للدخول للدردشه</label>
+          {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="w-full">الشات الكتابي</Button>}
+          <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار</label>
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
-          <Button type="submit" disabled={!guestName.trim()} className="w-full">دخول</Button>
+          {voice ? <Button type="submit" disabled={!guestName.trim()} className="w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
         </form> : <>
         <div className="classic-chat-workspace">

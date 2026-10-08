@@ -6,7 +6,7 @@ import { LiveChat } from "@/components/live-chat";
 import { Button } from "@/components/ui/button";
 
 // ALMOGHANI AI room: messages are stored in the shared chat and answered by the site's bots.
-export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
+export function AiChatPanel({ embedded = false, voice = false }: { embedded?: boolean; voice?: boolean }) {
   const [notifications, setNotifications] = useState(false);
   const [replyNotice, setReplyNotice] = useState("");
   const [notificationNote, setNotificationNote] = useState("");
@@ -45,7 +45,7 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
       </header>
       {notificationNote && <p role="status" className="border-b border-sky/40 px-4 py-2 text-xs text-muted-foreground">{notificationNote}</p>}
       {replyNotice && <div role="status" className="flex items-center gap-2 border-b border-sky/40 bg-secondary px-4 py-2 text-sm text-sky"><CheckCheck className="h-4 w-4" />{replyNotice}<Button size="icon-sm" variant="ghost" className="mr-auto" aria-label="إخفاء التنبيه" onClick={() => setReplyNotice("")}>×</Button></div>}
-      <LiveChat bare onIncoming={onIncoming} />
+      <LiveChat bare voice={voice} onIncoming={onIncoming} />
     </div>
   );
 }
