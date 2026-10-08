@@ -49,11 +49,11 @@ export function ChatModerationManager() {
     setMsg(error ? "تعذّر الحذف." : "حُذفت كل الرسائل.");
   }
 
-  const Toggle = ({ on, onIcon, offIcon, label, k }: { on: boolean; onIcon: React.ReactNode; offIcon: React.ReactNode; label: string; k: keyof ChatControl }) => (
+  const Toggle = ({ on, onIcon, offIcon, label, k }: { on: boolean; onIcon: React.ReactNode; offIcon: React.ReactNode; label: string; k: "hideMessages" | "micsOpen" | "voiceOpen" }) => (
     <div className="flex items-center gap-3 rounded-xl border border-border bg-background/40 p-3">
       {on ? onIcon : offIcon}
       <span className="flex-1 text-sm font-bold">{label}: {on ? "مفتوح" : "مغلق"}</span>
-      <Button size="sm" variant={on ? "outline" : "default"} onClick={() => void save({ [k]: !on })}>{on ? "إغلاق" : "فتح"}</Button>
+      <Button size="sm" variant={on ? "outline" : "default"} onClick={() => void save({ [k]: k === "hideMessages" ? on : !on })}>{on ? "إغلاق" : "فتح"}</Button>
     </div>
   );
 
@@ -65,7 +65,6 @@ export function ChatModerationManager() {
         <Toggle k="voiceOpen" on={control.voiceOpen} onIcon={<Volume2 className="size-5" />} offIcon={<VolumeX className="size-5" />} label="الغرفة الصوتية" />
         <Toggle k="micsOpen" on={control.micsOpen} onIcon={<Mic className="size-5" />} offIcon={<MicOff className="size-5" />} label="مايكات الزوار" />
       </div>
-      {/* "ظهور الرسائل" toggles hideMessages inversely */}
       <div className="grid gap-2">
         <label className="flex items-center gap-2 text-sm font-bold"><Megaphone className="size-4" />إعلان مثبت أعلى الدردشة</label>
         <div className="flex gap-2"><input className="member-screen-input h-10" value={note} maxLength={200} onChange={(e) => setNote(e.target.value)} placeholder="مثال: نورتوا شات المغني" /><Button onClick={() => void save({ announcement: note.trim() })}>حفظ</Button></div>

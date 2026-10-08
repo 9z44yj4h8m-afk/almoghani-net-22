@@ -14,6 +14,7 @@ import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { ChatBotsManager } from "@/components/admin/chat-bots-manager";
 import { ChatAppearanceEditor } from "@/components/admin/chat-appearance-editor";
 import { VoiceChatManager } from "@/components/admin/voice-chat-manager";
+import { ChatModerationManager } from "@/components/admin/chat-moderation-manager";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl } from "@/lib/admin.functions";
@@ -379,6 +380,7 @@ function ChatTab() {
       <span className="flex-1 font-bold">الدردشة {enabled ? "مفعّلة" : "متوقفة"}</span>
       <Button variant={enabled ? "outline" : "default"} onClick={async () => { await saveSetting("chat", { enabled: !enabled }); void refresh(); }}>{enabled ? "إيقاف" : "تشغيل"}</Button>
     </div>
+    <ChatModerationManager />
     <ChatBotsManager />
     <ChatAppearanceEditor />
     <VoiceChatManager />
