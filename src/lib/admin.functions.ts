@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+const OWNER_EMAIL = "a0552525337@gmail.com";
+
 async function assertAdmin(supabase: { rpc: (fn: "has_role", args: { _user_id: string; _role: "admin" }) => PromiseLike<{ data: boolean | null }> }, userId: string) {
   const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
   if (!data) throw new Error("Forbidden");
@@ -17,6 +19,45 @@ export const listMembers = createServerFn({ method: "POST" })
     const { data: users } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
     const emails = new Map((users?.users ?? []).map((u) => [u.id, u.email ?? ""]));
     return (profiles ?? []).map((p) => ({ ...p, email: emails.get(p.user_id) ?? "" }));
+  });
+
+/** Role management — privileged work through the service-role client after admin verification. */
+export const listRoles = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.from("user_roles").select("user_id,role");
+    return (data ?? []) as { user_id: string; role: "admin" | "user" }[];
+  });
+
+export const setMemberRole = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ userId: z.string().uuid(), role: z.enum(["admin", "user"]) }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: u } = await supabaseAdmin.auth.admin.getUserById(data.userId);
+    const email = (u?.user?.email ?? "").toLowerCase();
+    if (email === OWNER_EMAIL && data.role !== "admin") throw new Error("لا يمكن سحب صلاحية المالك.");
+    await supabaseAdmin.from("user_roles").delete().eq("user_id", data.userId);
+    const { error } = await supabaseAdmin.from("user_roles").insert({ user_id: data.userId, role: data.role });
+    if (error) throw error;
+    return { ok: true as const };
+  });
+
+/** Finds an existing member by email so the owner can grant a role. */
+export const findMemberByEmail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ email: z.string().email().max(120) }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const email = data.email.trim().toLowerCase();
+    const { data: users } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const hit = (users?.users ?? []).find((u) => (u.email ?? "").toLowerCase() === email);
+    if (!hit) return null;
+    return { userId: hit.id, email: hit.email ?? email };
   });
 
 /** Verifies a stream link responds before the owner saves it. */
