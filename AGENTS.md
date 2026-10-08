@@ -38,3 +38,4 @@
 - Store editable destination-card images, copy and allow-listed page destinations in site_settings with static defaults in section-content; keep category IDs unchanged when labels change so edits never alter stream grouping or access guards.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
+- Voice chat (/voice-chat) reuses LiveChat with voice mode; bot speech is generated server-side only for existing chat message IDs so the endpoint cannot be used as open TTS.
