@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export const BOTS = [
   { name: "أبو فهد", style: "كبير ورزين، يحب المسلسلات البدوية والأمثال" },
@@ -38,8 +39,29 @@ export const BOTS = [
   { name: "فاطمة", style: "تحب مسلسلات الخليج وتنصح بالأعمال" },
 ] as const;
 
-type Bot = (typeof BOTS)[number];
-const pick = (n: number): Bot[] => { const s = [...BOTS].sort(() => Math.random() - 0.5); return Array.from({ length: n }, (_, i) => s[i] ?? BOTS[0]); };
+type Bot = { name: string; style: string };
+export type ChatBotsConfig = { enabled: boolean; replyEnabled: boolean; banterEnabled: boolean; useAi: boolean; bots: Bot[]; replies: string[] };
+export const defaultChatBots: ChatBotsConfig = { enabled: true, replyEnabled: true, banterEnabled: true, useAi: true, bots: [...BOTS], replies: [] };
+
+// Owner-editable bot config stored in site_settings("chat_bots"); code list is the fallback.
+async function loadConfig(): Promise<ChatBotsConfig> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.from("site_settings").select("value").eq("key", "chat_bots").maybeSingle();
+  const v = (data?.value ?? {}) as Partial<ChatBotsConfig>;
+  const bots = Array.isArray(v.bots) ? v.bots.filter((b) => b?.name?.trim()) : [];
+  return { ...defaultChatBots, ...v, bots: bots.length ? bots : [...BOTS], replies: Array.isArray(v.replies) ? v.replies.filter(Boolean) : [] };
+}
+let BOT_POOL: Bot[] = [...BOTS];
+const pick = (n: number): Bot[] => { const s = [...BOT_POOL].sort(() => Math.random() - 0.5); return Array.from({ length: n }, (_, i) => s[i % s.length]!); };
+// Canned reply when AI is off (or fails) and the owner wrote replies.
+function canned(cfg: ChatBotsConfig, author = "") {
+  if (!cfg.replies.length) return "";
+  return cfg.replies[Math.floor(Math.random() * cfg.replies.length)]!.replaceAll("{name}", author).slice(0, 300);
+}
+async function say(cfg: ChatBotsConfig, system: string, prompt: string, author = "") {
+  const t = cfg.useAi ? await generate(system, prompt) : "";
+  return t || canned(cfg, author);
+}
 
 async function generate(system: string, prompt: string) {
   const apiKey = process.env["LOVABLE_API_KEY"];
@@ -94,6 +116,8 @@ const input = z.object({ body: z.string().trim().min(1).max(300), author: z.stri
 export const botReply = createServerFn({ method: "POST" })
   .inputValidator((d) => input.parse(d))
   .handler(async ({ data }) => {
+    const cfg = await loadConfig(); BOT_POOL = cfg.bots;
+    if (!cfg.enabled || !cfg.replyEnabled) return { ok: false };
     const [a, b] = pick(2) as [Bot, Bot];
     let author = data.author || "زائر";
     if (data.messageId) {
@@ -102,11 +126,11 @@ export const botReply = createServerFn({ method: "POST" })
       if (row?.display_name?.trim()) author = row.display_name.trim();
     }
     const history = await recent();
-    const first = await generate(`أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`);
+    const first = await say(cfg, `أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`, author);
     const ok = await post(a.name, first);
     if (ok && Math.random() < 0.6) {
       await wait(2500);
-      const second = await generate(`أنت ${b.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${b.style}. علّق على كلام ${author} و${a.name}. ${RULES}`, `${author}: ${data.body}\n${a.name}: ${first}`);
+      const second = await say(cfg, `أنت ${b.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${b.style}. علّق على كلام ${author} و${a.name}. ${RULES}`, `${author}: ${data.body}\n${a.name}: ${first}`, author);
       await post(b.name, second);
     }
     return { ok };
@@ -114,20 +138,32 @@ export const botReply = createServerFn({ method: "POST" })
 
 // Bots chatting among themselves.
 export const botBanter = createServerFn({ method: "POST" }).handler(async () => {
+  const cfg = await loadConfig(); BOT_POOL = cfg.bots;
+  if (!cfg.enabled || !cfg.banterEnabled) return { ok: false };
   const [a, b, c] = pick(3) as [Bot, Bot, Bot];
   const history = await recent();
   const names = await memberNames();
   const member = names.length ? names[Math.floor(Math.random() * names.length)] : "";
   const target = member && Math.random() < 0.7 ? member : b.name;
-  const m1 = await generate(`أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${target}${target === member ? " (عضو مسجّل في الموقع، رحّب به أو اسأله عن رأيه)" : ""}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
+  const m1 = await say(cfg, `أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${target}${target === member ? " (عضو مسجّل في الموقع، رحّب به أو اسأله عن رأيه)" : ""}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
   if (!(await post(a.name, m1))) return { ok: false };
   await wait(3000);
-  const m2 = await generate(`أنت ${b.name}. شخصيتك: ${b.style}. رد على ${a.name}. ${RULES}`, `${a.name}: ${m1}`);
+  const m2 = await say(cfg, `أنت ${b.name}. شخصيتك: ${b.style}. رد على ${a.name}. ${RULES}`, `${a.name}: ${m1}`);
   await post(b.name, m2);
   if (Math.random() < 0.5) {
     await wait(3000);
-    const m3 = await generate(`أنت ${c.name}. شخصيتك: ${c.style}. ادخل السالفة وعلّق. ${RULES}`, `${a.name}: ${m1}\n${b.name}: ${m2}`);
+    const m3 = await say(cfg, `أنت ${c.name}. شخصيتك: ${c.style}. ادخل السالفة وعلّق. ${RULES}`, `${a.name}: ${m1}\n${b.name}: ${m2}`);
     await post(c.name, m3);
   }
   return { ok: true };
 });
+
+// Owner posts a message to the public chat under any name (e.g. as a bot).
+export const adminPostChat = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ name: z.string().trim().min(1).max(30), body: z.string().trim().min(1).max(300) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Forbidden");
+    return { ok: await post(data.name, data.body) };
+  });
