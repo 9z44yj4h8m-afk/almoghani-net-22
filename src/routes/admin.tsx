@@ -45,6 +45,7 @@ const input = "h-11 w-full rounded-lg border border-border bg-card px-3 text-for
 function AdminPage() {
   const { user, ready } = useMember();
   const { tab } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const [admin, setAdmin] = useState<boolean | null>(null);
   useEffect(() => { setAdmin(null); if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => setAdmin(!!data)); }, [user]);
 
@@ -58,7 +59,7 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <Tabs value={tab && TABS.some((value) => value === tab) ? tab : "overview"} onValueChange={(value) => { void Route.router.navigate({ to: "/admin", search: { tab: value }, replace: true }); }} dir="rtl" className="mt-6">
+        <Tabs value={tab && TABS.some((value) => value === tab) ? tab : "overview"} onValueChange={(value) => { void navigate({ search: { tab: value }, replace: true }); }} dir="rtl" className="mt-6">
           <TabsList className="flex h-auto flex-wrap justify-start gap-1">
             <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
             <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
