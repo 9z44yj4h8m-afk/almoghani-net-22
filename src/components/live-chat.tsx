@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Send, Smile, Trash2, Users, MessageCircle, LogOut, ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import chatRoses from "@/assets/chat-roses.jpg";
+import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 import { botReply, botBanter } from "@/lib/chat-bots.functions";
@@ -106,9 +106,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
       <ChatAppearanceStyle config={appearance} />
       <div className="classic-chat-frame">
         <div className="classic-chat-masthead" dir="ltr">
-          <img src={chatRoses} alt="" width={1152} height={576} />
-          <h2 id="live-chat-title">ALMOGHANI</h2>
-          <img src={chatRoses} alt="" width={1152} height={576} />
+          <h2 id="live-chat-title">ALMOGHANI <span>LIVE</span></h2>
         </div>
         {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name) return; setGuestName(name); localStorage.setItem("chat-name", name); setEntered(true); }}>
           <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار للدخول للدردشه</label>
@@ -118,7 +116,7 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
         </form> : <>
         <div className="classic-chat-workspace">
         <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
-          <div className="classic-chat-system">{botLine}</div>
+          <div className="classic-chat-system sr-only">{botLine}</div>
           {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
@@ -142,23 +140,23 @@ export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { disp
             <Button role="tab" aria-selected={sideTab === "room"} className="classic-chat-control" variant="secondary" onClick={() => setSideTab("room")}><MessageCircle />غرف</Button>
           </div>
           {sideTab === "people" ? <>
-            <label className="classic-chat-filter"><span>الأسماء المشاركة ({names.length})</span><input aria-label="بحث عن اسم" placeholder="بحث عن اسم…" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /></label>
+            <label className="classic-chat-filter"><span>عرض كل المستخدمين في غرفة ({names.length})</span><input aria-label="بحث عن اسم" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /><b>الاسم المستعار</b></label>
             <div className="classic-chat-people">{names.map((name) => <Button key={name} variant="ghost" className="classic-chat-person" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon} /><span>{name}</span></Button>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
           </> : <div className="classic-chat-room"><MessageCircle /><b>الدردشة العامة</b><span>{msgs.length} رسالة</span><Button className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}>دخول الغرفة</Button></div>}
         </aside>
         </div>
         <form onSubmit={send} className="classic-chat-compose">
-          <p className="mb-2 text-sm font-bold">{guestName}</p>
+          <p className="sr-only">{guestName}</p>
           <div className="classic-chat-compose-row">
             <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك…" aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
             <Button type="button" variant="secondary" className="classic-chat-smile" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>{appearance.smileIcon === "default" ? <Smile /> : <span>{appearance.smileIcon}</span>}</Button>
-            <div className="classic-chat-actions"><Button asChild className="classic-chat-exit"><Link to="/"><LogOut />خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control" disabled={sending || !text.trim()} aria-label="إرسال">{appearance.sendIcon === "default" ? <Send /> : <span>{appearance.sendIcon}</span>}{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
+            <div className="classic-chat-actions"><Button type="button" variant="secondary" className="classic-chat-control classic-chat-pictures" onClick={() => setShowEmoji((v) => !v)} aria-expanded={showEmoji}>الصور</Button><Button asChild className="classic-chat-exit"><Link to="/">خروج</Link></Button><Button type="submit" variant="secondary" className="classic-chat-control classic-chat-send" disabled={sending || !text.trim()} aria-label="إرسال">{appearance.sendIcon !== "default" && <span>{appearance.sendIcon}</span>}{sending ? "جارٍ الإرسال" : "إرسال"}</Button></div>
           </div>
           {showEmoji && <div className="classic-chat-emojis">{appearance.emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
         </form>
         {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
         </>}
-        <footer className="classic-chat-footer" dir="ltr"><span>ALMOGHANI <b>LIVE</b></span><small dir="rtl">الدردشة العامة</small></footer>
+        <footer className="classic-chat-footer" dir="ltr"><Link to="/contact" aria-label="للتواصل مع إدارة الموقع"><img src={contactBanner.url} alt="للتواصل مع إدارة الموقع" width={469} height={98} /></Link><span>ALMOGHANI <b>LIVE</b></span></footer>
       </div>
     </section>
   );

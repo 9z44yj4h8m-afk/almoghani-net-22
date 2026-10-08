@@ -30,11 +30,11 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
 
   return (
     <div dir="rtl" className={embedded ? "member-ai-screen classic-chat-embedded flex flex-col text-foreground" : "classic-chat-shell flex flex-col bg-background text-foreground"}>
-      <header className="border-b border-border/70 bg-background/90 backdrop-blur-xl">
+      <header className="classic-chat-topbar border-b border-border/70 bg-background/90">
         <div className="mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-3">
             <div>
-              <h1 dir="ltr" className="font-display text-base font-black">ALMOGHANI</h1>
+              <h1 className="sr-only">الدردشة — ALMOGHANI</h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
