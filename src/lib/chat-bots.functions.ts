@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { withoutArabicDiacritics } from "@/lib/chat-text";
 
 export const BOTS = [
   { name: "أبو فهد", style: "كبير ورزين، يحب المسلسلات البدوية والأمثال" },
@@ -88,7 +89,7 @@ async function generate(system: string, prompt: string) {
   return text.trim().slice(0, 300);
 }
 
-const RULES = "رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك.";
+const RULES = "رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك وبدون أي تشكيل أو فتحات أو ضمات أو سكون.";
 
 async function recent() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -97,6 +98,7 @@ async function recent() {
 }
 
 async function post(name: string, body: string) {
+  body = withoutArabicDiacritics(body);
   if (!body) return false;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { error } = await supabaseAdmin.from("chat_messages").insert({ body, display_name: name, user_id: null });
