@@ -16,7 +16,7 @@ ${!c.showRoses ? `${scope} .classic-chat-masthead img{visibility:hidden}` : ""}
 ${!c.showAvatars ? `${scope} .classic-chat-avatar{display:none}` : ""}
 ${!c.showSidebar ? `${scope} .classic-chat-sidebar{display:none}${scope} .classic-chat-workspace{grid-template-columns:minmax(0,1fr)!important}` : ""}
 ${scope} .classic-chat-workspace{height:auto;${c.showSidebar ? `grid-template-columns:minmax(0,1fr) clamp(20%,${c.sidebarWidth}px,25%);` : ""}}
-.classic-chat-page{max-width:min(100%,${c.frameWidth}px)!important}
+.classic-chat-page,.classic-chat-bare{max-width:min(100%,${c.frameWidth}px)!important}
 .classic-chat-page .classic-chat-frame,${scope} .classic-chat-frame{height:min(${c.frameHeight}px,calc(100svh - 80px),70cqw)!important;max-height:none!important;min-height:0!important;aspect-ratio:auto!important}
 ${scope} .classic-chat-workspace{flex:1 1 0;min-height:0}
 @media(max-width:640px){${scope} .classic-chat-workspace{height:auto}${scope} .classic-chat-body{font-size:min(var(--chat-font),18px)}${scope} .classic-chat-avatar{width:min(var(--chat-avatar),40px);height:min(var(--chat-avatar),40px)}}`}</style>;
