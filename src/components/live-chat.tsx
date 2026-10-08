@@ -17,7 +17,8 @@ function ago(d: string) {
   return `قبل ${Math.floor(s / 86400)}ي`;
 }
 
-export function LiveChat() {
+export function LiveChat({ onIncoming, bare = false }: { onIncoming?: (m: { display_name: string; body: string }) => void; bare?: boolean } = {}) {
+  const incomingRef = useRef(onIncoming); incomingRef.current = onIncoming;
   const { user } = useMember();
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [reactions, setReactions] = useState<Record<string, number>>({});
@@ -50,7 +51,7 @@ export function LiveChat() {
       .then(({ data }) => setMsgs((data ?? []).reverse()));
     void supabase.from("chat_reactions").select("emoji,count").then(({ data }) => setReactions(Object.fromEntries((data ?? []).map((r) => [r.emoji, Number(r.count)]))));
     const ch = supabase.channel("live-chat")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => m.some((x) => x.id === (p.new as Msg).id) ? m : [...m.slice(-99), p.new as Msg]))
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => { const n = p.new as Msg; if (m.some((x) => x.id === n.id)) return m; incomingRef.current?.(n); return [...m.slice(-99), n]; }))
       .on("postgres_changes", { event: "DELETE", schema: "public", table: "chat_messages" }, (p) => setMsgs((m) => m.filter((x) => x.id !== (p.old as { id: string }).id)))
       .on("postgres_changes", { event: "*", schema: "public", table: "chat_reactions" }, (p) => { const r = p.new as { emoji: string; count: number }; if (r?.emoji) setReactions((x) => ({ ...x, [r.emoji]: Number(r.count) })); })
       .subscribe();
@@ -76,7 +77,7 @@ export function LiveChat() {
     setText("");
     if (data && !user) { const ids = [...myIds, data.id].slice(-50); setMyIds(ids); localStorage.setItem("chat-mine", JSON.stringify(ids)); }
     if (data) setMsgs((m) => m.some((x) => x.id === data.id) ? m : [...m, data]);
-    void botReply({ data: { body: body.slice(0, 300), author: user ? "عضو" : guestName.trim().slice(0, 30) } }).catch(() => {});
+    void botReply({ data: { body: body.slice(0, 300), author: user ? "عضو" : guestName.trim().slice(0, 30), ...(data ? { messageId: data.id } : {}) } }).catch(() => {});
   }
 
   async function react(emoji: string) {
@@ -85,7 +86,7 @@ export function LiveChat() {
   }
 
   return (
-    <section dir="rtl" aria-labelledby="live-chat-title" className="mx-auto max-w-3xl px-3 py-8 sm:px-6">
+    <section dir="rtl" aria-labelledby="live-chat-title" className={bare ? "mx-auto w-full max-w-3xl px-3 py-4" : "mx-auto max-w-3xl px-3 py-8 sm:px-6"}>
       <div className="rounded-[2rem] border border-border bg-card/70 p-5 shadow-xl backdrop-blur sm:p-6">
         <p className="text-xs font-bold tracking-wide text-muted-foreground">تفاعل الجمهور</p>
         <h2 id="live-chat-title" className="mt-1 flex items-center gap-3 font-display text-3xl font-black">

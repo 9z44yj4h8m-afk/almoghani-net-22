@@ -81,15 +81,26 @@ async function post(name: string, body: string) {
   return !error;
 }
 
+// Real registered members' names (non-suspended, named) for bots to address.
+async function memberNames() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.from("profiles").select("display_name").eq("suspended", false).neq("display_name", "").order("last_login_at", { ascending: false, nullsFirst: false }).limit(40);
+  return [...new Set((data ?? []).map((r) => r.display_name.trim()).filter(Boolean))];
+}
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const input = z.object({ body: z.string().trim().min(1).max(300), author: z.string().max(30).optional() });
+const input = z.object({ body: z.string().trim().min(1).max(300), author: z.string().max(30).optional(), messageId: z.string().uuid().optional() });
 
 // Always answer the sender, then sometimes a second bot joins in.
 export const botReply = createServerFn({ method: "POST" })
   .inputValidator((d) => input.parse(d))
   .handler(async ({ data }) => {
     const [a, b] = pick(2) as [Bot, Bot];
-    const author = data.author || "زائر";
+    let author = data.author || "زائر";
+    if (data.messageId) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: row } = await supabaseAdmin.from("chat_messages").select("display_name").eq("id", data.messageId).maybeSingle();
+      if (row?.display_name?.trim()) author = row.display_name.trim();
+    }
     const history = await recent();
     const first = await generate(`أنت ${a.name} في دردشة عامة لموقع المغني لايف. شخصيتك: ${a.style}. رد على ${author} مباشرة وناده باسمه. ${RULES}`, `آخر الرسائل:\n${history}\n\nرد على: ${author}: ${data.body}`);
     const ok = await post(a.name, first);
@@ -105,7 +116,10 @@ export const botReply = createServerFn({ method: "POST" })
 export const botBanter = createServerFn({ method: "POST" }).handler(async () => {
   const [a, b, c] = pick(3) as [Bot, Bot, Bot];
   const history = await recent();
-  const m1 = await generate(`أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${b.name}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
+  const names = await memberNames();
+  const member = names.length ? names[Math.floor(Math.random() * names.length)] : "";
+  const target = member && Math.random() < 0.7 ? member : b.name;
+  const m1 = await generate(`أنت ${a.name} في دردشة لموقع المغني لايف. شخصيتك: ${a.style}. ابدأ سالفة أو كمّل على آخر الكلام، ووجّه كلامك لـ${target}${target === member ? " (عضو مسجّل في الموقع، رحّب به أو اسأله عن رأيه)" : ""}. ${RULES}`, `آخر الرسائل:\n${history || "(لا يوجد)"}`);
   if (!(await post(a.name, m1))) return { ok: false };
   await wait(3000);
   const m2 = await generate(`أنت ${b.name}. شخصيتك: ${b.style}. رد على ${a.name}. ${RULES}`, `${a.name}: ${m1}`);
