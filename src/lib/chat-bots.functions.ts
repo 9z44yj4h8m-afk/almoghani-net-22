@@ -179,7 +179,9 @@ const FEMALE = /^(تحب|أم|شابة|هادئة|خفيفة|اجتماعية|ع
 const OPENERS = ["هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية", "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟", "مساكم الله بالخير يا جماعة، حياكم في المغني لايف، تفضلوا وخذوا راحتكم والمايك يدور على الكل"];
 export async function voiceMonologue(previous = "", heard = "", fast = false, openers: string[] = OPENERS) {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
-  const pool = cfg.bots.filter((b) => b.name !== previous);
+  let pool = cfg.bots.filter((b) => b.name !== previous);
+  // The opening voice is always a girl's, so the room starts with a soft female voice.
+  if (fast) { const girls = pool.filter((b) => FEMALE.test(b.style.trim())); if (girls.length) pool = girls; }
   const bot = pool[Math.floor(Math.random() * pool.length)] ?? cfg.bots[0]!;
   const text = fast && openers.length ? openers[Math.floor(Math.random() * openers.length)]! : await generate(
     `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
