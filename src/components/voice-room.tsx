@@ -76,13 +76,13 @@ export function VoiceRoom({ avatars, guestName }: { avatars: Record<string, stri
     let alive = true;
     let failures = 0;
     const show = (name: string) => { setSpeaker(name); setSpeakers((s) => [name, ...s.filter((x) => x !== name)].slice(0, 10)); };
+    prefetchVoiceTurn();
+    let queue = early; early = [];
+    const drop = () => { for (const p of queue) void p.then((t) => t && "url" in t && URL.revokeObjectURL(t.url)); queue = []; };
     (async () => {
       let previous = "";
-      prefetchVoiceTurn();
       // Two turns are always prepared ahead, so the next voice starts the instant the current one ends.
-      let queue = early; early = [];
       const topUp = () => { while (queue.length < 2) queue.push(fetchTurn(previous)); };
-      const drop = () => { for (const p of queue) void p.then((t) => t && "url" in t && URL.revokeObjectURL(t.url)); queue = []; };
       while (alive) {
         topUp();
         const turn = await queue.shift()!;
