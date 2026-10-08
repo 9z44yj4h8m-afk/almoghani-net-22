@@ -45,6 +45,7 @@ const input = "h-11 w-full rounded-lg border border-border bg-card px-3 text-for
 function AdminPage() {
   const { user, ready } = useMember();
   const { tab } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const [admin, setAdmin] = useState<boolean | null>(null);
   useEffect(() => { setAdmin(null); if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => setAdmin(!!data)); }, [user]);
 
@@ -58,7 +59,7 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <Tabs defaultValue={tab && TABS.includes(tab as never) ? tab : "overview"} dir="rtl" className="mt-6">
+        <Tabs value={tab && TABS.some((value) => value === tab) ? tab : "overview"} onValueChange={(value) => { void navigate({ search: { tab: value }, replace: true }); }} dir="rtl" className="mt-6">
           <TabsList className="flex h-auto flex-wrap justify-start gap-1">
             <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
             <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
@@ -380,14 +381,25 @@ function ChatTab() {
       <span className="flex-1 font-bold">الدردشة {enabled ? "مفعّلة" : "متوقفة"}</span>
       <Button variant={enabled ? "outline" : "default"} onClick={async () => { await saveSetting("chat", { enabled: !enabled }); void refresh(); }}>{enabled ? "إيقاف" : "تشغيل"}</Button>
     </div>
-    <ChatModerationManager />
-    <ChatBotsManager />
-    <ChatAppearanceEditor />
-    <VoiceChatManager />
+    <Tabs defaultValue="appearance" dir="rtl">
+      <TabsList className="flex h-auto flex-wrap justify-start gap-1" aria-label="خصائص الدردشة">
+        <TabsTrigger value="appearance">المقاسات والمظهر</TabsTrigger>
+        <TabsTrigger value="bots">الأسماء والصور والردود</TabsTrigger>
+        <TabsTrigger value="voice">الأصوات والتسجيلات</TabsTrigger>
+        <TabsTrigger value="moderation">الحظر والكتم والمايك</TabsTrigger>
+        <TabsTrigger value="messages">الرسائل</TabsTrigger>
+      </TabsList>
+      <TabsContent value="appearance"><ChatAppearanceEditor /></TabsContent>
+      <TabsContent value="bots"><ChatBotsManager /></TabsContent>
+      <TabsContent value="voice"><VoiceChatManager /></TabsContent>
+      <TabsContent value="moderation"><ChatModerationManager /></TabsContent>
+      <TabsContent value="messages">
     <h3 className="font-black">الرسائل</h3>
     <ul className="divide-y divide-border">{(msgs.data ?? []).map((m) => <li key={m.id} className="flex items-start gap-2 py-3">
       <span className="min-w-0 flex-1"><b>{m.display_name || "زائر"}</b> <span className="text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" })}</span><span className="block break-words">{m.body}</span></span>
       <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("chat_messages").delete().eq("id", m.id); void msgs.refetch(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
     </li>)}</ul>
+      </TabsContent>
+    </Tabs>
   </div>;
 }
