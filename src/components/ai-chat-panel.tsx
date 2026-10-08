@@ -24,6 +24,13 @@ import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "almoghani-chat-v1";
 
+export const PERSONAS = [
+  { id: "default", label: "المساعد" },
+  { id: "bedouin", label: "سوالف بدوية" },
+  { id: "sports", label: "رياضة" },
+  { id: "movies", label: "أفلام ومسلسلات" },
+] as const;
+
 const SUGGESTIONS = ["ما فضل أذكار الصباح؟", "لخّص لي سورة الكهف", "اقترح لي قناة إخبارية أتابعها"];
 
 export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
@@ -39,10 +46,12 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
     notificationEnabled.current = enabled; setNotifications(enabled);
     setNotificationNote(enabled ? "تم تفعيل إشعارات الرد أثناء فتح الموقع." : "لم تُفعّل إشعارات المتصفح؛ يبقى تنبيه الرد داخل الشاشة.");
   }
+  const [persona, setPersona] = useState<string>("default");
+  const personaRef = useRef("default");
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const { messages, setMessages, sendMessage, status, stop } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    transport: new DefaultChatTransport({ api: "/api/chat", body: () => ({ persona: personaRef.current }) }),
     onFinish: () => {
       setReplyNotice(true);
       if (notificationEnabled.current && "Notification" in window && Notification.permission === "granted" && document.visibilityState === "hidden") {
@@ -108,6 +117,11 @@ export function AiChatPanel({ embedded = false }: { embedded?: boolean }) {
         </div>
       </header>
 
+      <div className="mx-auto flex w-full max-w-3xl flex-wrap gap-2 px-4 py-2" role="group" aria-label="اختر شخصية البوت">
+        {PERSONAS.map((p) => (
+          <Button key={p.id} type="button" size="sm" variant={persona === p.id ? "default" : "outline"} aria-pressed={persona === p.id} onClick={() => { personaRef.current = p.id; setPersona(p.id); }}>🤖 {p.label}</Button>
+        ))}
+      </div>
       {notificationNote && <p role="status" className="border-b border-sky/40 px-4 py-2 text-xs text-muted-foreground">{notificationNote}</p>}
       {replyNotice && <div role="status" className="flex items-center gap-2 border-b border-sky/40 bg-secondary px-4 py-2 text-sm text-sky"><CheckCheck className="h-4 w-4" />وصل رد ALMOGHANI AI<Button size="icon-sm" variant="ghost" className="mr-auto" aria-label="إخفاء تنبيه الرد" onClick={() => setReplyNotice(false)}>×</Button></div>}
       <Conversation className="min-h-0 flex-1">
