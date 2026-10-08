@@ -529,8 +529,8 @@ body { background: var(--surface-deep); }
 .classic-chat { width: 100%; min-width: 0; padding: 12px; }
 .classic-chat-page { max-width: 1150px; margin: auto; padding-block: 24px; }
 .classic-chat-frame { border: 3px solid var(--chat-edge); padding: 8px; border-radius: 4px; background: var(--chat-metal); box-shadow: var(--chat-bevel); }
-.classic-chat-masthead { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; height: 100px; background: var(--surface-deep); border: 2px solid var(--chat-steel); overflow: hidden; margin-bottom: 10px; }
-.classic-chat-masthead img { height: 100%; width: 100%; object-fit: cover; }
+.classic-chat-masthead { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); grid-template-rows: minmax(0,1fr); align-items: center; height: 100px; background: var(--surface-deep); border: 2px solid var(--chat-steel); overflow: hidden; margin-bottom: 10px; }
+.classic-chat-masthead img { min-height: 0; height: 100%; width: 100%; object-fit: cover; }
 .classic-chat-masthead h2 { font-family: "Barlow Condensed", sans-serif; font-size: 52px; font-weight: 800; line-height: 1; padding: 8px 12px; white-space: nowrap; }
 .classic-chat-masthead h2 span,.classic-chat-footer b { color: var(--primary); }
 .classic-chat-workspace { display: grid; grid-template-columns: minmax(0,1fr) 270px; direction: ltr; gap: 10px; height: 440px; }
