@@ -77,7 +77,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
   const [entered, setEntered] = useState(false);
-  useEffect(() => { if (voice) prefetchVoiceTurn(); }, [voice]);
+  useEffect(() => { prefetchVoiceTurn(); }, [voice]);
   voiceOnRef.current = false; // voice page uses VoiceRoom turns instead
   useEffect(() => { if (!voice || !entered) { audioRef.current?.pause(); queueRef.current = []; } }, [voice, entered]);
   const [myIds, setMyIds] = useState<string[]>([]);
