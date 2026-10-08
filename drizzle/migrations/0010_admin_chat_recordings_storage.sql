@@ -1,0 +1,1 @@
+CREATE POLICY "Admin manage chat recordings" ON storage.objects FOR ALL TO authenticated USING (bucket_id = 'chat-recordings' AND public.has_role(auth.uid(), 'admin'::public.app_role)) WITH CHECK (bucket_id = 'chat-recordings' AND public.has_role(auth.uid(), 'admin'::public.app_role));

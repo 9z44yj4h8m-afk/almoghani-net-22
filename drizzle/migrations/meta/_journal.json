@@ -71,6 +71,13 @@
       "when": 1791473718828,
       "tag": "0009_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791477768955,
+      "tag": "0010_admin_chat_recordings_storage",
+      "breakpoints": true
     }
   ]
 }
