@@ -11,6 +11,7 @@ import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
+import { ChatBotsManager } from "@/components/admin/chat-bots-manager";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl } from "@/lib/admin.functions";
@@ -376,6 +377,8 @@ function ChatTab() {
       <span className="flex-1 font-bold">الدردشة {enabled ? "مفعّلة" : "متوقفة"}</span>
       <Button variant={enabled ? "outline" : "default"} onClick={async () => { await saveSetting("chat", { enabled: !enabled }); void refresh(); }}>{enabled ? "إيقاف" : "تشغيل"}</Button>
     </div>
+    <ChatBotsManager />
+    <h3 className="font-black">الرسائل</h3>
     <ul className="divide-y divide-border">{(msgs.data ?? []).map((m) => <li key={m.id} className="flex items-start gap-2 py-3">
       <span className="min-w-0 flex-1"><b>{m.display_name || "زائر"}</b> <span className="text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" })}</span><span className="block break-words">{m.body}</span></span>
       <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("chat_messages").delete().eq("id", m.id); void msgs.refetch(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
