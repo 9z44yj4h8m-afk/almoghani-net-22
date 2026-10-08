@@ -175,13 +175,14 @@ export const adminPostChat = createServerFn({ method: "POST" })
   });
 
 // Voice-room turn: one bot speaks ~20 seconds; text is only spoken, never posted to the chat.
-export async function voiceMonologue(previous = "") {
+const FEMALE = /^(تحب|أم|شابة|هادئة|خفيفة|اجتماعية|عاشقة|لطيفة|طيبة|تتابع|تسأل)/;
+export async function voiceMonologue(previous = "", heard = "") {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
   const pool = cfg.bots.filter((b) => b.name !== previous);
   const bot = pool[Math.floor(Math.random() * pool.length)] ?? cfg.bots[0]!;
   const text = await generate(
     `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
-    `${previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
+    `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
   );
-  return { name: bot.name, text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
+  return { name: bot.name, female: FEMALE.test(bot.style.trim()), text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
 }
