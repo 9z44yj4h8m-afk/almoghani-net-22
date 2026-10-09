@@ -139,6 +139,32 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_room_moves: {
+        Row: {
+          moved_at: string
+          name: string
+          room_id: string | null
+        }
+        Insert: {
+          moved_at?: string
+          name: string
+          room_id?: string | null
+        }
+        Update: {
+          moved_at?: string
+          name?: string
+          room_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_room_moves_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_rooms: {
         Row: {
           created_at: string

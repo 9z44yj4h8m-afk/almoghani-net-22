@@ -83,3 +83,28 @@ export const checkStreamUrl = createServerFn({ method: "POST" })
       return { ok: false as const, reason: "تعذّر الوصول إلى الرابط." };
     }
   });
+
+/** Owner creates a member account directly (confirmed email, profile name). */
+export const createMember = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ email: z.string().email().max(120), password: z.string().min(8).max(72), name: z.string().trim().min(1).max(40) }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({ email: data.email.trim().toLowerCase(), password: data.password, email_confirm: true, user_metadata: { display_name: data.name } });
+    if (error || !created.user) throw new Error(error?.message.includes("already") ? "البريد مسجّل مسبقًا." : "تعذّر إنشاء العضو.");
+    await supabaseAdmin.from("profiles").upsert({ user_id: created.user.id, display_name: data.name });
+    return { ok: true as const };
+  });
+
+/** Owner sets a new login password for a member. */
+export const setMemberPassword = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ userId: z.string().uuid(), password: z.string().min(8).max(72) }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(data.userId, { password: data.password });
+    if (error) throw new Error("تعذّر تغيير كلمة المرور.");
+    return { ok: true as const };
+  });
