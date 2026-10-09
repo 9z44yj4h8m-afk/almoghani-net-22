@@ -10,6 +10,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // The opening turn is requested as soon as the voice page opens, so sound starts the moment the visitor enters.
 let early: Promise<Turn | null>[] = [];
+// Clip order is tracked client-side; each prefetch claims the next clip so queued turns never repeat.
+let clipCursor = "";
+let chain: Promise<unknown> = Promise.resolve();
 export function prefetchVoiceTurn() { if (!early.length) early = [fetchTurn("", "", true), fetchTurn("")]; }
 
 // Phones only allow sound from an element first played during a tap, so one shared element is unlocked on the enter button and reused for every turn.
@@ -21,9 +24,15 @@ export function unlockVoiceAudio() {
   void shared.play().catch(() => {});
 }
 
-async function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | null> {
+function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | null> {
+  const p = chain.then(() => fetchTurnNow(previous, heard, fast));
+  chain = p.catch(() => {});
+  return p;
+}
+async function fetchTurnNow(previous: string, heard: string, fast: boolean): Promise<Turn | null> {
   try {
-    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast }) });
+    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast, lastClip: clipCursor }) });
+    const clip = res.headers.get("X-Clip-Id"); if (clip) clipCursor = decodeURIComponent(clip);
     if (res.headers.get("X-Voice-Disabled")) return { disabled: true };
     if (!res.ok) return null;
     const name = decodeURIComponent(res.headers.get("X-Bot-Name") ?? "");

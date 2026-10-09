@@ -13,11 +13,19 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { previous, heard, fast } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string; fast?: boolean };
+        const { previous, heard, fast, lastClip } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string; fast?: boolean; lastClip?: string };
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data: row } = await supabaseAdmin.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
         const cfg = normalizeVoiceChat(row?.value);
         if (!cfg.enabled) return new Response("disabled", { status: 403, headers: { "X-Voice-Disabled": "1" } });
+        // Owner's recorded clips play in their saved order (also as replies after a visitor speaks), so real voices carry the room.
+        const clips = cfg.clips.filter((c) => c.enabled);
+        if (clips.length) {
+          const at = clips.findIndex((c) => c.id === lastClip);
+          const clip = fast === true || at < 0 ? clips[0]! : clips[(at + 1) % clips.length]!;
+          const { data: audio, error } = await supabaseAdmin.storage.from("chat-recordings").download(clip.path);
+          if (!error && audio) return new Response(audio, { headers: { "Content-Type": audio.type || "audio/mpeg", "X-Bot-Name": encodeURIComponent(clip.name), "X-Clip-Id": encodeURIComponent(clip.id), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
+        }
         const configured = [{ name: "نغم 🎶", path: cfg.recordings.song }, { name: "قصيدة 🌹", path: cfg.recordings.poem }, ...cfg.clips.filter((c) => c.enabled)];
         const available = configured.filter((r) => r.path && r.name !== previous);
         const candidates = available.length ? available : configured.filter((r) => r.path);
