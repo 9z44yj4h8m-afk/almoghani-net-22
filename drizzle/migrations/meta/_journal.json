@@ -78,6 +78,13 @@
       "when": 1791477768955,
       "tag": "0010_admin_chat_recordings_storage",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791583584447,
+      "tag": "0011_chat_room_moves",
+      "breakpoints": true
     }
   ]
 }
