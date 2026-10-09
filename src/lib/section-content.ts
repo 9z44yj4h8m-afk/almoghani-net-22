@@ -3,8 +3,28 @@ import moviesImage from "@/assets/section-movies.jpg";
 import seriesImage from "@/assets/section-series.jpg";
 import memberImage from "@/assets/section-private.jpg";
 import bedouinImage from "@/assets/bedouin-drama-banner.jpg";
+import arabicMovies from "@/assets/home-categories/arabic-movies.png.asset.json";
+import foreignMovies from "@/assets/home-categories/foreign-movies.png.asset.json";
+import news from "@/assets/home-categories/news.png.asset.json";
+import islamic from "@/assets/home-categories/islamic.png.asset.json";
+import kids from "@/assets/home-categories/kids.png.asset.json";
+import sports from "@/assets/home-categories/sports.png.asset.json";
+import general from "@/assets/home-categories/general.png.asset.json";
+
+export const homeCategoryCards = [
+  { id: "arabic-movies", title: "الأفلام العربية", image: arabicMovies.url, link: "/movies?lang=عربي" },
+  { id: "foreign-movies", title: "الأفلام الأجنبية", image: foreignMovies.url, link: "/movies?lang=عالمي" },
+  { id: "news", title: "القنوات الإخبارية", image: news.url, link: "/channels/news" },
+  { id: "islamic", title: "القنوات الإسلامية", image: islamic.url, link: "/channels/islamic" },
+  { id: "kids", title: "قنوات الأطفال والوثائقية", image: kids.url, link: "/channels/kids" },
+  { id: "sports", title: "القنوات الرياضية", image: sports.url, link: "/channels/sports" },
+  { id: "general", title: "القنوات العامة", image: general.url, link: "/channels/general" },
+];
 
 export const sectionDestinations = [
+  ...homeCategoryCards.map((c) => ({ value: c.link, label: c.title })),
+  { value: "/chat", label: "الشات الكتابي" },
+  { value: "/voice-chat", label: "الشات الصوتي" },
   { value: "/bedouin-drama", label: "البدوية دراما" },
   { value: "/live", label: "البث المباشر" },
   { value: "/movies", label: "أفلام مميزة كاملة" },
@@ -29,6 +49,7 @@ export const editableCards: { id: string; location: string; defaults: SectionCar
   { id: "sections-movie", location: "صفحة الأقسام · الأفلام", defaults: { title: "مكتبة الأفلام", description: "اكتشف عالم الأفلام", button: "استعرض الأفلام", image: moviesImage, link: "/movies" } },
   { id: "sections-series", location: "صفحة الأقسام · المسلسلات", defaults: { title: "المسلسلات", description: "تابع مسلسلاتك وحلقاتك المفضلة", button: "استعرض المسلسلات", image: seriesImage, link: "/vip?kind=series" } },
   { id: "sections-member", location: "صفحة الأقسام · الأعضاء", defaults: { title: "دخول الأعضاء", description: "سجّل دخولك بحسابك", button: "تسجيل الدخول", image: memberImage, link: "/auth" } },
+  ...homeCategoryCards.map((c) => ({ id: `category-${c.id}`, location: `الرئيسية · ${c.title}`, defaults: { title: c.title, description: "", button: "دخول", image: c.image, link: c.link } })),
 ];
 export function getSectionCard(id: string, content?: SectionContent): SectionCard {
   const base = editableCards.find((c) => c.id === id)?.defaults ?? { title: "", description: "", button: "", image: liveImage, link: "/live" };
