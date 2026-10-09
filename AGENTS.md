@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
-- Group existing chat administration tools into focused tabs with appearance dimensions first; keep owner authentication and admin-only writes unchanged so easier access never widens permissions.
+- Render all admin tools in one open page with anchor navigation and chat appearance first; preserve owner authentication and admin-only writes so easier access never widens permissions.
 - Store performer recordings in private chat-recordings with admin-only storage policies and voice_chat settings; the public voice endpoint serves only configured paths, so visitors cannot access arbitrary private files.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
 - Keep public YouTube dramas in per-series metadata modules merged by one typed catalog with ordered episodes and a public /bedouin-drama page; never mix these videos with private IPTV streams or claim they are a live channel.
