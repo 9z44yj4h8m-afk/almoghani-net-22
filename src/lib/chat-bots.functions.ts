@@ -89,7 +89,7 @@ async function generate(system: string, prompt: string) {
   return text.trim().slice(0, 300);
 }
 
-const RULES = "رد بجملة أو جملتين قصيرتين باللهجة الخليجية، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك وبدون أي تشكيل أو فتحات أو ضمات أو سكون.";
+const RULES = "رد بجملة أو جملتين قصيرتين باللهجة السعودية النجدية (لهجة أهل الرياض أو أهل القصيم) بكلمات مثل: وش، ابشر، زين، يا هلا، عساك طيب، بلطف، بدون روابط وبدون اختلاق أخبار أو نتائج. اكتب نص الرسالة فقط بدون اسمك وبدون أي تشكيل أو فتحات أو ضمات أو سكون.";
 
 async function recent(roomId: string | null = null) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -185,7 +185,7 @@ export async function voiceMonologue(previous = "", heard = "", fast = false, op
   if (fast) { const girls = pool.filter((b) => FEMALE.test(b.style.trim())); if (girls.length) pool = girls; }
   const bot = pool[Math.floor(Math.random() * pool.length)] ?? { name: "زائرة", style: "شابة ودودة" };
   const text = fast && openers.length ? openers[Math.floor(Math.random() * openers.length)] ?? "هلا بالجميع" : await generate(
-    `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم باللهجة الخليجية بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
+    `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم ${bot.name.length % 2 ? "بلهجة أهل القصيم السعودية (مثل: وشلونك، ابد، يا زين، عاد، هالحين، والله انه)" : "بلهجة أهل الرياض السعودية (مثل: وش السالفة، ابشر، كذا، مره حلو، يا هلا والله)"} بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
     `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
   );
   return { name: bot.name, female: FEMALE.test(bot.style.trim()), mode: "talk" as "talk" | "sing" | "poem", text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
