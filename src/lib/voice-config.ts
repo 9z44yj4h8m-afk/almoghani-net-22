@@ -16,6 +16,7 @@ export type VoiceChatConfig = {
   botVoices: Record<string, string>;
   openers: string[];
   recordings: { song: string; poem: string };
+  clips: { id: string; name: string; path: string; enabled: boolean }[];
 };
 
 export const defaultVoiceChat: VoiceChatConfig = {
@@ -25,6 +26,7 @@ export const defaultVoiceChat: VoiceChatConfig = {
   femaleVoices: ["Kore", "Aoede", "Leda", "Zephyr", "Despina", "Sulafat"],
   botVoices: {},
   recordings: { song: "", poem: "" },
+  clips: [],
   openers: [
     "هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية",
     "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟",
@@ -45,6 +47,7 @@ export function normalizeVoiceChat(v: unknown): VoiceChatConfig {
     maleVoices: list(o.maleVoices, defaultVoiceChat.maleVoices),
     femaleVoices: list(o.femaleVoices, defaultVoiceChat.femaleVoices),
     botVoices,
+    clips: Array.isArray(o.clips) ? o.clips.filter((c) => c && typeof c.id === "string" && typeof c.name === "string" && typeof c.path === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(c.path)).slice(0, 100).map((c) => ({ id: c.id.slice(0, 80), name: c.name.trim().slice(0, 40) || "تسجيل", path: c.path, enabled: c.enabled !== false })) : [],
     recordings: {
       song: typeof o.recordings?.song === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.song) ? o.recordings.song : "",
       poem: typeof o.recordings?.poem === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.poem) ? o.recordings.poem : "",

@@ -18,8 +18,10 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         const { data: row } = await supabaseAdmin.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
         const cfg = normalizeVoiceChat(row?.value);
         if (!cfg.enabled) return new Response("disabled", { status: 403, headers: { "X-Voice-Disabled": "1" } });
-        const available = [{ name: "نغم 🎶", path: cfg.recordings.song }, { name: "قصيدة 🌹", path: cfg.recordings.poem }].filter((r) => r.path && r.name !== previous);
-        const recording = fast === true ? available.find((r) => r.name === "نغم 🎶") : !heard && Math.random() < 0.35 ? available[Math.floor(Math.random() * available.length)] : undefined;
+        const configured = [{ name: "نغم 🎶", path: cfg.recordings.song }, { name: "قصيدة 🌹", path: cfg.recordings.poem }, ...cfg.clips.filter((c) => c.enabled)];
+        const available = configured.filter((r) => r.path && r.name !== previous);
+        const candidates = available.length ? available : configured.filter((r) => r.path);
+        const recording = fast === true ? candidates.find((r) => r.name === "نغم 🎶") ?? candidates[0] : !heard ? candidates[Math.floor(Math.random() * candidates.length)] : undefined;
         if (recording) {
           const { data: audio, error } = await supabaseAdmin.storage.from("chat-recordings").download(recording.path);
           if (!error && audio) return new Response(audio, { headers: { "Content-Type": audio.type || "audio/mpeg", "X-Bot-Name": encodeURIComponent(recording.name), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
