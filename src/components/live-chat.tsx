@@ -265,6 +265,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           <button type="button" className="mg-logout" onClick={() => { setEntered(false); setVoiceOn(false); }}><LogOut />خروج</button>
         </nav>
         </>}
+        </>}
         <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent dir="rtl" className="w-[calc(100%-2rem)] max-w-sm"><DialogTitle>إنشاء غرفة</DialogTitle><form onSubmit={createRoom} className="grid gap-4"><label htmlFor="new-chat-room">اسم الغرفة</label><input id="new-chat-room" className="member-screen-input" minLength={2} maxLength={40} required value={roomName} onChange={(e) => setRoomName(e.target.value)} autoFocus /><Button type="submit" disabled={creating || roomName.trim().length < 2}><Plus />{creating ? "جارٍ الإنشاء…" : "إنشاء"}</Button>{roomError && <p role="alert" className="text-sm text-destructive">{roomError}</p>}</form></DialogContent></Dialog>
       </div>
     </section>
