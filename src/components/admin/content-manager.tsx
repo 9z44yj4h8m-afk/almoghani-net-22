@@ -3,11 +3,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Plus, Trash2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { checkStreamUrl } from "@/lib/admin.functions";
 import { channelCategories, siteConfigKey } from "@/lib/site-config";
-import { ScheduleManager } from "./schedule-manager";
 
 const input = "h-11 w-full min-w-0 rounded-lg border border-border bg-background px-3 text-foreground";
 const newRow = () => ({ id: `c-${crypto.randomUUID()}`, name: "", category: "عامة", url: "", logo: "" });
@@ -15,11 +13,7 @@ const newRow = () => ({ id: `c-${crypto.randomUUID()}`, name: "", category: "ع�
 export function ContentManager() {
   return <div className="space-y-4">
     <h2 className="text-xl font-bold">إدارة المحتوى</h2>
-    <Tabs defaultValue="channels" dir="rtl">
-      <TabsList><TabsTrigger value="channels">إضافة قنوات جماعية</TabsTrigger><TabsTrigger value="schedule">جدول البث</TabsTrigger></TabsList>
-      <TabsContent value="channels"><BulkChannels /></TabsContent>
-      <TabsContent value="schedule"><ScheduleManager /></TabsContent>
-    </Tabs>
+    <BulkChannels />
   </div>;
 }
 
