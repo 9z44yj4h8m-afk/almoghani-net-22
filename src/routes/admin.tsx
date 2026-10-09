@@ -17,7 +17,7 @@ import { ChatModerationManager } from "@/components/admin/chat-moderation-manage
 import { ChatRoomsManager } from "@/components/admin/chat-rooms-manager";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
-import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl } from "@/lib/admin.functions";
+import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl, createMember, setMemberPassword } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
   siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
@@ -234,8 +234,24 @@ function MembersTab() {
     } catch (err) { setRoleMsg(err instanceof Error && err.message ? err.message : "تعذّر الحفظ."); }
     finally { setRoleBusy(false); }
   }
+  const addMember = useServerFn(createMember);
+  const changePass = useServerFn(setMemberPassword);
+  const [nm, setNm] = useState({ name: "", email: "", password: "" }); const [nmMsg, setNmMsg] = useState(""); const [nmBusy, setNmBusy] = useState(false);
+  const [passFor, setPassFor] = useState<string | null>(null); const [newPass, setNewPass] = useState(""); const [passMsg, setPassMsg] = useState("");
   const fmt = (d: string | null) => d ? new Date(d).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : "—";
   return <div className="space-y-8">
+    <form className="grid gap-3 rounded-2xl border border-border bg-card/50 p-4 sm:grid-cols-3" onSubmit={async (e) => {
+      e.preventDefault(); setNmMsg(""); setNmBusy(true);
+      try { await addMember({ data: nm }); setNmMsg("تمت إضافة العضو ✓ — يقدر يدخل الآن بالبريد وكلمة المرور."); setNm({ name: "", email: "", password: "" }); void members.refetch(); }
+      catch (err) { setNmMsg(err instanceof Error && err.message ? err.message : "تعذّر الإضافة."); } finally { setNmBusy(false); }
+    }}>
+      <h2 className="font-black sm:col-span-3">إضافة عضو جديد</h2>
+      <input aria-label="اسم العضو" className={input} placeholder="اسم العضو" required maxLength={40} value={nm.name} onChange={(e) => setNm({ ...nm, name: e.target.value })} />
+      <input aria-label="بريد العضو" className={input} dir="ltr" type="email" placeholder="email@example.com" required value={nm.email} onChange={(e) => setNm({ ...nm, email: e.target.value })} />
+      <input aria-label="كلمة مرور العضو" className={input} dir="ltr" type="text" placeholder="كلمة المرور (8 أحرف أو أكثر)" required minLength={8} maxLength={72} value={nm.password} onChange={(e) => setNm({ ...nm, password: e.target.value })} />
+      <Button type="submit" disabled={nmBusy} className="sm:col-span-3">{nmBusy ? "جارٍ الإضافة…" : "إضافة العضو"}</Button>
+      {nmMsg && <p role="status" className="text-sm text-muted-foreground sm:col-span-3">{nmMsg}</p>}
+    </form>
     <div className="grid gap-3 rounded-2xl border border-border bg-card/50 p-4">
       <h2 className="font-black">الصلاحيات</h2>
       <p className="text-sm text-muted-foreground">اختر «مشرف» لمن يريد الدخول للوحة التحكم، أو «عضو» لمن يريد البث والمكتبة فقط.</p>
@@ -262,6 +278,12 @@ function MembersTab() {
         <span className="min-w-0 flex-1"><b>{m.display_name || "عضو"}</b>{m.suspended && <span className="ms-2 text-xs text-destructive">موقوف</span>}<span dir="ltr" className="block text-xs text-muted-foreground">{m.email}</span><span className="block text-xs text-muted-foreground">التسجيل: {fmt(m.created_at)} · آخر دخول: {fmt(m.last_login_at)}</span></span>
         <select className="h-9 rounded-lg border border-border bg-card px-2 text-sm" aria-label="الصلاحية" value={r} onChange={(e) => void changeRole(m.user_id, e.target.value === "admin" ? "admin" : "user")}><option value="user">عضو</option><option value="admin">مشرف</option></select>
         <Button size="sm" variant={m.suspended ? "default" : "outline"} onClick={async () => { await supabase.rpc("admin_set_member_suspended", { p_user: m.user_id, p_suspended: !m.suspended }); void members.refetch(); }}>{m.suspended ? "إعادة التفعيل" : "إيقاف"}</Button>
+        <Button size="sm" variant="secondary" onClick={() => { setPassFor(passFor === m.user_id ? null : m.user_id); setNewPass(""); setPassMsg(""); }}>تغيير كلمة المرور</Button>
+        {passFor === m.user_id && <form className="flex w-full flex-wrap gap-2" onSubmit={async (e) => { e.preventDefault(); setPassMsg(""); try { await changePass({ data: { userId: m.user_id, password: newPass } }); setPassMsg("تم تغيير كلمة المرور ✓"); setNewPass(""); } catch (err) { setPassMsg(err instanceof Error && err.message ? err.message : "تعذّر التغيير."); } }}>
+          <input aria-label="كلمة المرور الجديدة" className={input + " flex-1"} dir="ltr" type="text" minLength={8} maxLength={72} required placeholder="كلمة المرور الجديدة" value={newPass} onChange={(e) => setNewPass(e.target.value)} />
+          <Button size="sm" type="submit">حفظ</Button>
+          {passMsg && <p role="status" className="w-full text-sm text-muted-foreground">{passMsg}</p>}
+        </form>}
       </li>; })}</ul>}
   </div>;
 }

@@ -118,6 +118,16 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
     return () => { clearTimeout(first); clearInterval(t); };
   }, [roomId, voice, entered]);
   useEffect(() => {
+    if (!entered || !guestName.trim()) return;
+    let last = "";
+    const check = () => { void supabase.from("chat_room_moves").select("room_id,moved_at").eq("name", guestName.trim()).maybeSingle().then(({ data }) => {
+      if (!data) return; if (!last) { last = data.moved_at; return; }
+      if (data.moved_at !== last) { last = data.moved_at; setRoomId(data.room_id ?? null); setSelectedRoomId(data.room_id ?? null); }
+    }); };
+    check(); const t = window.setInterval(check, 5000);
+    return () => window.clearInterval(t);
+  }, [entered, guestName]);
+  useEffect(() => {
     setGuestName(localStorage.getItem("chat-name") ?? "");
     try { setMyIds(JSON.parse(localStorage.getItem("chat-mine") ?? "[]")); } catch { /* ignore */ }
   }, []);
