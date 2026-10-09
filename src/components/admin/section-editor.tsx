@@ -75,7 +75,9 @@ export function SectionEditor() {
           const move = (direction: number) => {
             const next = [...order]; const target = i + direction;
             if (target < 0 || target >= next.length) return;
-            [next[i], next[target]] = [next[target], next[i]];
+            const current = next[i]; const other = next[target];
+            if (current === undefined || other === undefined) return;
+            next[i] = other; next[target] = current;
             setContent((old) => ({ ...old, orders: { ...old.orders, [group]: next } }));
           };
           return <li key={id} className="flex flex-wrap items-center gap-2 py-3"><span className="min-w-0 flex-1 font-bold">{i + 1}. {label}</span><label className="flex items-center gap-1 text-sm"><input type="checkbox" checked={!content.cards[key]?.hidden} onChange={(e) => setContent((old) => ({ ...old, cards: { ...old.cards, [key]: { ...old.cards[key], hidden: !e.target.checked } } }))} />ظاهر</label><Button type="button" variant="outline" size="icon" disabled={i === 0} aria-label={`تقديم ${label}`} onClick={() => move(-1)}><ArrowUp /></Button><Button type="button" variant="outline" size="icon" disabled={i === order.length - 1} aria-label={`تأخير ${label}`} onClick={() => move(1)}><ArrowDown /></Button></li>;

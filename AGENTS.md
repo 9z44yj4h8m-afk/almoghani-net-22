@@ -11,9 +11,9 @@
 
 ## Architecture
 - Render all admin tools in one open page with anchor navigation and chat appearance first; preserve owner authentication and admin-only writes so easier access never widens permissions.
-- Store performer recordings in private chat-recordings with admin-only storage policies and voice_chat settings; the public voice endpoint serves only configured paths, so visitors cannot access arbitrary private files.
+- Store performers and named clips in private chat-recordings with admin-only storage and normalized voice_chat settings; public playback serves only enabled configured paths to prevent arbitrary private-file access.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
-- Keep public YouTube dramas in per-series metadata modules merged by one typed catalog with ordered episodes and a public /bedouin-drama page; never mix these videos with private IPTV streams or claim they are a live channel.
+- Merge per-series YouTube metadata into one ordered drama catalog at /bedouin-drama; never mix public videos with private IPTV or claim a live channel.
 - Keep optional series cover artwork separate from episode thumbnails in the typed drama catalog; render cover banners intact without duplicate overlays so episode imagery stays unchanged.
 - Admin password-only login authenticates the fixed owner account server-side through Cloud Auth and checks user_roles before returning a session; never bypass RLS with a shared PIN.
 
@@ -34,6 +34,7 @@
 
 - Keep the broadcast visual shell, wordmark, footer and four-item navigation in shared root components; page-specific content retains its existing routes and access guards so restyling never changes membership rules.
 - Keep bulk channel creation and editable broadcast schedules in the admin content manager using existing admin-RLS tables; validate streams before batch insertion and invalidate shared schedule queries after saves so public schedules stay current.
-- Store editable destination-card images, copy and allow-listed page destinations in site_settings with static defaults in section-content; keep category IDs unchanged when labels change so edits never alter stream grouping or access guards.
+- Store card copy, images, allow-listed destinations, order and visibility in section-content with static defaults; apply ordering to home categories, member platforms and sections without changing category IDs or access guards.
+- Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
