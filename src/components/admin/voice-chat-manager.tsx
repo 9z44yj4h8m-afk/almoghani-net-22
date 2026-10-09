@@ -15,6 +15,38 @@ export function VoiceChatManager() {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [previews, setPreviews] = useState<Record<string, string>>({});
+  const [clipName, setClipName] = useState("");
+  const [clipFile, setClipFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    for (const clip of cfg.clips) void supabase.storage.from("chat-recordings").createSignedUrl(clip.path, 3600).then(({ data }) => {
+      if (alive) setPreviews((v) => ({ ...v, [clip.id]: data?.signedUrl ?? "" }));
+    });
+    return () => { alive = false; };
+  }, [cfg.clips]);
+
+  async function persistClips(next: VoiceChatConfig, removedPath?: string) {
+    const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: normalizeVoiceChat(next) as never, updated_at: new Date().toISOString() });
+    if (error) throw error;
+    setCfg(normalizeVoiceChat(next));
+    if (removedPath) await supabase.storage.from("chat-recordings").remove([removedPath]);
+  }
+
+  async function addClip(e: React.FormEvent) {
+    e.preventDefault();
+    if (!clipFile || !clipName.trim()) return;
+    const ext = clipFile.name.split(".").pop()?.toLowerCase();
+    if (!ext || !["mp3", "wav", "m4a", "ogg", "webm"].includes(ext) || !clipFile.type.startsWith("audio/") || clipFile.size > 20 * 1024 * 1024) { setNote("اختر ملف صوت بحجم أقل من 20 ميجابايت."); return; }
+    setUploading(true); const path = `recordings/${crypto.randomUUID()}.${ext}`;
+    try {
+      const { error } = await supabase.storage.from("chat-recordings").upload(path, clipFile, { contentType: clipFile.type });
+      if (error) throw error;
+      try { await persistClips({ ...cfg, clips: [...cfg.clips, { id: crypto.randomUUID(), name: clipName.trim(), path, enabled: true }] }); }
+      catch (error) { await supabase.storage.from("chat-recordings").remove([path]); throw error; }
+      setClipName(""); setClipFile(null); setNote("تمت إضافة الصوت وحفظه ✓");
+    } catch { setNote("تعذّر إضافة الصوت."); } finally { setUploading(false); }
+  }
 
   useEffect(() => {
     let alive = true;
@@ -88,6 +120,18 @@ export function VoiceChatManager() {
       <Button type="button" disabled={busy || uploading} onClick={save}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الشات الصوتي"}</Button>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
+    <div className="space-y-4">
+      <h3 className="font-black">مكتبة التسجيلات ({cfg.clips.length})</h3>
+      <form onSubmit={addClip} className="grid gap-3 sm:grid-cols-2">
+        <input className={field} aria-label="اسم الصوت أو المتحدث" required maxLength={40} placeholder="اسم الصوت أو المتحدث" value={clipName} onChange={(e) => setClipName(e.target.value)} />
+        <input aria-label="ملف الصوت الجديد" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm" onChange={(e) => setClipFile(e.target.files?.[0] ?? null)} />
+        <Button type="submit" disabled={busy || uploading || !clipFile || !clipName.trim() || cfg.clips.length >= 100}><Upload />إضافة وحفظ الصوت</Button>
+      </form>
+      <ul className="divide-y divide-border">{cfg.clips.map((clip) => <li key={clip.id} className="space-y-2 py-3">
+        <div className="flex flex-wrap items-center gap-2"><b className="min-w-0 flex-1 break-words">{clip.name}</b><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={clip.enabled} disabled={busy || uploading} onChange={async (e) => { try { await persistClips({ ...cfg, clips: cfg.clips.map((c) => c.id === clip.id ? { ...c, enabled: e.target.checked } : c) }); setNote("تم حفظ التفعيل ✓"); } catch { setNote("تعذّر الحفظ."); } }} />تشغيل</label><Button type="button" size="icon" variant="outline" aria-label={`حذف صوت ${clip.name}`} disabled={busy || uploading} onClick={async () => { if (!confirm("حذف هذا التسجيل؟")) return; setUploading(true); try { await persistClips({ ...cfg, clips: cfg.clips.filter((c) => c.id !== clip.id) }, clip.path); setNote("تم حذف الصوت ✓"); } catch { setNote("تعذّر الحذف."); } finally { setUploading(false); } }}><Trash2 /></Button></div>
+        {previews[clip.id] && <audio controls preload="none" src={previews[clip.id]} aria-label={`معاينة ${clip.name}`} className="w-full" />}
+      </li>)}</ul>
+    </div>
     <div className="grid gap-4 sm:grid-cols-2">
       {(["song", "poem"] as const).map((key) => <div key={key} className="space-y-3 border border-border p-4 rounded-lg">
         <h3 className="font-black">{key === "song" ? "تسجيل نغم · الغناء" : "تسجيل قصيدة · الشعر"}</h3>
