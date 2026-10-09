@@ -90,6 +90,8 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const [showEmoji, setShowEmoji] = useState(false);
   const [peopleQuery, setPeopleQuery] = useState("");
   const [sideTab, setSideTab] = useState<"people" | "room">("people");
+  const [mode, setMode] = useState<"text" | "voice">("text");
+  const onMobile = () => typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
   const [rooms, setRooms] = useState<Room[]>([]);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
