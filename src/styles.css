@@ -793,3 +793,5 @@ body { background: var(--surface-deep); }
   .mg-chat .mg-nav > a, .mg-chat .mg-nav > button { padding:2px 7px; gap:4px; }
   .mg-chat .mg-nav > .mg-logout { padding:4px 10px; }
 }
+.mg-chat .mg-person > button { flex:1; min-width:0; display:flex; border:0; background:transparent; padding:0; cursor:pointer; }
+.mg-chat .mg-msg .classic-chat-avatar img, .mg-chat .mg-person .classic-chat-avatar img { object-fit:cover; }
