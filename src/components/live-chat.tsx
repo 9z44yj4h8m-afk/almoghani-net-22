@@ -1,9 +1,8 @@
 import { VoiceRoom, prefetchVoiceTurn, unlockVoiceAudio } from "@/components/voice-room";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink, Mic, MicOff } from "lucide-react";
+import { Plus, Trash2, Volume2, Loader2, Users, MessageCircle, Mic, MicOff } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 import { botReply, botBanter } from "@/lib/chat-bots.functions";
@@ -14,7 +13,7 @@ import { ChatAppearanceStyle } from "@/components/chat-appearance-style";
 import { BotAvatar } from "@/components/bot-avatar";
 import { withoutArabicDiacritics } from "@/lib/chat-text";
 import { useChatControl, useChatBans, isActiveBan, defaultChatControl } from "@/lib/chat-control";
-import { Home, Settings, LogOut, Send, Image as ImageIcon } from "lucide-react";
+import { Home, Settings, LogOut, Send, Search, Image as ImageIcon } from "lucide-react";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
 
@@ -174,84 +173,82 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   }
 
   return (
-    <section dir="rtl" aria-labelledby="live-chat-title" className={`classic-chat ${bare ? "classic-chat-bare" : "classic-chat-page"}`}>
+    <section dir="rtl" aria-labelledby="live-chat-title" className={`classic-chat mg-chat ${bare ? "classic-chat-bare" : "classic-chat-page"}`}>
       <ChatAppearanceStyle config={appearance} />
-      <div className="classic-chat-frame">
-        <div className="classic-chat-masthead" dir="ltr">
-          <h2 id="live-chat-title">ALMOGHANI CHAT</h2>
-          <span className="classic-chat-status">{activeRoom}</span>
-          <Link to="/" target="_blank" rel="noopener noreferrer" className="classic-chat-settings"><Home />الرئيسية</Link>
-        </div>
-        {!entered ? <form className="classic-chat-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name || bannedOut) return; setGuestName(name); localStorage.setItem("chat-name", name); unlockVoiceAudio(); if (!voice) setVoiceOn(true); setEntered(true); }}>
-          {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="w-full">الشات الكتابي</Button>}
-          <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار</label>
-          <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="member-screen-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
-          {voice ? <Button type="submit" disabled={!guestName.trim()} className="w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
+      <div className="classic-chat-frame mg-frame">
+        <header className="mg-head" dir="ltr">
+          <div className="mg-brand"><MessageCircle aria-hidden="true" /><h2 id="live-chat-title">ALMOGHANI <span>CHAT</span></h2><i aria-hidden="true" /><b dir="rtl"><em />متصل</b></div>
+          <Link to="/contact" className="mg-head-settings" dir="rtl"><Settings />الإعدادات</Link>
+        </header>
+        {!entered ? <form className="classic-chat-entry mg-entry" onSubmit={(e) => { e.preventDefault(); const name = guestName.trim().slice(0, 30); if (!name || bannedOut) return; setGuestName(name); localStorage.setItem("chat-name", name); unlockVoiceAudio(); if (!voice) setVoiceOn(true); setEntered(true); }}>
+          {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="mg-btn-primary w-full">الشات الكتابي</Button>}
+          <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار للدخول للدردشة</label>
+          <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="mg-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
+          {voice ? <Button type="submit" disabled={!guestName.trim()} className="mg-btn-primary w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="mg-btn w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {bannedOut && <p role="alert" className="text-sm font-bold text-destructive">هذا الاسم محظور من الدردشة.</p>}
-          {!bare && <Button asChild variant="outline"><Link to="/" target="_blank" rel="noopener noreferrer"><ExternalLink />الرئيسية</Link></Button>}
         </form> : voice ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
-        <div className="classic-chat-workspace">
-        <div className="classic-chat-main">
-        <div className="classic-chat-roombar"><Users aria-hidden="true" /><b>{activeRoom}</b><span><i />{names.length} متصل الآن</span></div>
-        {control.announcement && <p className="classic-chat-announcement">📌 {control.announcement}</p>}
-        <div ref={listRef} className="classic-chat-messages" aria-live="polite" aria-label="رسائل الدردشة">
-          <div className="classic-chat-system sr-only">{botLine}</div>
+        <div className="classic-chat-workspace mg-workspace">
+        <aside className="classic-chat-sidebar mg-side" aria-label="الأعضاء والغرف">
+          <div className="mg-tabs" role="tablist" aria-label="قائمة الدردشة">
+            <button type="button" role="tab" aria-selected={sideTab === "people"} onClick={() => setSideTab("people")}><Users />الأعضاء</button>
+            <button type="button" role="tab" aria-selected={sideTab === "room"} onClick={() => setSideTab("room")}><MessageCircle />الغرف</button>
+          </div>
+          {sideTab === "people" ? <>
+            <label className="mg-search"><Search aria-hidden="true" /><input aria-label="بحث عن عضو" placeholder="بحث عن عضو ..." value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /></label>
+            <div className="mg-people">{names.map((name) => <div key={name} className="mg-person"><BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon} /><em aria-hidden="true" /><button type="button" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span>{name}</span></button></div>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
+          </> : <div className="mg-rooms"><b>{activeRoom}</b><select aria-label="اختيار الغرفة" className="mg-input" value={selectedRoomId ?? ""} onChange={(e) => setSelectedRoomId(e.target.value || null)}><option value="">الغرفة العامة</option>{rooms.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select><Button className="mg-btn-primary" onClick={() => { setRoomId(selectedRoomId); setSideTab("people"); }}>دخول الغرفة</Button><Button className="mg-btn" variant="secondary" onClick={() => { setRoomError(""); setCreateOpen(true); }}><Plus />إنشاء غرفة</Button></div>}
+        </aside>
+        <div className="classic-chat-main mg-main">
+        <div className="mg-roombar"><Users aria-hidden="true" /><b>{activeRoom === "الدردشة العامة" ? "الغرفة العامة" : activeRoom}</b><i aria-hidden="true" /><span>{names.length} متصل الآن</span><em aria-hidden="true" /></div>
+        {control.announcement && <p className="mg-announce">📌 {control.announcement}</p>}
+        <div ref={listRef} className="classic-chat-messages mg-messages" aria-live="polite" aria-label="رسائل الدردشة">
+          <div className="sr-only">{botLine}</div>
           {control.hideMessages ? <p className="py-6 text-center text-sm font-bold">الرسائل مخفية مؤقتًا من الإدارة.</p> : <>
-          {msgs.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">لا توجد رسائل بعد — كن أول من يكتب.</p>}
+          {msgs.length === 0 && <p className="py-6 text-center text-sm">لا توجد رسائل بعد — كن أول من يكتب.</p>}
           {msgs.map((m) => {
             const mine = user ? m.user_id === user.id : myIds.includes(m.id);
             const name = displayName(m.display_name);
+            const isBot = !!(siteConfig?.chatNames.includes(name) || siteConfig?.botNameAliases[m.display_name] || siteConfig?.botAvatars[name]);
             return (
-              <div key={m.id} className={`classic-chat-message ${mine ? "classic-chat-mine" : ""}`}>
+              <div key={m.id} className="mg-msg">
                 <BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? (name || "ع").trim().charAt(0) : appearance.avatarIcon} />
-                <div className="min-w-0 flex-1">
-                  <p className="classic-chat-message-meta"><b>{name || (mine ? "أنت" : "عضو")}</b><time dateTime={m.created_at}>{new Date(m.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Riyadh" })}</time>
+                <div className="mg-msg-text">
+                  <p className="classic-chat-message-meta mg-name"><b>{name || (mine ? "أنت" : "عضو")}</b>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
                   </p>
-                  {(() => { const isBot = !!(siteConfig?.chatNames.includes(name) || siteConfig?.botNameAliases[m.display_name] || siteConfig?.botAvatars[name]); return <p className="classic-chat-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}{isBot && <Button type="button" variant="ghost" size="icon-xs" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}</p>; })()}
+                  <p className="classic-chat-body mg-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}{isBot && <Button type="button" variant="ghost" size="icon-xs" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}</p>
                 </div>
+                <time dateTime={m.created_at}>{new Date(m.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Riyadh" })}</time>
               </div>
             );
           })}
           </>}
         </div>
-
         </div>
-        <aside className="classic-chat-sidebar" aria-label="الأسماء والغرف">
-          <div className="classic-chat-tabs" role="tablist" aria-label="قائمة الدردشة">
-            <Button role="tab" aria-selected={sideTab === "people"} className="classic-chat-control" variant="secondary" onClick={() => setSideTab("people")}><Users />المستخدمون</Button>
-            <Button role="tab" aria-selected={sideTab === "room"} className="classic-chat-control" variant="secondary" onClick={() => setSideTab("room")}><MessageCircle />غرف</Button>
-          </div>
-          {sideTab === "people" ? <>
-            <label className="classic-chat-filter"><span>عرض كل المستخدمين في غرفة ({names.length})</span><input aria-label="بحث عن اسم" value={peopleQuery} onChange={(e) => setPeopleQuery(e.target.value)} /><b>الاسم المستعار</b></label>
-            <div className="classic-chat-people">{names.map((name) => <div key={name} className="classic-chat-person"><BotAvatar name={name} path={siteConfig?.botAvatars[name]} fallback={appearance.avatarIcon === "default" ? name.trim().charAt(0) : appearance.avatarIcon} /><Button variant="ghost" className="min-w-0 flex-1 justify-start overflow-hidden px-0 text-inherit" title={`الرد على ${name}`} onClick={() => { setText(`@${name} `); inputRef.current?.focus(); }}><span className="truncate">{name}</span></Button></div>)}{!names.length && <p className="p-3 text-sm">لا توجد أسماء بعد.</p>}</div>
-          </> : <div className="classic-chat-room"><MessageCircle /><b>{activeRoom}</b><select aria-label="اختيار الغرفة" className="member-screen-input w-full text-xs" value={selectedRoomId ?? ""} onChange={(e) => setSelectedRoomId(e.target.value || null)}><option value="">الدردشة العامة</option>{rooms.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomId(selectedRoomId); setSideTab("people"); }}>دخول الغرفة</Button><Button className="classic-chat-control" variant="secondary" onClick={() => { setRoomError(""); setCreateOpen(true); }}><Plus />إنشاء غرفة</Button></div>}
-        </aside>
         </div>
         {voiceOn && control.voiceOpen && <VoiceRoom compact micsOpen={control.micsOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} onClose={() => setVoiceOn(false)} />}
-        <form onSubmit={send} className="classic-chat-compose">
-          <p className="sr-only">{guestName}</p>
-          <div className="classic-chat-compose-row">
-            <textarea ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك هنا..." aria-label="اكتب تعليقًا" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
-            <div className="classic-chat-format-tools">
-              <Button type="button" variant="secondary" className="classic-chat-tool" aria-label="الكتابة العريضة" onClick={() => inputRef.current?.focus()}><b>B</b></Button>
-              <Button type="button" variant="secondary" className="classic-chat-tool" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>😊</Button>
-              <Button type="button" variant="secondary" className="classic-chat-tool" aria-label="الكتابة المائلة" onClick={() => inputRef.current?.focus()}><i>I</i></Button>
-              <Button type="button" variant="secondary" className="classic-chat-tool" aria-label={voiceOn ? "إيقاف المايك" : "المايك"} aria-pressed={voiceOn} onClick={() => { if (!voiceOn) { prefetchVoiceTurn(); unlockVoiceAudio(); } setVoiceOn((v) => !v); }}>{voiceOn ? <MicOff /> : <Mic />}</Button>
-            </div>
-            <div className="classic-chat-actions">
-              <Button type="button" variant="secondary" className="classic-chat-control" aria-label="الغرف والإعدادات" onClick={() => setSideTab((v) => v === "room" ? "people" : "room")}>Settings</Button>
-              <Button type="button" variant="secondary" className="classic-chat-control" onClick={() => { setEntered(false); setVoiceOn(false); }}>Logout</Button>
-              <Button type="submit" variant="secondary" className="classic-chat-control classic-chat-send" disabled={sending || !text.trim()} aria-label="إرسال">{sending ? "…" : "Send"}</Button>
-            </div>
+        <form onSubmit={send} className="mg-compose">
+          <textarea ref={inputRef} rows={1} value={text} onChange={(e) => setText(e.target.value)} maxLength={300} placeholder="اكتب رسالتك هنا..." aria-label="اكتب رسالتك" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }} />
+          <div className="mg-tools">
+            <button type="button" aria-label="لون الخط" onClick={() => inputRef.current?.focus()}><span className="mg-a">A</span></button>
+            <button type="button" aria-label="خط عريض" onClick={() => inputRef.current?.focus()}><b>B</b></button>
+            <button type="button" aria-label={voiceOn ? "إيقاف المايك" : "المايك"} aria-pressed={voiceOn} onClick={() => { if (!voiceOn) { prefetchVoiceTurn(); unlockVoiceAudio(); } setVoiceOn((v) => !v); }}>{voiceOn ? <MicOff /> : <Mic />}</button>
+            <button type="button" aria-label="الصور" onClick={() => setShowEmoji((v) => !v)}><ImageIcon /></button>
+            <button type="button" aria-label="الرموز التعبيرية" aria-expanded={showEmoji} onClick={() => setShowEmoji((v) => !v)}>😊</button>
+            <button type="submit" className="mg-send" disabled={sending || !text.trim()} aria-label="إرسال">{sending ? "…" : <>إرسال<Send /></>}</button>
           </div>
-          {showEmoji && <div className="classic-chat-emojis">{emojis.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="icon" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</Button>)}<div className="classic-chat-reactions">{EMOJIS.map((emoji) => <Button key={emoji} type="button" variant="ghost" size="sm" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</Button>)}</div></div>}
+          {showEmoji && <div className="mg-emojis">{emojis.map((emoji) => <button key={emoji} type="button" aria-label={`إضافة ${emoji}`} onClick={() => { setText((v) => (v + emoji).slice(0, 300)); inputRef.current?.focus(); }}>{emoji}</button>)}{EMOJIS.map((emoji) => <button key={emoji} type="button" onClick={() => react(emoji)} aria-label={`تفاعل ${emoji}`}>{emoji} {reactions[emoji] ?? 0}</button>)}</div>}
         </form>
-        {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
-        <div className="classic-chat-bottom-band" aria-hidden="true" />
+        {error && <p role="alert" className="mt-1 px-2 text-sm text-destructive">{error}</p>}
+        <nav className="mg-nav" aria-label="تنقل الدردشة">
+          <Link to="/" target="_blank" rel="noopener noreferrer"><Home />الرئيسية</Link>
+          <button type="button" onClick={() => setSideTab("room")}><Users />الغرف</button>
+          <button type="button" onClick={() => setSideTab("people")}><Users />الأعضاء</button>
+          <Link to="/contact"><Settings />الإعدادات</Link>
+          <button type="button" className="mg-logout" onClick={() => { setEntered(false); setVoiceOn(false); }}><LogOut />خروج</button>
+        </nav>
         </>}
         <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent dir="rtl" className="w-[calc(100%-2rem)] max-w-sm"><DialogTitle>إنشاء غرفة</DialogTitle><form onSubmit={createRoom} className="grid gap-4"><label htmlFor="new-chat-room">اسم الغرفة</label><input id="new-chat-room" className="member-screen-input" minLength={2} maxLength={40} required value={roomName} onChange={(e) => setRoomName(e.target.value)} autoFocus /><Button type="submit" disabled={creating || roomName.trim().length < 2}><Plus />{creating ? "جارٍ الإنشاء…" : "إنشاء"}</Button>{roomError && <p role="alert" className="text-sm text-destructive">{roomError}</p>}</form></DialogContent></Dialog>
-        <footer className="classic-chat-footer" dir="ltr"><Link to="/contact" aria-label="للتواصل مع إدارة الموقع"><img src={contactBanner.url} alt="للتواصل مع إدارة الموقع" width={469} height={98} /></Link><span>ALMOGHANI <b>LIVE</b></span></footer>
       </div>
     </section>
   );

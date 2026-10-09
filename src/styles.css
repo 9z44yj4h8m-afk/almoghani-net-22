@@ -701,3 +701,97 @@ body { background: var(--surface-deep); }
  .classic-chat .classic-chat-control { font-size:10px; }
  .classic-chat-bottom-band { height:24px; }
 }
+
+/* ALMOGHANI CHAT — maroon reference design */
+.classic-chat.mg-chat { --mg-maroon:#7d1a2c; --mg-maroon-2:#9b2639; --mg-deep:#5a0f1e; --mg-pink:#e7b9c0; --mg-soft:#f6e6e8; --mg-line:#ecdfe1; --mg-name:#8b1a2e; padding:6px; font-family:"Cairo","Tajawal",sans-serif; }
+.classic-chat.mg-chat .mg-frame { display:flex; flex-direction:column; gap:8px; padding:0; overflow:hidden; background:linear-gradient(180deg,#c98a95,#d9a4ad 40%,#c9858f); border:1px solid var(--mg-deep); border-radius:10px; box-shadow:0 10px 30px rgb(0 0 0 / .45); }
+.mg-chat .mg-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 16px; background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; border-bottom:2px solid #4a0b17; }
+.mg-chat .mg-brand { display:flex; align-items:center; gap:10px; min-width:0; }
+.mg-chat .mg-brand > svg { width:34px; height:34px; color:#f3a6b3; fill:#f3a6b3; flex-shrink:0; }
+.mg-chat .mg-brand h2 { margin:0; font-family:"Outfit","Cairo",sans-serif; font-weight:800; font-size:clamp(18px,3.2vw,32px); letter-spacing:.5px; color:#fff; white-space:nowrap; }
+.mg-chat .mg-brand h2 span { color:#f3a6b3; }
+.mg-chat .mg-brand > i { width:1px; height:28px; background:rgb(255 255 255 / .35); }
+.mg-chat .mg-brand b { display:flex; align-items:center; gap:6px; font-weight:600; font-size:clamp(13px,1.8vw,18px); white-space:nowrap; }
+.mg-chat em { display:inline-block; width:11px; height:11px; border-radius:50%; background:#3cc85a; flex-shrink:0; font-style:normal; }
+.mg-chat .mg-head-settings { display:flex; align-items:center; gap:8px; color:#fff; font-weight:600; font-size:clamp(13px,1.8vw,18px); white-space:nowrap; }
+.mg-chat .mg-head-settings svg { width:24px; height:24px; }
+.mg-chat .mg-entry { margin:auto; padding:20px 14px; width:min(100% - 24px,420px); background:#fff; border-radius:10px; color:var(--mg-deep); }
+.mg-chat .mg-input { width:100%; height:42px; padding:0 12px; border:1px solid #d9c3c7; border-radius:8px; background:#fff; color:#222; font:inherit; }
+.mg-chat .mg-btn-primary { background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; border:0; font-weight:700; }
+.mg-chat .mg-btn { background:#fff; color:var(--mg-maroon); border:1px solid #d9c3c7; font-weight:700; }
+.classic-chat.mg-chat .mg-workspace { display:grid; direction:rtl; grid-template-columns:clamp(150px,28%,360px) minmax(0,1fr)!important; gap:8px; padding:0 8px; flex:1 1 0; min-height:0; height:auto; }
+.mg-chat .mg-main, .mg-chat .mg-side { display:flex; flex-direction:column; min-height:0; min-width:0; border-radius:8px; overflow:hidden; background:#f7eef0; border:1px solid #b9707c; box-shadow:inset 0 1px 0 rgb(255 255 255 / .6); }
+.mg-chat .mg-side { padding:0; gap:0; direction:rtl; }
+.mg-chat .mg-roombar { display:flex; align-items:center; gap:10px; padding:10px 16px; background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; }
+.mg-chat .mg-roombar svg { width:26px; height:26px; flex-shrink:0; }
+.mg-chat .mg-roombar b { font-size:clamp(15px,2.4vw,24px); font-weight:800; white-space:nowrap; }
+.mg-chat .mg-roombar i { width:1px; height:22px; background:rgb(255 255 255 / .4); }
+.mg-chat .mg-roombar span { font-size:clamp(12px,1.6vw,16px); white-space:nowrap; }
+.mg-chat .mg-announce { margin:0; padding:6px 12px; background:#fff3cd; color:#5a3b00; font-size:13px; font-weight:700; }
+.classic-chat.mg-chat .mg-messages { flex:1 1 0; min-height:0; overflow-y:auto; direction:rtl; padding:0; border:0; border-radius:0; background:#fff; color:#1f1f1f; }
+.mg-chat .mg-msg { display:flex; align-items:center; gap:12px; padding:9px 14px; direction:rtl; }
+.mg-chat .mg-msg:nth-child(odd) { background:#f3f3f4; }
+.mg-chat .mg-msg .classic-chat-avatar, .mg-chat .mg-person .classic-chat-avatar { width:var(--chat-avatar,56px); height:var(--chat-avatar,56px); border-radius:6px; border:0; object-fit:cover; flex-shrink:0; overflow:hidden; }
+.mg-chat .mg-msg-text { flex:1; min-width:0; text-align:right; }
+.classic-chat.mg-chat .mg-name { display:flex; align-items:center; gap:6px; margin:0 0 2px; font-size:calc(var(--chat-font,17px) * 1.05); font-weight:800; line-height:1.3; direction:rtl; }
+.classic-chat.mg-chat .mg-name b { color:var(--chat-name,var(--mg-name)); }
+.classic-chat.mg-chat .mg-body { margin:0; direction:rtl; text-align:right; font-size:var(--chat-font,17px); font-weight:500; line-height:1.5; color:#1f1f1f; overflow-wrap:anywhere; white-space:pre-wrap; }
+.mg-chat .mg-msg time { flex-shrink:0; margin-inline-start:auto; color:#777; font-size:14px; font-family:Arial,sans-serif; direction:ltr; }
+.mg-chat .mg-tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--mg-deep); }
+.mg-chat .mg-tabs button { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 6px; color:#fff; font-weight:800; font-size:clamp(14px,2vw,22px); background:linear-gradient(180deg,#a2384a,#7d1a2c); border:0; }
+.mg-chat .mg-tabs button[aria-selected="true"] { background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); }
+.mg-chat .mg-tabs button[aria-selected="false"] { background:linear-gradient(180deg,#b04a5c,#8c2638); opacity:.92; }
+.mg-chat .mg-tabs svg { width:22px; height:22px; }
+.mg-chat .mg-search { display:flex; align-items:center; gap:8px; margin:8px; padding:0 12px; height:44px; background:#fff; border:1px solid #d9c3c7; border-radius:8px; color:#555; }
+.mg-chat .mg-search svg { width:22px; height:22px; flex-shrink:0; }
+.mg-chat .mg-search input { flex:1; min-width:0; border:0; outline:0; background:transparent; font:inherit; color:#222; }
+.mg-chat .mg-people { flex:1 1 0; min-height:0; overflow-y:auto; background:#fff; margin:0 4px 4px; }
+.mg-chat .mg-person { display:flex; align-items:center; gap:12px; width:100%; padding:6px 10px; border:0; border-bottom:1px solid var(--mg-line); background:#fff; direction:ltr; text-align:right; cursor:pointer; }
+.mg-chat .mg-person span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; direction:rtl; text-align:left; color:var(--chat-name,var(--mg-name)); font-weight:800; font-size:clamp(14px,1.9vw,22px); }
+.mg-chat .mg-rooms { display:grid; gap:8px; padding:10px; color:var(--mg-deep); }
+.mg-chat .mg-compose { margin:0 8px; padding:8px; border-radius:8px; background:#f2dfe2; border:1px solid #b9707c; display:grid; gap:8px; }
+.mg-chat .mg-compose textarea { width:100%; height:48px; resize:none; padding:10px 14px; border:1px solid #d9c3c7; border-radius:8px; background:#fff; color:#222; font:inherit; font-size:16px; outline:0; }
+.mg-chat .mg-tools { display:flex; align-items:center; gap:8px; direction:rtl; flex-wrap:wrap; }
+.mg-chat .mg-tools > button { display:grid; place-items:center; width:58px; height:44px; border-radius:8px; border:1px solid #d9c3c7; background:#fff; color:#222; font-size:22px; cursor:pointer; }
+.mg-chat .mg-tools > button svg { width:24px; height:24px; }
+.mg-chat .mg-tools > button[aria-pressed="true"] { background:#fde2e6; color:var(--mg-maroon); }
+.mg-chat .mg-tools b { font-family:Arial,sans-serif; font-size:22px; font-weight:900; }
+.mg-chat .mg-a { font-family:Arial,sans-serif; font-weight:700; font-size:22px; color:var(--mg-maroon); border-bottom:3px solid #c0172f; line-height:1; }
+.mg-chat .mg-tools > .mg-send { display:flex; gap:10px; width:auto; padding:0 26px; margin-inline-start:auto; background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; border:0; font-weight:800; font-size:20px; }
+.mg-chat .mg-tools > .mg-send svg { transform:scaleX(-1); }
+.mg-chat .mg-tools > .mg-send:disabled { opacity:.75; }
+.mg-chat .mg-emojis { display:flex; flex-wrap:wrap; gap:4px; max-height:120px; overflow-y:auto; background:#fff; border-radius:8px; padding:6px; }
+.mg-chat .mg-emojis button { padding:4px 6px; font-size:20px; border:0; background:transparent; cursor:pointer; }
+.mg-chat .mg-nav { display:flex; align-items:center; gap:0; padding:10px 14px; background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; direction:rtl; }
+.mg-chat .mg-nav > a, .mg-chat .mg-nav > button { display:flex; align-items:center; gap:8px; padding:4px clamp(8px,2.4vw,30px); color:#fff; background:transparent; border:0; border-inline-start:1px solid rgb(255 255 255 / .3); font-weight:600; font-size:clamp(13px,1.8vw,19px); white-space:nowrap; cursor:pointer; }
+.mg-chat .mg-nav > a:first-child { border:0; padding-inline-start:0; }
+.mg-chat .mg-nav svg { width:24px; height:24px; }
+.mg-chat .mg-nav > .mg-logout { margin-inline-start:auto; border:1px solid #fff; border-radius:8px; padding:6px 22px; }
+@media (max-width:640px) {
+  .classic-chat.mg-chat { padding:0; }
+  .classic-chat.mg-chat .mg-workspace { grid-template-columns:36% minmax(0,1fr)!important; gap:5px; padding:0 5px; }
+  .mg-chat .mg-head { padding:8px 10px; }
+  .mg-chat .mg-brand > svg { width:24px; height:24px; }
+  .mg-chat .mg-roombar { padding:8px 10px; gap:6px; }
+  .mg-chat .mg-roombar svg, .mg-chat .mg-tabs svg, .mg-chat .mg-nav svg { width:16px; height:16px; }
+  .mg-chat .mg-msg { gap:8px; padding:6px 8px; }
+  .mg-chat .mg-msg .classic-chat-avatar { width:38px; height:38px; }
+  .mg-chat .mg-person { gap:6px; padding:5px 6px; }
+  .mg-chat .mg-person .classic-chat-avatar { width:32px; height:32px; }
+  .mg-chat .mg-person em { width:8px; height:8px; }
+  .classic-chat.mg-chat .mg-name { font-size:14px; }
+  .classic-chat.mg-chat .mg-body { font-size:14px; }
+  .mg-chat .mg-msg time { font-size:11px; }
+  .mg-chat .mg-search { height:34px; margin:5px; }
+  .mg-chat .mg-tabs button { padding:8px 2px; gap:4px; }
+  .mg-chat .mg-compose { margin:0 5px; padding:6px; gap:6px; }
+  .mg-chat .mg-compose textarea { height:40px; }
+  .mg-chat .mg-tools { gap:5px; flex-wrap:nowrap; }
+  .mg-chat .mg-tools > button { width:38px; height:38px; font-size:18px; }
+  .mg-chat .mg-tools > .mg-send { padding:0 12px; font-size:16px; }
+  .mg-chat .mg-nav { padding:8px 6px; }
+  .mg-chat .mg-nav > a, .mg-chat .mg-nav > button { padding:2px 7px; gap:4px; }
+  .mg-chat .mg-nav > .mg-logout { padding:4px 10px; }
+}
+.mg-chat .mg-person > button { flex:1; min-width:0; display:flex; border:0; background:transparent; padding:0; cursor:pointer; }
+.mg-chat .mg-msg .classic-chat-avatar img, .mg-chat .mg-person .classic-chat-avatar img { object-fit:cover; }
