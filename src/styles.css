@@ -762,6 +762,11 @@ body { background: var(--surface-deep); }
 .mg-chat .mg-tools > .mg-send:disabled { opacity:.75; }
 .mg-chat .mg-emojis { display:flex; flex-wrap:wrap; gap:4px; max-height:120px; overflow-y:auto; background:#fff; border-radius:8px; padding:6px; }
 .mg-chat .mg-emojis button { padding:4px 6px; font-size:20px; border:0; background:transparent; cursor:pointer; }
+.mg-chat .mg-mode-tabs { display:grid; grid-template-columns:1fr 1fr; margin:0 8px; overflow:hidden; border:1px solid var(--mg-deep); border-radius:8px 8px 0 0; }
+.mg-chat .mg-mode-tabs button { display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 6px; color:#fff; font-weight:800; font-size:clamp(13px,1.9vw,19px); background:linear-gradient(180deg,#b04a5c,#8c2638); border:0; }
+.mg-chat .mg-mode-tabs button[aria-selected="true"] { background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); }
+.mg-chat .mg-mode-tabs svg { width:18px; height:18px; }
+@media(min-width:641px) { .mg-chat .mg-mode-tabs { display:none; } }
 .mg-chat .mg-nav { display:flex; align-items:center; gap:0; padding:10px 14px; background:linear-gradient(180deg,var(--mg-maroon-2),var(--mg-deep)); color:#fff; direction:rtl; }
 .mg-chat .mg-nav > a, .mg-chat .mg-nav > button { display:flex; align-items:center; gap:8px; padding:4px clamp(8px,2.4vw,30px); color:#fff; background:transparent; border:0; border-inline-start:1px solid rgb(255 255 255 / .3); font-weight:600; font-size:clamp(13px,1.8vw,19px); white-space:nowrap; cursor:pointer; }
 .mg-chat .mg-nav > a:first-child { border:0; padding-inline-start:0; }

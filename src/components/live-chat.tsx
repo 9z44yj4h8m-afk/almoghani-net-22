@@ -90,6 +90,8 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const [showEmoji, setShowEmoji] = useState(false);
   const [peopleQuery, setPeopleQuery] = useState("");
   const [sideTab, setSideTab] = useState<"people" | "room">("people");
+  const [mode, setMode] = useState<"text" | "voice">("text");
+  const onMobile = () => typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
   const [rooms, setRooms] = useState<Room[]>([]);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
@@ -194,9 +196,14 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           {voice ? <h2 className="text-center text-lg font-bold">الشات الصوتي</h2> : <Button type="submit" className="mg-btn-primary w-full">الشات الكتابي</Button>}
           <label htmlFor={bare ? "chat-nickname-bare" : "chat-nickname"}>اكتب اسمك المستعار للدخول للدردشة</label>
           <input id={bare ? "chat-nickname-bare" : "chat-nickname"} className="mg-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} maxLength={30} required autoComplete="nickname" />
-          {voice ? <Button type="submit" disabled={!guestName.trim()} className="mg-btn-primary w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="mg-btn w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
+          {voice ? <Button type="submit" disabled={!guestName.trim()} className="mg-btn-primary w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="mg-btn w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); if (onMobile()) { setGuestName(name); unlockVoiceAudio(); prefetchVoiceTurn(); setVoiceOn(false); setEntered(true); setMode("voice"); } else void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {bannedOut && <p role="alert" className="text-sm font-bold text-destructive">هذا الاسم محظور من الدردشة.</p>}
         </form> : voice ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
+        <div className="mg-mode-tabs" role="tablist" aria-label="نوع الشات">
+          <button type="button" role="tab" aria-selected={mode === "text"} onClick={() => setMode("text")}><MessageCircle />الشات الكتابي</button>
+          <button type="button" role="tab" aria-selected={mode === "voice"} onClick={() => { if (mode !== "voice") { setVoiceOn(false); prefetchVoiceTurn(); unlockVoiceAudio(); setMode("voice"); } }}><Volume2 />الشات الصوتي</button>
+        </div>
+        {mode === "voice" ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
         <div className="classic-chat-workspace mg-workspace">
         <aside className="classic-chat-sidebar mg-side" aria-label="الأعضاء والغرف">
           <div className="mg-tabs" role="tablist" aria-label="قائمة الدردشة">
@@ -257,6 +264,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           <Link to="/contact"><Settings />الإعدادات</Link>
           <button type="button" className="mg-logout" onClick={() => { setEntered(false); setVoiceOn(false); }}><LogOut />خروج</button>
         </nav>
+        </>}
         </>}
         <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent dir="rtl" className="w-[calc(100%-2rem)] max-w-sm"><DialogTitle>إنشاء غرفة</DialogTitle><form onSubmit={createRoom} className="grid gap-4"><label htmlFor="new-chat-room">اسم الغرفة</label><input id="new-chat-room" className="member-screen-input" minLength={2} maxLength={40} required value={roomName} onChange={(e) => setRoomName(e.target.value)} autoFocus /><Button type="submit" disabled={creating || roomName.trim().length < 2}><Plus />{creating ? "جارٍ الإنشاء…" : "إنشاء"}</Button>{roomError && <p role="alert" className="text-sm text-destructive">{roomError}</p>}</form></DialogContent></Dialog>
       </div>
