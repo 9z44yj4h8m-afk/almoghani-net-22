@@ -1,9 +1,8 @@
 import { VoiceRoom, prefetchVoiceTurn, unlockVoiceAudio } from "@/components/voice-room";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Plus, Smile, Trash2, Volume2, Loader2, Users, MessageCircle, ExternalLink, Mic, MicOff } from "lucide-react";
+import { Plus, Trash2, Volume2, Loader2, Users, MessageCircle, Mic, MicOff } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import contactBanner from "@/assets/chat/contact-banner.jpg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "./member-provider";
 import { botReply, botBanter } from "@/lib/chat-bots.functions";
