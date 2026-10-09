@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useSiteConfig } from "@/lib/site-config";
-import { getSectionCard } from "@/lib/section-content";
+import { getSectionCard, orderedSectionIds } from "@/lib/section-content";
 import { SectionCardStyle } from "@/components/section-card-style";
 
 export const Route = createFileRoute("/sections")({
@@ -29,8 +29,9 @@ function SectionsPage() {
         <span className="mx-auto mt-3 block h-0.5 w-14 rounded bg-sky" />
       </header>
       <div className="space-y-4">
-        {["sections-live", "sections-movie", "sections-series", "sections-bedouin", "sections-member"].map((id) => {
+        {orderedSectionIds("sections", ["sections-live", "sections-movie", "sections-series", "sections-bedouin", "sections-member"], content).map((id) => {
           const c = getSectionCard(id, content);
+          if (c.hidden) return null;
           return <a
             key={c.title}
             href={c.link}

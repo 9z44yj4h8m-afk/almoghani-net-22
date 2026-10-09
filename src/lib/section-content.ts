@@ -17,8 +17,8 @@ export const sectionDestinations = [
   { value: "/contact", label: "التواصل" },
   { value: "/live-chat", label: "الدردشة" },
 ] as const;
-export type SectionCard = { title: string; description: string; button: string; image: string; link: string; font?: string; titleSize?: number; descriptionSize?: number; buttonSize?: number; imageWidth?: number; imageHeight?: number; imageFit?: "cover" | "contain"; fontWeight?: number };
-export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string };
+export type SectionCard = { title: string; description: string; button: string; image: string; link: string; hidden?: boolean; font?: string; titleSize?: number; descriptionSize?: number; buttonSize?: number; imageWidth?: number; imageHeight?: number; imageFit?: "cover" | "contain"; fontWeight?: number };
+export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string; orders?: Record<string, string[]> };
 export const defaultSectionContent: SectionContent = { cards: {}, titles: {}, pageTitle: "الأقسام", pageDescription: "اختر ما تريد مشاهدته" };
 export const editableCards: { id: string; location: string; defaults: SectionCard }[] = [
   { id: "sections-bedouin", location: "صفحة الأقسام · البدوية دراما", defaults: { title: "البدوية دراما", description: "المسلسلات البدوية وجميع حلقاتها", button: "استعرض المسلسلات", image: bedouinImage, link: "/bedouin-drama" } },
@@ -37,4 +37,10 @@ export function getSectionCard(id: string, content?: SectionContent): SectionCar
   if (!sectionDestinations.some((d) => d.value === card.link)) card.link = base.link;
   if (!/^(https:\/\/|\/)/.test(card.image) || card.image.startsWith("//")) card.image = base.image;
   return card;
+}
+
+export function orderedSectionIds(group: string, defaults: string[], content?: SectionContent): string[] {
+  const saved = content?.orders?.[group];
+  const ordered = Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string" && defaults.includes(id)) : [];
+  return [...new Set([...ordered, ...defaults])];
 }
