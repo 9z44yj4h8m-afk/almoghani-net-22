@@ -199,6 +199,11 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
           {voice ? <Button type="submit" disabled={!guestName.trim()} className="mg-btn-primary w-full"><Volume2 />دخول الشات الصوتي</Button> : <Button type="button" variant="secondary" disabled={!guestName.trim()} className="mg-btn w-full" onClick={() => { const name = guestName.trim().slice(0, 30); if (!name) return; localStorage.setItem("chat-name", name); if (onMobile()) { setGuestName(name); unlockVoiceAudio(); prefetchVoiceTurn(); setVoiceOn(false); setEntered(true); setMode("voice"); } else void navigate({ to: "/voice-chat" }); }}><Volume2 />الشات الصوتي</Button>}
           {bannedOut && <p role="alert" className="text-sm font-bold text-destructive">هذا الاسم محظور من الدردشة.</p>}
         </form> : voice ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
+        <div className="mg-mode-tabs" role="tablist" aria-label="نوع الشات">
+          <button type="button" role="tab" aria-selected={mode === "text"} onClick={() => setMode("text")}><MessageCircle />الشات الكتابي</button>
+          <button type="button" role="tab" aria-selected={mode === "voice"} onClick={() => { if (mode !== "voice") { setVoiceOn(false); prefetchVoiceTurn(); unlockVoiceAudio(); setMode("voice"); } }}><Volume2 />الشات الصوتي</button>
+        </div>
+        {mode === "voice" ? <VoiceRoom micsOpen={control.micsOpen} closed={!control.voiceOpen} avatars={siteConfig?.botAvatars ?? {}} guestName={guestName.trim()} /> : <>
         <div className="classic-chat-workspace mg-workspace">
         <aside className="classic-chat-sidebar mg-side" aria-label="الأعضاء والغرف">
           <div className="mg-tabs" role="tablist" aria-label="قائمة الدردشة">
