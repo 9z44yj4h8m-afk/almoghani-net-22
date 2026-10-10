@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Download, Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { MELODIES, PRESET_SONGS, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
+import { KHALID_SONGS, MELODIES, PRESET_SONGS, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 
@@ -309,5 +309,32 @@ export function VoiceChatManager() {
       <div className="flex gap-2"><input className={field} value={opener} maxLength={300} placeholder="اكتب جملة ترحيب جديدة…" onChange={(e) => setOpener(e.target.value)} /><Button type="button" disabled={!opener.trim()} onClick={() => { update({ openers: [...cfg.openers, opener.trim()] }); setOpener(""); }}><Plus />إضافة</Button></div>
     </div>
     <p className="text-xs text-muted-foreground">لا تنسَ الضغط على «حفظ الشات الصوتي» بعد التعديل.</p>
+  </section>;
+}
+
+export function KhalidSongsPanel() {
+  const [current, setCurrent] = useState<VoiceChatConfig["song"]>(null);
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { void supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle().then(({ data }) => setCurrent(normalizeVoiceChat(data?.value).song)); }, []);
+  async function play(song: VoiceChatConfig["song"]) {
+    setBusy(true); setNote("");
+    try {
+      const { data, error: readError } = await supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
+      if (readError) throw readError;
+      const next = normalizeVoiceChat({ ...normalizeVoiceChat(data?.value), song });
+      const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
+      if (error) throw error;
+      setCurrent(next.song); setNote(song ? `تشتغل الآن «${song.title}» لكل من في الشات الصوتي ✓` : "تم إيقاف الأغنية ✓");
+    } catch { setNote("تعذّر التشغيل؛ حاول مجددًا."); } finally { setBusy(false); }
+  }
+  return <section className="space-y-3 rounded-2xl border-2 border-primary/60 bg-card/60 p-4" aria-label="أغاني خالد عبدالرحمن">
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      <h2 className="font-black text-lg">🎵 أغاني خالد عبدالرحمن</h2>
+      {current && <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => void play(null)}>إيقاف «{current.title}»</Button>}
+    </div>
+    <p className="text-xs text-muted-foreground">بصوته الحقيقي ولحنها وإيقاعها الأصلي، من قناته الرسمية في يوتيوب. تشتغل لكل من في الشات الصوتي.</p>
+    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{KHALID_SONGS.map((k) => <Button key={k.videoId} type="button" variant={current?.videoId === k.videoId ? "default" : "outline"} disabled={busy} onClick={() => void play({ videoId: k.videoId, title: k.title, at: Date.now() })}><Play />{k.title}</Button>)}</div>
+    {note && <p className="text-sm font-bold">{note}</p>}
   </section>;
 }
