@@ -78,13 +78,17 @@ export const MELODIES = [
 ] as const;
 export const RHYTHMS = [
   { id: "slow", label: "إيقاع بطيء حالم" }, { id: "khabeeti", label: "رقصة خبيتي" }, { id: "dahha", label: "رقصة دحّة" },
-  { id: "ardha", label: "رقصة عرضة" }, { id: "happy", label: "إيقاع فرح سريع" },
+  { id: "ardha", label: "رقصة عرضة" }, { id: "samri", label: "إيقاع سامري" }, { id: "happy", label: "إيقاع فرح سريع" },
 ] as const;
 export const PRESET_SONGS = [
   { id: "layl", title: "يا ليل الرياض", melody: "khaliji", rhythm: "slow", text: "يا ليل الرياض طوّل سهرنا، والنجم يشهد على حب قلبي، يا ليل لا تروح خلنا، نسهر على صوت الحبيب" },
   { id: "qassim", title: "هلا بأهل القصيم", melody: "najdi", rhythm: "khabeeti", text: "هلا وغلا بأهل القصيم، يا زين طيبهم وكرمهم، هلا بالربع والنخل العظيم، والقلب يفرح بشوفهم" },
   { id: "salam", title: "سلامي للغالي", melody: "samri", rhythm: "dahha", text: "سلامي للغالي عدد المطر، وعدد ما هبّ نسيم السحر، يا اللي غيابك طال واشتقت لك، تعال نورّ ليالي القمر" },
   { id: "watan", title: "يا دارنا", melody: "shaila", rhythm: "ardha", text: "يا دارنا يا عز راسي وفخري، يا ديرة الأمجاد والطيب والجود، نفداك بالروح والعمر يجري، وانتي لنا عز ومجد ممدود" },
+  { id: "k1", title: "يا راحلين (على طريقة خالد)", melody: "khalid", rhythm: "slow", text: "يا راحلين وقلبي معكم رحل، والدمع من عيني على الخد سال، يا ليت من فارقني يرجع ولو قبل، يشوف حالي بعده وش صار بالحال" },
+  { id: "k2", title: "ليل الشوق (على طريقة خالد)", melody: "khalid", rhythm: "slow", text: "ليل الشوق طويل وأنا سهران، أعدّ النجوم وأذكر طيفك، يا اللي سكنت القلب والوجدان، كل ما غبت زاد الحنين ليفك" },
+  { id: "k3", title: "عيونك نجد (على طريقة خالد)", melody: "khalid", rhythm: "dahha", text: "عيونك نجد وصوتك مطر، وضحكتك فجر بعد ليل طويل، يا ساكن الروح ما بك خطر، أنت الهوى وأنت الدرب والدليل" },
+  { id: "k4", title: "صبرت (على طريقة خالد)", melody: "khalid", rhythm: "samri", text: "صبرت وقلت الزمان يدور، ويرجع لي اللي غاب عن عيني، والقلب رغم الجرح مسرور، يحلم بيوم يلقى الغالي جنبي" },
   { id: "nam", title: "نام يا حلو", melody: "lullaby", rhythm: "slow", text: "نام يا حلو نام، والقمر يحرسك، نام والليل سلام، والورد يحضنك" },
 ] as const;
 export function singDelivery(melody?: string, rhythm?: string) {
