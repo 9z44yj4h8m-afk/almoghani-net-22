@@ -7,16 +7,11 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
 
-export function VoiceChatManager() {
+export function SayNowForm() {
   const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
   const [bots, setBots] = useState<string[]>(defaultChatBots.bots.map((b) => b.name));
-  const [opener, setOpener] = useState("");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [previews, setPreviews] = useState<Record<string, string>>({});
-  const [clipName, setClipName] = useState("");
-  const [clipFile, setClipFile] = useState<File | null>(null);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
 
@@ -24,9 +19,38 @@ export function VoiceChatManager() {
     e.preventDefault();
     const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
     setBusy(true);
-    try { await persistClips({ ...cfg, say: { id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now() } }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now() }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
     catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
+
+  useEffect(() => {
+    let alive = true;
+    void supabase.from("site_settings").select("key,value").in("key", ["voice_chat", "chat_bots"]).then(({ data }) => {
+      if (!alive) return;
+      for (const row of data ?? []) {
+        if (row.key === "voice_chat") setCfg(normalizeVoiceChat(row.value));
+        if (row.key === "chat_bots") { const b = (row.value as Partial<ChatBotsConfig>)?.bots; if (b?.length) setBots(b.map((x) => x.name)); }
+      }
+    });
+    return () => { alive = false; };
+  }, []);
+
+  return <form onSubmit={sayNow} className="space-y-3 rounded-2xl border-2 border-primary/60 bg-card/60 p-4">
+    <h2 className="font-black text-lg">🎤 خل البوت يقول كلامك الآن</h2>
+    <select className={field} aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select>
+    <textarea className={`${field} h-24 py-2`} aria-label="الكلام" required maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => setSayText(e.target.value)} />
+    <Button type="submit" disabled={busy || !sayText.trim()}><Volume2 />قلها الآن</Button>
+    <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق.</p>
+    {note && <p className="text-sm font-bold">{note}</p>}
+  </form>;
+}
+
+async function saveSay(say: NonNullable<VoiceChatConfig["say"]>) {
+  const { data } = await supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
+  const next = normalizeVoiceChat({ ...(data?.value as Partial<VoiceChatConfig> | undefined ?? {}), say });
+  const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
+  if (error) throw error;
+}
 
   useEffect(() => {
     let alive = true;
