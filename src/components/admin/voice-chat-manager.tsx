@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
+import { Download, Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
@@ -18,7 +18,27 @@ export function SayNowForm() {
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("");
+  const [audioFile, setAudioFile] = useState<File | null>(null);
   const previewVoiceFn = useServerFn(previewVoice);
+
+  async function downloadVoice() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile], title: "صوت المغني" });
+        return;
+      }
+      const url = URL.createObjectURL(audioFile);
+      const link = document.createElement("a");
+      link.href = url; link.download = audioFile.name;
+      document.body.appendChild(link); link.click(); link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+      setNote("تم طلب تنزيل المقطع الصوتي ✓");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر تنزيل الصوت؛ حاول مجددًا.");
+    }
+  }
 
   async function saveVoice() {
     const name = sayBot || bots[0];
@@ -43,9 +63,11 @@ export function SayNowForm() {
   async function testVoice() {
     if (testing) return;
     const name = sayBot || bots[0] || "";
-    setTesting(true); setNote("");
+    setTesting(true); setNote(""); setAudioFile(null);
     try {
       const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "" } });
+      const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
+      setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch { setNote("تعذّر تجريب الصوت."); }
@@ -87,7 +109,8 @@ export function SayNowForm() {
     </label>
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
-      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الصوت"}</Button>
+      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
+      <Button type="button" disabled={!audioFile || testing} onClick={downloadVoice}><Download />حفظ الصوت في جوالي</Button>
       <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
