@@ -14,12 +14,13 @@ export function SayNowForm() {
   const [busy, setBusy] = useState(false);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
+  const [sayVoice, setSayVoice] = useState("");
 
   async function sayNow(e: React.FormEvent) {
     e.preventDefault();
     const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
     setBusy(true);
-    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now() }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
     catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
 
@@ -40,7 +41,15 @@ export function SayNowForm() {
     <select className={field} aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select>
     <textarea className={`${field} h-24 py-2`} aria-label="الكلام" required maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => setSayText(e.target.value)} />
     <Button type="submit" disabled={busy || !sayText.trim()}><Volume2 />قلها الآن</Button>
-    <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق.</p>
+    <label className="block space-y-1">
+      <span className="text-sm font-bold">اختيار الصوت (ذكر أو أنثى)</span>
+      <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => setSayVoice(e.target.value)}>
+        <option value="">تلقائي — حسب إعداد البوت</option>
+        <optgroup label="أصوات رجالية">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>ذكر · {v.id} ({v.label})</option>)}</optgroup>
+        <optgroup label="أصوات نسائية">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.id} ({v.label})</option>)}</optgroup>
+      </select>
+    </label>
+    <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
     {note && <p className="text-sm font-bold">{note}</p>}
   </form>;
 }
