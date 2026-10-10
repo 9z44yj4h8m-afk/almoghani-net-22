@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { voiceMonologue } from "@/lib/chat-bots.functions";
-import { VOICE_LIST, normalizeVoiceChat, voiceDelivery } from "@/lib/voice-config";
+import { VOICE_LIST, normalizeVoiceChat, singDelivery, voiceDelivery } from "@/lib/voice-config";
 
 function pickVoice(name: string, list: string[]) {
   let h = 0;
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             model: "google/gemini-3.1-flash-tts-preview",
-            contents: [{ role: "user", parts: [{ text: `${mode === "sing" ? "غنيها بصوت بنت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب سعودي نجدي أصيل، مدّي الكلمات كأنك تغنين" : mode === "poem" ? "ألقيها بصوت بنت ناعم رقيق، بإلقاء شعر نبطي سعودي هادئ مؤثر ووقفات بين الأبيات" : voiceDelivery(voice)}: ${text}` }] }],
+            contents: [{ role: "user", parts: [{ text: `${say?.sing ? singDelivery(say.melody, say.rhythm) : mode === "sing" ? "غنيها بصوت بنت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب سعودي نجدي أصيل، مدّي الكلمات كأنك تغنين" : mode === "poem" ? "ألقيها بصوت بنت ناعم رقيق، بإلقاء شعر نبطي سعودي هادئ مؤثر ووقفات بين الأبيات" : voiceDelivery(voice)}: ${text}` }] }],
             generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
             stream_format: "audio",
           }),
