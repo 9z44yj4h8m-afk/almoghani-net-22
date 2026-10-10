@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { singDelivery, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
+import { singFallbacks, speakWithFallback, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 export const previewVoice = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -13,16 +13,7 @@ export const previewVoice = createServerFn({ method: "POST" })
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) throw new Error("not configured");
     const voice = data.voice && VOICE_LIST.some((v) => v.id === data.voice) ? data.voice : "Leda";
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-3.1-flash-tts-preview",
-        contents: [{ role: "user", parts: [{ text: `${data.sing ? singDelivery(data.melody, data.rhythm) : voiceDelivery(voice)}: ${data.text}` }] }],
-        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
-        stream_format: "audio",
-      }),
-    });
+    const res = await speakWithFallback(apiKey, voice, data.text, data.sing ? singFallbacks(data.melody, data.rhythm) : [voiceDelivery(voice), ""]);
     if (!res.ok) throw new Error(await res.text());
     const bytes = new Uint8Array(await res.arrayBuffer());
     let bin = "";

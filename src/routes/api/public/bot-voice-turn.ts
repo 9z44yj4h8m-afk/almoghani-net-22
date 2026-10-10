@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { voiceMonologue } from "@/lib/chat-bots.functions";
-import { VOICE_LIST, normalizeVoiceChat, singDelivery, voiceDelivery } from "@/lib/voice-config";
+import { VOICE_LIST, normalizeVoiceChat, singFallbacks, speakWithFallback, voiceDelivery } from "@/lib/voice-config";
 
 function pickVoice(name: string, list: string[]) {
   let h = 0;
@@ -32,16 +32,8 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         const gen = say ? { name: say.name, text: say.text, female: VOICE_LIST.some((v) => v.id === say.voice && v.female), mode: say.sing ? "sing" : "talk" } : await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
         const { name, text, female, mode } = gen;
         const voice = say?.voice || (cfg.botVoices[name] ?? (mode === "sing" ? "Leda" : mode === "poem" ? "Achernar" : null) ?? (fast === true && female ? "Leda" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices));
-        const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "google/gemini-3.1-flash-tts-preview",
-            contents: [{ role: "user", parts: [{ text: `${say?.sing ? singDelivery(say.melody, say.rhythm) : mode === "sing" ? "غنيها بصوت بنت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب سعودي نجدي أصيل، مدّي الكلمات كأنك تغنين" : mode === "poem" ? "ألقيها بصوت بنت ناعم رقيق، بإلقاء شعر نبطي سعودي هادئ مؤثر ووقفات بين الأبيات" : voiceDelivery(voice)}: ${text}` }] }],
-            generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
-            stream_format: "audio",
-          }),
-        });
+        const direction = mode === "sing" ? "غنيها بصوت بنت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب سعودي نجدي أصيل، مدّي الكلمات كأنك تغنين" : mode === "poem" ? "ألقيها بصوت بنت ناعم رقيق، بإلقاء شعر نبطي سعودي هادئ مؤثر ووقفات بين الأبيات" : voiceDelivery(voice);
+        const res = await speakWithFallback(apiKey, voice, text, say?.sing ? singFallbacks(say.melody, say.rhythm) : mode === "sing" ? [direction, "غنيها بصوت بنت ناعم", ""] : [direction, ""]);
         if (!res.ok) return new Response(await res.text(), { status: res.status });
         return new Response(res.body, { headers: { "Content-Type": res.headers.get("Content-Type") ?? "audio/wav", "X-Bot-Name": encodeURIComponent(name), ...(say ? { "X-Say-Id": say.id } : {}), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
       },

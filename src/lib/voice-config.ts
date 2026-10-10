@@ -92,3 +92,24 @@ export function singDelivery(melody?: string, rhythm?: string) {
   const r = RHYTHMS.find((x) => x.id === rhythm)?.label ?? "إيقاع بطيء حالم";
   return `${SING_DELIVERY}. غنّها كأغنية حقيقية كاملة على ${m} مع ${r}، التزم بنغمة ثابتة وارفع وانزل الصوت مع اللحن، ومدّ آخر كل جملة`;
 }
+
+/** Singing prompts fail intermittently upstream; try richer direction first, then simpler ones, then plain speech. */
+export async function speakWithFallback(apiKey: string, voice: string, text: string, directions: string[]) {
+  let last: Response | null = null;
+  for (const d of directions) {
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-3.1-flash-tts-preview",
+        contents: [{ role: "user", parts: [{ text: d ? `${d}: ${text}` : text }] }],
+        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
+        stream_format: "audio",
+      }),
+    });
+    if (res.ok) return res;
+    last = res;
+  }
+  return last!;
+}
+export const singFallbacks = (melody?: string, rhythm?: string) => [singDelivery(melody, rhythm), "غنيها بصوت بنت ناعم", "غنيها بصوت ناعم", ""];
