@@ -29,6 +29,8 @@ export type VoiceChatConfig = {
   clips: { id: string; name: string; path: string; enabled: boolean }[];
   /** One-off line the owner asks a bot to say immediately; served once per listener for 10 minutes. voice = explicit voice id or "" for auto. */
   say: { id: string; name: string; text: string; at: number; voice: string; sing?: boolean; melody?: string; rhythm?: string } | null;
+  /** Official Khalid Abdulrahman YouTube song the owner is playing for everyone in the voice chat. */
+  song: { videoId: string; title: string; at: number } | null;
 };
 
 export const defaultVoiceChat: VoiceChatConfig = {
@@ -40,6 +42,7 @@ export const defaultVoiceChat: VoiceChatConfig = {
   recordings: { song: "", poem: "" },
   clips: [],
   say: null,
+  song: null,
   openers: [
     "هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية",
     "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟",
@@ -66,6 +69,7 @@ export function normalizeVoiceChat(v: unknown): VoiceChatConfig {
       poem: typeof o.recordings?.poem === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.poem) ? o.recordings.poem : "",
     },
     say: o.say && typeof o.say.id === "string" && typeof o.say.text === "string" && o.say.text.trim() ? { id: o.say.id.slice(0, 80), name: String(o.say.name ?? "").slice(0, 40), text: o.say.text.trim().slice(0, 400), at: Number(o.say.at) || 0, voice: typeof o.say.voice === "string" && known.has(o.say.voice) ? o.say.voice : "", sing: o.say.sing === true, melody: String(o.say.melody ?? "").slice(0, 20), rhythm: String(o.say.rhythm ?? "").slice(0, 20) } : null,
+    song: o.song && KHALID_SONGS.some((k) => k.videoId === o.song?.videoId) ? { videoId: o.song.videoId, title: String(o.song.title ?? "").slice(0, 60), at: Number(o.song.at) || 0 } : null,
     openers: openers.length ? openers : defaultVoiceChat.openers,
   };
 }
@@ -117,3 +121,37 @@ export async function speakWithFallback(apiKey: string, voice: string, text: str
   return last!;
 }
 export const singFallbacks = (melody?: string, rhythm?: string) => [singDelivery(melody, rhythm), "غنيها بصوت بنت ناعم", "غنيها بصوت ناعم", ""];
+
+/** Official uploads from Khalid Abdulrahman's YouTube channel (UCsCqx2sQAeI2egBsuwDJoJQ); played as-is with their original melody and rhythm. */
+export const KHALID_SONGS = [
+  { videoId: "1Ue8oy9UetM", title: "بلا ميعاد" },
+  { videoId: "2CQVIEgwbIg", title: "موادع" },
+  { videoId: "9b945qVtAnk", title: "صفحة جديدة" },
+  { videoId: "EAcxDEB4_CU", title: "توني دريت" },
+  { videoId: "ECi_2_vOqTk", title: "عقد وسوار" },
+  { videoId: "HrDIfK2U8eE", title: "عيون الحب" },
+  { videoId: "I0_wTVmhwnk", title: "صدقيني" },
+  { videoId: "Ks-qhqa88wk", title: "يا ضامية" },
+  { videoId: "M9BB0uQuarU", title: "شدوا" },
+  { videoId: "P85jZjKB0qM", title: "لوعة المغرم" },
+  { videoId: "QmfjZEST6-4", title: "يالله النسيان" },
+  { videoId: "RsNW51dvw84", title: "حبيب الأمس" },
+  { videoId: "SdnMO0SgaXA", title: "صارحيني" },
+  { videoId: "WipGOD5pBDM", title: "فرحة لقانا" },
+  { videoId: "_1hq-u9TDLM", title: "يطول الهجر" },
+  { videoId: "__CebU-3hJo", title: "عشق بدوي" },
+  { videoId: "_ePxNAOnbnc", title: "خذ ما تبي" },
+  { videoId: "bTg-bbrRbIM", title: "أحبك الماء" },
+  { videoId: "b_RjNxF8gMs", title: "زليت" },
+  { videoId: "ewXapLF-azk", title: "حالمة" },
+  { videoId: "fA5MzB4qzQk", title: "ظن" },
+  { videoId: "h1g68E73lY4", title: "الطرف الحنون" },
+  { videoId: "il4uPcQP-IQ", title: "حبيبتي" },
+  { videoId: "iq6khXyxHLg", title: "من الفرحة" },
+  { videoId: "isgegdVRL6Y", title: "سيد الحب" },
+  { videoId: "isy0Ifj_B-k", title: "لوعتي" },
+  { videoId: "p-aeFWdntuE", title: "لأجل حبك" },
+  { videoId: "tOHH4fv4dEc", title: "الصد" },
+  { videoId: "vSA78gs_RWg", title: "بينك وبيني" },
+  { videoId: "vyQa368wu5U", title: "لك عين تسأل" },
+] as const;
