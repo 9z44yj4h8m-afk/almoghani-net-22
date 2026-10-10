@@ -65,7 +65,10 @@ export function SayNowForm() {
         <optgroup label="أصوات نسائية">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.id} ({v.label})</option>)}</optgroup>
       </select>
     </label>
-    <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
+    <div className="flex flex-wrap items-center gap-2">
+      <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
+      <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
+    </div>
     {note && <p className="text-sm font-bold">{note}</p>}
   </form>;
 }
