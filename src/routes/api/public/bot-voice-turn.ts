@@ -13,7 +13,7 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { previous, heard, fast, lastClip } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string; fast?: boolean; lastClip?: string };
+        const { previous, heard, fast, lastClip, lastSay } = (await request.json().catch(() => ({}))) as { previous?: string; heard?: string; fast?: boolean; lastClip?: string; lastSay?: string };
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data: row } = await supabaseAdmin.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
         const cfg = normalizeVoiceChat(row?.value);
@@ -21,14 +21,16 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         const configured = [{ name: "نغم 🎶", path: cfg.recordings.song }, { name: "قصيدة 🌹", path: cfg.recordings.poem }, ...cfg.clips.filter((c) => c.enabled)];
         const available = configured.filter((r) => r.path && r.name !== previous);
         const candidates = available.length ? available : configured.filter((r) => r.path);
-        const recording = fast === true ? candidates.find((r) => r.name === "نغم 🎶") ?? candidates[0] : !heard ? candidates[Math.floor(Math.random() * candidates.length)] : undefined;
+        const say = cfg.say && cfg.say.id !== lastSay && Date.now() - cfg.say.at < 600000 ? cfg.say : null;
+        const recording = say ? undefined : fast === true ? candidates.find((r) => r.name === "نغم 🎶") ?? candidates[0] : !heard ? candidates[Math.floor(Math.random() * candidates.length)] : undefined;
         if (recording) {
           const { data: audio, error } = await supabaseAdmin.storage.from("chat-recordings").download(recording.path);
           if (!error && audio) return new Response(audio, { headers: { "Content-Type": audio.type || "audio/mpeg", "X-Bot-Name": encodeURIComponent(recording.name), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
         }
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return new Response("not configured", { status: 500 });
-        const { name, text, female, mode } = await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
+        const gen = say ? { name: say.name, text: say.text, female: false, mode: "talk" } : await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
+        const { name, text, female, mode } = gen;
         const voice = cfg.botVoices[name] ?? (mode === "sing" ? "Leda" : mode === "poem" ? "Achernar" : null) ?? (fast === true && female ? "Leda" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices);
         const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
           method: "POST",
@@ -41,7 +43,7 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
           }),
         });
         if (!res.ok) return new Response(await res.text(), { status: res.status });
-        return new Response(res.body, { headers: { "Content-Type": res.headers.get("Content-Type") ?? "audio/wav", "X-Bot-Name": encodeURIComponent(name), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
+        return new Response(res.body, { headers: { "Content-Type": res.headers.get("Content-Type") ?? "audio/wav", "X-Bot-Name": encodeURIComponent(name), ...(say ? { "X-Say-Id": say.id } : {}), "X-Turn-Ms": String(cfg.turnSeconds * 1000), "Cache-Control": "no-store" } });
       },
     },
   },

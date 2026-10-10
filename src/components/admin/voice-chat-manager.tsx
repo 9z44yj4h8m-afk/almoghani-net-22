@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Save, Trash2, Upload } from "lucide-react";
+import { Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
@@ -17,6 +17,16 @@ export function VoiceChatManager() {
   const [previews, setPreviews] = useState<Record<string, string>>({});
   const [clipName, setClipName] = useState("");
   const [clipFile, setClipFile] = useState<File | null>(null);
+  const [sayBot, setSayBot] = useState("");
+  const [sayText, setSayText] = useState("");
+
+  async function sayNow(e: React.FormEvent) {
+    e.preventDefault();
+    const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
+    setBusy(true);
+    try { await persistClips({ ...cfg, say: { id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now() } }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
+  }
 
   useEffect(() => {
     let alive = true;
@@ -120,6 +130,13 @@ export function VoiceChatManager() {
       <Button type="button" disabled={busy || uploading} onClick={save}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الشات الصوتي"}</Button>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
+    <form onSubmit={sayNow} className="space-y-3 rounded-lg border border-border p-4">
+      <h3 className="font-black">🎤 خل البوت يقول كلامك الآن</h3>
+      <select className={field} aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select>
+      <textarea className={`${field} h-24 py-2`} aria-label="الكلام" required maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => setSayText(e.target.value)} />
+      <Button type="submit" disabled={busy || !sayText.trim()}><Volume2 />قلها الآن</Button>
+      <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق.</p>
+    </form>
     <div className="space-y-4">
       <h3 className="font-black">مكتبة التسجيلات ({cfg.clips.length})</h3>
       <form onSubmit={addClip} className="grid gap-3 sm:grid-cols-2">
