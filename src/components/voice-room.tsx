@@ -82,6 +82,15 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
   const handRef = useRef(false);
   const mutedRef = useRef(muted);
   mutedRef.current = muted;
+  // Mic turn length follows the saved panel setting so the owner controls both bot and mic rounds.
+  const turnMsRef = useRef(TURN_MS);
+  useEffect(() => {
+    let alive = true;
+    void supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle().then(({ data }) => {
+      if (alive) turnMsRef.current = normalizeVoiceChat(data?.value).turnSeconds * 1000;
+    });
+    return () => { alive = false; };
+  }, []);
 
   async function raiseHand() {
     if (handRef.current) { handRef.current = false; setHandUp(false); return; }
@@ -102,8 +111,9 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
     const stopped = new Promise<void>((r) => { rec.onstop = () => r(); });
     rec.start();
     const started = Date.now();
-    const tick = setInterval(() => setLeft(Math.max(0, Math.ceil((TURN_MS - (Date.now() - started)) / 1000))), 250);
-    while (Date.now() - started < TURN_MS && handRef.current) await sleep(200);
+    const turnMs = turnMsRef.current;
+    const tick = setInterval(() => setLeft(Math.max(0, Math.ceil((turnMs - (Date.now() - started)) / 1000))), 250);
+    while (Date.now() - started < turnMs && handRef.current) await sleep(200);
     clearInterval(tick); setLeft(0);
     rec.stop(); await stopped;
     const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
