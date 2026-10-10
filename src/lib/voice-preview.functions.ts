@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { VOICE_LIST } from "@/lib/voice-config";
+import { VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 export const previewVoice = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -18,7 +18,7 @@ export const previewVoice = createServerFn({ method: "POST" })
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-tts-preview",
-        contents: [{ role: "user", parts: [{ text: `قلها بصوت جميل دافئ وواضح، بلهجة سعودية نجدية أصيلة كأهل الرياض والقصيم، بنطق سعودي عفوي ودود: ${data.text}` }] }],
+        contents: [{ role: "user", parts: [{ text: `${voiceDelivery(voice)}: ${data.text}` }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
         stream_format: "audio",
       }),

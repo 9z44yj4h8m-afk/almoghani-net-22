@@ -1,8 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { orderedSectionIds, getSectionCard, defaultSectionContent } from "@/lib/section-content";
-import { normalizeVoiceChat } from "@/lib/voice-config";
+import { normalizeVoiceChat, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 describe("admin content controls", () => {
+  it("names female voices and applies gentle delivery", () => {
+    const girls = VOICE_LIST.filter((v) => v.female);
+    expect(new Set(girls.map((v) => v.name)).size).toBe(girls.length);
+    for (const v of girls) expect(voiceDelivery(v.id)).toContain("حنون");
+    expect(voiceDelivery("Puck")).not.toContain("بنت");
+    expect(normalizeVoiceChat({ botVoices: { "ღ دلال ღ": "Despina" } }).botVoices["ღ دلال ღ"]).toBe("Despina");
+  });
   it("keeps valid saved order and fills missing cards without duplicates", () => {
     expect(orderedSectionIds("sections", ["a", "b", "c"], { ...defaultSectionContent, orders: { sections: ["c", "c", "invalid", "a"] } })).toEqual(["c", "a", "b"]);
   });

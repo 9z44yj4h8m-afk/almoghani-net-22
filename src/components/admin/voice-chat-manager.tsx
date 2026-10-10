@@ -62,7 +62,7 @@ export function SayNowForm() {
       <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => setSayVoice(e.target.value)}>
         <option value="">تلقائي — حسب إعداد البوت</option>
         <optgroup label="أصوات رجالية">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>ذكر · {v.id} ({v.label})</option>)}</optgroup>
-        <optgroup label="أصوات نسائية">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.id} ({v.label})</option>)}</optgroup>
+        <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
       </select>
     </label>
     <div className="flex flex-wrap items-center gap-2">
@@ -228,7 +228,7 @@ export function VoiceChatManager() {
     {(["maleVoices", "femaleVoices"] as const).map((key) => <div key={key} className="space-y-2">
       <h3 className="font-black">{key === "maleVoices" ? "أصوات الشباب" : "أصوات البنات"} <span className="text-sm font-normal text-muted-foreground">(اختر الأصوات المستخدمة)</span></h3>
       <div className="flex flex-wrap gap-2">
-        {VOICE_LIST.filter((v) => v.female === (key === "femaleVoices")).map((v) => <Button key={v.id} type="button" size="sm" variant={cfg[key].includes(v.id) ? "default" : "outline"} aria-pressed={cfg[key].includes(v.id)} onClick={() => toggle(key, v.id)}>{v.id} · {v.label}</Button>)}
+        {VOICE_LIST.filter((v) => v.female === (key === "femaleVoices")).map((v) => <Button key={v.id} type="button" size="sm" variant={cfg[key].includes(v.id) ? "default" : "outline"} aria-pressed={cfg[key].includes(v.id)} onClick={() => toggle(key, v.id)}>{v.name} · {v.label}</Button>)}
       </div>
     </div>)}
 
@@ -240,8 +240,8 @@ export function VoiceChatManager() {
           <span className="min-w-0 flex-1 truncate font-bold">{name}</span>
           <select className={`${field} w-40`} value={cfg.botVoices[name] ?? ""} onChange={(e) => { const botVoices = { ...cfg.botVoices }; if (e.target.value) botVoices[name] = e.target.value; else delete botVoices[name]; update({ botVoices }); }}>
             <option value="">تلقائي</option>
-            <optgroup label="شباب">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>{v.id} · {v.label}</option>)}</optgroup>
-            <optgroup label="بنات">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>{v.id} · {v.label}</option>)}</optgroup>
+            <optgroup label="شباب">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup>
+            <optgroup label="بنات">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup>
           </select>
         </label>)}
       </div>

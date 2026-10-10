@@ -1,12 +1,22 @@
 // Owner-editable voice-chat settings stored in site_settings("voice_chat"); defaults below are the fallback.
-export const VOICE_LIST: { id: string; female: boolean; label: string }[] = [
+const femaleVoiceNames: Record<string, string> = {
+  Despina: "دلال", Sulafat: "شوق", Achernar: "سديم", Callirrhoe: "نجد", Vindemiatrix: "ليلى", Leda: "موضي",
+  Kore: "نورة", Aoede: "هيا", Zephyr: "ريم", Autonoe: "نوف", Erinome: "سارة", Laomedeia: "دانة", Gacrux: "الجوهرة", Pulcherrima: "أمل",
+};
+export const VOICE_LIST: { id: string; female: boolean; label: string; name: string }[] = [
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
   ["Umbriel", 0, "مريح"], ["Algieba", 0, "ناعم"], ["Algenib", 0, "خشن"], ["Rasalgethi", 0, "مثقف"], ["Alnilam", 0, "قوي"], ["Schedar", 0, "متزن"],
   ["Achird", 0, "ودود"], ["Zubenelgenubi", 0, "عفوي"], ["Sadachbia", 0, "حيوي"], ["Sadaltager", 0, "عارف"],
   ["Kore", 1, "ثابتة"], ["Aoede", 1, "منعشة"], ["Leda", 1, "شابة"], ["Zephyr", 1, "مشرقة"], ["Despina", 1, "ناعمة"], ["Sulafat", 1, "دافئة"],
   ["Callirrhoe", 1, "هادئة"], ["Autonoe", 1, "مشرقة"], ["Erinome", 1, "واضحة"], ["Laomedeia", 1, "مرحة"], ["Achernar", 1, "رقيقة"],
   ["Gacrux", 1, "ناضجة"], ["Pulcherrima", 1, "واثقة"], ["Vindemiatrix", 1, "لطيفة"],
-].map(([id, f, label]) => ({ id: id as string, female: f === 1, label: label as string }));
+].map(([id, f, label]) => ({ id: id as string, female: f === 1, label: label as string, name: femaleVoiceNames[String(id)] ?? String(id) }));
+
+export function voiceDelivery(voice: string) {
+  return VOICE_LIST.some((v) => v.id === voice && v.female)
+    ? "قولي الكلام بصوت بنت ناعم وعذب وحنون، بنبرة دافئة لطيفة ومريحة وابتسامة خفيفة، بهدوء طبيعي دون همس مبالغ أو تصنع، بلهجة سعودية نجدية كأهل الرياض والقصيم وبنطق واضح، اقرئي الكلام التالي فقط"
+    : "قلها بصوت جميل دافئ وواضح، بلهجة سعودية نجدية أصيلة كأهل الرياض والقصيم، بنطق سعودي عفوي ودود";
+}
 
 export type VoiceChatConfig = {
   enabled: boolean;
