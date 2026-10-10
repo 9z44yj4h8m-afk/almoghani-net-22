@@ -29,7 +29,7 @@ export const Route = createFileRoute("/api/public/bot-voice-turn")({
         }
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return new Response("not configured", { status: 500 });
-        const gen = say ? { name: say.name, text: say.text, female: VOICE_LIST.some((v) => v.id === say.voice && v.female), mode: "talk" } : await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
+        const gen = say ? { name: say.name, text: say.text, female: VOICE_LIST.some((v) => v.id === say.voice && v.female), mode: say.sing ? "sing" : "talk" } : await voiceMonologue(String(previous ?? "").slice(0, 40), String(heard ?? "").slice(0, 400), fast === true, cfg.openers);
         const { name, text, female, mode } = gen;
         const voice = say?.voice || (cfg.botVoices[name] ?? (mode === "sing" ? "Leda" : mode === "poem" ? "Achernar" : null) ?? (fast === true && female ? "Leda" : null) ?? pickVoice(name, female ? cfg.femaleVoices : cfg.maleVoices));
         const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
