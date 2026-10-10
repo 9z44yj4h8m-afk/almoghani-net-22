@@ -12,6 +12,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 let early: Promise<Turn | null>[] = [];
 // Clip order is tracked client-side; each prefetch claims the next clip so queued turns never repeat.
 let clipCursor = "";
+let sayCursor = "";
 let chain: Promise<unknown> = Promise.resolve();
 export function prefetchVoiceTurn() { if (!early.length) early = [fetchTurn("", "", true), fetchTurn("")]; }
 
@@ -31,8 +32,9 @@ function fetchTurn(previous: string, heard = "", fast = false): Promise<Turn | n
 }
 async function fetchTurnNow(previous: string, heard: string, fast: boolean): Promise<Turn | null> {
   try {
-    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast, lastClip: clipCursor }) });
+    const res = await fetch("/api/public/bot-voice-turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ previous, heard, fast, lastClip: clipCursor, lastSay: sayCursor }) });
     const clip = res.headers.get("X-Clip-Id"); if (clip) clipCursor = decodeURIComponent(clip);
+    const said = res.headers.get("X-Say-Id"); if (said) sayCursor = said;
     if (res.headers.get("X-Voice-Disabled")) return { disabled: true };
     if (!res.ok) return null;
     const name = decodeURIComponent(res.headers.get("X-Bot-Name") ?? "");

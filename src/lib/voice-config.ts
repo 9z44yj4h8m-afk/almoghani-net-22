@@ -17,6 +17,8 @@ export type VoiceChatConfig = {
   openers: string[];
   recordings: { song: string; poem: string };
   clips: { id: string; name: string; path: string; enabled: boolean }[];
+  /** One-off line the owner asks a bot to say immediately; served once per listener for 10 minutes. */
+  say: { id: string; name: string; text: string; at: number } | null;
 };
 
 export const defaultVoiceChat: VoiceChatConfig = {
@@ -27,6 +29,7 @@ export const defaultVoiceChat: VoiceChatConfig = {
   botVoices: {},
   recordings: { song: "", poem: "" },
   clips: [],
+  say: null,
   openers: [
     "هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية",
     "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟",
@@ -52,6 +55,7 @@ export function normalizeVoiceChat(v: unknown): VoiceChatConfig {
       song: typeof o.recordings?.song === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.song) ? o.recordings.song : "",
       poem: typeof o.recordings?.poem === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.poem) ? o.recordings.poem : "",
     },
+    say: o.say && typeof o.say.id === "string" && typeof o.say.text === "string" && o.say.text.trim() ? { id: o.say.id.slice(0, 80), name: String(o.say.name ?? "").slice(0, 40), text: o.say.text.trim().slice(0, 400), at: Number(o.say.at) || 0 } : null,
     openers: openers.length ? openers : defaultVoiceChat.openers,
   };
 }
