@@ -52,6 +52,17 @@ async function saveSay(say: NonNullable<VoiceChatConfig["say"]>) {
   if (error) throw error;
 }
 
+export function VoiceChatManager() {
+  const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
+  const [bots, setBots] = useState<string[]>(defaultChatBots.bots.map((b) => b.name));
+  const [opener, setOpener] = useState("");
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
+  const [clipName, setClipName] = useState("");
+  const [clipFile, setClipFile] = useState<File | null>(null);
+
   useEffect(() => {
     let alive = true;
     for (const clip of cfg.clips) void supabase.storage.from("chat-recordings").createSignedUrl(clip.path, 3600).then(({ data }) => {
