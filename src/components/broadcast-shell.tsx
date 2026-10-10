@@ -1,9 +1,15 @@
+import { useSiteConfig } from "@/lib/site-config";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft, Radio, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function BroadcastWordmark({ compact = false }: { compact?: boolean }) {
-  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><span>ALMOGHANI<span className="text-primary"> LIVE<Radio className="brand-signal" aria-hidden="true" /></span></span><small dir="rtl">كل ما يهم البث</small></span>;
+  const { data } = useSiteConfig();
+  const name = data?.texts.siteName?.trim() || "ALMOGHANI LIVE";
+  const cut = name.lastIndexOf(" ");
+  const first = cut > 0 ? name.slice(0, cut) : name;
+  const last = cut > 0 ? name.slice(cut) : "";
+  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><span>{first}<span className="text-primary">{last}<Radio className="brand-signal" aria-hidden="true" /></span></span><small dir="rtl">كل ما يهم البث</small></span>;
 }
 
 export function BroadcastHeader() {

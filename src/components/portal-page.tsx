@@ -401,6 +401,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
 function HomeEntries() {
   return <section className="mx-auto grid max-w-4xl gap-3 px-3 pt-5 sm:px-6" aria-label="الأعضاء والمساعد الذكي">
     <Link to="/auth" aria-label="دخول الأعضاء" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={memberEntry.url} alt="دخول الأعضاء — تسجيل الدخول" width={1920} height={712} className="block h-auto w-full" /></Link>
-    <Link to="/chat" aria-label="Chat ALMOGHANI AI" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={chatEntry.url} alt="Chat ALMOGHANI AI — ابدأ المحادثة" width={1920} height={712} loading="lazy" className="block h-auto w-full" /></Link>
+    <Link to="/chat" aria-label="Chat ALMOGHANI AI" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={safeHttpsImage(siteConfig?.texts.chatImage) || chatEntry.url} alt="Chat ALMOGHANI AI — ابدأ المحادثة" width={1920} height={712} loading="lazy" className="block h-auto w-full" /></Link>
   </section>;
 }
