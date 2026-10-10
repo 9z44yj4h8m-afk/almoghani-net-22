@@ -14,12 +14,13 @@ export function SayNowForm() {
   const [busy, setBusy] = useState(false);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
+  const [sayVoice, setSayVoice] = useState("");
 
   async function sayNow(e: React.FormEvent) {
     e.preventDefault();
     const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
     setBusy(true);
-    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now() }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
     catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
 
