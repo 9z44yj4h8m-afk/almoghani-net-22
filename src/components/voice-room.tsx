@@ -82,6 +82,15 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
   const handRef = useRef(false);
   const mutedRef = useRef(muted);
   mutedRef.current = muted;
+  // Mic turn length follows the saved panel setting so the owner controls both bot and mic rounds.
+  const turnMsRef = useRef(TURN_MS);
+  useEffect(() => {
+    let alive = true;
+    void supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle().then(({ data }) => {
+      if (alive) turnMsRef.current = normalizeVoiceChat(data?.value).turnSeconds * 1000;
+    });
+    return () => { alive = false; };
+  }, []);
 
   async function raiseHand() {
     if (handRef.current) { handRef.current = false; setHandUp(false); return; }
