@@ -20,6 +20,26 @@ export function SayNowForm() {
   const [sayVoice, setSayVoice] = useState("");
   const previewVoiceFn = useServerFn(previewVoice);
 
+  async function saveVoice() {
+    const name = sayBot || bots[0];
+    if (!name || busy) return;
+    setBusy(true); setNote("");
+    try {
+      const { data, error: readError } = await supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
+      if (readError) throw readError;
+      const current = normalizeVoiceChat(data?.value);
+      const botVoices = { ...current.botVoices };
+      if (sayVoice) botVoices[name] = sayVoice;
+      else delete botVoices[name];
+      const next = normalizeVoiceChat({ ...current, botVoices });
+      const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
+      if (error) throw error;
+      setCfg(next);
+      setNote(`تم حفظ صوت ${name} ✓`);
+    } catch { setNote("تعذّر حفظ الصوت؛ حاول مجددًا."); }
+    finally { setBusy(false); }
+  }
+
   async function testVoice() {
     if (testing) return;
     const name = sayBot || bots[0] || "";
@@ -67,6 +87,7 @@ export function SayNowForm() {
     </label>
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
+      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ الصوت"}</Button>
       <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
