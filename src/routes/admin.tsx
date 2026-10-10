@@ -11,6 +11,7 @@ import { ContentManager } from "@/components/admin/content-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { ChatBotsManager } from "@/components/admin/chat-bots-manager";
+import { SayNowForm } from "@/components/admin/voice-chat-manager";
 import { ChatAppearanceEditor } from "@/components/admin/chat-appearance-editor";
 import { VoiceChatManager } from "@/components/admin/voice-chat-manager";
 import { ChatModerationManager } from "@/components/admin/chat-moderation-manager";
