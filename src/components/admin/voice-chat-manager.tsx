@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Download, Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
+import { MELODIES, PRESET_SONGS, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 
@@ -19,6 +19,8 @@ export function SayNowForm() {
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("");
   const [sing, setSing] = useState(false);
+  const [melody, setMelody] = useState("najdi");
+  const [rhythm, setRhythm] = useState("slow");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const previewVoiceFn = useServerFn(previewVoice);
 
@@ -66,7 +68,7 @@ export function SayNowForm() {
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
     try {
-      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "", sing } });
+      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "", sing, melody, rhythm } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
@@ -79,7 +81,7 @@ export function SayNowForm() {
     e.preventDefault();
     const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
     setBusy(true);
-    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice, sing }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice, sing, melody, rhythm }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
     catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
 
@@ -109,6 +111,14 @@ export function SayNowForm() {
       </select>
     </label>
     <label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" checked={sing} onChange={(e) => setSing(e.target.checked)} />🎶 خلّها تغني الكلام بدل ما تقوله</label>
+    {sing && <div className="grid gap-2 sm:grid-cols-2">
+      <select className={field} aria-label="اللحن" value={melody} onChange={(e) => setMelody(e.target.value)}>{MELODIES.map((m) => <option key={m.id} value={m.id}>🎼 {m.label}</option>)}</select>
+      <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => setRhythm(e.target.value)}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>💃 {r.label}</option>)}</select>
+    </div>}
+    <div className="space-y-2 rounded-xl border border-border p-3">
+      <span className="text-sm font-bold">🎵 أغاني جاهزة</span>
+      <div className="flex flex-wrap gap-2">{PRESET_SONGS.map((song) => <Button key={song.id} type="button" size="sm" variant="outline" onClick={() => { setSayText(song.text); setSing(true); setMelody(song.melody); setRhythm(song.rhythm); setNote(`اخترت «${song.title}» — غيّر اللحن أو الصوت إذا تبي، ثم اضغط قلها الآن`); }}>خليها تغني «{song.title}»</Button>)}</div>
+    </div>
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
       <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
