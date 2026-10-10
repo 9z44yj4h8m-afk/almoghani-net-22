@@ -2,11 +2,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
+import { SING_DELIVERY, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 export const previewVoice = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ text: z.string().trim().min(1).max(200), voice: z.string().max(40).optional() }).parse(d))
+  .inputValidator((d) => z.object({ text: z.string().trim().min(1).max(200), voice: z.string().max(40).optional(), sing: z.boolean().optional() }).parse(d))
   .handler(async ({ data, context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (!isAdmin) throw new Error("Forbidden");
@@ -18,7 +18,7 @@ export const previewVoice = createServerFn({ method: "POST" })
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-tts-preview",
-        contents: [{ role: "user", parts: [{ text: `${voiceDelivery(voice)}: ${data.text}` }] }],
+        contents: [{ role: "user", parts: [{ text: `${data.sing ? SING_DELIVERY : voiceDelivery(voice)}: ${data.text}` }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
         stream_format: "audio",
       }),

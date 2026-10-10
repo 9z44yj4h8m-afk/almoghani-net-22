@@ -18,6 +18,7 @@ export function SayNowForm() {
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("");
+  const [sing, setSing] = useState(false);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const previewVoiceFn = useServerFn(previewVoice);
 
@@ -65,7 +66,7 @@ export function SayNowForm() {
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
     try {
-      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "" } });
+      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "", sing } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
@@ -78,7 +79,7 @@ export function SayNowForm() {
     e.preventDefault();
     const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
     setBusy(true);
-    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
+    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice, sing }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
     catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
 
@@ -107,6 +108,7 @@ export function SayNowForm() {
         <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
       </select>
     </label>
+    <label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" checked={sing} onChange={(e) => setSing(e.target.checked)} />🎶 خلّها تغني الكلام بدل ما تقوله</label>
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
       <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
