@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
+- Separate voice labels from provider IDs; share preview/chat tone prompts to keep synthesis compatible.
 - Render all admin tools in one open page with anchor navigation and chat appearance first; preserve owner authentication and admin-only writes so easier access never widens permissions.
 - Store performers and named clips in private chat-recordings with admin-only storage and normalized voice_chat settings; public playback serves only enabled configured paths to prevent arbitrary private-file access.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
