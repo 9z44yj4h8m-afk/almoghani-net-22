@@ -1,3 +1,4 @@
+import { safeLibraryLink, useSiteConfig } from "@/lib/site-config";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Clapperboard, Film, Home, Mail, MessageCircle, Radio, Settings, Star, Tv } from "lucide-react";
 
@@ -15,6 +16,7 @@ const items = [
 
 export function AppSidebar() {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const libraryLink = safeLibraryLink(useSiteConfig().data?.texts.libraryLink);
   return (
     <aside className="dash-sidebar fixed inset-y-0 right-0 z-40 hidden w-60 flex-col border-l border-border px-4 py-6 lg:flex">
       <Link to="/" className="mb-8 flex flex-col items-center gap-2">
@@ -29,7 +31,7 @@ export function AppSidebar() {
           return (
             <Link
               key={to}
-              to={to}
+              to={to === "/vip" ? (libraryLink as "/vip") : to}
               className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
                 active ? "dash-active text-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               }`}

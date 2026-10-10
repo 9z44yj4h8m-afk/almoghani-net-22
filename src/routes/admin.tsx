@@ -20,7 +20,7 @@ import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl, createMember, setMemberPassword } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
-  siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
+  siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, safeLibraryLink, safeHttpsImage, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
 const ADMIN_SECTIONS = [
@@ -31,6 +31,7 @@ const ADMIN_SECTIONS = [
   { id: "content", label: "الإضافة الجماعية", content: ContentManager },
   { id: "schedule", label: "مواعيد البث", content: ScheduleManager },
   { id: "members", label: "الأعضاء والصلاحيات", content: MembersTab },
+  { id: "settings", label: "إعدادات الموقع", content: SiteSettingsTab },
   { id: "texts", label: "النصوص والتواصل", content: TextsTab },
   { id: "design", label: "التصميم", content: DesignTab },
   { id: "ads", label: "الإعلان والشريط", content: AdsTab },
@@ -290,6 +291,29 @@ function MembersTab() {
 
 async function saveSetting(key: string, value: object) {
   return supabase.from("site_settings").upsert({ key, value: value as never, updated_at: new Date().toISOString() });
+}
+
+function SiteSettingsTab() {
+  const { data } = useSiteConfig();
+  const refresh = useRefresh();
+  const [texts, setTexts] = useState<SiteTexts>(defaultTexts);
+  const [msg, setMsg] = useState("");
+  useEffect(() => { if (data) setTexts(data.texts); }, [data]);
+  const img = safeHttpsImage(texts.chatImage);
+  return <form className="grid gap-4" onSubmit={async (e) => {
+    e.preventDefault();
+    if (texts.libraryLink && safeLibraryLink(texts.libraryLink) !== texts.libraryLink) { setMsg("رابط المكتبة لازم يبدأ بـ / مثل /vip"); return; }
+    if (texts.chatImage && !img) { setMsg("رابط صورة الشات لازم يبدأ بـ https://"); return; }
+    const r = await saveSetting("texts", texts); setMsg(r.error ? "تعذّر الحفظ." : "تم الحفظ ✓"); void refresh();
+  }}>
+    <label className="block space-y-1"><span className="text-sm font-bold">اسم الموقع (يظهر في الشعار أعلى الصفحات)</span><input className={input} dir="ltr" maxLength={40} placeholder="ALMOGHANI LIVE" value={texts.siteName ?? ""} onChange={(e) => setTexts({ ...texts, siteName: e.target.value })} /></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">رابط زر المكتبة</span><input className={input} dir="ltr" maxLength={200} placeholder="/vip" value={texts.libraryLink ?? ""} onChange={(e) => setTexts({ ...texts, libraryLink: e.target.value.trim() })} /></label>
+    <label className="block space-y-1"><span className="text-sm font-bold">صورة بطاقة الشات في الرئيسية (رابط https)</span><input className={input} dir="ltr" maxLength={1000} placeholder="https://…" value={texts.chatImage ?? ""} onChange={(e) => setTexts({ ...texts, chatImage: e.target.value.trim() })} /></label>
+    {img && <img src={img} alt="معاينة صورة الشات" className="max-h-40 w-full rounded-xl object-contain" />}
+    <p className="text-xs text-muted-foreground">اترك أي خانة فاضية عشان ترجع للإعداد الأصلي.</p>
+    <Button type="submit">حفظ الإعدادات</Button>
+    {msg && <p role="status" className="text-sm text-muted-foreground">{msg}</p>}
+  </form>;
 }
 
 function TextsTab() {
