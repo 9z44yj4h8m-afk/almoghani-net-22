@@ -111,8 +111,9 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
     const stopped = new Promise<void>((r) => { rec.onstop = () => r(); });
     rec.start();
     const started = Date.now();
-    const tick = setInterval(() => setLeft(Math.max(0, Math.ceil((TURN_MS - (Date.now() - started)) / 1000))), 250);
-    while (Date.now() - started < TURN_MS && handRef.current) await sleep(200);
+    const turnMs = turnMsRef.current;
+    const tick = setInterval(() => setLeft(Math.max(0, Math.ceil((turnMs - (Date.now() - started)) / 1000))), 250);
+    while (Date.now() - started < turnMs && handRef.current) await sleep(200);
     clearInterval(tick); setLeft(0);
     rec.stop(); await stopped;
     const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
