@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
+import { previewVoice } from "@/lib/voice-preview.functions";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
 
@@ -12,9 +14,23 @@ export function SayNowForm() {
   const [bots, setBots] = useState<string[]>(defaultChatBots.bots.map((b) => b.name));
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
+  const [testing, setTesting] = useState(false);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("");
+  const previewVoiceFn = useServerFn(previewVoice);
+
+  async function testVoice() {
+    if (testing) return;
+    const name = sayBot || bots[0] || "";
+    setTesting(true); setNote("");
+    try {
+      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "" } });
+      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      setNote("هذا هو الصوت اللي اخترته ✓");
+    } catch { setNote("تعذّر تجريب الصوت."); }
+    finally { setTesting(false); }
+  }
 
   async function sayNow(e: React.FormEvent) {
     e.preventDefault();
@@ -49,7 +65,10 @@ export function SayNowForm() {
         <optgroup label="أصوات نسائية">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.id} ({v.label})</option>)}</optgroup>
       </select>
     </label>
-    <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
+    <div className="flex flex-wrap items-center gap-2">
+      <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
+      <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
+    </div>
     {note && <p className="text-sm font-bold">{note}</p>}
   </form>;
 }
