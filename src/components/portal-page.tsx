@@ -33,8 +33,8 @@ import { Button } from "@/components/ui/button";
 import { searchChannelsWithAi } from "@/lib/channel-search.functions";
 import { type Channel, type ChannelCategory } from "@/lib/channels";
 import { useCatalog, useSiteConfig, defaultTexts, safeHttpsImage } from "@/lib/site-config";
-import memberEntry from "@/assets/home-entry/member.png.asset.json";
-import chatEntry from "@/assets/home-entry/chat.png.asset.json";
+import memberEntry from "@/assets/gold/member-entry.jpg";
+import chatEntry from "@/assets/gold/chat-entry.jpg";
 import { Lock } from "lucide-react";
 import { BedouinDramaBanner } from "@/components/bedouin-drama-banner";
 import { HomeCategoryBanners } from "@/components/home-category-banners";
@@ -401,7 +401,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
 function HomeEntries() {
   const { data: siteConfig } = useSiteConfig();
   return <section className="mx-auto grid max-w-4xl gap-3 px-3 pt-5 sm:px-6" aria-label="الأعضاء والمساعد الذكي">
-    <Link to="/auth" aria-label="دخول الأعضاء" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={memberEntry.url} alt="دخول الأعضاء — تسجيل الدخول" width={1920} height={712} className="block h-auto w-full" /></Link>
-    <Link to="/chat" aria-label="Chat ALMOGHANI AI" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={safeHttpsImage(siteConfig?.texts.chatImage) || chatEntry.url} alt="Chat ALMOGHANI AI — ابدأ المحادثة" width={1920} height={712} loading="lazy" className="block h-auto w-full" /></Link>
+    <Link to="/auth" aria-label="دخول الأعضاء" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={memberEntry} alt="دخول الأعضاء — تسجيل الدخول" width={1920} height={712} className="block h-auto w-full" /></Link>
+    <Link to="/chat" aria-label="Chat ALMOGHANI AI" className="design-gleam block overflow-hidden rounded-lg border border-sky/50"><img src={safeHttpsImage(siteConfig?.texts.chatImage) || chatEntry} alt="Chat ALMOGHANI AI — ابدأ المحادثة" width={1920} height={712} loading="lazy" className="block h-auto w-full" /></Link>
   </section>;
 }

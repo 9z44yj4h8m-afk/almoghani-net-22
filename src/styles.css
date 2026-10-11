@@ -869,7 +869,7 @@ body { background: var(--surface-deep); }
  .broadcast-site-header { padding:14px 12px; gap:10px; grid-template-columns:auto minmax(0,1fr) auto; min-height:70px; }
  .broadcast-brand { font-size:20px; } .broadcast-brand small { font-size:9px; }
  .broadcast-search-link { height:36px; font-size:11px; border-radius:24px; }
- .home-chat-entry { width:34px; height:34px; padding:0; font-size:0; gap:0; }
+ .home-chat-entry { width:34px; height:34px; padding:0; font-size:0; gap:0; grid-column:auto; margin-top:0; }
  .home-chat-entry svg { width:18px; height:18px; }
  .gold-broadcast-cover { aspect-ratio:2.1/1; min-height:210px; }
  .gold-cover-copy { width:62%; padding:20px 16px; gap:8px; }
