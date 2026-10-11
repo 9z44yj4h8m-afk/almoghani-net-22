@@ -9,7 +9,7 @@ export function BroadcastWordmark({ compact = false }: { compact?: boolean }) {
   const cut = name.lastIndexOf(" ");
   const first = cut > 0 ? name.slice(0, cut) : name;
   const last = cut > 0 ? name.slice(cut) : "";
-  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><span>{first}<span className="text-primary">{last}<Radio className="brand-signal" aria-hidden="true" /></span></span><small dir="rtl">كل ما يهم البث</small></span>;
+  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><span>{first}<Radio className="brand-signal" aria-hidden="true" /></span><small>{last.trim() || "LIVE"} PLAY ▸</small></span>;
 }
 
 export function BroadcastHeader() {

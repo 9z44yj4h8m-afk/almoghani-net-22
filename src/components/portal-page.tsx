@@ -72,6 +72,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
   const [searchError, setSearchError] = useState("");
   const [searching, setSearching] = useState(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  useEffect(() => { try { const saved: unknown = JSON.parse(localStorage.getItem("almoghani-channel-favorites") ?? "[]"); if (Array.isArray(saved)) setFavorites(saved.filter((id): id is string => typeof id === "string")); } catch { /* Keep empty favorites when storage is unavailable. */ } }, []);
+  function toggleFavorite(id: string) { setFavorites((current) => { const next = current.includes(id) ? current.filter((value) => value !== id) : [...current, id]; try { localStorage.setItem("almoghani-channel-favorites", JSON.stringify(next)); } catch { /* Favorites still work for this visit. */ } return next; }); }
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("channel");
     const found = id && channels.find((c) => c.id === id);
@@ -221,7 +224,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-28 md:pb-12">
-        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} />
+        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} section={section} />
         {homepage && <BreakingTicker />}
         {homepage && <HomeEntries />}
         {homepage && <HomeCategoryBanners />}
@@ -264,15 +267,16 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
             {configuredSections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
               return (
-                <a
+                <Link
                   key={s.slug}
-                  href={`#section-${i}`}
+                  to="/channels/$section"
+                  params={{ section: s.slug }}
                   className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:border-sky hover:text-sky"
                 >
                   <s.icon className="h-4 w-4 shrink-0 text-sky" />
                   <span className="whitespace-nowrap">{s.title}</span>
                   <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-black text-muted-foreground">{count}</span>
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -316,19 +320,14 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
 
                 {sectionChannels.length ? (
                   <>
-                    <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${section.cols}`}>
+                    <div className="gold-channel-list">
                       {previewChannels.map((channel, i) => (
-                      <button
+                      <div
                         key={channel.id}
-                        type="button"
                         onPointerEnter={() => warmChannel(channel)}
                         onTouchStart={() => warmChannel(channel)}
                         onFocus={() => warmChannel(channel)}
-                        onClick={() => {
-                          playChannel(channel);
-                        }}
-                        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 220px" }}
-                        className={`channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
+                        className={`gold-channel-row channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
                       >
                         <span className="relative block aspect-video overflow-hidden bg-surface-deep">
                           <span className="absolute inset-0 animate-pulse bg-muted/40" aria-hidden />
@@ -346,7 +345,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                           <span className="absolute inset-0 bg-player-overlay" />
                           <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
-                            {selected.id === channel.id ? "يُعرض الآن" : "LIVE"}
+                            {selected.id === channel.id ? "يُعرض الآن" : "مباشر"}
                           </span>
                           <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
@@ -354,14 +353,14 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                             </span>
                           </span>
                         </span>
-                        <span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 p-2 text-right sm:gap-3 sm:p-4">
+                        <span className="gold-channel-copy">
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-bold sm:text-base">{channel.name}</span>
                             <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
                           </span>
-                          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-sky text-foreground sm:h-9 sm:w-9"><Play className="h-3.5 w-3.5 fill-current sm:h-4 sm:w-4" /></span>
+                          <span className="gold-channel-tools"><Button variant="outline" size="icon" onClick={() => playChannel(channel)} aria-label={`شغّل ${channel.name}`} title={`شغّل ${channel.name}`}><Play className="fill-current" /></Button><Button variant="ghost" size="icon" onClick={() => toggleFavorite(channel.id)} aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة"><Heart className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button></span>
                         </span>
-                      </button>
+                      </div>
                      ))}
                     </div>
                     {hiddenCount > 0 && (
