@@ -69,7 +69,7 @@ export function SayNowForm() {
     setTesting(true); setNote(""); setAudioFile(null);
     const text = sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
     const selected = sayVoice || cfg.botVoices[name];
-    const voiceId = VOICE_LIST.some((v) => v.id === selected && v.female) ? selected : "Leda";
+    const voiceId = VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
@@ -83,13 +83,12 @@ export function SayNowForm() {
         synth.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = "ar-SA";
-        const female = voiceId.startsWith("female-") || ["Kore","Aoede","Leda","Zephyr","Despina","Sulafat","Callirrhoe","Autonoe","Erinome","Laomedeia","Achernar","Gacrux","Pulcherrima","Vindemiatrix"].includes(voiceId) || !voiceId;
         const ar = synth.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
         if (ar) u.voice = ar;
-        u.pitch = female ? 1.4 : 0.8;
+        u.pitch = 1.4;
         u.rate = 0.95;
         synth.speak(u);
-        setNote("الصوت السحابي متوقف حالياً (الرصيد منتهي)، فاشتغل قارئ جهازك المجاني ✓");
+        setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني، ولا يمكن حفظ صوته كملف.");
       } else setNote("تعذّر تجريب الصوت.");
     }
     finally { setTesting(false); }
