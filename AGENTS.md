@@ -33,7 +33,7 @@
 - Keep featured subscription metadata separate from public streams and resolve library matches server-side; detail pages must never substitute unrelated channels or fabricate schedules.
 - Owner-editable site data (texts, contacts, design colors, extra/hidden channels and movies) lives in admin-only-write tables and is merged client-side via src/lib/site-config.ts on top of the static catalogs, so the code catalogs stay the fallback.
 
-- Keep the broadcast visual shell, wordmark, footer and four-item navigation in shared root components; page-specific content retains its existing routes and access guards so restyling never changes membership rules.
+- Share the broadcast shell, wordmark, footer and four-item nav; preserve page guards. Keep section artwork in a browser-safe map separate from streams, with owner image overrides winning.
 - Keep bulk channel creation and editable broadcast schedules in the admin content manager using existing admin-RLS tables; validate streams before batch insertion and invalidate shared schedule queries after saves so public schedules stay current.
 - Store card copy, images, allow-listed destinations, order and visibility in section-content with static defaults; apply ordering to home categories, member platforms and sections without changing category IDs or access guards.
 - Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
