@@ -344,11 +344,12 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                             alt={`صورة ${channel.name}`}
                           />
                           <span className="absolute inset-0 bg-player-overlay" />
+                          <Button variant="ghost" onClick={() => playChannel(channel)} aria-label={`تشغيل صورة ${channel.name}`} className="absolute inset-0 h-full w-full rounded-none" />
                           <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
                             {selected.id === channel.id ? "يُعرض الآن" : "مباشر"}
                           </span>
-                          <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                          <span className="pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
                               <Play className="h-5 w-5 fill-current" />
                             </span>
