@@ -1,8 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { orderedSectionIds, getSectionCard, defaultSectionContent } from "@/lib/section-content";
-import { normalizeVoiceChat, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
+import { FEMALE_VOICE_PROFILES, normalizeVoiceChat, providerVoiceId, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 describe("admin content controls", () => {
+  it("preserves distinct female profiles and resolves supported synthesis voices", () => {
+    expect(FEMALE_VOICE_PROFILES).toHaveLength(6);
+    expect(new Set(FEMALE_VOICE_PROFILES.map((v) => v.delivery)).size).toBe(6);
+    for (const v of FEMALE_VOICE_PROFILES) {
+      expect(VOICE_LIST.some((base) => !base.providerId && base.id === providerVoiceId(v.id))).toBe(true);
+      expect(voiceDelivery(v.id)).toContain(v.delivery);
+      const cfg = normalizeVoiceChat({ femaleVoices: [v.id], botVoices: { girl: v.id }, say: { id: "test", text: "هلا", voice: v.id } });
+      expect(cfg.femaleVoices).toEqual([v.id]);
+      expect(cfg.botVoices.girl).toBe(v.id);
+      expect(cfg.say?.voice).toBe(v.id);
+    }
+    expect(providerVoiceId("Despina")).toBe("Despina");
+  });
   it("names female voices and applies gentle delivery", () => {
     const girls = VOICE_LIST.filter((v) => v.female);
     expect(new Set(girls.map((v) => v.name)).size).toBe(girls.length);
