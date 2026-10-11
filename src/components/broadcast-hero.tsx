@@ -7,7 +7,7 @@ import type { Channel } from "@/lib/channels";
 export function BroadcastHero({ channel, active, onWatch, sectionTitle, section }: {
   channel: Channel; active: boolean; onWatch: () => void; sectionTitle?: string | undefined; section?: string | undefined;
 }) {
-  const art = broadcastArt[section ?? "news"] ?? broadcastArt.general;
+  const art = broadcastArt[section ?? "news"] ?? broadcastArt["general"];
   return <section id="player" className="broadcast-hero scroll-mt-24" dir="rtl">
     <div className="gold-broadcast-cover">
       <img src={art} alt={sectionTitle ?? "استوديو ALMOGHANI LIVE"} width={1536} height={640} fetchPriority="high" />
