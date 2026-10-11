@@ -3,16 +3,32 @@ const femaleVoiceNames: Record<string, string> = {
   Despina: "دلال", Sulafat: "شوق", Achernar: "سديم", Callirrhoe: "نجد", Vindemiatrix: "ليلى", Leda: "موضي",
   Kore: "نورة", Aoede: "هيا", Zephyr: "ريم", Autonoe: "نوف", Erinome: "سارة", Laomedeia: "دانة", Gacrux: "الجوهرة", Pulcherrima: "أمل",
 };
-export const VOICE_LIST: { id: string; female: boolean; label: string; name: string }[] = [
+type VoiceOption = { id: string; female: boolean; label: string; name: string; providerId?: string; delivery?: string };
+export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
+  { id: "female-hessa", female: true, name: "حصة", label: "طبقة منخفضة مخملية", providerId: "Gacrux", delivery: "طبقة نسائية منخفضة ورنانة ومخملية، دافئة وحنونة، بسرعة هادئة ولهجة أهل القصيم، دون همس" },
+  { id: "female-lama", female: true, name: "لمى", label: "طبقة عالية وخفيفة", providerId: "Autonoe", delivery: "طبقة نسائية عالية وخفيفة ومشرقة، مرحة بابتسامة واضحة وطاقة لطيفة، سرعة متوسطة ولهجة أهل الرياض" },
+  { id: "female-aseel", female: true, name: "أسيل", label: "نبرة هوائية هادئة", providerId: "Vindemiatrix", delivery: "نبرة نسائية هوائية رقيقة وحنونة، طبقة متوسطة وحديث بطيء ناعم مع وقفات قصيرة، بلهجة أهل الرياض، دون همس مبالغ" },
+  { id: "female-reemah", female: true, name: "ريما", label: "رنانة وواثقة", providerId: "Pulcherrima", delivery: "نبرة نسائية صافية رنانة وواثقة، طبقة متوسطة منخفضة ونطق واضح، إيقاع متزن وحنون ولهجة أهل القصيم" },
+  { id: "female-joud", female: true, name: "جود", label: "حيوية وسريعة", providerId: "Laomedeia", delivery: "نبرة بنت حيوية وعفوية، طبقة متوسطة عالية وإيقاع سريع طبيعي، ضحكة خفيفة وحنان ولهجة أهل القصيم" },
+  { id: "female-rawan", female: true, name: "روان", label: "صافية بإلقاء متزن", providerId: "Erinome", delivery: "صوت نسائي صاف ودقيق، طبقة متوسطة وإلقاء متزن بجمل قصيرة ووقفات واضحة، نبرة حنونة ولهجة أهل الرياض" },
+];
+export const VOICE_LIST: VoiceOption[] = [...[
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
   ["Umbriel", 0, "مريح"], ["Algieba", 0, "ناعم"], ["Algenib", 0, "خشن"], ["Rasalgethi", 0, "مثقف"], ["Alnilam", 0, "قوي"], ["Schedar", 0, "متزن"],
   ["Achird", 0, "ودود"], ["Zubenelgenubi", 0, "عفوي"], ["Sadachbia", 0, "حيوي"], ["Sadaltager", 0, "عارف"],
   ["Kore", 1, "ثابتة"], ["Aoede", 1, "منعشة"], ["Leda", 1, "شابة"], ["Zephyr", 1, "مشرقة"], ["Despina", 1, "ناعمة"], ["Sulafat", 1, "دافئة"],
   ["Callirrhoe", 1, "هادئة"], ["Autonoe", 1, "مشرقة"], ["Erinome", 1, "واضحة"], ["Laomedeia", 1, "مرحة"], ["Achernar", 1, "رقيقة"],
   ["Gacrux", 1, "ناضجة"], ["Pulcherrima", 1, "واثقة"], ["Vindemiatrix", 1, "لطيفة"],
-].map(([id, f, label]) => ({ id: id as string, female: f === 1, label: label as string, name: femaleVoiceNames[String(id)] ?? String(id) }));
+].map(([id, f, label]) => ({ id: id as string, female: f === 1, label: label as string, name: femaleVoiceNames[String(id)] ?? String(id) })), ...FEMALE_VOICE_PROFILES];
+
+export function providerVoiceId(voice: string) {
+  const option = VOICE_LIST.find((v) => v.id === voice);
+  return option?.providerId ?? option?.id ?? "Leda";
+}
 
 export function voiceDelivery(voice: string) {
+  const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voice);
+  if (profile) return `قولي الكلام بصوت بنت ناعم وحنون، ${profile.delivery}، اقرئي الكلام التالي فقط`;
   return VOICE_LIST.some((v) => v.id === voice && v.female)
     ? "قولي الكلام بصوت بنت ناعم وعذب وحنون، بنبرة دافئة لطيفة ومريحة وابتسامة خفيفة، بهدوء طبيعي دون همس مبالغ أو تصنع، بلهجة سعودية نجدية كأهل الرياض والقصيم وبنطق واضح، اقرئي الكلام التالي فقط"
     : "قلها بصوت جميل دافئ وواضح، بلهجة سعودية نجدية أصيلة كأهل الرياض والقصيم، بنطق سعودي عفوي ودود";
@@ -103,24 +119,27 @@ export function singDelivery(melody?: string, rhythm?: string) {
   return `${SING_DELIVERY}. غنّها كأغنية حقيقية كاملة على ${m} مع ${r}، التزم بنغمة ثابتة وارفع وانزل الصوت مع اللحن، ومدّ آخر كل جملة`;
 }
 
-/** Singing prompts fail intermittently upstream; try richer direction first, then simpler ones, then plain speech. */
+/** Retry only transient upstream errors; refusals and configuration errors are terminal. */
 export async function speakWithFallback(apiKey: string, voice: string, text: string, directions: string[]) {
   let last: Response | null = null;
-  for (const d of directions) {
+  const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voice);
+  for (const [index, d] of directions.entries()) {
+    if (index > 0) await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (index - 1)));
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-tts-preview",
-        contents: [{ role: "user", parts: [{ text: d ? `${d}: ${text}` : text }] }],
-        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
+        contents: [{ role: "user", parts: [{ text: [d, profile?.delivery, text].filter(Boolean).join(": ") }] }],
+        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: providerVoiceId(voice) } } } },
         stream_format: "audio",
       }),
     });
-    if (res.ok) return res;
+    if (res.ok || (res.status !== 429 && res.status < 500)) return res;
     last = res;
   }
-  return last!;
+  if (!last) throw new Error("No speech directions supplied");
+  return last;
 }
 export const singFallbacks = (melody?: string, rhythm?: string) => [singDelivery(melody, rhythm), "غنيها بصوت بنت ناعم", "غنيها بصوت ناعم", ""];
 

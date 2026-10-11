@@ -107,7 +107,8 @@ export function SayNowForm() {
       <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => setSayVoice(e.target.value)}>
         <option value="">تلقائي — حسب إعداد البوت</option>
         <optgroup label="أصوات رجالية">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>ذكر · {v.id} ({v.label})</option>)}</optgroup>
-        <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
+        <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female && !v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
+        <optgroup label="طبقات وأداء جديد للبنات">{VOICE_LIST.filter((v) => v.female && v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
       </select>
     </label>
     <label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" checked={sing} onChange={(e) => setSing(e.target.checked)} />🎶 خلّها تغني الكلام بدل ما تقوله</label>
