@@ -66,7 +66,6 @@ export function normalizeVoiceChat(v: unknown): VoiceChatConfig {
       poem: typeof o.recordings?.poem === "string" && /^recordings\/[a-z0-9-]+\.(mp3|wav|m4a|ogg|webm)$/.test(o.recordings.poem) ? o.recordings.poem : "",
     },
     say: o.say && typeof o.say.id === "string" && typeof o.say.text === "string" && o.say.text.trim() ? { id: o.say.id.slice(0, 80), name: String(o.say.name ?? "").slice(0, 40), text: o.say.text.trim().slice(0, 400), at: Number(o.say.at) || 0, voice: typeof o.say.voice === "string" && known.has(o.say.voice) ? o.say.voice : "", sing: o.say.sing === true, melody: String(o.say.melody ?? "").slice(0, 20), rhythm: String(o.say.rhythm ?? "").slice(0, 20) } : null,
-    song: o.song && KHALID_SONGS.some((k) => k.videoId === o.song?.videoId) ? { videoId: o.song.videoId, title: String(o.song.title ?? "").slice(0, 60), at: Number(o.song.at) || 0 } : null,
     openers: openers.length ? openers : defaultVoiceChat.openers,
   };
 }
