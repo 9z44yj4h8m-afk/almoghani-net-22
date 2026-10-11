@@ -67,13 +67,30 @@ export function SayNowForm() {
     if (testing) return;
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
+    const text = sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
+    const voiceId = sayVoice || cfg.botVoices[name] || "";
     try {
-      const { audio } = await previewVoiceFn({ data: { text: sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم", voice: sayVoice || cfg.botVoices[name] || "", sing, melody, rhythm } });
+      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
       setNote("هذا هو الصوت اللي اخترته ✓");
-    } catch { setNote("تعذّر تجريب الصوت."); }
+    } catch {
+      // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        const synth = window.speechSynthesis;
+        synth.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "ar-SA";
+        const female = voiceId.startsWith("female-") || ["Kore","Aoede","Leda","Zephyr","Despina","Sulafat","Callirrhoe","Autonoe","Erinome","Laomedeia","Achernar","Gacrux","Pulcherrima","Vindemiatrix"].includes(voiceId) || !voiceId;
+        const ar = synth.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
+        if (ar) u.voice = ar;
+        u.pitch = female ? 1.4 : 0.8;
+        u.rate = 0.95;
+        synth.speak(u);
+        setNote("الصوت السحابي متوقف حالياً (الرصيد منتهي)، فاشتغل قارئ جهازك المجاني ✓");
+      } else setNote("تعذّر تجريب الصوت.");
+    }
     finally { setTesting(false); }
   }
 
