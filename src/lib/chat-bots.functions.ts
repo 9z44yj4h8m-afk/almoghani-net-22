@@ -176,6 +176,7 @@ export const adminPostChat = createServerFn({ method: "POST" })
 
 // Voice-room turn: one bot speaks ~20 seconds; text is only spoken, never posted to the chat.
 const FEMALE = /^(تحب|أم|شابة|هادئة|خفيفة|اجتماعية|عاشقة|لطيفة|طيبة|تتابع|تسأل)/;
+const TOPICS = ["القهوة والسهرة مع الصديقات", "طلعات البر والكشتة والمطر", "الطبخ وأكلات نجد مثل الكليجا والجريش", "التسوق والعطور والعود", "السفر وأجمل الأماكن", "المسلسلات الخليجية هالأيام", "ذكريات المدرسة والطفولة", "الشتاء والدفا وليل الرياض", "الأغاني والطرب والسامري", "الرياضة والمشي والصحة", "الأمثال الشعبية القديمة", "العيد ولمة الأهل", "القطط والحيوانات الأليفة", "الأحلام والطموحات", "الصباح الحلو وفنجال القهوة"];
 const OPENERS = ["هلا والله ومسهلا، نورتوا الغرفة الصوتية، حياكم الله كلكم، وش أخباركم اليوم؟ عساكم بخير وعافية", "يا هلا ويا مرحبا بالجميع، الله يمسيكم بالخير، وش رايكم نسولف شوي عن المسلسلات اللي تتابعونها هالأيام؟", "مساكم الله بالخير يا جماعة، حياكم في المغني لايف، تفضلوا وخذوا راحتكم والمايك يدور على الكل"];
 export async function voiceMonologue(previous = "", heard = "", fast = false, openers: string[] = OPENERS) {
   const cfg = await loadConfig(); BOT_POOL = cfg.bots;
@@ -184,9 +185,13 @@ export async function voiceMonologue(previous = "", heard = "", fast = false, op
   // The opening voice is always a girl's, so the room starts with a soft female voice.
   if (fast) { const girls = pool.filter((b) => FEMALE.test(b.style.trim())); if (girls.length) pool = girls; }
   const bot = pool[Math.floor(Math.random() * pool.length)] ?? { name: "زائرة", style: "شابة ودودة" };
+  // Singer girls ("تحب الغناء…") sing a short original verse on some turns instead of talking.
+  const sings = !fast && !heard && /^تحب الغناء/.test(bot.style.trim()) && Math.random() < 0.5;
+  const topic = TOPICS[Math.floor(Math.random() * TOPICS.length)];
   const text = fast && openers.length ? openers[Math.floor(Math.random() * openers.length)] ?? "هلا بالجميع" : await generate(
     `أنت ${bot.name} في غرفة دردشة صوتية بموقع المغني لايف. شخصيتك: ${bot.style}. تتكلم ${bot.name.length % 2 ? "بلهجة أهل القصيم السعودية (مثل: وشلونك، ابد، يا زين، عاد، هالحين، والله انه)" : "بلهجة أهل الرياض السعودية (مثل: وش السالفة، ابشر، كذا، مره حلو، يا هلا والله)"} بعفوية كأنك تسولف مع الحضور. بدون روابط وبدون اختلاق أخبار أو نتائج، وبدون تشكيل.`,
-    `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف بموضوع يناسب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
+    sings ? "اكتب أربعة أبيات غنائية قصيرة جديدة من تأليفك بلهجة نجدية عن الحب أو الشوق أو الليل، بدون نسخ أي أغنية معروفة. اكتب الكلمات فقط."
+      : `${heard ? `الزائر ${previous || ""} قال لك بالمايك: «${heard}». رد عليه بود وجاوبه ثم ` : previous ? `قبلك تكلم ${previous}، علّق عليه بخفة ثم ` : ""}سولف عن ${topic} بأسلوب شخصيتك لمدة عشرين ثانية تقريبًا (بين 40 و50 كلمة). اكتب الكلام فقط.`,
   );
-  return { name: bot.name, female: FEMALE.test(bot.style.trim()), mode: "talk" as "talk" | "sing" | "poem", text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
+  return { name: bot.name, female: FEMALE.test(bot.style.trim()), mode: (sings ? "sing" : "talk") as "talk" | "sing" | "poem", text: withoutArabicDiacritics(text || canned(cfg) || "هلا والله بالجميع، نورتوا الغرفة الصوتية") };
 }
