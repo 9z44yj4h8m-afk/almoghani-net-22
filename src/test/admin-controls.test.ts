@@ -11,7 +11,7 @@ describe("admin content controls", () => {
       expect(voiceDelivery(v.id)).toContain(v.delivery);
       const cfg = normalizeVoiceChat({ femaleVoices: [v.id], botVoices: { girl: v.id }, say: { id: "test", text: "هلا", voice: v.id } });
       expect(cfg.femaleVoices).toEqual([v.id]);
-      expect(cfg.botVoices.girl).toBe(v.id);
+      expect(cfg.botVoices["girl"]).toBe(v.id);
       expect(cfg.say?.voice).toBe(v.id);
     }
     expect(providerVoiceId("Despina")).toBe("Despina");
