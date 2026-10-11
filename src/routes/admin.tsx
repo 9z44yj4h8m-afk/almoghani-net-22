@@ -10,13 +10,7 @@ import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
-import { ChatBotsManager } from "@/components/admin/chat-bots-manager";
-import { SayNowForm } from "@/components/admin/voice-chat-manager";
-import { ChatAppearanceEditor } from "@/components/admin/chat-appearance-editor";
-import { VoiceChatManager } from "@/components/admin/voice-chat-manager";
 
-import { ChatModerationManager } from "@/components/admin/chat-moderation-manager";
-import { ChatRoomsManager } from "@/components/admin/chat-rooms-manager";
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl, createMember, setMemberPassword } from "@/lib/admin.functions";
@@ -26,7 +20,6 @@ import {
 } from "@/lib/site-config";
 
 const ADMIN_SECTIONS = [
-  { id: "chat", label: "الدردشة", content: ChatTab },
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
   { id: "channels", label: "القنوات", content: ChannelsTab },
   { id: "movies", label: "الأفلام", content: MoviesTab },
@@ -76,7 +69,7 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <div className="mt-4 space-y-4"><SayNowForm /></div>
+        <Button asChild className="mt-4"><Link to="/admin-chat">لوحة الشات (المستخدمين والأصوات)</Link></Button>
         <nav aria-label="أقسام لوحة التحكم" className="my-6 flex flex-wrap gap-2">
           {ADMIN_SECTIONS.map(({ id, label }) => <Button key={id} asChild size="sm" variant="outline"><a href={`#admin-${id}`}>{label}</a></Button>)}
         </nav>
@@ -415,27 +408,4 @@ function AdsTab() {
   </form>;
 }
 
-function ChatTab() {
-  const { data } = useSiteConfig();
-  const refresh = useRefresh();
-  const enabled = (data?.chat ?? defaultChat).enabled;
-  const msgs = useQuery({ queryKey: ["admin-chat"], queryFn: async () => (await supabase.from("chat_messages").select("id,display_name,body,created_at").order("created_at", { ascending: false }).limit(100)).data ?? [] });
-  return <div className="space-y-4">
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card/50 p-4">
-      <span className="flex-1 font-bold">الدردشة {enabled ? "مفعّلة" : "متوقفة"}</span>
-      <Button variant={enabled ? "outline" : "default"} onClick={async () => { await saveSetting("chat", { enabled: !enabled }); void refresh(); }}>{enabled ? "إيقاف" : "تشغيل"}</Button>
-    </div>
-    <ChatAppearanceEditor />
-    <ChatBotsManager />
-    <VoiceChatManager />
-    <ChatRoomsManager />
-    <ChatModerationManager />
-    <div className="border-t border-border pt-6">
-    <h3 className="font-black">الرسائل</h3>
-    <ul className="divide-y divide-border">{(msgs.data ?? []).map((m) => <li key={m.id} className="flex items-start gap-2 py-3">
-      <span className="min-w-0 flex-1"><b>{m.display_name || "زائر"}</b> <span className="text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" })}</span><span className="block break-words">{m.body}</span></span>
-      <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("chat_messages").delete().eq("id", m.id); void msgs.refetch(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-    </li>)}</ul>
-    </div>
-  </div>;
-}
+
