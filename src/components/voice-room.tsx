@@ -6,23 +6,6 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 
-/** Plays the owner-selected official song for everyone; polled so new picks reach open rooms. */
-function useOwnerSong() {
-  const [song, setSong] = useState<VoiceChatConfig["song"]>(null);
-  useEffect(() => {
-    let alive = true;
-    const load = () => void supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle().then(({ data }) => { if (alive) setSong(normalizeVoiceChat(data?.value).song); });
-    load(); const t = window.setInterval(load, 15000);
-    return () => { alive = false; window.clearInterval(t); };
-  }, []);
-  return song;
-}
-function SongPlayer({ song, muted }: { song: NonNullable<VoiceChatConfig["song"]>; muted: boolean }) {
-  return <div className="w-full space-y-1 p-2">
-    <p className="text-center text-sm font-bold">🎵 خالد عبدالرحمن — {song.title}</p>
-    <iframe key={song.videoId + song.at} className="aspect-video w-full rounded-lg" src={`https://www.youtube.com/embed/${song.videoId}?autoplay=1&playsinline=1${muted ? "&mute=1" : ""}`} title={song.title} allow="autoplay; encrypted-media" allowFullScreen />
-  </div>;
-}
 
 const TURN_MS = 20000;
 type Turn = { name: string; url: string; ms: number } | { disabled: true };
@@ -183,8 +166,7 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
   useEffect(() => { if (audioRef.current) audioRef.current.muted = muted; }, [muted]);
   useEffect(() => { if (!micsOpen) { handRef.current = false; setHandUp(false); } }, [micsOpen]);
   const myTurn = speaker === me && !waiting;
-  const song = useOwnerSong();
-  useEffect(() => { if (audioRef.current) audioRef.current.muted = muted || !!song; }, [muted, song]);
+  useEffect(() => { if (audioRef.current) audioRef.current.muted = muted; }, [muted]);
 
   if (disabled) return compact ? <p className="p-2 text-center text-xs font-bold">الشات الصوتي متوقف حاليًا.</p> : <div className="classic-chat-workspace"><p className="p-8 text-center font-bold">الشات الصوتي متوقف حاليًا.</p></div>;
   if (compact) return (
@@ -198,13 +180,12 @@ function VoiceRoomInner({ avatars, guestName, compact = false, onClose, micsOpen
       <Button size="sm" variant="secondary" onClick={() => setMuted((m) => !m)} aria-label={muted ? "تشغيل الصوت" : "كتم الصوت"}>{muted ? <VolumeX /> : <Volume2 />}</Button>
       {onClose && <Button size="sm" variant="secondary" onClick={onClose}>إيقاف الصوتي</Button>}
       {micError && <p className="w-full text-xs text-destructive">{micError}</p>}
-      {song && <SongPlayer song={song} muted={muted} />}
     </div>
   );
   return (
     <div className="classic-chat-workspace">
-      <div className="classic-chat-messages" aria-live="polite" aria-label="المتحدثون في الشات الصوتي">
-        {song && <SongPlayer song={song} muted={muted} />}
+        <div className="classic-chat-messages" aria-live="polite" aria-label="المتحدثون في الشات الصوتي">
+
         {speakers.length === 0 && <p className="flex items-center justify-center gap-2 py-8 text-sm"><Loader2 className="size-4 animate-spin" />يجهز أول متحدث…</p>}
         {speakers.map((name) => {
           const active = name === speaker;
