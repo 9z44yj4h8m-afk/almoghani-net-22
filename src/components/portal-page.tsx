@@ -7,6 +7,7 @@ import {
   Clapperboard,
   Film,
   Home,
+  Heart,
   ListVideo,
   MessageCircle,
   MoonStar,
