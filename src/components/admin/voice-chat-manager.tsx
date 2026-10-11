@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Download, Play, Plus, Save, Trash2, Upload, Volume2 } from "lucide-react";
+import { Download, Play, Plus, Save, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { MELODIES, PRESET_SONGS, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
+import { MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 
@@ -17,7 +17,7 @@ export function SayNowForm() {
   const [testing, setTesting] = useState(false);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
-  const [sayVoice, setSayVoice] = useState("");
+  const [sayVoice, setSayVoice] = useState("Leda");
   const [sing, setSing] = useState(false);
   const [melody, setMelody] = useState("najdi");
   const [rhythm, setRhythm] = useState("slow");
@@ -68,7 +68,8 @@ export function SayNowForm() {
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
     const text = sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
-    const voiceId = sayVoice || cfg.botVoices[name] || "";
+    const selected = sayVoice || cfg.botVoices[name];
+    const voiceId = VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
@@ -82,24 +83,15 @@ export function SayNowForm() {
         synth.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = "ar-SA";
-        const female = voiceId.startsWith("female-") || ["Kore","Aoede","Leda","Zephyr","Despina","Sulafat","Callirrhoe","Autonoe","Erinome","Laomedeia","Achernar","Gacrux","Pulcherrima","Vindemiatrix"].includes(voiceId) || !voiceId;
         const ar = synth.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
         if (ar) u.voice = ar;
-        u.pitch = female ? 1.4 : 0.8;
+        u.pitch = 1.4;
         u.rate = 0.95;
         synth.speak(u);
-        setNote("الصوت السحابي متوقف حالياً (الرصيد منتهي)، فاشتغل قارئ جهازك المجاني ✓");
+        setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني، ولا يمكن حفظ صوته كملف.");
       } else setNote("تعذّر تجريب الصوت.");
     }
     finally { setTesting(false); }
-  }
-
-  async function sayNow(e: React.FormEvent) {
-    e.preventDefault();
-    const name = sayBot || bots[0]; if (!name || !sayText.trim()) return;
-    setBusy(true);
-    try { await saveSay({ id: crypto.randomUUID(), name, text: sayText.trim(), at: Date.now(), voice: sayVoice, sing, melody, rhythm }); setSayText(""); setNote(`سيقولها ${name} بصوته في الدور القادم ✓`); }
-    catch { setNote("تعذّر الإرسال."); } finally { setBusy(false); }
   }
 
   useEffect(() => {
@@ -114,16 +106,13 @@ export function SayNowForm() {
     return () => { alive = false; };
   }, []);
 
-  return <form onSubmit={sayNow} className="space-y-3 rounded-2xl border-2 border-primary/60 bg-card/60 p-4">
-    <h2 className="font-black text-lg">🎤 خل البوت يقول كلامك الآن</h2>
+  return <section aria-label="تجريب أصوات البنات" className="space-y-3 rounded-lg border-2 border-primary/60 bg-card/60 p-4">
+    <h2 className="font-black text-lg">تجريب أصوات البنات</h2>
     <select className={field} aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select>
-    <textarea className={`${field} h-24 py-2`} aria-label="الكلام" required maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => setSayText(e.target.value)} />
-    <Button type="submit" disabled={busy || !sayText.trim()}><Volume2 />قلها الآن</Button>
+    <textarea className={`${field} h-24 py-2`} aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
     <label className="block space-y-1">
-      <span className="text-sm font-bold">اختيار الصوت (ذكر أو أنثى)</span>
-      <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => setSayVoice(e.target.value)}>
-        <option value="">تلقائي — حسب إعداد البوت</option>
-        <optgroup label="أصوات رجالية">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>ذكر · {v.id} ({v.label})</option>)}</optgroup>
+      <span className="text-sm font-bold">اختيار صوت بنت</span>
+      <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female && !v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
         <optgroup label="طبقات وأداء جديد للبنات">{VOICE_LIST.filter((v) => v.female && v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
       </select>
@@ -133,25 +122,13 @@ export function SayNowForm() {
       <select className={field} aria-label="اللحن" value={melody} onChange={(e) => setMelody(e.target.value)}>{MELODIES.map((m) => <option key={m.id} value={m.id}>🎼 {m.label}</option>)}</select>
       <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => setRhythm(e.target.value)}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>💃 {r.label}</option>)}</select>
     </div>}
-    <div className="space-y-2 rounded-xl border border-border p-3">
-      <span className="text-sm font-bold">🎵 أغاني جاهزة</span>
-      <div className="flex flex-wrap gap-2">{PRESET_SONGS.map((song) => <Button key={song.id} type="button" size="sm" variant="outline" onClick={() => { setSayText(song.text); setSing(true); setMelody(song.melody); setRhythm(song.rhythm); setNote(`اخترت «${song.title}» — غيّر اللحن أو الصوت إذا تبي، ثم اضغط قلها الآن`); }}>خليها تغني «{song.title}»</Button>)}</div>
-    </div>
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
-      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
       <Button type="button" disabled={!audioFile || testing} onClick={downloadVoice}><Download />حفظ الصوت في جوالي</Button>
-      <p className="text-xs text-muted-foreground">تُقال مرة وحدة لكل من في الشات الصوتي خلال 10 دقائق، وبالصوت اللي تختاره هنا.</p>
+      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
     </div>
     {note && <p className="text-sm font-bold">{note}</p>}
-  </form>;
-}
-
-async function saveSay(say: NonNullable<VoiceChatConfig["say"]>) {
-  const { data } = await supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
-  const next = normalizeVoiceChat({ ...(data?.value as Partial<VoiceChatConfig> | undefined ?? {}), say });
-  const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
-  if (error) throw error;
+  </section>;
 }
 
 export function VoiceChatManager() {
@@ -299,8 +276,8 @@ export function VoiceChatManager() {
       </label>
     </div>
 
-    {(["maleVoices", "femaleVoices"] as const).map((key) => <div key={key} className="space-y-2">
-      <h3 className="font-black">{key === "maleVoices" ? "أصوات الشباب" : "أصوات البنات"} <span className="text-sm font-normal text-muted-foreground">(اختر الأصوات المستخدمة)</span></h3>
+    {(["femaleVoices"] as const).map((key) => <div key={key} className="space-y-2">
+      <h3 className="font-black">أصوات البنات <span className="text-sm font-normal text-muted-foreground">(اختر الأصوات المستخدمة)</span></h3>
       <div className="flex flex-wrap gap-2">
         {VOICE_LIST.filter((v) => v.female === (key === "femaleVoices")).map((v) => <Button key={v.id} type="button" size="sm" variant={cfg[key].includes(v.id) ? "default" : "outline"} aria-pressed={cfg[key].includes(v.id)} onClick={() => toggle(key, v.id)}>{v.name} · {v.label}</Button>)}
       </div>
@@ -308,13 +285,11 @@ export function VoiceChatManager() {
 
     <div className="space-y-2">
       <h3 className="font-black">صوت كل بوت</h3>
-      <p className="text-sm text-muted-foreground">«تلقائي» يختار صوتًا مناسبًا للشخصية (شاب أو بنت).</p>
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {bots.map((name) => <label key={name} className="flex items-center gap-2 rounded-xl border border-border p-2 text-sm">
           <span className="min-w-0 flex-1 truncate font-bold">{name}</span>
-          <select className={`${field} w-40`} value={cfg.botVoices[name] ?? ""} onChange={(e) => { const botVoices = { ...cfg.botVoices }; if (e.target.value) botVoices[name] = e.target.value; else delete botVoices[name]; update({ botVoices }); }}>
+          <select className={`${field} w-40`} value={VOICE_LIST.some((v) => v.id === cfg.botVoices[name] && v.female) ? cfg.botVoices[name] : ""} onChange={(e) => { const botVoices = { ...cfg.botVoices }; if (e.target.value) botVoices[name] = e.target.value; else delete botVoices[name]; update({ botVoices }); }}>
             <option value="">تلقائي</option>
-            <optgroup label="شباب">{VOICE_LIST.filter((v) => !v.female).map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup>
             <optgroup label="بنات">{VOICE_LIST.filter((v) => v.female).map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup>
           </select>
         </label>)}
