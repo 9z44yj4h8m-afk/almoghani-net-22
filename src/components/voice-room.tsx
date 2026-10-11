@@ -4,7 +4,7 @@ import { Hand, Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BotAvatar } from "@/components/bot-avatar";
 import { supabase } from "@/integrations/supabase/client";
-import { normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
+import { normalizeVoiceChat } from "@/lib/voice-config";
 
 
 const TURN_MS = 20000;

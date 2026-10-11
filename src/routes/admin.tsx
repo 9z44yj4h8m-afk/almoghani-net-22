@@ -11,7 +11,7 @@ import { ContentManager } from "@/components/admin/content-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { ChatBotsManager } from "@/components/admin/chat-bots-manager";
-import { KhalidSongsPanel, SayNowForm } from "@/components/admin/voice-chat-manager";
+import { SayNowForm } from "@/components/admin/voice-chat-manager";
 import { ChatAppearanceEditor } from "@/components/admin/chat-appearance-editor";
 import { VoiceChatManager } from "@/components/admin/voice-chat-manager";
 
@@ -76,7 +76,7 @@ function AdminPage() {
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <div className="mt-4 space-y-4"><SayNowForm /><KhalidSongsPanel /></div>
+        <div className="mt-4 space-y-4"><SayNowForm /></div>
         <nav aria-label="أقسام لوحة التحكم" className="my-6 flex flex-wrap gap-2">
           {ADMIN_SECTIONS.map(({ id, label }) => <Button key={id} asChild size="sm" variant="outline"><a href={`#admin-${id}`}>{label}</a></Button>)}
         </nav>
