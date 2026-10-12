@@ -16,6 +16,19 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-layan", female: true, name: "ليان", label: "حديث لطيف · تقريب ص2", providerId: "Laomedeia", delivery: "أداء نسائي حنون محادثي لطيف وعفوي، طبقة متوسطة قريبة من 220 هرتز دون إجبار، سرعة متوسطة نشيطة وابتسامة مسموعة خفيفة، وصل الكلمات بسلاسة دون حدة أو همس؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
   { id: "female-raneem", female: true, name: "رنيم", label: "تشجيع هادئ · تقريب ص3", providerId: "Vindemiatrix", delivery: "أداء نسائي حنون مشجع وواثق بهدوء، طبقة متوسطة قريبة من 215 هرتز دون إجبار، وضوح ناعم وتشديد خفيف للكلمات المهمة مع وقفات قصيرة، دون صراخ أو نبرة إعلان؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
   { id: "female-jumana", female: true, name: "جمان", label: "إلقاء رقيق · تقريب audio_2", providerId: "Achernar", delivery: "أداء نسائي حنون رقيق وصاف، طبقة متوسطة عالية قريبة من 240 هرتز دون إجبار، إلقاء تعبيري متزن مع تنويع لطيف للنغمة ونهايات جمل هادئة، دون تصنع أو همس مبالغ؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
+  // Young-girl, extra-soft and playful "spoiled" presets.
+  { id: "girl-sama", female: true, name: "سما", label: "بنت صغيرة مرحة", providerId: "Leda", delivery: "صوت بنت صغيرة بريئة مرحة، طبقة عالية خفيفة وضحكة طفولية، كلام بسيط سريع بحماس لطيف ولهجة أهل الرياض" },
+  { id: "girl-lulu", female: true, name: "لولو", label: "بنت صغيرة خجولة", providerId: "Achernar", delivery: "صوت بنت صغيرة خجولة وبريئة، طبقة عالية رقيقة وكلام هادئ متقطع بلطف وابتسامة، لهجة أهل القصيم" },
+  { id: "girl-toota", female: true, name: "توته", label: "بنت صغيرة شقية", providerId: "Zephyr", delivery: "صوت بنت صغيرة شقية ومشرقة، طبقة عالية وحماس وضحك خفيف، تمدّ بعض الكلمات بعفوية طفولية ولهجة نجدية" },
+  { id: "girl-dana", female: true, name: "دانه الصغيرة", label: "بنت صغيرة حنونة", providerId: "Aoede", delivery: "صوت بنت صغيرة حنونة وحالمة، طبقة عالية ناعمة وإيقاع بطيء لطيف كأنها تحكي قصة، لهجة أهل الرياض" },
+  { id: "female-dalla", female: true, name: "دلوعة", label: "دلوعة مره · مايع", providerId: "Despina", delivery: "صوت بنت دلوعة جدا ومايع، تمطّ الكلمات وتطوّل آخر الحروف بدلع ومزح، نبرة مدللة ناعمة مع ضحكة خفيفة وغنج لطيف، طبقة متوسطة عالية ولهجة أهل الرياض" },
+  { id: "female-ghanooj", female: true, name: "غنوج", label: "دلع ناعم", providerId: "Leda", delivery: "صوت بنت مدللة ناعمة، تتكلم بدلع ومد خفيف للكلمات وابتسامة مسموعة، إيقاع بطيء ونبرة مرحة ولهجة نجدية" },
+  { id: "female-dalal2", female: true, name: "دلّول", label: "دلوعة مرحة", providerId: "Autonoe", delivery: "صوت بنت دلوعة مرحة كثيرة الضحك، تطوّل الكلمات بدلع وتغيّر نغمتها صعودا ونزولا، طبقة عالية ولهجة أهل القصيم" },
+  { id: "female-nesma", female: true, name: "نسمة", label: "ناعمة جدا هامسة", providerId: "Vindemiatrix", delivery: "صوت بنت ناعم جدا وقريب من الهمس الرقيق، بطيء وحالم وحنون، طبقة متوسطة ولهجة أهل الرياض" },
+  { id: "female-warda", female: true, name: "وردة", label: "ناعمة مخملية", providerId: "Sulafat", delivery: "صوت بنت مخملي ناعم دافئ، كلام هادئ ورقيق بحنان وابتسامة، طبقة متوسطة ولهجة نجدية" },
+  { id: "female-shahd2", female: true, name: "شهد", label: "ناعمة عذبة", providerId: "Callirrhoe", delivery: "صوت بنت عذب صاف وناعم، إيقاع هادئ متزن ونهايات جمل رقيقة، لهجة أهل القصيم" },
+  { id: "female-lojain", female: true, name: "لجين", label: "ناعمة مشرقة", providerId: "Kore", delivery: "صوت بنت ناعم مشرق ولطيف، طاقة خفيفة وابتسامة واضحة، سرعة متوسطة ولهجة أهل الرياض" },
+  { id: "female-yara", female: true, name: "يارا", label: "شابة رقيقة", providerId: "Erinome", delivery: "صوت بنت شابة رقيقة وصافية، كلام لطيف حنون بإيقاع هادئ ولهجة نجدية" },
 ];
 export const VOICE_LIST: VoiceOption[] = [...[
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
