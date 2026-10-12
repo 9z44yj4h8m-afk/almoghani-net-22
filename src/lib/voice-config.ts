@@ -29,6 +29,10 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-shahd2", female: true, name: "شهد", label: "ناعمة عذبة", providerId: "Callirrhoe", delivery: "صوت بنت عذب صاف وناعم، إيقاع هادئ متزن ونهايات جمل رقيقة، لهجة أهل القصيم" },
   { id: "female-lojain", female: true, name: "لجين", label: "ناعمة مشرقة", providerId: "Kore", delivery: "صوت بنت ناعم مشرق ولطيف، طاقة خفيفة وابتسامة واضحة، سرعة متوسطة ولهجة أهل الرياض" },
   { id: "female-yara", female: true, name: "يارا", label: "شابة رقيقة", providerId: "Erinome", delivery: "صوت بنت شابة رقيقة وصافية، كلام لطيف حنون بإيقاع هادئ ولهجة نجدية" },
+  { id: "female-raheel", female: true, name: "رهيل", label: "ناعمة دافئة · حديث مريح", providerId: "Despina", delivery: "صوت امرأة بالغة ناعم ودافئ، طبقة متوسطة منخفضة وحديث محادثي مريح، إيقاع متأن مع وصل الكلمات بسلاسة وابتسامة خفيفة، لهجة أهل الرياض، دون تمطيط أو همس" },
+  { id: "female-areej", female: true, name: "أريج", label: "رقيقة صافية · وقفات لطيفة", providerId: "Achernar", delivery: "صوت امرأة بالغة رقيق وصاف، طبقة متوسطة عالية غير حادة، نطق واضح مع وقفات لطيفة بين الجمل ونهايات هادئة، لهجة أهل القصيم، دون أداء طفولي أو تصنع" },
+  { id: "female-hatoon", female: true, name: "هتون", label: "مخملية هادئة · سرد حنون", providerId: "Gacrux", delivery: "صوت امرأة بالغة مخملي هادئ وحنون، طبقة منخفضة ناعمة وسرد متصل بإيقاع بطيء معتدل، تشديد خفيف للكلمات المهمة، لهجة نجدية، دون خشونة أو همس" },
+  { id: "female-taleen", female: true, name: "تالين", label: "ناعمة مبتسمة · خفيفة ومشرقة", providerId: "Aoede", delivery: "صوت امرأة بالغة ناعم وخفيف ومشرق، طبقة متوسطة وابتسامة مسموعة طبيعية، إيقاع متوسط مع تنويع رقيق للنغمة، لهجة أهل الرياض، دون صراخ أو مبالغة أو أداء طفولي" },
 ];
 export const VOICE_LIST: VoiceOption[] = [...[
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
