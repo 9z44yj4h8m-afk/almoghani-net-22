@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Download, Play, Plus, Save, Trash2, Upload } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Trash2, Upload, UserRound, AudioLines } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
@@ -22,7 +23,14 @@ export function SayNowForm() {
   const [melody, setMelody] = useState("najdi");
   const [rhythm, setRhythm] = useState("slow");
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [audioUrl, setAudioUrl] = useState("");
   const previewVoiceFn = useServerFn(previewVoice);
+  useEffect(() => {
+    if (!audioFile) { setAudioUrl(""); return; }
+    const url = URL.createObjectURL(audioFile);
+    setAudioUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [audioFile]);
 
   async function downloadVoice() {
     if (!audioFile) return;
@@ -106,28 +114,28 @@ export function SayNowForm() {
     return () => { alive = false; };
   }, []);
 
-  return <section aria-label="تجريب أصوات البنات" className="space-y-3 rounded-lg border-2 border-primary/60 bg-card/60 p-4">
-    <h2 className="font-black text-lg">تجريب أصوات البنات</h2>
-    <select className={field} aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select>
-    <textarea className={`${field} h-24 py-2`} aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
-    <label className="block space-y-1">
-      <span className="text-sm font-bold">اختيار صوت بنت</span>
-      <select className={field} aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+  return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel">
+    <h2 className="voice-studio-heading"><AudioLines aria-hidden="true" />تجربة أصوات البوت</h2>
+    <div className="voice-studio-form">
+      <label className="voice-studio-field"><span>صوت البوت</span><div className="voice-studio-select"><UserRound aria-hidden="true" /><select aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown aria-hidden="true" /></div></label>
+      <label className="voice-studio-field"><span>نص التجربة</span><textarea aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} /></label>
+      <label className="voice-studio-field"><span>اختيار صوت بنت</span><div className="voice-studio-select voice-studio-female"><UserRound aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <optgroup label="أصوات بنات ناعمة وحنونة">{VOICE_LIST.filter((v) => v.female && !v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
         <optgroup label="طبقات وأداء جديد للبنات">{VOICE_LIST.filter((v) => v.female && v.providerId).map((v) => <option key={v.id} value={v.id}>أنثى · {v.name} ({v.label})</option>)}</optgroup>
-      </select>
-    </label>
-    <label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" checked={sing} onChange={(e) => setSing(e.target.checked)} />🎶 خلّها تغني الكلام بدل ما تقوله</label>
-    {sing && <div className="grid gap-2 sm:grid-cols-2">
-      <select className={field} aria-label="اللحن" value={melody} onChange={(e) => setMelody(e.target.value)}>{MELODIES.map((m) => <option key={m.id} value={m.id}>🎼 {m.label}</option>)}</select>
-      <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => setRhythm(e.target.value)}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>💃 {r.label}</option>)}</select>
-    </div>}
-    <div className="flex flex-wrap items-center gap-2">
-      <Button type="button" variant="outline" disabled={testing} onClick={testVoice}><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
-      <Button type="button" disabled={!audioFile || testing} onClick={downloadVoice}><Download />حفظ الصوت في جوالي</Button>
-      <Button type="button" disabled={busy || testing} onClick={saveVoice}><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
+      </select><ChevronDown aria-hidden="true" /></div></label>
+      <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>خلّها تغني الكلام بدل ما تقوله</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
+      {sing && <div className="grid gap-2 sm:grid-cols-2">
+        <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
+        <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
+      </div>}
+      <div className="voice-studio-preview">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={testVoice} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
+      <div className="voice-studio-actions">
+        <Button type="button" variant="outline" disabled={testing} onClick={testVoice} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
+      </div>
+      {note && <p role="status" className="text-sm font-bold">{note}</p>}
+      <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
     </div>
-    {note && <p className="text-sm font-bold">{note}</p>}
   </section>;
 }
 

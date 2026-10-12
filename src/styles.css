@@ -892,3 +892,100 @@ body { background: var(--surface-deep); }
  .gold-channel-tools svg { width:17px; height:17px; }
  .gold-channel-row .live-badge { font-size:10px; padding:4px 8px; }
 }
+
+/* Focused owner voice studio, matching the supplied October 12 reference. */
+.voice-studio-page {
+  --voice-night: oklch(0.135 0.025 255);
+  --voice-panel: oklch(0.18 0.023 255);
+  --voice-ink: oklch(0.96 0.006 90);
+  --voice-muted: oklch(0.72 0.035 265);
+  --voice-gold: oklch(0.8 0.13 85);
+  --voice-gold-light: oklch(0.92 0.12 92);
+  --voice-gold-dark: oklch(0.62 0.11 78);
+  --voice-purple: oklch(0.63 0.25 295);
+  --voice-cyan: oklch(0.8 0.15 215);
+  --voice-edge: oklch(0.4 0.025 255);
+  --voice-gold-fill: linear-gradient(160deg, var(--voice-gold-light), var(--voice-gold), var(--voice-gold-dark));
+  --voice-glow: 0 0 18px color-mix(in oklab, var(--voice-gold) 15%, transparent);
+  min-height: 100vh; background: var(--voice-night); color: var(--voice-ink); font-family: "Cairo", sans-serif;
+}
+.voice-studio-header { max-width: 860px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 26px; border-bottom: 1px solid var(--voice-edge); }
+.voice-studio-header > a { color: var(--voice-gold); }
+.voice-studio-brand { display: flex; align-items: center; gap: 16px; color: var(--voice-gold); text-align: center; }
+.voice-studio-brand span { display: block; font-size: 12px; letter-spacing: 2px; }
+.voice-studio-brand b { display: block; font-size: 25px; line-height: 1.4; }
+.voice-studio-brand > svg { width: 38px; height: 38px; }
+.voice-studio-site-link { background: var(--voice-night); border-color: var(--voice-gold); color: var(--voice-ink); height: 46px; border-radius: 8px; }
+.voice-studio-main { max-width: 768px; margin: auto; padding: 32px 26px 28px; }
+.voice-studio-title { display: flex; align-items: center; gap: 22px; margin-bottom: 28px; }
+.voice-studio-title h1 { font-size: 44px; font-weight: 900; line-height: 1.4; }
+.voice-studio-mic { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--voice-purple); color: var(--voice-purple); box-shadow: 0 0 20px color-mix(in oklab, var(--voice-cyan) 35%, transparent); }
+.voice-studio-mic svg { width: 36px; height: 36px; }
+.voice-studio-panel { border: 1px solid var(--voice-gold); border-radius: 28px; padding: 26px 18px 20px; background: linear-gradient(145deg, var(--voice-panel), var(--voice-night) 60%); box-shadow: var(--voice-glow); }
+.voice-studio-heading { display: flex; align-items: center; gap: 18px; font-size: 28px; font-weight: 900; margin: 0 12px 22px; }
+.voice-studio-heading svg { color: var(--voice-gold); width: 42px; height: 42px; }
+.voice-studio-form { display: flex; flex-direction: column; gap: 18px; padding: 20px 18px; border: 1px solid var(--voice-edge); border-radius: 22px; box-shadow: inset 0 1px 14px color-mix(in oklab, var(--voice-ink) 4%, transparent); }
+.voice-studio-field { display: block; min-width: 0; font-size: 19px; font-weight: 600; }
+.voice-studio-field > span { display: block; margin-bottom: 10px; }
+.voice-studio-select { display: flex; align-items: center; border: 1px solid var(--voice-gold); border-radius: 14px; height: 62px; padding: 0 16px; gap: 12px; background: var(--voice-night); }
+.voice-studio-select select { appearance: none; width: 100%; min-width: 0; outline: none; background: transparent; color: var(--voice-ink); font-size: 18px; text-overflow: ellipsis; }
+.voice-studio-select option, .voice-studio-select optgroup { background: var(--voice-night); }
+.voice-studio-select svg { flex-shrink: 0; width: 24px; height: 24px; }
+.voice-studio-select svg:first-child { color: var(--voice-gold); }
+.voice-studio-female svg:first-child { color: var(--voice-purple); }
+.voice-studio-field textarea { width: 100%; min-height: 145px; resize: vertical; border: 1px solid var(--voice-edge); border-radius: 14px; background: var(--voice-night); padding: 18px 14px; outline: none; font-size: 17px; font-weight: 400; }
+.voice-studio-field textarea::placeholder { color: var(--voice-muted); }
+.voice-studio-field textarea:focus, .voice-studio-select:focus-within { border-color: var(--voice-cyan); }
+.voice-studio-sing { display: flex; align-items: center; gap: 12px; border: 1px solid var(--voice-edge); border-radius: 14px; padding: 16px; font-size: 18px; }
+.voice-studio-sing > svg { color: var(--voice-purple); width: 28px; height: 28px; flex-shrink: 0; }
+.voice-studio-sing > span { flex: 1; }
+.voice-studio-sing > button { width: 48px; height: 28px; background: var(--voice-edge); }
+.voice-studio-sing > button[data-state=checked] { background: var(--voice-purple); }
+.voice-studio-sing > button span { width: 24px; height: 24px; background: var(--voice-ink); }
+.voice-studio-sing > button span[data-state=checked] { transform: translateX(20px); }
+.voice-studio-preview { display: flex; align-items: center; gap: 18px; min-height: 98px; padding: 16px; border: 1px solid var(--voice-edge); border-radius: 14px; }
+.voice-studio-play { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: var(--voice-night); border-color: var(--voice-cyan); color: var(--voice-cyan); box-shadow: 0 0 16px color-mix(in oklab, var(--voice-cyan) 25%, transparent); }
+.voice-studio-play svg { width: 27px; height: 27px; }
+.voice-studio-status { color: var(--voice-muted); font-size: 15px; white-space: nowrap; }
+.voice-studio-wave { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 65px; gap: 3px; overflow: hidden; direction: ltr; }
+.voice-studio-wave i { display: block; width: 4px; flex-shrink: 0; height: 8px; border-radius: 3px; background: var(--voice-purple); box-shadow: 0 0 9px color-mix(in oklab, var(--voice-purple) 50%, transparent); }
+.voice-studio-wave i:nth-child(3n) { height: 24px; }
+.voice-studio-wave i:nth-child(5n) { height: 48px; }
+.voice-studio-wave i:nth-child(7n) { height: 62px; }
+.voice-studio-wave i:nth-child(n+15) { background: var(--sky); }
+.voice-studio-wave i:nth-child(n+29) { background: var(--voice-cyan); }
+.voice-studio-preview audio { width: 100%; }
+.voice-studio-actions { display: grid; grid-template-columns: 1fr 1.08fr; gap: 12px; }
+.voice-studio-actions > button { min-width: 0; height: 66px; padding: 10px; border-radius: 14px; font-size: 18px; background: var(--voice-night); color: var(--voice-ink); white-space: normal; }
+.voice-studio-actions svg { width: 25px; height: 25px; flex-shrink: 0; }
+.voice-studio-test { border-color: var(--voice-cyan); box-shadow: inset 0 0 14px color-mix(in oklab, var(--voice-purple) 15%, transparent); }
+.voice-studio-download { border-color: var(--voice-edge); }
+.voice-studio-save { width: 100%; height: 72px; border-radius: 14px; border: 1px solid var(--voice-gold-light); background: var(--voice-gold-fill); color: var(--voice-night); font-size: 25px; font-weight: 800; box-shadow: var(--voice-glow); }
+.voice-studio-save:hover { background: var(--voice-gold-fill); filter: brightness(1.08); }
+.voice-studio-save svg { width: 30px; height: 30px; }
+@media (max-width: 540px) {
+  .voice-studio-header { padding: 16px 12px; gap: 6px; }
+  .voice-studio-brand b { font-size: 19px; }
+  .voice-studio-brand > svg { width: 25px; height: 25px; }
+  .voice-studio-brand { gap: 8px; }
+  .voice-studio-site-link { font-size: 12px; padding: 8px; }
+  .voice-studio-main { padding: 24px 12px; }
+  .voice-studio-title h1 { font-size: 34px; }
+  .voice-studio-title { gap: 14px; }
+  .voice-studio-panel { padding: 20px 10px 12px; border-radius: 22px; }
+  .voice-studio-heading { font-size: 23px; gap: 12px; }
+  .voice-studio-heading svg { width: 32px; }
+  .voice-studio-form { padding: 16px 12px; gap: 16px; }
+  .voice-studio-field, .voice-studio-sing { font-size: 16px; }
+  .voice-studio-select select { font-size: 16px; }
+  .voice-studio-sing { padding: 12px 10px; gap: 8px; }
+  .voice-studio-preview { padding: 12px; gap: 10px; }
+  .voice-studio-play { width: 44px; height: 44px; }
+  .voice-studio-status { font-size: 12px; }
+  .voice-studio-wave { gap: 2px; }
+  .voice-studio-wave i { width: 3px; }
+  .voice-studio-actions { gap: 8px; }
+  .voice-studio-actions > button { font-size: 14px; height: 60px; gap: 6px; padding: 6px; }
+  .voice-studio-actions svg { width: 20px; }
+  .voice-studio-save { font-size: 21px; height: 66px; }
+}

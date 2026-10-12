@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
-import { SayNowForm } from "@/components/admin/voice-chat-manager";
 import { CHAT_ADMIN_SECTIONS } from "@/components/admin/chat-tab";
 
 export const Route = createFileRoute("/admin-chat")({
@@ -37,7 +36,7 @@ function AdminChatPage() {
       </header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة الشات</h1>
-        <div className="mt-4 space-y-4"><SayNowForm /></div>
+        <div className="mt-4"><Button asChild variant="outline"><Link to="/admin-voices">لوحة الأصوات</Link></Button></div>
         <nav aria-label="أقسام لوحة الشات" className="my-6 flex flex-wrap gap-2">
           {CHAT_ADMIN_SECTIONS.map(({ id, label }) => <Button key={id} asChild size="sm" variant="outline"><a href={`#chat-${id}`}>{label}</a></Button>)}
         </nav>
