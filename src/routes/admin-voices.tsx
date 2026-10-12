@@ -17,7 +17,10 @@ export const Route = createFileRoute("/admin-voices")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
-  ] }),
+    { name: "apple-mobile-web-app-title", content: "الأصوات" },
+  ],
+  links: [{ rel: "manifest", href: "/admin-voices.webmanifest" }],
+  }),
   component: AdminVoicesPage,
 });
 
