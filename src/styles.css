@@ -904,6 +904,7 @@ body { background: var(--surface-deep); }
   --voice-gold-dark: oklch(0.62 0.11 78);
   --voice-purple: oklch(0.63 0.25 295);
   --voice-cyan: oklch(0.8 0.15 215);
+  --voice-blue: oklch(0.69 0.17 255);
   --voice-edge: oklch(0.4 0.025 255);
   --voice-gold-fill: linear-gradient(160deg, var(--voice-gold-light), var(--voice-gold), var(--voice-gold-dark));
   --voice-glow: 0 0 18px color-mix(in oklab, var(--voice-gold) 15%, transparent);
@@ -952,7 +953,7 @@ body { background: var(--surface-deep); }
 .voice-studio-wave i:nth-child(3n) { height: 24px; }
 .voice-studio-wave i:nth-child(5n) { height: 48px; }
 .voice-studio-wave i:nth-child(7n) { height: 62px; }
-.voice-studio-wave i:nth-child(n+15) { background: var(--sky); }
+.voice-studio-wave i:nth-child(n+15) { background: var(--voice-blue); }
 .voice-studio-wave i:nth-child(n+29) { background: var(--voice-cyan); }
 .voice-studio-preview audio { width: 100%; }
 .voice-studio-actions { display: grid; grid-template-columns: 1fr 1.08fr; gap: 12px; }
