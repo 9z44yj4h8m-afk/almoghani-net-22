@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,86 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
+
+// ---- مغيّر الصوت المباشر: خطّا تأخير متداخلان يعدّلان طبقة الصوت لحظيًا (يعمل على الجوال) ----
+const JUNGLE_BUFFER_TIME = 0.1;
+const JUNGLE_FADE_TIME = 0.05;
+const JUNGLE_DELAY_TIME = 0.1;
+
+function jungleDelayBuffer(ctx: BaseAudioContext, shiftUp: boolean) {
+  const length1 = Math.floor(JUNGLE_BUFFER_TIME * ctx.sampleRate);
+  const length2 = Math.floor((JUNGLE_BUFFER_TIME - 2 * JUNGLE_FADE_TIME) * ctx.sampleRate);
+  const buffer = ctx.createBuffer(1, length1 + length2, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length1; i++) data[i] = shiftUp ? (length1 - i) / length1 : i / length1;
+  return buffer;
+}
+
+function jungleFadeBuffer(ctx: BaseAudioContext) {
+  const length1 = Math.floor(JUNGLE_BUFFER_TIME * ctx.sampleRate);
+  const length2 = Math.floor((JUNGLE_BUFFER_TIME - 2 * JUNGLE_FADE_TIME) * ctx.sampleRate);
+  const buffer = ctx.createBuffer(1, length1 + length2, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  const fadeLength = Math.max(1, Math.floor(JUNGLE_FADE_TIME * ctx.sampleRate));
+  const fadeIndex2 = length1 - fadeLength;
+  for (let i = 0; i < length1; i++) {
+    data[i] = i < fadeLength ? Math.sqrt(i / fadeLength) : i >= fadeIndex2 ? Math.sqrt(1 - (i - fadeIndex2) / fadeLength) : 1;
+  }
+  return buffer;
+}
+
+class VoicePitchJungle {
+  readonly input: GainNode;
+  readonly output: GainNode;
+  private modGain1: GainNode;
+  private modGain2: GainNode;
+  private downGains: GainNode[];
+  private upGains: GainNode[];
+
+  constructor(ctx: AudioContext) {
+    this.input = ctx.createGain();
+    this.output = ctx.createGain();
+    const shiftDown = jungleDelayBuffer(ctx, false);
+    const shiftUp = jungleDelayBuffer(ctx, true);
+    const mods = [ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource()];
+    mods[0].buffer = shiftDown; mods[1].buffer = shiftDown;
+    mods[2].buffer = shiftUp; mods[3].buffer = shiftUp;
+    const downGains = [ctx.createGain(), ctx.createGain()];
+    const upGains = [ctx.createGain(), ctx.createGain()];
+    upGains[0].gain.value = 0; upGains[1].gain.value = 0;
+    this.downGains = downGains; this.upGains = upGains;
+    this.modGain1 = ctx.createGain(); this.modGain2 = ctx.createGain();
+    const delay1 = ctx.createDelay(1); const delay2 = ctx.createDelay(1);
+    mods[0].connect(downGains[0]); mods[1].connect(downGains[1]);
+    mods[2].connect(upGains[0]); mods[3].connect(upGains[1]);
+    downGains[0].connect(this.modGain1); downGains[1].connect(this.modGain2);
+    upGains[0].connect(this.modGain1); upGains[1].connect(this.modGain2);
+    this.modGain1.connect(delay1.delayTime);
+    this.modGain2.connect(delay2.delayTime);
+    const fadeBuffer = jungleFadeBuffer(ctx);
+    const fades = [ctx.createBufferSource(), ctx.createBufferSource()];
+    fades[0].buffer = fadeBuffer; fades[1].buffer = fadeBuffer;
+    const mix1 = ctx.createGain(); const mix2 = ctx.createGain();
+    mix1.gain.value = 0; mix2.gain.value = 0;
+    fades[0].connect(mix1.gain); fades[1].connect(mix2.gain);
+    this.input.connect(delay1); this.input.connect(delay2);
+    delay1.connect(mix1); delay2.connect(mix2);
+    mix1.connect(this.output); mix2.connect(this.output);
+    const t = ctx.currentTime + 0.05;
+    const t2 = t + JUNGLE_BUFFER_TIME - JUNGLE_FADE_TIME;
+    mods[0].start(t); mods[1].start(t2); mods[2].start(t); mods[3].start(t2);
+    fades[0].start(t); fades[1].start(t2);
+  }
+
+  setPitchRatio(ratio: number) {
+    const up = ratio >= 1;
+    for (const g of this.downGains) g.gain.value = up ? 0 : 1;
+    for (const g of this.upGains) g.gain.value = up ? 1 : 0;
+    const depth = JUNGLE_DELAY_TIME * Math.abs(ratio - 1);
+    this.modGain1.gain.setTargetAtTime(0.5 * depth, 0, 0.01);
+    this.modGain2.gain.setTargetAtTime(0.5 * depth, 0, 0.01);
+  }
+}
 
 export function SayNowForm() {
   const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
