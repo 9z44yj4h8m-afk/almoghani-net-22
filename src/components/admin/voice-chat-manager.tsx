@@ -4,7 +4,7 @@ import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, 
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, type VoiceChatConfig } from "@/lib/voice-config";
+import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 
