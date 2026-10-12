@@ -4,8 +4,8 @@ import { FEMALE_VOICE_PROFILES, normalizeVoiceChat, providerVoiceId, VOICE_LIST,
 
 describe("admin content controls", () => {
   it("preserves distinct female profiles and resolves supported synthesis voices", () => {
-    expect(FEMALE_VOICE_PROFILES).toHaveLength(6);
-    expect(new Set(FEMALE_VOICE_PROFILES.map((v) => v.delivery)).size).toBe(6);
+    expect(FEMALE_VOICE_PROFILES).toHaveLength(10);
+    expect(new Set(FEMALE_VOICE_PROFILES.map((v) => v.delivery)).size).toBe(10);
     for (const v of FEMALE_VOICE_PROFILES) {
       expect(VOICE_LIST.some((base) => !base.providerId && base.id === providerVoiceId(v.id))).toBe(true);
       expect(voiceDelivery(v.id)).toContain(v.delivery);
