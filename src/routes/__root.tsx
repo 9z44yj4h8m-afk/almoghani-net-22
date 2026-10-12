@@ -79,8 +79,17 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
+const ADMIN_MANIFESTS: Record<string, string> = {
+  "/admin-voices": "/admin-voices.webmanifest",
+  "/admin": "/admin.webmanifest",
+  "/admin-chat": "/admin-chat.webmanifest",
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ matches }) => {
+    const leafPath = matches[matches.length - 1]?.pathname ?? "/";
+    const manifestHref = ADMIN_MANIFESTS[leafPath] ?? "/manifest.webmanifest";
+    return ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
