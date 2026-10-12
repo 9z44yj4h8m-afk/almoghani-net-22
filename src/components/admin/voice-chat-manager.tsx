@@ -340,6 +340,18 @@ export function SayNowForm() {
         <Button type="button" variant="outline" disabled={testing} onClick={toggleRecord} className="voice-studio-download"><AudioLines />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing || recording} onClick={() => void convertMyVoice()} className="voice-studio-download"><Mic />حوّل صوتي</Button>
       </div>
+      <div className="voice-studio-actions" aria-label="مغيّر الصوت المباشر">
+        <Button type="button" variant="outline" onClick={() => { if (changerOn) stopChanger(); else void startChanger(); }} className="voice-studio-test"><Radio />{changerOn ? "إيقاف مغيّر الصوت" : "مغيّر الصوت المباشر"}</Button>
+        <select className={`${field} w-auto min-w-40`} aria-label="نبرة المغيّر" value={changerRatio} disabled={!changerOn} onChange={(e) => setChangerVoice(Number(e.target.value))}>
+          <option value="1.5">بنت ناعمة</option>
+          <option value="1.7">بنت دلوعة</option>
+          <option value="1.85">بنت صغيرة</option>
+          <option value="1.25">صوت خفيف</option>
+          <option value="0.6">صوت عميق</option>
+        </select>
+        <Button type="button" variant="outline" disabled={!changerOn} onClick={toggleChangerRecord} className="voice-studio-download"><AudioLines />{changerRec ? "إيقاف تسجيل المغيّر" : "سجّل الصوت المغيّر"}</Button>
+      </div>
+      {changerOn && <p className="text-xs font-bold" role="status">المغيّر يعمل الآن — استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر، وكل ما تتكلم تسمع صوتك الجديد فورًا.</p>}
       {note && <p role="status" className="text-sm font-bold">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
     </div>
