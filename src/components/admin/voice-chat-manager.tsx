@@ -107,6 +107,14 @@ export function SayNowForm() {
   const previewVoiceFn = useServerFn(previewVoice);
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  function micError(e: unknown) {
+    const n = (e as { name?: string })?.name;
+    if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/admin-voices مباشرة في سفاري أو كروم";
+    if (!navigator.mediaDevices?.getUserMedia) return "المتصفح هذا ما يدعم المايك؛ افتح الصفحة في سفاري أو كروم";
+    if (n === "NotAllowedError") return "المايك مقفل: من إعدادات الجوال ← سفاري/كروم ← الميكروفون ← سماح، ثم حدّث الصفحة";
+    if (n === "NotFoundError") return "ما لقينا مايك في الجهاز";
+    return "ما قدرنا نفتح المايك، اسمح للموقع باستخدامه وحدّث الصفحة";
+  }
   async function toggleRecord() {
     if (recorder) { recorder.stop(); return; }
     try {
@@ -122,7 +130,7 @@ export function SayNowForm() {
         setRecorder(null); setRecording(false); setNote("تم التسجيل ✓");
       };
       rec.start(); setRecorder(rec); setRecording(true); setNote("جارٍ التسجيل… اضغط إيقاف التسجيل");
-    } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
+    } catch (e) { setNote(micError(e)); }
   }
   // ---- مغيّر الصوت المباشر ----
   const changerCtxRef = useRef<AudioContext | null>(null);
@@ -149,7 +157,7 @@ export function SayNowForm() {
       changerStreamRef.current = stream; changerDestRef.current = dest;
       setChangerOn(true);
       setNote("المغيّر شغّال الآن 🎙️ استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر");
-    } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
+    } catch (e) { setNote(micError(e)); }
   }
 
   function stopChanger() {
