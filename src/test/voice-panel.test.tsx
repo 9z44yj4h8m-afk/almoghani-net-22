@@ -18,7 +18,7 @@ describe("female voice panel", () => {
     expect(screen.queryByText(/أغاني جاهزة/)).toBeNull();
     expect(screen.queryByText("أصوات الشباب")).toBeNull();
     expect(screen.queryByRole("option", { name: /Puck|Charon|Fenrir/ })).toBeNull();
-    for (const name of ["حرير", "ليان", "رنيم", "جمان"]) {
+    for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
