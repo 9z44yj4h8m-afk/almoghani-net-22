@@ -107,6 +107,49 @@ export function SayNowForm() {
   const previewVoiceFn = useServerFn(previewVoice);
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
+  const PANEL_STORE = "almoghani-voice-panel";
+
+  // Quick play straight from a voice card: speaks a short sample with that voice only.
+  async function quickTest(voiceId: string) {
+    if (testing || quick) return;
+    setQuick(voiceId); setNote("");
+    const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voiceId);
+    const text = `هلا والله، أنا ${profile?.name ?? "بنت"}، هذي تجربة صوتي`;
+    try {
+      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing: false, melody: "najdi", rhythm: "slow" } });
+      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      setNote(`هذا صوت ${profile?.name} ✓`);
+    } catch {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "ar-SA"; u.pitch = 1.4; u.rate = 0.95;
+        const ar = window.speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
+        if (ar) u.voice = ar;
+        window.speechSynthesis.speak(u);
+        setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني.");
+      } else setNote("تعذّر تجربة الصوت.");
+    } finally { setQuick(""); }
+  }
+
+  // Remember the owner's panel choices on this device so it reopens the same way.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(PANEL_STORE) ?? "{}") as { bot?: string; voice?: string; sing?: boolean; melody?: string; rhythm?: string };
+      if (saved.voice && VOICE_LIST.some((v) => v.id === saved.voice)) setSayVoice(saved.voice);
+      if (saved.bot) setSayBot(saved.bot);
+      if (saved.sing === true) {
+        setSing(true);
+        if (saved.melody && MELODIES.some((m) => m.id === saved.melody)) setMelody(saved.melody);
+        if (saved.rhythm && RHYTHMS.some((r) => r.id === saved.rhythm)) setRhythm(saved.rhythm);
+      }
+    } catch { /* first visit or blocked storage */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    try { localStorage.setItem(PANEL_STORE, JSON.stringify({ bot: sayBot, voice: sayVoice, sing, melody, rhythm })); } catch { /* storage unavailable */ }
+  }, [sayBot, sayVoice, sing, melody, rhythm]);
   function micError(e: unknown) {
     const n = (e as { name?: string })?.name;
     if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/admin-voices مباشرة في سفاري أو كروم";
