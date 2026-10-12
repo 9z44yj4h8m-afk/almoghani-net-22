@@ -19,7 +19,6 @@ export const Route = createFileRoute("/admin-chat")({
     { name: "robots", content: "noindex" },
     { name: "apple-mobile-web-app-title", content: "الشات" },
   ],
-  links: [{ rel: "manifest", href: "/admin-chat.webmanifest" }],
   }),
   component: AdminChatPage,
 });

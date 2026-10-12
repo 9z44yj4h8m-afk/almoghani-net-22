@@ -19,7 +19,6 @@ export const Route = createFileRoute("/admin-voices")({
     { name: "robots", content: "noindex" },
     { name: "apple-mobile-web-app-title", content: "الأصوات" },
   ],
-  links: [{ rel: "manifest", href: "/admin-voices.webmanifest" }],
   }),
   component: AdminVoicesPage,
 });
