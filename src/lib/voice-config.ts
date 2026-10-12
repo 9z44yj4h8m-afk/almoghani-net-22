@@ -111,6 +111,7 @@ export function normalizeVoiceChat(v: unknown): VoiceChatConfig {
 export const SING_DELIVERY = "غنيها بصوت ناعم عذب ورقيق جدا، بلحن هادئ حالم وطرب سعودي نجدي أصيل، مدّ الكلمات كأنك تغني";
 
 export const MELODIES = [
+  { id: "soft-gulf", label: "غناء نسائي خليجي ناعم" },
   { id: "najdi", label: "لحن نجدي طربي" }, { id: "samri", label: "لحن سامري" }, { id: "khaliji", label: "لحن خليجي رومانسي" },
   { id: "shaila", label: "شيلة حماسية" }, { id: "lullaby", label: "لحن هادي حنون (تهويدة)" },
 ] as const;
@@ -138,6 +139,7 @@ export const PRESET_SONGS = [
 export function singDelivery(melody?: string, rhythm?: string) {
   const m = MELODIES.find((x) => x.id === melody)?.label ?? "لحن نجدي طربي";
   const r = RHYTHMS.find((x) => x.id === rhythm)?.label ?? "إيقاع بطيء حالم";
+  if (melody === "soft-gulf") return `أدي الكلمات التالية فقط بغناء امرأة بالغة بصوت ناعم دافئ وصاف، بطابع خليجي عاطفي هادئ. استخدمي جملا لحنية متصلة مع مد محسوب للحركات، انتقالات سلسة بين النغمات وزخارف خفيفة عند نهاية الشطر، وتنفس طبيعي بين الأشطر. اجعلي النبض منتظما مع ${r}، واحفظي وضوح الكلمات دون تحويلها إلى حديث أو همس. ابتكري لحنا أصليا، دون تقليد هوية مغنية أو نسخ لحن تسجيل مرجعي. لا تقرئي تعليمات الأداء`;
   return `${SING_DELIVERY}. غنّها كأغنية حقيقية كاملة على ${m} مع ${r}، التزم بنغمة ثابتة وارفع وانزل الصوت مع اللحن، ومدّ آخر كل جملة`;
 }
 
@@ -163,5 +165,7 @@ export async function speakWithFallback(apiKey: string, voice: string, text: str
   if (!last) throw new Error("No speech directions supplied");
   return last;
 }
-export const singFallbacks = (melody?: string, rhythm?: string) => [singDelivery(melody, rhythm), "غنيها بصوت بنت ناعم", "غنيها بصوت ناعم", ""];
+export const singFallbacks = (melody?: string, rhythm?: string) => melody === "soft-gulf"
+  ? [singDelivery(melody, rhythm), singDelivery(melody, rhythm)]
+  : [singDelivery(melody, rhythm), "غنيها بصوت بنت ناعم", "غنيها بصوت ناعم", ""];
 
