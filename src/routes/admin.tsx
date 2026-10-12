@@ -46,7 +46,6 @@ export const Route = createFileRoute("/admin")({
     { name: "robots", content: "noindex" },
     { name: "apple-mobile-web-app-title", content: "اللوحة" },
   ],
-  links: [{ rel: "manifest", href: "/admin.webmanifest" }],
   }),
   component: AdminPage,
 });
