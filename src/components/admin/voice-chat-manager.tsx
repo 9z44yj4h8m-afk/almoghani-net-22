@@ -25,6 +25,25 @@ export function SayNowForm() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
   const previewVoiceFn = useServerFn(previewVoice);
+  const [recording, setRecording] = useState(false);
+  const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  async function toggleRecord() {
+    if (recorder) { recorder.stop(); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const rec = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+      rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+      rec.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const type = rec.mimeType || "audio/webm";
+        const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+        setAudioFile(new File(chunks, `almoghani-record-${Date.now()}.${ext}`, { type }));
+        setRecorder(null); setRecording(false); setNote("تم التسجيل ✓");
+      };
+      rec.start(); setRecorder(rec); setRecording(true); setNote("جارٍ التسجيل… اضغط إيقاف التسجيل");
+    } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
+  }
   useEffect(() => {
     if (!audioFile) { setAudioUrl(""); return; }
     const url = URL.createObjectURL(audioFile);
@@ -149,6 +168,13 @@ export function SayNowForm() {
         <Button type="button" variant="outline" disabled={testing} onClick={testVoice} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-download"><Send />إرسال لسناب شات</Button>
+      </div>
+      <div className="voice-studio-actions">
+        <label className="voice-studio-download inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md border border-border px-3 text-sm font-bold">
+          <Upload className="h-4 w-4" />رفع أغنية
+          <input type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓ تقدر تسمعه وتحفظه أو ترسله"); } e.target.value = ""; }} />
+        </label>
+        <Button type="button" variant="outline" disabled={testing} onClick={toggleRecord} className="voice-studio-download"><AudioLines />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
       </div>
       {note && <p role="status" className="text-sm font-bold">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
