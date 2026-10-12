@@ -61,8 +61,8 @@ class VoicePitchJungle {
     const delay1 = ctx.createDelay(1); const delay2 = ctx.createDelay(1);
     mods[0].connect(downGains[0]); mods[1].connect(downGains[1]);
     mods[2].connect(upGains[0]); mods[3].connect(upGains[1]);
-    downGains[0].connect(this.modGain1); downGains[1].connect(this.modGain2);
-    upGains[0].connect(this.modGain1); upGains[1].connect(this.modGain2);
+    downGains[0]!.connect(this.modGain1); downGains[1]!.connect(this.modGain2);
+    upGains[0]!.connect(this.modGain1); upGains[1]!.connect(this.modGain2);
     this.modGain1.connect(delay1.delayTime);
     this.modGain2.connect(delay2.delayTime);
     const fadeBuffer = jungleFadeBuffer(ctx);
