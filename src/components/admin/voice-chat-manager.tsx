@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Trash2, Upload, UserRound, AudioLines } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -48,6 +48,22 @@ export function SayNowForm() {
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") return;
       setNote("تعذّر تنزيل الصوت؛ حاول مجددًا.");
+    }
+  }
+
+  async function sendToSnapchat() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile], title: "صوت المغني" });
+        setNote("اختر Snapchat من قائمة المشاركة 👻");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرسله من سناب شات.");
+      window.open("https://www.snapchat.com/", "_blank", "noopener");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
     }
   }
 
@@ -132,6 +148,7 @@ export function SayNowForm() {
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={testVoice} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-download"><Send />إرسال لسناب شات</Button>
       </div>
       {note && <p role="status" className="text-sm font-bold">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
