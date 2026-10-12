@@ -124,6 +124,72 @@ export function SayNowForm() {
       rec.start(); setRecorder(rec); setRecording(true); setNote("جارٍ التسجيل… اضغط إيقاف التسجيل");
     } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
   }
+  // ---- مغيّر الصوت المباشر ----
+  const changerCtxRef = useRef<AudioContext | null>(null);
+  const changerJungleRef = useRef<VoicePitchJungle | null>(null);
+  const changerStreamRef = useRef<MediaStream | null>(null);
+  const changerDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
+  const changerRecRef = useRef<MediaRecorder | null>(null);
+  const [changerOn, setChangerOn] = useState(false);
+  const [changerRatio, setChangerRatio] = useState(1.5);
+  const [changerRec, setChangerRec] = useState(false);
+
+  async function startChanger() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const ctx = new AudioContext();
+      await ctx.resume();
+      const jungle = new VoicePitchJungle(ctx);
+      jungle.setPitchRatio(changerRatio);
+      const dest = ctx.createMediaStreamDestination();
+      ctx.createMediaStreamSource(stream).connect(jungle.input);
+      jungle.output.connect(ctx.destination);
+      jungle.output.connect(dest);
+      changerCtxRef.current = ctx; changerJungleRef.current = jungle;
+      changerStreamRef.current = stream; changerDestRef.current = dest;
+      setChangerOn(true);
+      setNote("المغيّر شغّال الآن 🎙️ استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر");
+    } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
+  }
+
+  function stopChanger() {
+    if (changerRecRef.current?.state === "recording") changerRecRef.current.stop();
+    changerRecRef.current = null;
+    changerStreamRef.current?.getTracks().forEach((t) => t.stop());
+    void changerCtxRef.current?.close().catch(() => {});
+    changerCtxRef.current = null; changerJungleRef.current = null;
+    changerStreamRef.current = null; changerDestRef.current = null;
+    setChangerOn(false); setChangerRec(false);
+  }
+
+  function setChangerVoice(ratio: number) {
+    setChangerRatio(ratio);
+    changerJungleRef.current?.setPitchRatio(ratio);
+  }
+
+  function toggleChangerRecord() {
+    const dest = changerDestRef.current;
+    if (!dest) return;
+    const rec = changerRecRef.current;
+    if (rec) { rec.stop(); return; }
+    const chunks: Blob[] = [];
+    const next = new MediaRecorder(dest.stream);
+    next.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    next.onstop = () => {
+      const type = next.mimeType || "audio/webm";
+      const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+      setAudioFile(new File(chunks, `almoghani-changer-${Date.now()}.${ext}`, { type }));
+      changerRecRef.current = null; setChangerRec(false);
+      setNote("تم تسجيل الصوت المغيّر ✓ تقدر تحفظه في جوالك أو ترسله لسناب");
+    };
+    next.start(); changerRecRef.current = next; setChangerRec(true);
+  }
+
+  useEffect(() => () => {
+    changerStreamRef.current?.getTracks().forEach((t) => t.stop());
+    void changerCtxRef.current?.close().catch(() => {});
+  }, []);
+
   useEffect(() => {
     if (!audioFile) { setAudioUrl(""); return; }
     const url = URL.createObjectURL(audioFile);
