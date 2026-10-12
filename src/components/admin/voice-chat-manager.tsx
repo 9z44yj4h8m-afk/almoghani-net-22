@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -106,11 +106,28 @@ export function SayNowForm() {
     finally { setBusy(false); }
   }
 
-  async function testVoice() {
+  // Voice changer: transcribes the owner's recording, then re-speaks the words with the chosen girl voice.
+  async function convertMyVoice() {
+    if (!audioFile || testing) return;
+    setTesting(true); setNote("جارٍ تحويل صوتك…");
+    let heard = "";
+    try {
+      const form = new FormData();
+      form.append("file", audioFile, audioFile.name);
+      const res = await fetch("/api/public/voice-listen", { method: "POST", body: form });
+      heard = res.ok ? ((await res.json()) as { text?: string }).text?.trim() ?? "" : "";
+    } catch { /* handled below */ }
+    setTesting(false);
+    if (!heard) { setNote("ما قدرنا نفهم التسجيل؛ سجّل بصوت أوضح وحاول مجددًا."); return; }
+    setSayText(heard);
+    await testVoice(heard);
+  }
+
+  async function testVoice(spoken?: string) {
     if (testing) return;
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
-    const text = sayText.trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
+    const text = (typeof spoken === "string" ? spoken : sayText).trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
     const selected = sayVoice || cfg.botVoices[name];
     const voiceId = VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
@@ -163,9 +180,9 @@ export function SayNowForm() {
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
       </div>}
-      <div className="voice-studio-preview">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={testVoice} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
+      <div className="voice-studio-preview">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
       <div className="voice-studio-actions">
-        <Button type="button" variant="outline" disabled={testing} onClick={testVoice} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
+        <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-download"><Send />إرسال لسناب شات</Button>
       </div>
@@ -175,6 +192,7 @@ export function SayNowForm() {
           <input type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓ تقدر تسمعه وتحفظه أو ترسله"); } e.target.value = ""; }} />
         </label>
         <Button type="button" variant="outline" disabled={testing} onClick={toggleRecord} className="voice-studio-download"><AudioLines />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing || recording} onClick={() => void convertMyVoice()} className="voice-studio-download"><Mic />حوّل صوتي</Button>
       </div>
       {note && <p role="status" className="text-sm font-bold">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
