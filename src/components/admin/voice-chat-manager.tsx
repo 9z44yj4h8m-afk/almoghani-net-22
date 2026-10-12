@@ -51,11 +51,11 @@ class VoicePitchJungle {
     const shiftDown = jungleDelayBuffer(ctx, false);
     const shiftUp = jungleDelayBuffer(ctx, true);
     const mods = [ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource()];
-    mods[0].buffer = shiftDown; mods[1].buffer = shiftDown;
-    mods[2].buffer = shiftUp; mods[3].buffer = shiftUp;
+    for (const mod of mods) { mod.buffer = shiftDown; }
+    mods[2]!.buffer = shiftUp; mods[3]!.buffer = shiftUp;
     const downGains = [ctx.createGain(), ctx.createGain()];
     const upGains = [ctx.createGain(), ctx.createGain()];
-    upGains[0].gain.value = 0; upGains[1].gain.value = 0;
+    upGains[0]!.gain.value = 0; upGains[1]!.gain.value = 0;
     this.downGains = downGains; this.upGains = upGains;
     this.modGain1 = ctx.createGain(); this.modGain2 = ctx.createGain();
     const delay1 = ctx.createDelay(1); const delay2 = ctx.createDelay(1);
