@@ -55,7 +55,7 @@ export function SayNowForm() {
     if (!audioFile) return;
     try {
       if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile], title: "صوت المغني" });
+        await navigator.share({ files: [audioFile] });
         setNote("اختر Snapchat من قائمة المشاركة 👻");
         return;
       }
