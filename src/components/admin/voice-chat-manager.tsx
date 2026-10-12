@@ -67,10 +67,10 @@ class VoicePitchJungle {
     this.modGain2.connect(delay2.delayTime);
     const fadeBuffer = jungleFadeBuffer(ctx);
     const fades = [ctx.createBufferSource(), ctx.createBufferSource()];
-    fades[0].buffer = fadeBuffer; fades[1].buffer = fadeBuffer;
+    fades[0]!.buffer = fadeBuffer; fades[1]!.buffer = fadeBuffer;
     const mix1 = ctx.createGain(); const mix2 = ctx.createGain();
     mix1.gain.value = 0; mix2.gain.value = 0;
-    fades[0].connect(mix1.gain); fades[1].connect(mix2.gain);
+    fades[0]!.connect(mix1.gain); fades[1]!.connect(mix2.gain);
     this.input.connect(delay1); this.input.connect(delay2);
     delay1.connect(mix1); delay2.connect(mix2);
     mix1.connect(this.output); mix2.connect(this.output);
