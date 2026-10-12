@@ -12,7 +12,7 @@ describe("soft female voice presets", () => {
       expect(voiceDelivery(id)).toContain("امرأة بالغة");
       providers.add(providerVoiceId(id));
       deliveries.add(voiceDelivery(id));
-      expect(normalizeVoiceChat({ botVoices: { نورة: id } }).botVoices.نورة).toBe(id);
+      expect(normalizeVoiceChat({ botVoices: { نورة: id } }).botVoices['نورة']).toBe(id);
     }
     expect(providers.size).toBe(ids.length);
     expect(deliveries.size).toBe(ids.length);
