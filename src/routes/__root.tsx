@@ -79,8 +79,17 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
+const ADMIN_MANIFESTS: Record<string, string> = {
+  "/admin-voices": "/admin-voices.webmanifest",
+  "/admin": "/admin.webmanifest",
+  "/admin-chat": "/admin-chat.webmanifest",
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ matches }) => {
+    const leafPath = matches[matches.length - 1]?.pathname ?? "/";
+    const manifestHref = ADMIN_MANIFESTS[leafPath] ?? "/manifest.webmanifest";
+    return ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
@@ -131,13 +140,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "manifest", href: manifestHref },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Amiri+Quran&family=Tajawal:wght@400;700;900&family=Almarai:wght@400;700;800&family=Noto+Kufi+Arabic:wght@400;700;900&family=Changa:wght@400;700;800&family=Readex+Pro:wght@400;700&family=El+Messiri:wght@400;700&display=swap" },
     ],
-  }),
+    });
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
