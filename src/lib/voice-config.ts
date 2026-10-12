@@ -33,7 +33,31 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-areej", female: true, name: "أريج", label: "رقيقة صافية · وقفات لطيفة", providerId: "Achernar", delivery: "صوت امرأة بالغة رقيق وصاف، طبقة متوسطة عالية غير حادة، نطق واضح مع وقفات لطيفة بين الجمل ونهايات هادئة، لهجة أهل القصيم، دون أداء طفولي أو تصنع" },
   { id: "female-hatoon", female: true, name: "هتون", label: "مخملية هادئة · سرد حنون", providerId: "Gacrux", delivery: "صوت امرأة بالغة مخملي هادئ وحنون، طبقة منخفضة ناعمة وسرد متصل بإيقاع بطيء معتدل، تشديد خفيف للكلمات المهمة، لهجة نجدية، دون خشونة أو همس" },
   { id: "female-taleen", female: true, name: "تالين", label: "ناعمة مبتسمة · خفيفة ومشرقة", providerId: "Aoede", delivery: "صوت امرأة بالغة ناعم وخفيف ومشرق، طبقة متوسطة وابتسامة مسموعة طبيعية، إيقاع متوسط مع تنويع رقيق للنغمة، لهجة أهل الرياض، دون صراخ أو مبالغة أو أداء طفولي" },
+  // 2026 additions: more young girls, spoiled and soft profiles.
+  { id: "girl-nouf", female: true, name: "نوف", label: "بنت صغيرة مرحلة", providerId: "Kore", delivery: "صوت بنت صغيرة مرحلة مليانة حياة، طبقة عالية وضحكة عفوية، كلام سريع بحماس لطيف ولهجة أهل القصيم" },
+  { id: "girl-reemas", female: true, name: "ريماس", label: "بنت صغيرة خفيفة", providerId: "Sulafat", delivery: "صوت بنت صغيرة خفيفة وحلوة، طبقة عالية ناعمة وكلام بسيط بابتسامة مسموعة ولهجة أهل الرياض" },
+  { id: "female-joori", female: true, name: "جوري", label: "دلع حلو ومسمر", providerId: "Laomedeia", delivery: "صوت بنت دلوعة حلوة، تمطّ الكلمات بدلع لطيف وتطوّل آخر الحروف مع غنج خفيف، طبقة متوسطة عالية ولهجة نجدية" },
+  { id: "female-haneena", female: true, name: "حنينة", label: "ناعمة حالمة", providerId: "Autonoe", delivery: "صوت بنت ناعم حالم وهادئ، طبقة متوسطة وإيقاع بطيء حالم كأنها تحكي قبل النوم، لهجة أهل الرياض" },
+  { id: "female-sukkar", female: true, name: "سكر", label: "ناعمة حلوة", providerId: "Pulcherrima", delivery: "صوت بنت ناعم حلو ومسمر، نبرة دافئة حنونة مع ابتسامة واضحة وإيقاع متوسط مريح، لهجة أهل القصيم" },
+  { id: "female-maha", female: true, name: "مها", label: "ناعمة واثقة", providerId: "Erinome", delivery: "صوت امرأة بالغة ناعم وواثق، طبقة متوسطة ونطق واضح بإيقاع متزن حنون، لهجة أهل الرياض، دون تصنع" },
 ];
+
+// Panel categories: ordered groups shown as card sections in the voice studio.
+export const FEMALE_VOICE_CATEGORIES = ["أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة"] as const;
+const VOICE_CATEGORY: Record<string, string> = {
+  "female-hessa": "أصوات أساسية", "female-lama": "أصوات أساسية", "female-aseel": "أصوات أساسية",
+  "female-reemah": "أصوات أساسية", "female-joud": "أصوات أساسية", "female-rawan": "أصوات أساسية",
+  "female-hareer": "أداء مميز", "female-layan": "أداء مميز", "female-raneem": "أداء مميز", "female-jumana": "أداء مميز",
+  "girl-sama": "بنات صغار", "girl-lulu": "بنات صغار", "girl-toota": "بنات صغار", "girl-dana": "بنات صغار",
+  "girl-nouf": "بنات صغار", "girl-reemas": "بنات صغار",
+  "female-dalla": "أصوات دلع", "female-ghanooj": "أصوات دلع", "female-dalal2": "أصوات دلع", "female-joori": "أصوات دلع",
+  "female-nesma": "أصوات ناعمة", "female-warda": "أصوات ناعمة", "female-shahd2": "أصوات ناعمة", "female-lojain": "أصوات ناعمة",
+  "female-yara": "أصوات ناعمة", "female-raheel": "أصوات ناعمة", "female-areej": "أصوات ناعمة", "female-hatoon": "أصوات ناعمة",
+  "female-taleen": "أصوات ناعمة", "female-haneena": "أصوات ناعمة", "female-sukkar": "أصوات ناعمة", "female-maha": "أصوات ناعمة",
+};
+export function voiceCategory(id: string) {
+  return VOICE_CATEGORY[id] ?? "أصوات أساسية";
+}
 export const VOICE_LIST: VoiceOption[] = [...[
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
   ["Umbriel", 0, "مريح"], ["Algieba", 0, "ناعم"], ["Algenib", 0, "خشن"], ["Rasalgethi", 0, "مثقف"], ["Alnilam", 0, "قوي"], ["Schedar", 0, "متزن"],
