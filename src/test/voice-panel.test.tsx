@@ -25,6 +25,7 @@ describe("female voice panel", () => {
     expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "حفظ الصوت في جوالي" }));
   });
   it("previews selected female speech and enables downloading only generated audio", async () => {
+    vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
     preview.mockResolvedValue({ audio: btoa("test-audio") });
     vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
     render(<SayNowForm />);
@@ -37,5 +38,14 @@ describe("female voice panel", () => {
     expect(preview).toHaveBeenCalledWith({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow" } });
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "نص جديد" } });
     expect(download).toBeDisabled();
+  });
+  it("ends with save and exposes singing controls only when enabled", () => {
+    render(<SayNowForm />);
+    const panel = screen.getByRole("region", { name: "تجريب أصوات البنات" });
+    expect(panel.lastElementChild?.lastElementChild).toBe(screen.getByRole("button", { name: "حفظ اختيار البوت" }));
+    expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
+    fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
+    expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();
+    expect(screen.getByRole("combobox", { name: "الإيقاع والرقصة" })).toBeVisible();
   });
 });

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminChatRouteImport } from './routes/admin-chat'
+import { Route as AdminVoicesRouteImport } from './routes/admin-voices'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BedouinDramaRouteImport } from './routes/bedouin-drama'
@@ -51,6 +52,11 @@ const AdminRoute = AdminRouteImport.update({
 const AdminChatRoute = AdminChatRouteImport.update({
   id: '/admin-chat',
   path: '/admin-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVoicesRoute = AdminVoicesRouteImport.update({
+  id: '/admin-voices',
+  path: '/admin-voices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
+  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
+  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
+  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin-chat'
+    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin-chat'
+    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin-chat'
+    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -368,6 +380,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   AdminChatRoute: typeof AdminChatRoute
+  AdminVoicesRoute: typeof AdminVoicesRoute
   AppRoute: typeof AppRoute
   AuthRoute: typeof AuthRoute
   BedouinDramaRoute: typeof BedouinDramaRoute
@@ -416,6 +429,13 @@ declare module '@tanstack/react-router' {
       path: '/admin-chat'
       fullPath: '/admin-chat'
       preLoaderRoute: typeof AdminChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-voices': {
+      id: '/admin-voices'
+      path: '/admin-voices'
+      fullPath: '/admin-voices'
+      preLoaderRoute: typeof AdminVoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -600,6 +620,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AdminChatRoute: AdminChatRoute,
+  AdminVoicesRoute: AdminVoicesRoute,
   AppRoute: AppRoute,
   AuthRoute: AuthRoute,
   BedouinDramaRoute: BedouinDramaRoute,
