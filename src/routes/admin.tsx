@@ -44,7 +44,10 @@ export const Route = createFileRoute("/admin")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
-  ] }),
+    { name: "apple-mobile-web-app-title", content: "اللوحة" },
+  ],
+  links: [{ rel: "manifest", href: "/admin.webmanifest" }],
+  }),
   component: AdminPage,
 });
 
