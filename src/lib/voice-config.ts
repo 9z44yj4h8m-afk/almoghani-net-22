@@ -11,6 +11,11 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-reemah", female: true, name: "ريما", label: "رنانة وواثقة", providerId: "Pulcherrima", delivery: "نبرة نسائية صافية رنانة وواثقة، طبقة متوسطة منخفضة ونطق واضح، إيقاع متزن وحنون ولهجة أهل القصيم" },
   { id: "female-joud", female: true, name: "جود", label: "حيوية وسريعة", providerId: "Laomedeia", delivery: "نبرة بنت حيوية وعفوية، طبقة متوسطة عالية وإيقاع سريع طبيعي، ضحكة خفيفة وحنان ولهجة أهل القصيم" },
   { id: "female-rawan", female: true, name: "روان", label: "صافية بإلقاء متزن", providerId: "Erinome", delivery: "صوت نسائي صاف ودقيق، طبقة متوسطة وإلقاء متزن بجمل قصيرة ووقفات واضحة، نبرة حنونة ولهجة أهل الرياض" },
+  // Approximate text-steered presets, not cloned identities; reference recordings are never shipped.
+  { id: "female-hareer", female: true, name: "حرير", label: "سرد ناعم · تقريب ص1", providerId: "Sulafat", delivery: "أداء نسائي حنون دافئ للسرد، طبقة متوسطة قريبة من 210 هرتز دون إجبار، نطق عربي واضح وجمل متصلة بهدوء ووقفات رقيقة، دون خشونة أو مبالغة درامية؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
+  { id: "female-layan", female: true, name: "ليان", label: "حديث لطيف · تقريب ص2", providerId: "Laomedeia", delivery: "أداء نسائي حنون محادثي لطيف وعفوي، طبقة متوسطة قريبة من 220 هرتز دون إجبار، سرعة متوسطة نشيطة وابتسامة مسموعة خفيفة، وصل الكلمات بسلاسة دون حدة أو همس؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
+  { id: "female-raneem", female: true, name: "رنيم", label: "تشجيع هادئ · تقريب ص3", providerId: "Vindemiatrix", delivery: "أداء نسائي حنون مشجع وواثق بهدوء، طبقة متوسطة قريبة من 215 هرتز دون إجبار، وضوح ناعم وتشديد خفيف للكلمات المهمة مع وقفات قصيرة، دون صراخ أو نبرة إعلان؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
+  { id: "female-jumana", female: true, name: "جمان", label: "إلقاء رقيق · تقريب audio_2", providerId: "Achernar", delivery: "أداء نسائي حنون رقيق وصاف، طبقة متوسطة عالية قريبة من 240 هرتز دون إجبار، إلقاء تعبيري متزن مع تنويع لطيف للنغمة ونهايات جمل هادئة، دون تصنع أو همس مبالغ؛ هذا أداء مستقل وليس تقليدا لهوية شخص" },
 ];
 export const VOICE_LIST: VoiceOption[] = [...[
   ["Puck", 0, "مرح"], ["Charon", 0, "رزين"], ["Fenrir", 0, "حماسي"], ["Orus", 0, "ثابت"], ["Enceladus", 0, "هادئ"], ["Iapetus", 0, "واضح"],
