@@ -76,8 +76,8 @@ class VoicePitchJungle {
     mix1.connect(this.output); mix2.connect(this.output);
     const t = ctx.currentTime + 0.05;
     const t2 = t + JUNGLE_BUFFER_TIME - JUNGLE_FADE_TIME;
-    mods[0].start(t); mods[1].start(t2); mods[2].start(t); mods[3].start(t2);
-    fades[0].start(t); fades[1].start(t2);
+    mods[0]!.start(t); mods[1]!.start(t2); mods[2]!.start(t); mods[3]!.start(t2);
+    fades[0]!.start(t); fades[1]!.start(t2);
   }
 
   setPitchRatio(ratio: number) {
