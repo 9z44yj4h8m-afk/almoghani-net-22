@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,86 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
+
+// ---- مغيّر الصوت المباشر: خطّا تأخير متداخلان يعدّلان طبقة الصوت لحظيًا (يعمل على الجوال) ----
+const JUNGLE_BUFFER_TIME = 0.1;
+const JUNGLE_FADE_TIME = 0.05;
+const JUNGLE_DELAY_TIME = 0.1;
+
+function jungleDelayBuffer(ctx: BaseAudioContext, shiftUp: boolean) {
+  const length1 = Math.floor(JUNGLE_BUFFER_TIME * ctx.sampleRate);
+  const length2 = Math.floor((JUNGLE_BUFFER_TIME - 2 * JUNGLE_FADE_TIME) * ctx.sampleRate);
+  const buffer = ctx.createBuffer(1, length1 + length2, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length1; i++) data[i] = shiftUp ? (length1 - i) / length1 : i / length1;
+  return buffer;
+}
+
+function jungleFadeBuffer(ctx: BaseAudioContext) {
+  const length1 = Math.floor(JUNGLE_BUFFER_TIME * ctx.sampleRate);
+  const length2 = Math.floor((JUNGLE_BUFFER_TIME - 2 * JUNGLE_FADE_TIME) * ctx.sampleRate);
+  const buffer = ctx.createBuffer(1, length1 + length2, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  const fadeLength = Math.max(1, Math.floor(JUNGLE_FADE_TIME * ctx.sampleRate));
+  const fadeIndex2 = length1 - fadeLength;
+  for (let i = 0; i < length1; i++) {
+    data[i] = i < fadeLength ? Math.sqrt(i / fadeLength) : i >= fadeIndex2 ? Math.sqrt(1 - (i - fadeIndex2) / fadeLength) : 1;
+  }
+  return buffer;
+}
+
+class VoicePitchJungle {
+  readonly input: GainNode;
+  readonly output: GainNode;
+  private modGain1: GainNode;
+  private modGain2: GainNode;
+  private downGains: GainNode[];
+  private upGains: GainNode[];
+
+  constructor(ctx: AudioContext) {
+    this.input = ctx.createGain();
+    this.output = ctx.createGain();
+    const shiftDown = jungleDelayBuffer(ctx, false);
+    const shiftUp = jungleDelayBuffer(ctx, true);
+    const mods = [ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource()];
+    for (const mod of mods) { mod.buffer = shiftDown; }
+    mods[2]!.buffer = shiftUp; mods[3]!.buffer = shiftUp;
+    const downGains = [ctx.createGain(), ctx.createGain()];
+    const upGains = [ctx.createGain(), ctx.createGain()];
+    upGains[0]!.gain.value = 0; upGains[1]!.gain.value = 0;
+    this.downGains = downGains; this.upGains = upGains;
+    this.modGain1 = ctx.createGain(); this.modGain2 = ctx.createGain();
+    const delay1 = ctx.createDelay(1); const delay2 = ctx.createDelay(1);
+    mods[0]!.connect(downGains[0]!); mods[1]!.connect(downGains[1]!);
+    mods[2]!.connect(upGains[0]!); mods[3]!.connect(upGains[1]!);
+    downGains[0]!.connect(this.modGain1); downGains[1]!.connect(this.modGain2);
+    upGains[0]!.connect(this.modGain1); upGains[1]!.connect(this.modGain2);
+    this.modGain1.connect(delay1.delayTime);
+    this.modGain2.connect(delay2.delayTime);
+    const fadeBuffer = jungleFadeBuffer(ctx);
+    const fades = [ctx.createBufferSource(), ctx.createBufferSource()];
+    fades[0]!.buffer = fadeBuffer; fades[1]!.buffer = fadeBuffer;
+    const mix1 = ctx.createGain(); const mix2 = ctx.createGain();
+    mix1.gain.value = 0; mix2.gain.value = 0;
+    fades[0]!.connect(mix1.gain); fades[1]!.connect(mix2.gain);
+    this.input.connect(delay1); this.input.connect(delay2);
+    delay1.connect(mix1); delay2.connect(mix2);
+    mix1.connect(this.output); mix2.connect(this.output);
+    const t = ctx.currentTime + 0.05;
+    const t2 = t + JUNGLE_BUFFER_TIME - JUNGLE_FADE_TIME;
+    mods[0]!.start(t); mods[1]!.start(t2); mods[2]!.start(t); mods[3]!.start(t2);
+    fades[0]!.start(t); fades[1]!.start(t2);
+  }
+
+  setPitchRatio(ratio: number) {
+    const up = ratio >= 1;
+    for (const g of this.downGains) g.gain.value = up ? 0 : 1;
+    for (const g of this.upGains) g.gain.value = up ? 1 : 0;
+    const depth = JUNGLE_DELAY_TIME * Math.abs(ratio - 1);
+    this.modGain1.gain.setTargetAtTime(0.5 * depth, 0, 0.01);
+    this.modGain2.gain.setTargetAtTime(0.5 * depth, 0, 0.01);
+  }
+}
 
 export function SayNowForm() {
   const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
@@ -44,6 +124,72 @@ export function SayNowForm() {
       rec.start(); setRecorder(rec); setRecording(true); setNote("جارٍ التسجيل… اضغط إيقاف التسجيل");
     } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
   }
+  // ---- مغيّر الصوت المباشر ----
+  const changerCtxRef = useRef<AudioContext | null>(null);
+  const changerJungleRef = useRef<VoicePitchJungle | null>(null);
+  const changerStreamRef = useRef<MediaStream | null>(null);
+  const changerDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
+  const changerRecRef = useRef<MediaRecorder | null>(null);
+  const [changerOn, setChangerOn] = useState(false);
+  const [changerRatio, setChangerRatio] = useState(1.5);
+  const [changerRec, setChangerRec] = useState(false);
+
+  async function startChanger() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const ctx = new AudioContext();
+      await ctx.resume();
+      const jungle = new VoicePitchJungle(ctx);
+      jungle.setPitchRatio(changerRatio);
+      const dest = ctx.createMediaStreamDestination();
+      ctx.createMediaStreamSource(stream).connect(jungle.input);
+      jungle.output.connect(ctx.destination);
+      jungle.output.connect(dest);
+      changerCtxRef.current = ctx; changerJungleRef.current = jungle;
+      changerStreamRef.current = stream; changerDestRef.current = dest;
+      setChangerOn(true);
+      setNote("المغيّر شغّال الآن 🎙️ استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر");
+    } catch { setNote("ما قدرنا نفتح المايك، اسمح للموقع باستخدامه"); }
+  }
+
+  function stopChanger() {
+    if (changerRecRef.current?.state === "recording") changerRecRef.current.stop();
+    changerRecRef.current = null;
+    changerStreamRef.current?.getTracks().forEach((t) => t.stop());
+    void changerCtxRef.current?.close().catch(() => {});
+    changerCtxRef.current = null; changerJungleRef.current = null;
+    changerStreamRef.current = null; changerDestRef.current = null;
+    setChangerOn(false); setChangerRec(false);
+  }
+
+  function setChangerVoice(ratio: number) {
+    setChangerRatio(ratio);
+    changerJungleRef.current?.setPitchRatio(ratio);
+  }
+
+  function toggleChangerRecord() {
+    const dest = changerDestRef.current;
+    if (!dest) return;
+    const rec = changerRecRef.current;
+    if (rec) { rec.stop(); return; }
+    const chunks: Blob[] = [];
+    const next = new MediaRecorder(dest.stream);
+    next.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    next.onstop = () => {
+      const type = next.mimeType || "audio/webm";
+      const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+      setAudioFile(new File(chunks, `almoghani-changer-${Date.now()}.${ext}`, { type }));
+      changerRecRef.current = null; setChangerRec(false);
+      setNote("تم تسجيل الصوت المغيّر ✓ تقدر تحفظه في جوالك أو ترسله لسناب");
+    };
+    next.start(); changerRecRef.current = next; setChangerRec(true);
+  }
+
+  useEffect(() => () => {
+    changerStreamRef.current?.getTracks().forEach((t) => t.stop());
+    void changerCtxRef.current?.close().catch(() => {});
+  }, []);
+
   useEffect(() => {
     if (!audioFile) { setAudioUrl(""); return; }
     const url = URL.createObjectURL(audioFile);
@@ -194,6 +340,18 @@ export function SayNowForm() {
         <Button type="button" variant="outline" disabled={testing} onClick={toggleRecord} className="voice-studio-download"><AudioLines />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing || recording} onClick={() => void convertMyVoice()} className="voice-studio-download"><Mic />حوّل صوتي</Button>
       </div>
+      <div className="voice-studio-actions" aria-label="مغيّر الصوت المباشر">
+        <Button type="button" variant="outline" onClick={() => { if (changerOn) stopChanger(); else void startChanger(); }} className="voice-studio-test"><Radio />{changerOn ? "إيقاف مغيّر الصوت" : "مغيّر الصوت المباشر"}</Button>
+        <select className={`${field} w-auto min-w-40`} aria-label="نبرة المغيّر" value={changerRatio} disabled={!changerOn} onChange={(e) => setChangerVoice(Number(e.target.value))}>
+          <option value="1.5">بنت ناعمة</option>
+          <option value="1.7">بنت دلوعة</option>
+          <option value="1.85">بنت صغيرة</option>
+          <option value="1.25">صوت خفيف</option>
+          <option value="0.6">صوت عميق</option>
+        </select>
+        <Button type="button" variant="outline" disabled={!changerOn} onClick={toggleChangerRecord} className="voice-studio-download"><AudioLines />{changerRec ? "إيقاف تسجيل المغيّر" : "سجّل الصوت المغيّر"}</Button>
+      </div>
+      {changerOn && <p className="text-xs font-bold" role="status">المغيّر يعمل الآن — استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر، وكل ما تتكلم تسمع صوتك الجديد فورًا.</p>}
       {note && <p role="status" className="text-sm font-bold">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
     </div>
