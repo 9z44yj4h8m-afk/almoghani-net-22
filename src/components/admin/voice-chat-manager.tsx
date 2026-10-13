@@ -287,6 +287,21 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
+  async function sendToWhatsapp() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile] });
+        setNote("اختر WhatsApp ثم الشخص؛ يوصل المقطع كملف صوتي.");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من واتساب.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
+    }
+  }
+
   async function sendToSnapchat() {
     if (!audioFile) return;
     try {
@@ -428,8 +443,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
-      <div className="voice-studio-actions" aria-label="إرسال مقطع صوتي للسناب">
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال مقطع صوتي للسناب</Button>
+      <div className="voice-studio-actions" aria-label="إرسال المقطع الصوتي">
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">

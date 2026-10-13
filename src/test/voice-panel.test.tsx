@@ -21,7 +21,7 @@ describe("female voice panel", () => {
     for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
-    expect(screen.getByRole("button", { name: "إرسال مقطع صوتي للسناب" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "إرسال للسناب" })).toBeTruthy();
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
     expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "حفظ الصوت في جوالي" }));
   });
@@ -32,7 +32,7 @@ describe("female voice panel", () => {
     render(<SayNowForm />);
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { canShare: vi.fn(() => true), share });
-    const send = screen.getByRole("button", { name: "إرسال مقطع صوتي للسناب" });
+    const send = screen.getByRole("button", { name: "إرسال للسناب" });
     expect(send).toBeDisabled();
     const download = screen.getByRole("button", { name: "حفظ الصوت في جوالي" });
     expect(download).toBeDisabled();
