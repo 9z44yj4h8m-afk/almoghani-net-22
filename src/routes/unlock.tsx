@@ -4,7 +4,7 @@ import { useState } from "react";
 import { unlockSiteGate } from "@/lib/site-gate.functions";
 
 export const Route = createFileRoute("/unlock")({
-  validateSearch: (s: Record<string, unknown>) => ({ to: typeof s.to === "string" && s.to.startsWith("/") && !s.to.startsWith("//") ? s.to : "/" }),
+  validateSearch: (s: Record<string, unknown>) => { const t = s["to"]; return { to: typeof t === "string" && t.startsWith("/") && !t.startsWith("//") ? t : "/" }; },
   head: () => ({
     meta: [
       { title: "الموقع مغلق مؤقتًا | المغني لايف" },
