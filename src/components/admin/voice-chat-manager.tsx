@@ -269,6 +269,20 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     return () => URL.revokeObjectURL(url);
   }, [audioFile]);
 
+  // The uploaded recording plays as-is — the exact sound; generated voices can only approximate it.
+  const [samplePlaying, setSamplePlaying] = useState(false);
+  async function playSample() {
+    if (locked) { setSubOpen(true); return; }
+    try {
+      setSamplePlaying(true);
+      const a = new Audio(sampleClip.url);
+      a.onended = () => setSamplePlaying(false);
+      a.onerror = () => { setSamplePlaying(false); setNote("تعذّر تشغيل المقطع؛ تحقق من الاتصال وحاول مجددًا."); };
+      await a.play();
+    } catch { setSamplePlaying(false); setNote("اضغط زر التشغيل مرة ثانية لتشغيل الصوت."); }
+  }
+
+
   async function downloadVoice() {
     if (!audioFile) return;
     try {
