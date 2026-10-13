@@ -27,6 +27,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleAdminRouteImport } from './routes/schedule-admin'
 import { Route as SectionsRouteImport } from './routes/sections'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
+import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as VoiceChatRouteImport } from './routes/voice-chat'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -130,6 +131,11 @@ const SubscriptionRoute = SubscriptionRouteImport.update({
   path: '/subscription',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UnlockRoute = UnlockRouteImport.update({
+  id: '/unlock',
+  path: '/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
@@ -211,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/schedule-admin': typeof ScheduleAdminRoute
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
+  '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
@@ -243,6 +250,7 @@ export interface FileRoutesByTo {
   '/schedule-admin': typeof ScheduleAdminRoute
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
+  '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   '/schedule-admin': typeof ScheduleAdminRoute
   '/sections': typeof SectionsRoute
   '/subscription': typeof SubscriptionRoute
+  '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
   '/api/chat': typeof ApiChatRoute
@@ -310,6 +319,7 @@ export interface FileRouteTypes {
     | '/schedule-admin'
     | '/sections'
     | '/subscription'
+    | '/unlock'
     | '/vip'
     | '/voice-chat'
     | '/api/chat'
@@ -342,6 +352,7 @@ export interface FileRouteTypes {
     | '/schedule-admin'
     | '/sections'
     | '/subscription'
+    | '/unlock'
     | '/vip'
     | '/voice-chat'
     | '/api/chat'
@@ -374,6 +385,7 @@ export interface FileRouteTypes {
     | '/schedule-admin'
     | '/sections'
     | '/subscription'
+    | '/unlock'
     | '/vip'
     | '/voice-chat'
     | '/api/chat'
@@ -407,6 +419,7 @@ export interface RootRouteChildren {
   ScheduleAdminRoute: typeof ScheduleAdminRoute
   SectionsRoute: typeof SectionsRoute
   SubscriptionRoute: typeof SubscriptionRoute
+  UnlockRoute: typeof UnlockRoute
   VipRoute: typeof VipRoute
   VoiceChatRoute: typeof VoiceChatRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -549,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/unlock': {
+      id: '/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof UnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vip': {
       id: '/vip'
       path: '/vip'
@@ -655,6 +675,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScheduleAdminRoute: ScheduleAdminRoute,
   SectionsRoute: SectionsRoute,
   SubscriptionRoute: SubscriptionRoute,
+  UnlockRoute: UnlockRoute,
   VipRoute: VipRoute,
   VoiceChatRoute: VoiceChatRoute,
   ApiChatRoute: ApiChatRoute,
