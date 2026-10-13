@@ -331,13 +331,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   async function sendToSnapchat() {
     if (!audioFile) return;
     try {
-      let video = snapVideo.current?.src === audioFile ? snapVideo.current.video : null;
-      if (!video) {
-        setNote("جارٍ تجهيز المقطع كفيديو لسناب… انتظر حتى ينتهي الصوت");
-        video = await audioToVideo(audioFile).catch(() => null);
-        if (video) { snapVideo.current = { src: audioFile, video }; setNote("الفيديو جاهز ✓ اضغط «إرسال لسناب شات» مرة ثانية"); return; }
-      }
-      const file = video && navigator.canShare?.({ files: [video] }) ? video : audioFile;
+      const video: File | null = null;
+      const file = audioFile;
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
         setNote(file === video ? "اختر «حفظ الفيديو» ثم افتح سناب وأرسله من ألبوم الصور (الكاميرا ← الصور) 👻" : "اختر Snapchat من قائمة المشاركة 👻");
