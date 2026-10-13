@@ -12,6 +12,7 @@ import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@
 
 import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
 import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
+import sampleClip from "@/assets/sample-bowlby.wav.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
@@ -268,6 +269,20 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     return () => URL.revokeObjectURL(url);
   }, [audioFile]);
 
+  // The uploaded recording plays as-is — the exact sound; generated voices can only approximate it.
+  const [samplePlaying, setSamplePlaying] = useState(false);
+  async function playSample() {
+    if (locked) { setSubOpen(true); return; }
+    try {
+      setSamplePlaying(true);
+      const a = new Audio(sampleClip.url);
+      a.onended = () => setSamplePlaying(false);
+      a.onerror = () => { setSamplePlaying(false); setNote("تعذّر تشغيل المقطع؛ تحقق من الاتصال وحاول مجددًا."); };
+      await a.play();
+    } catch { setSamplePlaying(false); setNote("اضغط زر التشغيل مرة ثانية لتشغيل الصوت."); }
+  }
+
+
   async function downloadVoice() {
     if (!audioFile) return;
     try {
@@ -428,6 +443,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
+      </div>
+      <div className="voice-studio-actions" aria-label="الصوت المضاف">
+        <Button type="button" variant="outline" onClick={() => void playSample()} className="voice-studio-test"><Play />{samplePlaying ? "يشغّل الآن…" : "شغّل الصوت المضاف"}</Button>
+        <span className="voice-studio-status" role="status">نفس الصوت تمامًا — التسجيل الحقيقي</span>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
