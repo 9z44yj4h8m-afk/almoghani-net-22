@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
-import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { SayNowForm } from "@/components/admin/voice-chat-manager";
 
 export const Route = createFileRoute("/admin-voices")({
@@ -27,15 +26,14 @@ function AdminVoicesPage() {
   useEffect(() => {
     let alive = true;
     setAdmin(null);
-    if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => { if (alive) setAdmin(!!data); });
+    if (!user) setAdmin(false); else void supabase.rpc("claim_owner_admin").then(({ data }) => { if (alive) setAdmin(!!data); });
     return () => { alive = false; };
   }, [user]);
   if (!ready) return null;
-  if (!user || admin === false) return <AdminPasswordLogin />;
-  if (admin === null) return <div dir="rtl" className="grid min-h-screen place-items-center">جارٍ التحقق…</div>;
+  const locked = admin !== true;
   return <div dir="rtl" className="voice-studio-page">
     <main className="voice-studio-main">
-      <SayNowForm />
+      <SayNowForm locked={locked} />
     </main>
   </div>;
 }
