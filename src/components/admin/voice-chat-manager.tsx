@@ -9,8 +9,8 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 
-import voiceNeonHeader from "@/assets/voice-anime-header.jpg.asset.json";
-import voiceAvatar from "@/assets/voice-anime-avatar.jpg.asset.json";
+import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
+import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";

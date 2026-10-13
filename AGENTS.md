@@ -11,7 +11,7 @@
 
 ## Architecture
 - Resolve voice profile IDs to supported provider IDs centrally; share preview/chat delivery prompts for compatibility.
-- Keep /admin-chat tools open and /admin-voices in a viewport-height standalone form ending with save; place supplementary voice tools in a settings dialog, not a scrolling page, and retain owner guards and admin-only writes.
+- Keep /admin-chat open and /admin-voices viewport-height, ending with save; extra tools stay in a dialog, owner guards and writes protected. Crop header/avatar artwork separately so controls remain interactive.
 - Store performers and named clips in private chat-recordings with admin-only storage and normalized voice_chat settings; public playback serves only enabled configured paths to prevent arbitrary private-file access.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
 - Merge per-series YouTube metadata into one ordered drama catalog at /bedouin-drama; never mix public videos with private IPTV or claim a live channel.
