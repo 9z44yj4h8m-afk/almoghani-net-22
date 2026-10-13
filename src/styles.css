@@ -1155,4 +1155,5 @@ body:has(.voice-studio-page) { overflow: hidden; }
  .voice-studio-form > .voice-studio-actions > button { font-size: 11px; }
  .voice-studio-sing { font-size: 11px; }
  .voice-studio-save { font-size: 17px; }
+ .voice-studio-contact { font-size: 17px; }
 }
