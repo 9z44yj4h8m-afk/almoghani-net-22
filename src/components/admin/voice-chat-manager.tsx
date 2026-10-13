@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
+import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 
 import voiceNeonHeader from "@/assets/voice-neon-header.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -111,6 +112,7 @@ export function SayNowForm() {
   const previewVoiceFn = useServerFn(previewVoice);
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  const [panel, setPanel] = useState<VoicePanelConfig>(defaultVoicePanel);
   const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
   const PANEL_STORE = "almoghani-voice-panel";
 
@@ -306,7 +308,8 @@ export function SayNowForm() {
       if (readError) throw readError;
       const current = normalizeVoiceChat(data?.value);
       const botVoices = { ...current.botVoices };
-      if (sayVoice) botVoices[name] = sayVoice;
+      const chosen = panel.custom.find((c) => c.id === sayVoice)?.providerId ?? sayVoice;
+      if (chosen) botVoices[name] = chosen;
       else delete botVoices[name];
       const next = normalizeVoiceChat({ ...current, botVoices });
       const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
@@ -340,9 +343,10 @@ export function SayNowForm() {
     setTesting(true); setNote(""); setAudioFile(null);
     const text = (typeof spoken === "string" ? spoken : sayText).trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
     const selected = sayVoice || cfg.botVoices[name];
-    const voiceId = VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
+    const customVoice = panel.custom.find((c) => c.id === selected);
+    const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
-      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm } });
+      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
@@ -367,44 +371,49 @@ export function SayNowForm() {
 
   useEffect(() => {
     let alive = true;
-    void supabase.from("site_settings").select("key,value").in("key", ["voice_chat", "chat_bots"]).then(({ data }) => {
+    void supabase.from("site_settings").select("key,value").in("key", ["voice_chat", "chat_bots", "voice_panel"]).then(({ data }) => {
       if (!alive) return;
       for (const row of data ?? []) {
         if (row.key === "voice_chat") setCfg(normalizeVoiceChat(row.value));
+        if (row.key === "voice_panel") setPanel(normalizeVoicePanel(row.value));
         if (row.key === "chat_bots") { const b = (row.value as Partial<ChatBotsConfig>)?.bots; if (b?.length) setBots(b.map((x) => x.name)); }
       }
     });
     return () => { alive = false; };
   }, []);
 
+  const pc = panel.colors;
   return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel">
-    <div className="voice-neon-hero" id="voice-home">
+    {pc.enabled && <style>{`.voice-studio-page{background:${pc.bg}!important}.voice-studio-panel,.voice-studio-panel label,.voice-studio-panel span{color:${pc.text}}.voice-studio-panel .voice-studio-select,.voice-studio-panel textarea,.voice-studio-preview,.voice-studio-sing,.voice-studio-actions button{border-color:${pc.accent}!important}.voice-studio-panel .voice-studio-save{background:${pc.gold}!important;border-color:${pc.gold}!important}`}</style>}
+    {!panel.showHeader && <h2 className="font-display text-2xl font-black text-center">ALMOGHANI VOICE</h2>}
+    {panel.showHeader && <div className="voice-neon-hero" id="voice-home">
       <img src={voiceNeonHeader.url} alt="ALMOGHANI VOICE — غير صوتك، سجل صوتك وغيره باحتراف" />
       <Button className="voice-neon-settings" variant="ghost" size="icon" aria-label="إعدادات الصوت" title="إعدادات الصوت" onClick={() => setSettingsOpen(true)}><Settings2 /></Button>
       <Button className="voice-neon-account" variant="ghost" size="icon" aria-label="اختيار البوت" title="اختيار البوت" onClick={() => setSettingsOpen(true)}><UserRound /></Button>
       <h1 className="sr-only">ALMOGHANI VOICE — غير صوتك</h1>
-    </div>
+    </div>}
     <label className="voice-neon-text voice-studio-field">
-      <span><Button variant="ghost" size="icon" disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} title={recording ? "إيقاف التسجيل" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button>اكتب النص الذي يقوله البوت</span>
-      <textarea id="voice-text" aria-label="الكلام" maxLength={400} placeholder="اكتب النص هنا..." value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
+      <span><Button variant="ghost" size="icon" disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} title={recording ? "إيقاف التسجيل" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button>{panel.texts.textLabel}</span>
+      <textarea id="voice-text" aria-label="الكلام" maxLength={400} placeholder={panel.texts.placeholder} value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
     </label>
     <div className="voice-studio-form" id="voice-settings">
-      <label className="voice-studio-field"><span><UserRound />اختيار صوت بنت</span><div className="voice-studio-select"><AudioLines aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+      <label className="voice-studio-field"><span><UserRound />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><AudioLines aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
-          const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat);
+          const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
           return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup> : null;
         })}
+        {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
       </select><ChevronDown aria-hidden="true" /></div></label>
-      <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>خلّها تغني الكلام بدل ما تقوله</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
+      <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
       </div>}
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
       <div className="voice-studio-actions">
-        <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
+        <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
@@ -434,7 +443,7 @@ export function SayNowForm() {
       </Dialog>
       <input id="voice-audio-upload" type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓"); } e.target.value = ""; }} />
       {note && <p role="status" className="voice-neon-note">{note}</p>}
-      <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
+      <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : panel.texts.saveBtn}</Button>
     </div>
   </section>;
 }
