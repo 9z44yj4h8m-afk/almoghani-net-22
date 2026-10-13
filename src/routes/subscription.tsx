@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
   ArrowRight, Banknote, Calendar, CalendarDays, CalendarRange, CreditCard,
-  Send, UploadCloud, User, Phone, Music2,
+  Send, UploadCloud, User, Phone, Wallet,
 } from "lucide-react";
 import subHeader from "@/assets/subscription-request-header.jpg.asset.json";
 
