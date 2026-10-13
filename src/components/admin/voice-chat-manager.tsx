@@ -9,7 +9,8 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 
-import voiceNeonHeader from "@/assets/voice-neon-header.jpg.asset.json";
+import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
+import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
@@ -395,9 +396,11 @@ export function SayNowForm() {
     <label className="voice-neon-text voice-studio-field">
       <span><Button variant="ghost" size="icon" disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} title={recording ? "إيقاف التسجيل" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button>{panel.texts.textLabel}</span>
       <textarea id="voice-text" aria-label="الكلام" maxLength={400} placeholder={panel.texts.placeholder} value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
+      <small className="voice-text-count" dir="ltr">{sayText.length}/400</small>
     </label>
     <div className="voice-studio-form" id="voice-settings">
-      <label className="voice-studio-field"><span><UserRound />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><AudioLines aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+      <div className="voice-neon-choice">
+      <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
           const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
@@ -406,6 +409,7 @@ export function SayNowForm() {
         {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
       </select><ChevronDown aria-hidden="true" /></div></label>
       <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
+      </div>
       {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
