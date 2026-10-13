@@ -26,7 +26,11 @@ function AdminVoicesPage() {
   useEffect(() => {
     let alive = true;
     setAdmin(null);
-    if (!user) setAdmin(false); else void supabase.rpc("claim_owner_admin").then(({ data }) => { if (alive) setAdmin(!!data); });
+    if (!user) setAdmin(false); else void supabase.rpc("claim_owner_admin").then(async ({ data }) => {
+      if (data) { if (alive) setAdmin(true); return; }
+      const { data: s } = await supabase.from("member_library_sessions").select("unlocked").maybeSingle();
+      if (alive) setAdmin(s?.unlocked === true);
+    });
     return () => { alive = false; };
   }, [user]);
   if (!ready) return null;
