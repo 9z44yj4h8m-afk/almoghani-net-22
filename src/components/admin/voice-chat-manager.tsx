@@ -327,11 +327,16 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     return new File([new Blob(chunks, { type: mime })], `almoghani-voice.${mime.includes("mp4") ? "mp4" : "webm"}`, { type: mime });
   }
 
+  const snapVideo = useRef<{ src: File; video: File } | null>(null);
   async function sendToSnapchat() {
     if (!audioFile) return;
     try {
-      setNote("جارٍ تجهيز المقطع كفيديو لسناب… انتظر حتى ينتهي الصوت");
-      const video = await audioToVideo(audioFile).catch(() => null);
+      let video = snapVideo.current?.src === audioFile ? snapVideo.current.video : null;
+      if (!video) {
+        setNote("جارٍ تجهيز المقطع كفيديو لسناب… انتظر حتى ينتهي الصوت");
+        video = await audioToVideo(audioFile).catch(() => null);
+        if (video) { snapVideo.current = { src: audioFile, video }; setNote("الفيديو جاهز ✓ اضغط «إرسال لسناب شات» مرة ثانية"); return; }
+      }
       const file = video && navigator.canShare?.({ files: [video] }) ? video : audioFile;
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
