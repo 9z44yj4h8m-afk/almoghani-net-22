@@ -42,7 +42,10 @@ describe("female voice panel", () => {
   it("ends with save and exposes singing controls only when enabled", () => {
     render(<SayNowForm />);
     const panel = screen.getByRole("region", { name: "تجريب أصوات البنات" });
-    expect(panel.lastElementChild?.lastElementChild).toBe(screen.getByRole("button", { name: "حفظ اختيار البوت" }));
+    const children = Array.from(panel.lastElementChild?.children ?? []);
+    const contact = children.at(-1);
+    expect(contact).toBe(screen.getByRole("link", { name: "للتواصل والاشتراك" }));
+    expect(contact?.previousElementSibling).toBe(screen.getByRole("button", { name: "حفظ اختيار البوت" }));
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
     fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
     expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();
