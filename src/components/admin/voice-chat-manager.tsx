@@ -452,7 +452,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
-      <div className="voice-studio-actions" aria-label="إرسال المقطع الصوتي">
+      <div className="voice-studio-actions voice-studio-send" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
