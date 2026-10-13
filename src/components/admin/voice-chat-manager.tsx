@@ -287,12 +287,68 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
+  // Snapchat shows shared audio files as links, so the voice is turned into a short video (picture + sound) that Snapchat plays inline.
+  async function audioToVideo(file: File): Promise<File | null> {
+    const type = ["video/mp4", "video/webm;codecs=vp8,opus", "video/webm"].find((t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported(t));
+    if (!type) return null;
+    const ctx = new AudioContext();
+    const buffer = await ctx.decodeAudioData(await file.arrayBuffer());
+    const canvas = document.createElement("canvas");
+    canvas.width = 720; canvas.height = 1280;
+    const g = canvas.getContext("2d")!;
+    const dest = ctx.createMediaStreamDestination();
+    const analyser = ctx.createAnalyser(); analyser.fftSize = 64;
+    const src = ctx.createBufferSource(); src.buffer = buffer;
+    src.connect(analyser); analyser.connect(dest);
+    const stream = new MediaStream([...canvas.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]);
+    const rec = new MediaRecorder(stream, { mimeType: type });
+    const chunks: Blob[] = [];
+    rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    const bins = new Uint8Array(analyser.frequencyBinCount);
+    let raf = 0;
+    const draw = () => {
+      const bg = g.createLinearGradient(0, 0, 0, 1280); bg.addColorStop(0, "#1a0633"); bg.addColorStop(1, "#04121f");
+      g.fillStyle = bg; g.fillRect(0, 0, 720, 1280);
+      g.fillStyle = "#d4af37"; g.font = "bold 64px sans-serif"; g.textAlign = "center";
+      g.fillText("ALMOGHANI VOICE", 360, 380);
+      analyser.getByteFrequencyData(bins);
+      g.fillStyle = "#22d3ee";
+      bins.forEach((v, i) => { const h = 20 + v * 1.4; g.fillRect(40 + i * 20, 640 - h / 2, 12, h); });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    const done = new Promise<void>((r) => { rec.onstop = () => r(); });
+    rec.start();
+    src.start();
+    await new Promise<void>((r) => { src.onended = () => r(); });
+    rec.stop(); await done;
+    cancelAnimationFrame(raf); void ctx.close();
+    const mime = type.split(";")[0]!;
+    return new File([new Blob(chunks, { type: mime })], `almoghani-voice.${mime.includes("mp4") ? "mp4" : "webm"}`, { type: mime });
+  }
+
+  const snapVideo = useRef<{ src: File; video: File } | null>(null);
   async function sendToSnapchat() {
     if (!audioFile) return;
     try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile] });
-        setNote("اختر Snapchat من قائمة المشاركة 👻");
+      let video = snapVideo.current?.src === audioFile ? snapVideo.current.video : null;
+      if (!video) {
+        setNote("جارٍ تجهيز المقطع كفيديو لسناب… انتظر حتى ينتهي الصوت");
+        video = await audioToVideo(audioFile).catch(() => null);
+        if (video) { snapVideo.current = { src: audioFile, video }; setNote("الفيديو جاهز ✓ اضغط «إرسال لسناب شات» مرة ثانية"); return; }
+      }
+      const file = video && navigator.canShare?.({ files: [video] }) ? video : audioFile;
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        setNote(file === video ? "اختر Snapchat — بيوصل كفيديو يشتغل بالصوت 👻" : "اختر Snapchat من قائمة المشاركة 👻");
+        return;
+      }
+      if (video) {
+        const url = URL.createObjectURL(video);
+        const link = document.createElement("a"); link.href = url; link.download = video.name;
+        document.body.appendChild(link); link.click(); link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+        setNote("حُفظ الفيديو؛ أرسله من سناب شات من ألبوم الصور.");
         return;
       }
       setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرسله من سناب شات.");
