@@ -368,25 +368,13 @@ export function SayNowForm() {
     <div className="voice-studio-form">
       <label className="voice-studio-field"><span>صوت البوت</span><div className="voice-studio-select"><UserRound aria-hidden="true" /><select aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown aria-hidden="true" /></div></label>
       <label className="voice-studio-field"><span>نص التجربة</span><textarea aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} /></label>
-      <div className="voice-cards-wrap" role="group" aria-label="اختيار صوت بنت">
+      <label className="voice-studio-field"><span>اختيار صوت بنت</span><div className="voice-studio-select"><AudioLines aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+        <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
           const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat);
-          if (!list.length) return null;
-          return <div key={cat} className="voice-cards-group">
-            <h3 className="voice-cards-title">{cat}</h3>
-            <div className="voice-cards-grid">
-              {list.map((v) => <div key={v.id} className={`voice-card${sayVoice === v.id ? " voice-card-on" : ""}`}>
-                <button type="button" className="voice-card-pick" aria-pressed={sayVoice === v.id} aria-label={`اختيار صوت ${v.name}`} disabled={testing} onClick={() => { setSayVoice(v.id); setAudioFile(null); }}>
-                  <b>{v.name}</b><span>{v.label}</span>
-                </button>
-                <button type="button" className="voice-card-play" aria-label={`تجربة صوت ${v.name}`} disabled={testing || quick === v.id} onClick={() => void quickTest(v.id)}>
-                  <Play aria-hidden="true" />
-                </button>
-              </div>)}
-            </div>
-          </div>;
+          return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup> : null;
         })}
-      </div>
+      </select><ChevronDown aria-hidden="true" /></div></label>
       <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>خلّها تغني الكلام بدل ما تقوله</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       {sing && <div className="grid gap-2 sm:grid-cols-2">
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
