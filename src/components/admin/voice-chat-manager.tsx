@@ -340,7 +340,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const file = video && navigator.canShare?.({ files: [video] }) ? video : audioFile;
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
-        setNote(file === video ? "اختر Snapchat — بيوصل كفيديو يشتغل بالصوت 👻" : "اختر Snapchat من قائمة المشاركة 👻");
+        setNote(file === video ? "اختر «حفظ الفيديو» ثم افتح سناب وأرسله من ألبوم الصور (الكاميرا ← الصور) 👻" : "اختر Snapchat من قائمة المشاركة 👻");
         return;
       }
       if (video) {
