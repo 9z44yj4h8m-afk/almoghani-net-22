@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, ArrowRight } from "lucide-react";
+import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
+import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 
 import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
@@ -448,6 +449,7 @@ export function SayNowForm() {
       <input id="voice-audio-upload" type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓"); } e.target.value = ""; }} />
       {note && <p role="status" className="voice-neon-note">{note}</p>}
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : panel.texts.saveBtn}</Button>
+      <Button asChild className="voice-studio-contact"><a href={WHATSAPP_URL} target="_blank" rel="noreferrer"><MessageCircle />للتواصل والاشتراك</a></Button>
     </div>
   </section>;
 }
