@@ -305,7 +305,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       await new Promise<void>((r) => { src.onended = () => r(); });
       rec.stop(); await done; cancelAnimationFrame(raf); void ac.close();
       const mime = rec.mimeType || type || "video/webm";
-      const file = new File([new Blob(chunks, { type: mime })], `almoghani-voice.${mime.includes("mp4") ? "mp4" : "webm"}`, { type: mime.split(";")[0] });
+      const file = new File([new Blob(chunks, { type: mime })], `almoghani-voice.${mime.includes("mp4") ? "mp4" : "webm"}`, { type: mime.split(";")[0] ?? "video/webm" });
       videoFileRef.current = file;
       setNote("الفيديو جاهز ✓ اضغط الزر مرة ثانية لإرساله لسناب");
     } catch {
