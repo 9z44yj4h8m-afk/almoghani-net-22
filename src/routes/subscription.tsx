@@ -110,7 +110,7 @@ function SubscriptionRequestPage() {
               <Banknote />تحويل بنكي
             </button>
             <button type="button" role="radio" aria-checked={payment !== "bank"} data-color="purple" data-checked={payment !== "bank"} className="subreq-payopt" onClick={() => setPayment("other")}>
-              <Music2 />طريقة أخرى
+              <Wallet />طريقة أخرى
             </button>
           </div>
           <button type="button" className="subreq-upload" onClick={() => fileRef.current?.click()}>
