@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio } from "lucide-react";
+import { ChevronDown, Download, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
+
+import voiceStudioHero from "@/assets/voice-studio-hero.jpg";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
 
@@ -364,10 +366,20 @@ export function SayNowForm() {
   }, []);
 
   return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel">
+    <div className="voice-app-hero" id="voice-home">
+      <img className="voice-app-art" src={voiceStudioHero} alt="ميكروفون ذهبي وسماعات في استوديو تسجيل" width={1152} height={1024} />
+      <header className="voice-app-topbar">
+        <Button asChild variant="ghost" size="icon" title="العودة للموقع" aria-label="العودة للموقع"><a href="/"><ArrowRight /></a></Button>
+        <div className="voice-app-wordmark" dir="ltr"><AudioLines /><div><b>ALMOGHANI</b><span>VOICE</span></div></div>
+        <Button variant="ghost" size="icon" title="إعدادات الصوت" aria-label="إعدادات الصوت" onClick={() => document.getElementById("voice-settings")?.scrollIntoView({ behavior: "smooth" })}><Settings2 /></Button>
+      </header>
+      <div className="voice-app-intro"><h1>غيّر صوتك بأسلوبك</h1><div className="voice-app-hero-actions"><Button onClick={() => document.getElementById("voice-text")?.focus()}><Play />ابدأ التجربة الآن</Button><Button variant="outline" onClick={() => document.getElementById("voice-settings")?.scrollIntoView({ behavior: "smooth" })}><AudioLines />أصواتي</Button></div></div>
+      <div className="voice-app-capture"><div className="voice-app-record"><Button disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button><span>{recording ? "إيقاف التسجيل" : "ابدأ التسجيل"}</span></div><Button variant="outline" className="voice-app-upload" onClick={() => document.getElementById("voice-audio-upload")?.click()}><Upload />ارفع ملفًا صوتيًا</Button></div>
+    </div>
     <h2 className="voice-studio-heading"><AudioLines aria-hidden="true" />تجربة أصوات البوت</h2>
-    <div className="voice-studio-form">
+    <div className="voice-studio-form" id="voice-settings">
       <label className="voice-studio-field"><span>صوت البوت</span><div className="voice-studio-select"><UserRound aria-hidden="true" /><select aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown aria-hidden="true" /></div></label>
-      <label className="voice-studio-field"><span>نص التجربة</span><textarea aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} /></label>
+      <label className="voice-studio-field"><span>نص التجربة</span><textarea id="voice-text" aria-label="الكلام" maxLength={400} placeholder="اكتب الكلام اللي يقوله البوت بصوته" value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} /></label>
       <label className="voice-studio-field"><span>اختيار صوت بنت</span><div className="voice-studio-select"><AudioLines aria-hidden="true" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
@@ -380,7 +392,7 @@ export function SayNowForm() {
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
       </div>}
-      <div className="voice-studio-preview">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
+      <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : "تجريب الصوت"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />حفظ الصوت في جوالي</Button>
@@ -389,12 +401,12 @@ export function SayNowForm() {
       <div className="voice-studio-actions">
         <label className="voice-studio-download inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md border border-border px-3 text-sm font-bold">
           <Upload className="h-4 w-4" />رفع أغنية
-          <input type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓ تقدر تسمعه وتحفظه أو ترسله"); } e.target.value = ""; }} />
+          <input id="voice-audio-upload" type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓ تقدر تسمعه وتحفظه أو ترسله"); } e.target.value = ""; }} />
         </label>
         <Button type="button" variant="outline" disabled={testing} onClick={toggleRecord} className="voice-studio-download"><AudioLines />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing || recording} onClick={() => void convertMyVoice()} className="voice-studio-download"><Mic />حوّل صوتي</Button>
       </div>
-      <div className="voice-studio-actions" aria-label="مغيّر الصوت المباشر">
+      <div className="voice-studio-actions" id="voice-effects" aria-label="مغيّر الصوت المباشر">
         <Button type="button" variant="outline" onClick={() => { if (changerOn) stopChanger(); else void startChanger(); }} className="voice-studio-test"><Radio />{changerOn ? "إيقاف مغيّر الصوت" : "مغيّر الصوت المباشر"}</Button>
         <select className={`${field} w-auto min-w-40`} aria-label="نبرة المغيّر" value={changerRatio} disabled={!changerOn} onChange={(e) => setChangerVoice(Number(e.target.value))}>
           <option value="1.5">بنت ناعمة</option>
@@ -410,6 +422,11 @@ export function SayNowForm() {
       <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : "حفظ اختيار البوت"}</Button>
     </div>
   </section>;
+}
+
+export function VoiceStudioNav() {
+  const [active, setActive] = useState("voice-home");
+  return <nav className="voice-app-nav" aria-label="تنقل لوحة الأصوات">{[{ id: "voice-home", label: "الرئيسية", icon: Home }, { id: "voice-effects", label: "المؤثرات", icon: AudioLines }, { id: "voice-recordings", label: "التسجيلات", icon: ListMusic }, { id: "voice-settings", label: "الإعدادات", icon: Settings2 }].map(({ id, label, icon: Icon }) => <Button key={id} variant="ghost" aria-current={active === id ? "location" : undefined} onClick={() => { setActive(id); document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }); }}><Icon /><span>{label}</span></Button>)}</nav>;
 }
 
 export function VoiceChatManager() {
