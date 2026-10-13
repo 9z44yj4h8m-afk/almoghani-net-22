@@ -1,11 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, AudioLines, LayoutGrid, Mic } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
-import { Button } from "@/components/ui/button";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
-import { SayNowForm } from "@/components/admin/voice-chat-manager";
+import { SayNowForm, VoiceStudioNav } from "@/components/admin/voice-chat-manager";
 
 export const Route = createFileRoute("/admin-voices")({
   ssr: false,
@@ -39,5 +37,6 @@ function AdminVoicesPage() {
     <main className="voice-studio-main">
       <SayNowForm />
     </main>
+    <VoiceStudioNav />
   </div>;
 }
