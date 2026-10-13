@@ -961,12 +961,9 @@ body { background: var(--surface-deep); }
 .voice-studio-actions { display: grid; grid-template-columns: 1fr 1.08fr; gap: 12px; }
 .voice-studio-actions > button { min-width: 0; height: 66px; padding: 10px; border-radius: 14px; font-size: 18px; background: var(--voice-night); color: var(--voice-ink); white-space: normal; }
 .voice-studio-actions svg { width: 25px; height: 25px; flex-shrink: 0; }
-.voice-studio-full { display: flex; flex-direction: column; }
-.voice-studio-full > .voice-studio-main { flex: 1; margin: 0 auto; display: flex; flex-direction: column; }
-.voice-studio-full .voice-studio-panel { flex: 1; display: flex; flex-direction: column; }
-.voice-studio-full .voice-studio-panel > .voice-studio-form { flex: 1; }
 .voice-studio-full .voice-studio-panel .voice-studio-send { grid-template-columns: 1fr 1fr; margin-top: auto; }
 .voice-studio-full .voice-studio-panel .voice-studio-send > button { height: 60px; font-size: 17px; }
+.voice-studio-full .voice-studio-panel .voice-studio-send > button:nth-child(3) { grid-column: auto; }
 .voice-studio-test { border-color: var(--voice-cyan); box-shadow: inset 0 0 14px color-mix(in oklab, var(--voice-purple) 15%, transparent); }
 .voice-studio-download { border-color: var(--voice-edge); }
 .voice-studio-save { width: 100%; height: 72px; border-radius: 14px; border: 1px solid var(--voice-gold-light); background: var(--voice-gold-fill); color: var(--voice-night); font-size: 25px; font-weight: 800; box-shadow: var(--voice-glow); }
@@ -1104,7 +1101,7 @@ body { background: var(--surface-deep); }
 body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-page { height: 100dvh; min-height: 0; overflow: hidden; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
 .voice-studio-main { height: 100%; width: 100%; max-width: 540px; padding: 0; margin: auto; }
-.voice-studio-panel { height: 100%; display: grid; grid-template-rows: minmax(0,42fr) minmax(0,14fr) minmax(0,44fr); gap: 8px; padding: 0 12px 12px; overflow: hidden; background: var(--voice-night); }
+.voice-studio-panel { height: 100%; display: grid; grid-template-rows: minmax(0,38fr) minmax(0,14fr) minmax(0,48fr); gap: 8px; padding: 0 12px 12px; overflow: hidden; background: var(--voice-night); }
 .voice-neon-hero { position: relative; min-height: 0; margin-inline: -12px; overflow: hidden; }
 .voice-neon-hero > img { width: 100%; height: 100%; object-fit: fill; }
 .voice-neon-hero > button { position: absolute; top: 3.5%; width: 9%; height: 12%; border: 2px solid var(--voice-purple); background: var(--voice-neon-fill); color: var(--voice-ink); border-radius: 12px; box-shadow: var(--voice-neon-glow); }
