@@ -4,3 +4,4 @@
 - Store chat appearance and bots in admin-write site_settings; bot aliases preserve old message names after renaming. Private bot-avatars uses admin writes and signed reads, never public buckets.
 - Normalize bot message vocalization through the shared chat-text helper on write and historical display; preserve visitor text and decorative names so cleanup does not alter identities.
 - Voice chat (/voice-chat) reuses LiveChat with voice mode; bot speech is generated server-side only for existing chat message IDs so the endpoint cannot be used as open TTS.
+- Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
