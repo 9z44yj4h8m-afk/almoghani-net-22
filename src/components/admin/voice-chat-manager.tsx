@@ -96,7 +96,8 @@ class VoicePitchJungle {
   }
 }
 
-export function SayNowForm() {
+export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
+  const [subOpen, setSubOpen] = useState(false);
   const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
   const [bots, setBots] = useState<string[]>(defaultChatBots.bots.map((b) => b.name));
   const [note, setNote] = useState("");
@@ -120,6 +121,7 @@ export function SayNowForm() {
 
   // Quick play straight from a voice card: speaks a short sample with that voice only.
   async function quickTest(voiceId: string) {
+    if (locked) { setSubOpen(true); return; }
     if (testing || quick) return;
     setQuick(voiceId); setNote("");
     const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voiceId);
@@ -340,6 +342,7 @@ export function SayNowForm() {
   }
 
   async function testVoice(spoken?: string) {
+    if (locked) { setSubOpen(true); return; }
     if (testing) return;
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
@@ -386,6 +389,11 @@ export function SayNowForm() {
 
   const pc = panel.colors;
   return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel">
+    <Dialog open={subOpen} onOpenChange={setSubOpen}><DialogContent dir="rtl" className="text-center">
+      <DialogTitle className="text-center text-2xl font-black">اشترك في ALMOGHANI VOICE</DialogTitle>
+      <DialogDescription className="text-center">تشغيل الأصوات متاح للمشتركين فقط. تواصل معنا على واتساب 0557073007 لتفعيل اشتراكك.</DialogDescription>
+      <Button asChild className="voice-studio-contact"><a href={WHATSAPP_URL} target="_blank" rel="noreferrer"><MessageCircle />اشترك الآن</a></Button>
+    </DialogContent></Dialog>
     {pc.enabled && <style>{`.voice-studio-page{background:${pc.bg}!important}.voice-studio-panel,.voice-studio-panel label,.voice-studio-panel span{color:${pc.text}}.voice-studio-panel .voice-studio-select,.voice-studio-panel textarea,.voice-studio-preview,.voice-studio-sing,.voice-studio-actions button{border-color:${pc.accent}!important}.voice-studio-panel .voice-studio-save{background:${pc.gold}!important;border-color:${pc.gold}!important}`}</style>}
     {!panel.showHeader && <h2 className="font-display text-2xl font-black text-center">ALMOGHANI VOICE</h2>}
     {panel.showHeader && <div className="voice-neon-hero" id="voice-home">
