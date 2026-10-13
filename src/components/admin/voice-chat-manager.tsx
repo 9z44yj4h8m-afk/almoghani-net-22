@@ -475,6 +475,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </div>
       <div className="voice-studio-actions" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
