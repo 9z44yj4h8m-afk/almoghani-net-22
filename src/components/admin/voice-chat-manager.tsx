@@ -444,6 +444,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
+      <div className="voice-studio-actions" aria-label="الصوت المضاف">
+        <Button type="button" variant="outline" onClick={() => void playSample()} className="voice-studio-test"><Play />{samplePlaying ? "يشغّل الآن…" : "شغّل الصوت المضاف"}</Button>
+        <span className="voice-studio-status" role="status">نفس الصوت تمامًا — التسجيل الحقيقي</span>
+      </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
           <DialogTitle>إعدادات الصوت</DialogTitle>
