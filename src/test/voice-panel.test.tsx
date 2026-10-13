@@ -21,6 +21,7 @@ describe("female voice panel", () => {
     for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
+    expect(screen.getByRole("button", { name: "شغّل الصوت المضاف" })).toBeTruthy();
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
     expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "حفظ الصوت في جوالي" }));
   });
