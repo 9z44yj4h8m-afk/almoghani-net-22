@@ -290,19 +290,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   async function sendToSnapchat() {
     if (!audioFile) return;
     try {
-      const video: File | null = null;
       const file = audioFile;
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
-        setNote(file === video ? "اختر «حفظ الفيديو» ثم افتح سناب وأرسله من ألبوم الصور (الكاميرا ← الصور) 👻" : "اختر Snapchat من قائمة المشاركة 👻");
-        return;
-      }
-      if (video) {
-        const url = URL.createObjectURL(video);
-        const link = document.createElement("a"); link.href = url; link.download = video.name;
-        document.body.appendChild(link); link.click(); link.remove();
-        window.setTimeout(() => URL.revokeObjectURL(url), 60000);
-        setNote("حُفظ الفيديو؛ أرسله من سناب شات من ألبوم الصور.");
+        setNote("اختر Snapchat من قائمة المشاركة 👻");
         return;
       }
       setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرسله من سناب شات.");
