@@ -51,13 +51,17 @@ describe("female voice panel", () => {
     expect(send).toBeDisabled();
     expect(download).toBeDisabled();
   });
-  it("ends with save and exposes singing controls only when enabled", () => {
+  it("ends with the send row and exposes singing controls only when enabled", () => {
     render(<SayNowForm />);
     const panel = screen.getByRole("region", { name: "تجريب أصوات البنات" });
-    const children = Array.from(panel.lastElementChild?.children ?? []);
-    const contact = children.at(-1);
-    expect(contact).toBe(screen.getByRole("link", { name: "للتواصل والاشتراك" }));
-    expect(contact?.previousElementSibling).toBe(screen.getByRole("button", { name: "حفظ اختيار البوت" }));
+    expect(screen.queryByRole("button", { name: "حفظ اختيار البوت" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "للتواصل والاشتراك" })).toBeNull();
+    const rows = Array.from(panel.querySelectorAll(".voice-studio-actions"));
+    const last = rows.at(-1);
+    expect(last).toBeTruthy();
+    for (const name of ["إرسال للواتساب", "إرسال لتيليجرام", "إرسال لسيجنال", "إرسال للسناب"]) {
+      expect(Array.from(last?.querySelectorAll("button") ?? []).some((b) => b.textContent?.includes(name))).toBe(true);
+    }
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
     fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
     expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();

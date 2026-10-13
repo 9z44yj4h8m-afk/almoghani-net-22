@@ -35,7 +35,7 @@ function AdminVoicesPage() {
   }, [user]);
   if (!ready) return null;
   const locked = admin !== true;
-  return <div dir="rtl" className="voice-studio-page">
+  return <div dir="rtl" className="voice-studio-page voice-studio-full">
     <main className="voice-studio-main">
       <SayNowForm locked={locked} />
     </main>

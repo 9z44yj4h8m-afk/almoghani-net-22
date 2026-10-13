@@ -101,7 +101,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [cfg, setCfg] = useState<VoiceChatConfig>(defaultVoiceChat);
   const [bots, setBots] = useState<string[]>(defaultChatBots.bots.map((b) => b.name));
   const [note, setNote] = useState("");
-  const [busy, setBusy] = useState(false);
   const [testing, setTesting] = useState(false);
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
@@ -348,26 +347,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
-  async function saveVoice() {
-    const name = sayBot || bots[0];
-    if (!name || busy) return;
-    setBusy(true); setNote("");
-    try {
-      const { data, error: readError } = await supabase.from("site_settings").select("value").eq("key", "voice_chat").maybeSingle();
-      if (readError) throw readError;
-      const current = normalizeVoiceChat(data?.value);
-      const botVoices = { ...current.botVoices };
-      const chosen = panel.custom.find((c) => c.id === sayVoice)?.providerId ?? sayVoice;
-      if (chosen) botVoices[name] = chosen;
-      else delete botVoices[name];
-      const next = normalizeVoiceChat({ ...current, botVoices });
-      const { error } = await supabase.from("site_settings").upsert({ key: "voice_chat", value: next as never, updated_at: new Date().toISOString() });
-      if (error) throw error;
-      setCfg(next);
-      setNote(`تم حفظ صوت ${name} ✓`);
-    } catch { setNote("تعذّر حفظ الصوت؛ حاول مجددًا."); }
-    finally { setBusy(false); }
-  }
 
   // Voice changer: transcribes the owner's recording, then re-speaks the words with the chosen girl voice.
   async function convertMyVoice() {
@@ -473,7 +452,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
-      <div className="voice-studio-actions" aria-label="إرسال المقطع الصوتي">
+      <div className="voice-studio-actions voice-studio-send" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
@@ -507,8 +486,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </Dialog>
       <input id="voice-audio-upload" type="file" accept="audio/*" className="sr-only" aria-label="رفع أغنية" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setAudioFile(f); setNote("تم رفع الملف ✓"); } e.target.value = ""; }} />
       {note && <p role="status" className="voice-neon-note">{note}</p>}
-      <Button type="button" disabled={busy || testing} onClick={saveVoice} className="voice-studio-save"><Save />{busy ? "جارٍ الحفظ…" : panel.texts.saveBtn}</Button>
-      <Button asChild className="voice-studio-contact"><a href={WHATSAPP_URL} target="_blank" rel="noreferrer"><MessageCircle />للتواصل والاشتراك</a></Button>
     </div>
   </section>;
 }
