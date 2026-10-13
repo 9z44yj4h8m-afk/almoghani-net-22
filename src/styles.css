@@ -1072,3 +1072,72 @@ body { background: var(--surface-deep); }
   .voice-studio-form { margin-inline: 16px; }
   .voice-studio-actions > button,.voice-studio-actions > label { font-size: 13px; }
 }
+
+/* Single-screen neon voice reference; extra tools live in the settings dialog. */
+.voice-studio-page,.voice-neon-dialog {
+  --voice-night: oklch(0.12 0.032 265);
+  --voice-panel: oklch(0.19 0.055 265);
+  --voice-ink: oklch(0.98 0.005 270);
+  --voice-muted: oklch(0.76 0.055 275);
+  --voice-purple: oklch(0.65 0.28 310);
+  --voice-blue: oklch(0.6 0.24 270);
+  --voice-cyan: oklch(0.84 0.15 215);
+  --voice-edge: oklch(0.35 0.075 265);
+  --voice-gold: oklch(0.81 0.14 85);
+  --voice-gold-light: oklch(0.94 0.12 95);
+  --voice-gold-dark: oklch(0.66 0.12 78);
+  --voice-gold-fill: linear-gradient(165deg,var(--voice-gold-light),var(--voice-gold),var(--voice-gold-dark));
+  --voice-neon-fill: linear-gradient(125deg,var(--voice-panel),var(--voice-night));
+  --voice-neon-action: linear-gradient(120deg,color-mix(in oklab,var(--voice-purple) 38%,var(--voice-night)),var(--voice-night) 55%,color-mix(in oklab,var(--voice-cyan) 25%,var(--voice-night)));
+  --voice-neon-glow: 0 0 10px color-mix(in oklab,var(--voice-purple) 28%,transparent);
+  --voice-glow: 0 0 12px color-mix(in oklab,var(--voice-gold) 30%,transparent);
+  color: var(--voice-ink); background: var(--voice-night); font-family: "Cairo",sans-serif;
+}
+body:has(.voice-studio-page) { overflow: hidden; }
+.voice-studio-page { height: 100dvh; min-height: 0; overflow: hidden; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.voice-studio-main { height: 100%; width: 100%; max-width: 540px; padding: 0; margin: auto; }
+.voice-studio-panel { height: 100%; display: grid; grid-template-rows: minmax(0,38fr) minmax(0,15fr) minmax(0,47fr); gap: 8px; padding: 0 12px 12px; overflow: hidden; background: var(--voice-night); }
+.voice-neon-hero { position: relative; min-height: 0; margin-inline: -12px; overflow: hidden; }
+.voice-neon-hero > img { width: 100%; height: 100%; object-fit: fill; }
+.voice-neon-hero > button { position: absolute; top: 7%; width: 9%; height: 14%; border: 1px solid var(--voice-purple); background: var(--voice-neon-fill); color: var(--voice-ink); border-radius: 50%; }
+.voice-neon-hero > button svg { width: 65%; height: 65%; }
+.voice-neon-settings { left: 5.2%; }.voice-neon-account { right: 5.2%; }
+.voice-neon-text { min-height: 0; display: grid; grid-template-rows: 32px minmax(0,1fr); gap: 6px; padding: 8px 10px; border: 1px solid var(--voice-purple); border-radius: 16px; background: var(--voice-neon-fill); box-shadow: var(--voice-neon-glow); }
+.voice-neon-text > span { display: flex; flex-direction: row-reverse; align-items: center; justify-content: flex-end; gap: 10px; margin: 0; font-size: 17px; font-weight: 900; }
+.voice-neon-text > span > button { height: 30px; width: 30px; flex-shrink: 0; border-radius: 50%; color: var(--voice-ink); background: var(--voice-neon-action); border: 1px solid var(--voice-purple); }
+.voice-neon-text textarea { height: 100%; min-height: 0; resize: none; padding: 8px 10px; border-color: var(--voice-purple); background: var(--voice-panel); border-radius: 10px; }
+.voice-studio-form { position: relative; min-height: 0; margin: 0; padding: 8px 10px; display: grid; grid-template-rows: minmax(0,1.35fr) minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr) minmax(0,1.15fr); gap: 7px; border: 1px solid var(--voice-edge); border-radius: 16px; background: var(--voice-neon-fill); }
+.voice-studio-form > .voice-studio-field { min-height: 0; display: grid; grid-template-rows: 24px minmax(0,1fr); gap: 4px; }
+.voice-studio-form > .voice-studio-field > span { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 17px; font-weight: 900; }
+.voice-studio-field > span > svg { color: var(--voice-purple); width: 22px; height: 22px; }
+.voice-studio-select { height: 100%; min-height: 0; border-color: var(--voice-gold-light); padding: 0 10px; background: var(--voice-night); border-radius: 10px; }
+.voice-studio-form .voice-studio-select > svg:first-child { display: none; }
+.voice-studio-select select { height: 100%; font-size: 16px; }
+.voice-studio-sing { min-height: 0; padding: 4px 8px; gap: 6px; margin: 0; border-color: var(--voice-edge); font-size: 13px; background: var(--voice-night); }
+.voice-studio-sing > svg { width: 22px; height: 22px; }
+.voice-studio-sing > button { flex-shrink: 0; }
+.voice-studio-preview { min-height: 0; padding: 6px 8px; gap: 8px; background: var(--voice-night); border-color: var(--voice-edge); }
+.voice-studio-play { width: 40px; height: 40px; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
+.voice-studio-status { font-size: 11px; }
+.voice-studio-wave { height: 100%; gap: 2px; }
+.voice-studio-wave i { width: 3px; max-height: 85%; background: var(--voice-purple); box-shadow: var(--voice-neon-glow); }
+.voice-studio-wave i:nth-child(n+15) { background: var(--voice-blue); }.voice-studio-wave i:nth-child(n+29) { background: var(--voice-cyan); }
+.voice-studio-actions { min-height: 0; gap: 8px; }
+.voice-studio-form > .voice-studio-actions > button { height: 100%; min-height: 0; padding: 4px; gap: 5px; font-size: 13px; border-radius: 8px; }
+.voice-studio-form > .voice-studio-actions > button svg { width: 20px; height: 20px; color: var(--voice-ink); }
+.voice-studio-form > .voice-studio-actions > .voice-studio-test { background: var(--voice-neon-action); border-color: var(--voice-cyan) !important; }
+.voice-studio-save { height: 100%; min-height: 0; font-size: 19px; gap: 8px; border-radius: 10px; }
+.voice-studio-save svg { width: 25px; height: 25px; }
+.voice-studio-preview audio { height: 36px; min-width: 0; }
+.voice-neon-note { position: fixed; bottom: max(10px,env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(90%,480px); z-index: 60; padding: 10px; border: 1px solid var(--voice-cyan); border-radius: 8px; background: var(--voice-night); color: var(--voice-ink); font-size: 13px; text-align: center; box-shadow: var(--voice-neon-glow); pointer-events: none; }
+.voice-neon-dialog { width: calc(100% - 24px); max-height: 85dvh; overflow-y: auto; border-color: var(--voice-purple); border-radius: 12px; }
+.voice-neon-dialog .voice-studio-select { height: 44px; }
+.voice-neon-melody { position: absolute; inset-inline: 10px; top: 40%; z-index: 5; padding: 8px; border: 1px solid var(--voice-purple); border-radius: 8px; background: var(--voice-night); }
+@media(max-height:700px) {
+ .voice-studio-panel { grid-template-rows: minmax(0,31fr) minmax(0,17fr) minmax(0,52fr); gap: 5px; padding-bottom: 6px; }
+ .voice-studio-form { gap: 5px; padding: 6px 8px; }
+ .voice-neon-text > span { font-size: 15px; }
+ .voice-studio-form > .voice-studio-actions > button { font-size: 11px; }
+ .voice-studio-sing { font-size: 11px; }
+ .voice-studio-save { font-size: 17px; }
+}
