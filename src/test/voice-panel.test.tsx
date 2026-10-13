@@ -10,7 +10,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   from: () => ({ select: () => ({ in: () => Promise.resolve({ data: [] }) }) }),
 } }));
 
-afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 describe("female voice panel", () => {
   it("removes send-now, preset songs and male voice options", () => {
     render(<><SayNowForm /><VoiceChatManager /></>);
@@ -21,7 +21,7 @@ describe("female voice panel", () => {
     for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
-    expect(screen.getByRole("button", { name: "إرسال فيديو للسناب" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "إرسال مقطع صوتي للسناب" })).toBeTruthy();
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
     expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "حفظ الصوت في جوالي" }));
   });
@@ -30,6 +30,10 @@ describe("female voice panel", () => {
     preview.mockResolvedValue({ audio: btoa("test-audio") });
     vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
     render(<SayNowForm />);
+    const share = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { canShare: vi.fn(() => true), share });
+    const send = screen.getByRole("button", { name: "إرسال مقطع صوتي للسناب" });
+    expect(send).toBeDisabled();
     const download = screen.getByRole("button", { name: "حفظ الصوت في جوالي" });
     expect(download).toBeDisabled();
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا يا نورة" } });
@@ -37,7 +41,14 @@ describe("female voice panel", () => {
     fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
     await waitFor(() => expect(download).toBeEnabled());
     expect(preview).toHaveBeenCalledWith({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow" } });
+    fireEvent.click(send);
+    await waitFor(() => expect(share).toHaveBeenCalled());
+    const payload = share.mock.calls[0]?.[0];
+    expect(payload.files[0].type).toMatch(/^audio\//);
+    expect(payload.url).toBeUndefined();
+    expect(payload.files).toHaveLength(1);
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "نص جديد" } });
+    expect(send).toBeDisabled();
     expect(download).toBeDisabled();
   });
   it("ends with save and exposes singing controls only when enabled", () => {
