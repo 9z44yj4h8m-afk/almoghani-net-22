@@ -262,64 +262,11 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }, []);
 
   useEffect(() => {
-    videoFileRef.current = null;
     if (!audioFile) { setAudioUrl(""); return; }
     const url = URL.createObjectURL(audioFile);
     setAudioUrl(url);
     return () => URL.revokeObjectURL(url);
   }, [audioFile]);
-
-  // Renders the current audio onto a simple animated canvas and records it as a video file for sharing.
-  const [makingVideo, setMakingVideo] = useState(false);
-  const videoFileRef = useRef<File | null>(null);
-  async function sendVideoToSnapchat() {
-    if (!audioFile || makingVideo) return;
-    if (videoFileRef.current) { await shareVideo(videoFileRef.current); return; }
-    setMakingVideo(true); setNote("جارٍ تجهيز الفيديو…");
-    try {
-      const canvas = document.createElement("canvas");
-      canvas.width = 720; canvas.height = 1280;
-      const ctx = canvas.getContext("2d")!;
-      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const ac = new AC();
-      const buf = await ac.decodeAudioData(await audioFile.arrayBuffer());
-      const src = ac.createBufferSource(); src.buffer = buf;
-      const dest = ac.createMediaStreamDestination(); src.connect(dest);
-      const stream = new MediaStream([...canvas.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]);
-      const type = ["video/mp4;codecs=avc1,mp4a", "video/mp4", "video/webm;codecs=vp8,opus", "video/webm"].find((t) => MediaRecorder.isTypeSupported(t)) || "";
-      const rec = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
-      const chunks: Blob[] = [];
-      rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
-      const done = new Promise<void>((r) => { rec.onstop = () => r(); });
-      const start = performance.now();
-      let raf = 0;
-      const draw = () => {
-        const t = (performance.now() - start) / 1000;
-        ctx.fillStyle = "#07040f"; ctx.fillRect(0, 0, 720, 1280);
-        ctx.fillStyle = "#c084fc"; ctx.font = "bold 64px sans-serif"; ctx.textAlign = "center";
-        ctx.fillText("ALMOGHANI VOICE", 360, 300);
-        for (let i = 0; i < 30; i++) { const h = 40 + Math.abs(Math.sin(t * 6 + i * 0.6)) * 260; ctx.fillStyle = i % 2 ? "#22d3ee" : "#a855f7"; ctx.fillRect(60 + i * 20, 640 - h / 2, 12, h); }
-        raf = requestAnimationFrame(draw);
-      };
-      draw(); rec.start(); src.start();
-      await new Promise<void>((r) => { src.onended = () => r(); });
-      rec.stop(); await done; cancelAnimationFrame(raf); void ac.close();
-      const mime = rec.mimeType || type || "video/webm";
-      const file = new File([new Blob(chunks, { type: mime })], `almoghani-voice.${mime.includes("mp4") ? "mp4" : "webm"}`, { type: mime.split(";")[0] ?? "video/webm" });
-      videoFileRef.current = file;
-      setNote("الفيديو جاهز ✓ اضغط الزر مرة ثانية لإرساله لسناب");
-    } catch {
-      setNote("تعذّر تجهيز الفيديو على هذا الجهاز.");
-    } finally { setMakingVideo(false); }
-  }
-  async function shareVideo(file: File) {
-    try {
-      if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file] }); setNote("اختر Snapchat من قائمة المشاركة 👻"); return; }
-      const url = URL.createObjectURL(file); const a = document.createElement("a"); a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
-      setNote("تم تنزيل الفيديو؛ أرسله من سناب عبر الصور.");
-    } catch (e) { if (!(e instanceof Error && e.name === "AbortError")) setNote("تعذّر الإرسال؛ حاول مجددًا."); }
-  }
-
 
   async function downloadVoice() {
     if (!audioFile) return;
@@ -346,11 +293,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const file = audioFile;
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
-        setNote("اختر Snapchat من قائمة المشاركة 👻");
+        setNote("اختر Snapchat؛ قد يعرض المقطع كرابط وليس رسالة صوتية.");
         return;
       }
       setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرسله من سناب شات.");
-      window.open("https://www.snapchat.com/", "_blank", "noopener");
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") return;
       setNote("تعذّر الإرسال؛ حاول مجددًا.");
@@ -482,8 +428,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
-      <div className="voice-studio-actions" aria-label="إرسال فيديو للسناب">
-        <Button type="button" variant="outline" disabled={!audioFile || testing || makingVideo} onClick={() => void sendVideoToSnapchat()} className="voice-studio-test"><Send />{makingVideo ? "يجهّز الفيديو…" : "إرسال فيديو للسناب"}</Button>
+      <div className="voice-studio-actions" aria-label="إرسال مقطع صوتي للسناب">
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال مقطع صوتي للسناب</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
