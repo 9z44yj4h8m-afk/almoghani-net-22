@@ -167,12 +167,22 @@ export function SayNowForm() {
       const rec = new MediaRecorder(stream);
       const chunks: Blob[] = [];
       rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
-      rec.onstop = () => {
+      rec.onstop = async () => {
         stream.getTracks().forEach((t) => t.stop());
         const type = rec.mimeType || "audio/webm";
         const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
-        setAudioFile(new File(chunks, `almoghani-record-${Date.now()}.${ext}`, { type }));
-        setRecorder(null); setRecording(false); setNote("تم التسجيل ✓");
+        const file = new File(chunks, `almoghani-record-${Date.now()}.${ext}`, { type: type.split(";")[0] || "audio/webm" });
+        setAudioFile(file);
+        setRecorder(null); setRecording(false); setNote("جارٍ كتابة كلامك…");
+        // Speech is transcribed into the test text box so the owner can try it with any voice.
+        try {
+          const form = new FormData();
+          form.append("file", file, file.name);
+          const res = await fetch("/api/public/voice-listen", { method: "POST", body: form });
+          const heard = res.ok ? ((await res.json()) as { text?: string }).text?.trim() ?? "" : "";
+          if (heard) { setSayText(heard); setNote("تم كتابة كلامك في مربع التجربة ✓"); }
+          else setNote("تم التسجيل، لكن ما قدرنا نكتب الكلام؛ تكلم بوضوح وحاول مجددًا.");
+        } catch { setNote("تم التسجيل، لكن تعذّرت كتابة الكلام."); }
       };
       rec.start(); setRecorder(rec); setRecording(true); setNote("جارٍ التسجيل… اضغط إيقاف التسجيل");
     } catch (e) { setNote(micError(e)); }
