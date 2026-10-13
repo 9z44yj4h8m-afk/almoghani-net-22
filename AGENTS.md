@@ -39,3 +39,4 @@
 - Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
+- Voice panel texts, colors, hidden and owner-added voices live in site_settings("voice_panel") edited at /100; custom voices map to a built-in provider voice plus a delivery prompt, so bots only ever store provider IDs.
