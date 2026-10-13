@@ -38,7 +38,7 @@ function Home() {
         <img src={homeArt.url} alt="ALMOGHANI LIVE" className="block h-auto w-full" />
         <Link to="/admin-voices" aria-label="للدخول للبرنامج" className={hotspotClass}
           style={{ left: "46.9%", top: "48.9%", width: "46.3%", height: "6%" }} />
-        <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="اشترك الآن" className={hotspotClass}
+        <Link to="/subscription" aria-label="اشترك الآن" className={hotspotClass}
           style={{ left: "47.8%", top: "67.9%", width: "46.1%", height: "5.8%" }} />
         <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="واتساب" className={hotspotClass}
           style={{ left: "65.7%", top: "84.4%", width: "28.7%", height: "6.3%" }} />
