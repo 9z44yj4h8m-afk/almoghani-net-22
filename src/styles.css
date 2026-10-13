@@ -917,7 +917,9 @@ body { background: var(--surface-deep); }
 .voice-studio-brand b { display: block; font-size: 25px; line-height: 1.4; }
 .voice-studio-brand > svg { width: 38px; height: 38px; }
 .voice-studio-site-link { background: var(--voice-night); border-color: var(--voice-gold); color: var(--voice-ink); height: 46px; border-radius: 8px; }
-.voice-studio-main { max-width: 768px; margin: auto; padding: 32px 26px 28px; }
+.voice-studio-main { max-width: 768px; margin: auto; padding: calc(32px + env(safe-area-inset-top)) calc(26px + env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) calc(26px + env(safe-area-inset-left)); }
+.voice-studio-page { min-height: 100dvh; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+.voice-studio-page textarea, .voice-studio-page select { font-size: max(16px, 1em); }
 .voice-studio-title { display: flex; align-items: center; gap: 22px; margin-bottom: 28px; }
 .voice-studio-title h1 { font-size: 44px; font-weight: 900; line-height: 1.4; }
 .voice-studio-mic { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--voice-purple); color: var(--voice-purple); box-shadow: 0 0 20px color-mix(in oklab, var(--voice-cyan) 35%, transparent); }
@@ -970,7 +972,7 @@ body { background: var(--surface-deep); }
   .voice-studio-brand > svg { width: 25px; height: 25px; }
   .voice-studio-brand { gap: 8px; }
   .voice-studio-site-link { font-size: 12px; padding: 8px; }
-  .voice-studio-main { padding: 24px 12px; }
+  .voice-studio-main { padding: calc(16px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom)); }
   .voice-studio-title h1 { font-size: 34px; }
   .voice-studio-title { gap: 14px; }
   .voice-studio-panel { padding: 20px 10px 12px; border-radius: 22px; }
