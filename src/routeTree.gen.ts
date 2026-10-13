@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as R100RouteImport } from './routes/100'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminChatRouteImport } from './routes/admin-chat'
 import { Route as AdminVoicesRouteImport } from './routes/admin-voices'
@@ -42,6 +43,11 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const R100Route = R100RouteImport.update({
+  id: '/100',
+  path: '/100',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -188,6 +194,7 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/100': typeof R100Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/admin-voices': typeof AdminVoicesRoute
@@ -219,6 +226,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/100': typeof R100Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/admin-voices': typeof AdminVoicesRoute
@@ -251,6 +259,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/100': typeof R100Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/admin-voices': typeof AdminVoicesRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/100'
     | '/admin'
     | '/admin-chat'
     | '/admin-voices'
@@ -315,6 +325,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/100'
     | '/admin'
     | '/admin-chat'
     | '/admin-voices'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/100'
     | '/admin'
     | '/admin-chat'
     | '/admin-voices'
@@ -378,6 +390,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R100Route: typeof R100Route
   AdminRoute: typeof AdminRoute
   AdminChatRoute: typeof AdminChatRoute
   AdminVoicesRoute: typeof AdminVoicesRoute
@@ -415,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/100': {
+      id: '/100'
+      path: '/100'
+      fullPath: '/100'
+      preLoaderRoute: typeof R100RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -618,6 +638,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R100Route: R100Route,
   AdminRoute: AdminRoute,
   AdminChatRoute: AdminChatRoute,
   AdminVoicesRoute: AdminVoicesRoute,
