@@ -318,6 +318,36 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
+  async function sendToTelegram() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile] });
+        setNote("اختر Telegram ثم الشخص؛ يوصل المقطع كرسالة صوتية تُشغّل داخل الشات.");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من تيليجرام.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
+    }
+  }
+
+  async function sendToSignal() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile] });
+        setNote("اختر Signal ثم الشخص؛ يوصل المقطع كمرفق صوتي يُشغّل داخل المحادثة.");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من سيجنال.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
+    }
+  }
+
   async function saveVoice() {
     const name = sayBot || bots[0];
     if (!name || busy) return;
@@ -445,6 +475,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </div>
       <div className="voice-studio-actions" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
