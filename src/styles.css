@@ -1096,6 +1096,7 @@ body { background: var(--surface-deep); }
   --voice-test-fill: linear-gradient(160deg,var(--voice-cyan),var(--voice-blue) 70%);
   --voice-download-fill: linear-gradient(160deg,var(--voice-purple),color-mix(in oklab,var(--voice-purple) 55%,var(--voice-blue)));
   --voice-glow: 0 0 12px color-mix(in oklab,var(--voice-gold) 30%,transparent);
+  --voice-stop: oklch(0.63 0.23 25);
   color: var(--voice-ink); background: var(--voice-night); font-family: "Cairo",sans-serif;
 }
 body:has(.voice-studio-page) { overflow: hidden; }
