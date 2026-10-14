@@ -79,4 +79,20 @@ describe("female voice panel", () => {
     expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();
     expect(screen.getByRole("combobox", { name: "الإيقاع والرقصة" })).toBeVisible();
   });
+  it("stops the looping preview with the stop button", async () => {
+    vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
+    preview.mockResolvedValue({ audio: btoa("test-audio") });
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    const pause = vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+    render(<SayNowForm />);
+    const stop = screen.getByRole("button", { name: "إيقاف الصوت" });
+    expect(stop).toBeDisabled();
+    fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا" } });
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(play).toHaveBeenCalled());
+    await waitFor(() => expect(stop).toBeEnabled());
+    fireEvent.click(stop);
+    expect(pause).toHaveBeenCalled();
+    expect(stop).toBeDisabled();
+  });
 });
