@@ -27,8 +27,8 @@ export const getGateStatus = createServerFn({ method: "GET" }).handler(async () 
 export const unlockSiteGate = createServerFn({ method: "POST" })
   .inputValidator((data: { password: string }) => ({ password: String(data?.password ?? "").slice(0, 200) }))
   .handler(async ({ data }) => {
-    const expected = process.env["SITE_PASSWORD"];
-    if (!expected) throw new Error("SITE_PASSWORD is not set");
+    const expected = process.env["GATE_PIN"];
+    if (!expected) throw new Error("GATE_PIN is not set");
     if (!matches(data.password, expected)) return { ok: false as const };
     const session = await useSession<GateSession>(config());
     await session.update({ unlocked: true });
