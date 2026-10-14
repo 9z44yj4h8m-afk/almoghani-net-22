@@ -144,7 +144,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const text = `هلا والله، أنا ${profile?.name ?? "بنت"}، هذي تجربة صوتي`;
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing: false, melody: "najdi", rhythm: "slow" } });
-      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      await playLooped(`data:audio/wav;base64,${audio}`);
       setNote(`هذا صوت ${profile?.name} ✓`);
     } catch {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
