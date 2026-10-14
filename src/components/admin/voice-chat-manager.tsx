@@ -139,6 +139,13 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
   }
   useEffect(() => () => { loopRef.current?.pause(); }, []);
+  // Native player for a saved/recorded clip, so the stop button can silence it too.
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  function stopAll() {
+    stopLoop();
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
+    setPlaying(false);
+  }
 
   // Quick play straight from a voice card: speaks a short sample with that voice only.
   async function quickTest(voiceId: string) {
