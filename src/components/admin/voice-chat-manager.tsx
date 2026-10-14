@@ -320,8 +320,11 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   async function sendToTelegram() {
     if (!audioFile) return;
     try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile] });
+      let file = audioFile;
+      // Telegram shows Ogg/Opus as a voice message with a waveform instead of a named file.
+      if (canMakeVoiceNote()) { try { file = await toOggOpus(audioFile, audioFile.name.replace(/\.[^.]+$/, "")); } catch { file = audioFile; } }
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
         setNote("اختر Telegram ثم الشخص؛ يوصل المقطع كرسالة صوتية تُشغّل داخل الشات.");
         return;
       }
