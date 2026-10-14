@@ -161,7 +161,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }, [sayBot, sayVoice, sing, melody, rhythm]);
   function micError(e: unknown) {
     const n = (e as { name?: string })?.name;
-    if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/admin-voices مباشرة في سفاري أو كروم";
+    if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/22 مباشرة في سفاري أو كروم";
     if (!navigator.mediaDevices?.getUserMedia) return "المتصفح هذا ما يدعم المايك؛ افتح الصفحة في سفاري أو كروم";
     if (n === "NotAllowedError") return "المايك مقفل: من إعدادات الجوال ← سفاري/كروم ← الميكروفون ← سماح، ثم حدّث الصفحة";
     if (n === "NotFoundError") return "ما لقينا مايك في الجهاز";

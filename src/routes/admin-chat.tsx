@@ -38,7 +38,7 @@ function AdminChatPage() {
       </header>
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة الشات</h1>
-        <div className="mt-4"><Button asChild variant="outline"><Link to="/admin-voices">لوحة الأصوات</Link></Button></div>
+        <div className="mt-4"><Button asChild variant="outline"><Link to="/22">لوحة الأصوات</Link></Button></div>
         <nav aria-label="أقسام لوحة الشات" className="my-6 flex flex-wrap gap-2">
           {CHAT_ADMIN_SECTIONS.map(({ id, label }) => <Button key={id} asChild size="sm" variant="outline"><a href={`#chat-${id}`}>{label}</a></Button>)}
         </nav>

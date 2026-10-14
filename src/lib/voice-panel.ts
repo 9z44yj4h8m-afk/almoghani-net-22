@@ -1,4 +1,4 @@
-// Owner-editable look, texts and voice list of the /admin-voices panel, stored in site_settings("voice_panel").
+// Owner-editable look, texts and voice list of the /22 panel, stored in site_settings("voice_panel").
 import { FEMALE_VOICE_PROFILES, VOICE_LIST } from "@/lib/voice-config";
 
 export const PANEL_TEXT_FIELDS = [

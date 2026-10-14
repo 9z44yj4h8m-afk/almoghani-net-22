@@ -66,7 +66,7 @@ function Editor() {
   return <main dir="rtl" className="mx-auto max-w-3xl space-y-4 p-4 pb-28">
     <header className="flex items-center justify-between gap-2">
       <h1 className="font-display text-2xl font-black text-primary">لوحة خصائص الأصوات</h1>
-      <Button asChild variant="outline"><a href="/admin-voices">فتح لوحة الأصوات</a></Button>
+      <Button asChild variant="outline"><a href="/22">فتح لوحة الأصوات</a></Button>
     </header>
 
     <section className={card}>
