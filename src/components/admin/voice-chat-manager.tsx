@@ -58,7 +58,7 @@ class VoicePitchJungle {
     const shiftDown = jungleDelayBuffer(ctx, false);
     const shiftUp = jungleDelayBuffer(ctx, true);
     const mods = [ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource()];
-    for (const mod of mods) { mod.buffer = shiftDown; }
+    for (const mod of mods) { mod.buffer = shiftDown; mod.loop = true; }
     mods[2]!.buffer = shiftUp; mods[3]!.buffer = shiftUp;
     const downGains = [ctx.createGain(), ctx.createGain()];
     const upGains = [ctx.createGain(), ctx.createGain()];
@@ -75,6 +75,7 @@ class VoicePitchJungle {
     const fadeBuffer = jungleFadeBuffer(ctx);
     const fades = [ctx.createBufferSource(), ctx.createBufferSource()];
     fades[0]!.buffer = fadeBuffer; fades[1]!.buffer = fadeBuffer;
+    fades[0]!.loop = true; fades[1]!.loop = true;
     const mix1 = ctx.createGain(); const mix2 = ctx.createGain();
     mix1.gain.value = 0; mix2.gain.value = 0;
     fades[0]!.connect(mix1.gain); fades[1]!.connect(mix2.gain);
