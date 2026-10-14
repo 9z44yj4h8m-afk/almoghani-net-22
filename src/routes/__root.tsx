@@ -84,14 +84,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 const ADMIN_MANIFESTS: Record<string, string> = {
-  "/admin-voices": "/admin-voices.webmanifest",
+  "/22": "/22.webmanifest",
   "/admin": "/admin.webmanifest",
   "/admin-chat": "/admin-chat.webmanifest",
 };
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: async ({ location }) => {
-    if (location.pathname === "/unlock" || location.pathname.startsWith("/api/")) return;
+    const p = location.pathname;
+    if (!(p === "/22" || p === "/vip" || p === "/app")) return;
     if (typeof window !== "undefined" && gateUnlocked) return;
     const { unlocked } = await getGateStatus();
     if (!unlocked) throw redirect({ to: "/unlock", search: { to: location.href } });
@@ -181,7 +182,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const embeddedChat = useRouterState({ select: (state) => state.location.pathname === "/chat" || state.location.pathname === "/live-chat" || state.location.pathname === "/voice-chat" || state.location.pathname === "/admin-voices" || state.location.pathname === "/unlock" });
+  const embeddedChat = useRouterState({ select: (state) => state.location.pathname === "/chat" || state.location.pathname === "/live-chat" || state.location.pathname === "/voice-chat" || state.location.pathname === "/22" || state.location.pathname === "/unlock" });
 
   return (
     <QueryClientProvider client={queryClient}>

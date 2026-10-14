@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { SayNowForm } from "@/components/admin/voice-chat-manager";
 
-export const Route = createFileRoute("/admin-voices")({
+export const Route = createFileRoute("/22")({
   ssr: false,
   head: () => ({ meta: [
     { title: "لوحة الأصوات — المغني لايف" },
