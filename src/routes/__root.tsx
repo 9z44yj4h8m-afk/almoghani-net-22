@@ -91,7 +91,8 @@ const ADMIN_MANIFESTS: Record<string, string> = {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: async ({ location }) => {
-    if (location.pathname === "/unlock" || location.pathname.startsWith("/api/")) return;
+    const p = location.pathname;
+    if (!(p === "/22" || p === "/vip" || p === "/app")) return;
     if (typeof window !== "undefined" && gateUnlocked) return;
     const { unlocked } = await getGateStatus();
     if (!unlocked) throw redirect({ to: "/unlock", search: { to: location.href } });

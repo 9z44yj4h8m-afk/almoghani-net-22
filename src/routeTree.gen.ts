@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R100RouteImport } from './routes/100'
+import { Route as R22RouteImport } from './routes/22'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminChatRouteImport } from './routes/admin-chat'
-import { Route as AdminVoicesRouteImport } from './routes/admin-voices'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BedouinDramaRouteImport } from './routes/bedouin-drama'
@@ -51,6 +51,11 @@ const R100Route = R100RouteImport.update({
   path: '/100',
   getParentRoute: () => rootRouteImport,
 } as any)
+const R22Route = R22RouteImport.update({
+  id: '/22',
+  path: '/22',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -59,11 +64,6 @@ const AdminRoute = AdminRouteImport.update({
 const AdminChatRoute = AdminChatRouteImport.update({
   id: '/admin-chat',
   path: '/admin-chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminVoicesRoute = AdminVoicesRouteImport.update({
-  id: '/admin-voices',
-  path: '/admin-voices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -201,9 +201,9 @@ const LovableEmailTransactionalPreviewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/100': typeof R100Route
+  '/22': typeof R22Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
-  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -234,9 +234,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/100': typeof R100Route
+  '/22': typeof R22Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
-  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -268,9 +268,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/100': typeof R100Route
+  '/22': typeof R22Route
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
-  '/admin-voices': typeof AdminVoicesRoute
   '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
@@ -303,9 +303,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/100'
+    | '/22'
     | '/admin'
     | '/admin-chat'
-    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -336,9 +336,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/100'
+    | '/22'
     | '/admin'
     | '/admin-chat'
-    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -369,9 +369,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/100'
+    | '/22'
     | '/admin'
     | '/admin-chat'
-    | '/admin-voices'
     | '/app'
     | '/auth'
     | '/bedouin-drama'
@@ -403,9 +403,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R100Route: typeof R100Route
+  R22Route: typeof R22Route
   AdminRoute: typeof AdminRoute
   AdminChatRoute: typeof AdminChatRoute
-  AdminVoicesRoute: typeof AdminVoicesRoute
   AppRoute: typeof AppRoute
   AuthRoute: typeof AuthRoute
   BedouinDramaRoute: typeof BedouinDramaRoute
@@ -450,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof R100RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/22': {
+      id: '/22'
+      path: '/22'
+      fullPath: '/22'
+      preLoaderRoute: typeof R22RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -462,13 +469,6 @@ declare module '@tanstack/react-router' {
       path: '/admin-chat'
       fullPath: '/admin-chat'
       preLoaderRoute: typeof AdminChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin-voices': {
-      id: '/admin-voices'
-      path: '/admin-voices'
-      fullPath: '/admin-voices'
-      preLoaderRoute: typeof AdminVoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -659,9 +659,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R100Route: R100Route,
+  R22Route: R22Route,
   AdminRoute: AdminRoute,
   AdminChatRoute: AdminChatRoute,
-  AdminVoicesRoute: AdminVoicesRoute,
   AppRoute: AppRoute,
   AuthRoute: AuthRoute,
   BedouinDramaRoute: BedouinDramaRoute,
