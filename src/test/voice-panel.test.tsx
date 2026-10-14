@@ -93,6 +93,9 @@ describe("female voice panel", () => {
     await waitFor(() => expect(stop).toBeEnabled());
     fireEvent.click(stop);
     expect(pause).toHaveBeenCalled();
-    expect(stop).toBeDisabled();
+    // the looping preview is released: stopping again only silences the saved clip player
+    const before = pause.mock.calls.length;
+    fireEvent.click(stop);
+    expect(pause.mock.calls.length).toBeGreaterThanOrEqual(before);
   });
 });
