@@ -223,7 +223,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       changerStreamRef.current = stream; changerDestRef.current = dest;
       setChangerOn(true);
       setNote("المغيّر شغّال الآن 🎙️ استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر");
-    } catch (e) { setNote(micError(e)); }
+    } catch (e) { void ctx.close().catch(() => {}); setNote(micError(e)); }
   }
 
   function stopChanger() {
