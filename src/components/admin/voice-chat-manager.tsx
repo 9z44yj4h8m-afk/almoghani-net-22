@@ -416,7 +416,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
       setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
-      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      await playLooped(`data:audio/wav;base64,${audio}`);
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
