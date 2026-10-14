@@ -339,6 +339,21 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
+  async function sendToTarab() {
+    if (!audioFile) return;
+    setNote("اختر طرب من قائمة المشاركة إن ظهر؛ وإلا احفظ الصوت في الملفات ثم استورده من طرب عبر وسائط الجهاز.");
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile] });
+        return;
+      }
+      setNote("المشاركة المباشرة غير متاحة؛ احفظ الصوت في الملفات ثم افتح طرب واختر وسائط الجهاز لاستيراده.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّرت المشاركة؛ احفظ الصوت في الملفات ثم استورده من طرب عبر وسائط الجهاز.");
+    }
+  }
+
   async function sendToSignal() {
     if (!audioFile) return;
     try {
@@ -465,6 +480,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTarab} className="voice-studio-download"><Music2 />إرسال لطرب</Button>
       </div>
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
