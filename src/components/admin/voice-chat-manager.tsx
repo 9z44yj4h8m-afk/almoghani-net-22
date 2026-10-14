@@ -377,7 +377,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined } });
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
-      setAudioFile(new File([bytes], `almoghani-voice-${Date.now()}.wav`, { type: "audio/wav" }));
+      const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
+      setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
       await new Audio(`data:audio/wav;base64,${audio}`).play();
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
