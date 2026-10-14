@@ -121,17 +121,22 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const PANEL_STORE = "almoghani-voice-panel";
   // Preview audio loops: replays itself every time it ends, and a new preview stops the previous loop.
   const loopRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
   function playLooped(src: string) {
     loopRef.current?.pause();
     loopRef.current = null;
     const player = new Audio(src);
     player.loop = true;
     loopRef.current = player;
+    setPlaying(true);
+    player.onpause = () => { if (loopRef.current === player) setPlaying(false); };
     return player.play();
   }
   function stopLoop() {
     loopRef.current?.pause();
     loopRef.current = null;
+    setPlaying(false);
+    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
   }
   useEffect(() => () => { loopRef.current?.pause(); }, []);
 
