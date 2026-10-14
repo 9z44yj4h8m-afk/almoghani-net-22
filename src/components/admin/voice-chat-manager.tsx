@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, ArrowRight } from "lucide-react";
+import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -121,19 +121,31 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const PANEL_STORE = "almoghani-voice-panel";
   // Preview audio loops: replays itself every time it ends, and a new preview stops the previous loop.
   const loopRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
   function playLooped(src: string) {
     loopRef.current?.pause();
     loopRef.current = null;
     const player = new Audio(src);
     player.loop = true;
     loopRef.current = player;
+    setPlaying(true);
+    player.onpause = () => { if (loopRef.current === player) setPlaying(false); };
     return player.play();
   }
   function stopLoop() {
     loopRef.current?.pause();
     loopRef.current = null;
+    setPlaying(false);
+    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
   }
   useEffect(() => () => { loopRef.current?.pause(); }, []);
+  // Native player for a saved/recorded clip, so the stop button can silence it too.
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  function stopAll() {
+    stopLoop();
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
+    setPlaying(false);
+  }
 
   // Quick play straight from a voice card: speaks a short sample with that voice only.
   async function quickTest(voiceId: string) {
@@ -486,7 +498,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
       </div>}
-      <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}</div>
+      <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>

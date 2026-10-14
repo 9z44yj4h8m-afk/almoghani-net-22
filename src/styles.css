@@ -1096,6 +1096,7 @@ body { background: var(--surface-deep); }
   --voice-test-fill: linear-gradient(160deg,var(--voice-cyan),var(--voice-blue) 70%);
   --voice-download-fill: linear-gradient(160deg,var(--voice-purple),color-mix(in oklab,var(--voice-purple) 55%,var(--voice-blue)));
   --voice-glow: 0 0 12px color-mix(in oklab,var(--voice-gold) 30%,transparent);
+  --voice-stop: oklch(0.63 0.23 25);
   color: var(--voice-ink); background: var(--voice-night); font-family: "Cairo",sans-serif;
 }
 body:has(.voice-studio-page) { overflow: hidden; }
@@ -1131,6 +1132,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-sing > button { flex-shrink: 0; }
 .voice-studio-preview { min-height: 0; padding: 6px 8px; gap: 8px; background: var(--voice-neon-fill); border: 2px solid var(--voice-purple); border-radius: 16px; box-shadow: var(--voice-neon-glow); }
 .voice-studio-play { width: 40px; height: 40px; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
+.voice-studio-stop { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-stop); background: var(--voice-night); border: 2px solid var(--voice-stop); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-stop) 45%,transparent); }
+.voice-studio-stop svg { width: 22px; height: 22px; }
+.voice-studio-stop:disabled { opacity: .45; box-shadow: none; }
 .voice-studio-status { font-size: 11px; }
 .voice-studio-wave { height: 100%; gap: 2px; }
 .voice-studio-wave i { width: 3px; max-height: 85%; background: var(--voice-purple); box-shadow: var(--voice-neon-glow); }
