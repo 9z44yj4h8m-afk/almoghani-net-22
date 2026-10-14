@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, ArrowRight } from "lucide-react";
+import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
