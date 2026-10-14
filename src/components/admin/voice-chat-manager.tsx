@@ -58,7 +58,7 @@ class VoicePitchJungle {
     const shiftDown = jungleDelayBuffer(ctx, false);
     const shiftUp = jungleDelayBuffer(ctx, true);
     const mods = [ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource(), ctx.createBufferSource()];
-    for (const mod of mods) { mod.buffer = shiftDown; }
+    for (const mod of mods) { mod.buffer = shiftDown; mod.loop = true; }
     mods[2]!.buffer = shiftUp; mods[3]!.buffer = shiftUp;
     const downGains = [ctx.createGain(), ctx.createGain()];
     const upGains = [ctx.createGain(), ctx.createGain()];
@@ -75,6 +75,7 @@ class VoicePitchJungle {
     const fadeBuffer = jungleFadeBuffer(ctx);
     const fades = [ctx.createBufferSource(), ctx.createBufferSource()];
     fades[0]!.buffer = fadeBuffer; fades[1]!.buffer = fadeBuffer;
+    fades[0]!.loop = true; fades[1]!.loop = true;
     const mix1 = ctx.createGain(); const mix2 = ctx.createGain();
     mix1.gain.value = 0; mix2.gain.value = 0;
     fades[0]!.connect(mix1.gain); fades[1]!.connect(mix2.gain);
@@ -206,9 +207,11 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [changerRec, setChangerRec] = useState(false);
 
   async function startChanger() {
+    // iPhone only allows sound from an AudioContext created during the tap, before any await.
+    const ctx = new AudioContext();
+    void ctx.resume();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-      const ctx = new AudioContext();
       await ctx.resume();
       const jungle = new VoicePitchJungle(ctx);
       jungle.setPitchRatio(changerRatio);
@@ -220,7 +223,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       changerStreamRef.current = stream; changerDestRef.current = dest;
       setChangerOn(true);
       setNote("المغيّر شغّال الآن 🎙️ استخدم سماعات 🎧 حتى لا يرجع صوتك من المكبر");
-    } catch (e) { setNote(micError(e)); }
+    } catch (e) { void ctx.close().catch(() => {}); setNote(micError(e)); }
   }
 
   function stopChanger() {
