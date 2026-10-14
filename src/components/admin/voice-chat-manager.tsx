@@ -119,6 +119,21 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [panel, setPanel] = useState<VoicePanelConfig>(defaultVoicePanel);
   const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
   const PANEL_STORE = "almoghani-voice-panel";
+  // Preview audio loops: replays itself every time it ends, and a new preview stops the previous loop.
+  const loopRef = useRef<HTMLAudioElement | null>(null);
+  function playLooped(src: string) {
+    loopRef.current?.pause();
+    loopRef.current = null;
+    const player = new Audio(src);
+    player.loop = true;
+    loopRef.current = player;
+    return player.play();
+  }
+  function stopLoop() {
+    loopRef.current?.pause();
+    loopRef.current = null;
+  }
+  useEffect(() => () => { loopRef.current?.pause(); }, []);
 
   // Quick play straight from a voice card: speaks a short sample with that voice only.
   async function quickTest(voiceId: string) {
@@ -129,7 +144,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const text = `هلا والله، أنا ${profile?.name ?? "بنت"}، هذي تجربة صوتي`;
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing: false, melody: "najdi", rhythm: "slow" } });
-      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      await playLooped(`data:audio/wav;base64,${audio}`);
       setNote(`هذا صوت ${profile?.name} ✓`);
     } catch {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -171,6 +186,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }
   async function toggleRecord() {
     if (recorder) { recorder.stop(); return; }
+    stopLoop(); // keep the looping preview out of the recording
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const rec = new MediaRecorder(stream);
@@ -401,7 +417,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
       setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
-      await new Audio(`data:audio/wav;base64,${audio}`).play();
+      await playLooped(`data:audio/wav;base64,${audio}`);
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
