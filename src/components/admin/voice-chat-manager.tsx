@@ -119,6 +119,21 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [panel, setPanel] = useState<VoicePanelConfig>(defaultVoicePanel);
   const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
   const PANEL_STORE = "almoghani-voice-panel";
+  // Preview audio loops: replays itself every time it ends, and a new preview stops the previous loop.
+  const loopRef = useRef<HTMLAudioElement | null>(null);
+  function playLooped(src: string) {
+    loopRef.current?.pause();
+    loopRef.current = null;
+    const player = new Audio(src);
+    player.loop = true;
+    loopRef.current = player;
+    return player.play();
+  }
+  function stopLoop() {
+    loopRef.current?.pause();
+    loopRef.current = null;
+  }
+  useEffect(() => () => { loopRef.current?.pause(); }, []);
 
   // Quick play straight from a voice card: speaks a short sample with that voice only.
   async function quickTest(voiceId: string) {
