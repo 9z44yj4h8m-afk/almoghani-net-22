@@ -501,7 +501,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
-        <Button type="button" variant="outline" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop-btn"><SquareStop />إيقاف الصوت</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
       <div className="voice-studio-actions voice-studio-send" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
