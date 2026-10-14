@@ -40,11 +40,29 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-haneena", female: true, name: "حنينة", label: "ناعمة حالمة", providerId: "Autonoe", delivery: "صوت بنت ناعم حالم وهادئ، طبقة متوسطة وإيقاع بطيء حالم كأنها تحكي قبل النوم، لهجة أهل الرياض" },
   { id: "female-sukkar", female: true, name: "سكر", label: "ناعمة حلوة", providerId: "Pulcherrima", delivery: "صوت بنت ناعم حلو ومسمر، نبرة دافئة حنونة مع ابتسامة واضحة وإيقاع متوسط مريح، لهجة أهل القصيم" },
   { id: "female-maha", female: true, name: "مها", label: "ناعمة واثقة", providerId: "Erinome", delivery: "صوت امرأة بالغة ناعم وواثق، طبقة متوسطة ونطق واضح بإيقاع متزن حنون، لهجة أهل الرياض، دون تصنع" },
+  // Synthetic adult performances: regions and ages describe delivery, not real speaker identities.
+  { id: "female-saudi-lateefa", female: true, name: "لطيفة", label: "سعودية · الرياض · شابة بالغة", providerId: "Despina", delivery: "أداء امرأة بالغة شابة ناعم وصاف وحنون، محادثة سعودية بلهجة أهل الرياض، طبقة متوسطة خفيفة وابتسامة طبيعية، نطق نقي وتنفس هادئ دون همس أو تصنع" },
+  { id: "female-saudi-muneera", female: true, name: "منيرة", label: "سعودية · القصيم · ناضجة", providerId: "Sulafat", delivery: "أداء امرأة بالغة ناضجة دافئ وحنون، بلهجة أهل القصيم الطبيعية، طبقة متوسطة منخفضة ورنين ممتلئ، سرعة متأنية ووقفات قصيرة دون مبالغة في مخارج الحروف" },
+  { id: "female-saudi-bayan", female: true, name: "بيان", label: "سعودية · جدة · شابة بالغة", providerId: "Aoede", delivery: "أداء امرأة بالغة شابة صاف وحنون بلهجة جدة الحجازية، طبقة متوسطة مشرقة وإيقاع محادثي سلس وابتسامة خفيفة، دون تحويل اللكنة إلى نجدية أو مبالغة مسرحية" },
+  { id: "female-saudi-ibtisam", female: true, name: "ابتسام", label: "سعودية · مكة · ناضجة", providerId: "Callirrhoe", delivery: "أداء امرأة بالغة ناضجة هادئ وحنون بلهجة مكة الحجازية، صوت متوسط دافئ وواضح ووقفات مريحة ونهايات جمل طبيعية، دون همس أو إلقاء إعلاني" },
+  { id: "female-saudi-lulwa", female: true, name: "لولوة", label: "سعودية · الشرقية · شابة بالغة", providerId: "Laomedeia", delivery: "أداء امرأة بالغة شابة رقيق وحنون بلهجة سعودية من المنطقة الشرقية، طبقة متوسطة عالية صافية وحديث عفوي متزن، وصل طبيعي للكلمات دون حدة أو تمطيط" },
+  { id: "female-saudi-nawwarah", female: true, name: "نوّارة", label: "سعودية · أبها · ناضجة", providerId: "Kore", delivery: "أداء امرأة بالغة ناضجة صاف وواثق وحنون بلكنة سعودية جنوبية خفيفة من أبها، طبقة متوسطة مستقرة وسرعة معتدلة، حافظي على وضوح النص دون افتعال مفردات محلية أو كاريكاتير للهجة" },
+  { id: "female-saudi-wadha", female: true, name: "وضحى", label: "سعودية · نجد · كبيرة بالغة", providerId: "Gacrux", delivery: "أداء امرأة بالغة كبيرة في السن بلهجة نجدية، طبقة منخفضة مخملية دافئة وحنونة وسرد هادئ مع وقفات طبيعية، دون ارتعاش مفتعل أو خشونة أو مبالغة في تمثيل العمر" },
+  { id: "female-saudi-athir", female: true, name: "أثير", label: "سعودية · فصحى نقية · بالغة", providerId: "Erinome", delivery: "أداء امرأة بالغة بنطق عربي فصيح نقي وطابع سعودي لطيف، صوت صاف وناعم وحنون بطبقة متوسطة وإيقاع متزن، وضوح الحروف دون نبرة نشرات أو تبديل النص إلى العامية" },
+  { id: "female-emirati-meera", female: true, name: "ميرة", label: "إماراتية · شابة بالغة", providerId: "Autonoe", delivery: "أداء امرأة بالغة شابة ناعم وحنون بلهجة إماراتية طبيعية، طبقة متوسطة مشرقة وإيقاع لطيف متزن، دون تحويل اللهجة إلى سعودية أو المبالغة في اللحن" },
+  { id: "female-kuwaiti-dalal", female: true, name: "دلال الكويت", label: "كويتية · ناضجة", providerId: "Pulcherrima", delivery: "أداء امرأة بالغة ناضجة دافئ وواضح وحنون بلهجة كويتية طبيعية، طبقة متوسطة منخفضة ونبرة محادثية واثقة، دون صراخ أو تقليد شخصية معروفة" },
+  { id: "female-egyptian-salma", female: true, name: "سلمى", label: "مصرية · شابة بالغة", providerId: "Leda", delivery: "أداء امرأة بالغة شابة صاف وحنون بلهجة مصرية قاهرية طبيعية، طبقة متوسطة خفيفة وحديث سلس بابتسامة، دون إدخال نطق خليجي أو افتعال ضحكات" },
+  { id: "female-lebanese-ruba", female: true, name: "ربى", label: "لبنانية · ناضجة", providerId: "Vindemiatrix", delivery: "أداء امرأة بالغة ناضجة رقيق وحنون بلهجة لبنانية طبيعية، طبقة متوسطة ونغم محادثي خفيف ووقفات قصيرة، دون تمطيط مسرحي أو نطق خليجي" },
+  { id: "female-jordanian-deema", female: true, name: "ديما", label: "أردنية · شابة بالغة", providerId: "Achernar", delivery: "أداء امرأة بالغة شابة رقيق وصاف وحنون بلهجة أردنية مدينية طبيعية، طبقة متوسطة عالية غير حادة ونطق واضح بإيقاع مريح، دون تصنع أو تغيير النص" },
+  { id: "female-moroccan-kenza", female: true, name: "كنزة", label: "مغربية · ناضجة", providerId: "Zephyr", delivery: "أداء امرأة بالغة ناضجة مشرق وحنون، عربية واضحة بلكنة مغربية خفيفة مع الحفاظ على كلمات النص كما هي، طبقة متوسطة وإيقاع هادئ، دون ترجمة النص إلى الدارجة أو تقليد شخصية" },
 ];
 
 // Panel categories: ordered groups shown as card sections in the voice studio.
-export const FEMALE_VOICE_CATEGORIES = ["أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة"] as const;
+export const FEMALE_VOICE_CATEGORIES = ["أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة"] as const;
 const VOICE_CATEGORY: Record<string, string> = {
+  "female-saudi-lateefa": "أصوات سعودية", "female-saudi-muneera": "أصوات سعودية", "female-saudi-bayan": "أصوات سعودية", "female-saudi-ibtisam": "أصوات سعودية",
+  "female-saudi-lulwa": "أصوات سعودية", "female-saudi-nawwarah": "أصوات سعودية", "female-saudi-wadha": "أصوات سعودية", "female-saudi-athir": "أصوات سعودية",
+  "female-emirati-meera": "لهجات عربية", "female-kuwaiti-dalal": "لهجات عربية", "female-egyptian-salma": "لهجات عربية", "female-lebanese-ruba": "لهجات عربية", "female-jordanian-deema": "لهجات عربية", "female-moroccan-kenza": "لهجات عربية",
   "female-hessa": "أصوات أساسية", "female-lama": "أصوات أساسية", "female-aseel": "أصوات أساسية",
   "female-reemah": "أصوات أساسية", "female-joud": "أصوات أساسية", "female-rawan": "أصوات أساسية",
   "female-hareer": "أداء مميز", "female-layan": "أداء مميز", "female-raneem": "أداء مميز", "female-jumana": "أداء مميز",
