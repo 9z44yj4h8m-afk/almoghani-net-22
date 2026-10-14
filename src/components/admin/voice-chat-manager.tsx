@@ -207,9 +207,11 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [changerRec, setChangerRec] = useState(false);
 
   async function startChanger() {
+    // iPhone only allows sound from an AudioContext created during the tap, before any await.
+    const ctx = new AudioContext();
+    void ctx.resume();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-      const ctx = new AudioContext();
       await ctx.resume();
       const jungle = new VoicePitchJungle(ctx);
       jungle.setPitchRatio(changerRatio);
