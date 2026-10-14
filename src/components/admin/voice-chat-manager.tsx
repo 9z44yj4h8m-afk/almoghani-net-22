@@ -186,6 +186,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }
   async function toggleRecord() {
     if (recorder) { recorder.stop(); return; }
+    stopLoop(); // keep the looping preview out of the recording
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const rec = new MediaRecorder(stream);
