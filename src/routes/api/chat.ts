@@ -42,7 +42,19 @@ export const Route = createFileRoute("/api/chat")({
           if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 100) {
             return new Response("طلب غير صالح.", { status: 400 });
           }
-          messages = body.messages as UIMessage[];
+          // Only accept plain-text user turns; drop caller-supplied assistant/system roles.
+          messages = (body.messages as UIMessage[])
+            .filter((m) => m && m.role === "user" && Array.isArray(m.parts))
+            .map((m, i) => ({
+              id: String(m.id ?? i).slice(0, 64),
+              role: "user" as const,
+              parts: m.parts
+                .filter((p): p is { type: "text"; text: string } => p?.type === "text" && typeof (p as { text?: unknown }).text === "string")
+                .map((p) => ({ type: "text" as const, text: p.text.slice(0, 4000) })),
+            }))
+            .filter((m) => m.parts.length > 0)
+            .slice(-30);
+          if (messages.length === 0) return new Response("طلب غير صالح.", { status: 400 });
           const p = (body as { persona?: unknown }).persona;
           if (typeof p === "string" && p in PERSONA_STYLE) persona = p;
         } catch {
