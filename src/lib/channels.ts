@@ -617,7 +617,7 @@ export const channels: Channel[] = [
   },
   {
     id: "jordan-drama",
-    name: "دراما الأردن",
+    name: "الأردن دراما — التلفزيون الأردني",
     category: "مسلسلات وأفلام",
     streamUrl: "https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8",
     thumbnail:
@@ -1068,14 +1068,6 @@ export const channels: Channel[] = [
     streamUrl: "/api/public/hls?u=https%3A%2F%2Frotana.hibridcdn.net%2Frotananet%2Fcomedy_net-7Y83PP5adWixDF93%2Fplaylist.m3u8",
     thumbnail: "https://i.imgur.com/IlT8U6S.png",
     description: "أفلام ومسرحيات كوميدية كاملة",
-  },
-  {
-    id: "ar-jordan-drama",
-    name: "الأردن دراما",
-    category: "مسلسلات وأفلام",
-    streamUrl: "https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8",
-    thumbnail: "https://i.imgur.com/gvIAEsJ.png",
-    description: "دراما أردنية وعربية",
   },
   {
     id: "mv-mix-hollywood",
