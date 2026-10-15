@@ -949,8 +949,8 @@ body { background: var(--surface-deep); }
 .voice-studio-preview { display: flex; align-items: center; gap: 18px; min-height: 98px; padding: 16px; border: 1px solid var(--voice-edge); border-radius: 14px; }
 .voice-studio-play { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: var(--voice-night); border-color: var(--voice-cyan); color: var(--voice-cyan); box-shadow: 0 0 16px color-mix(in oklab, var(--voice-cyan) 25%, transparent); }
 .voice-studio-play svg { width: 27px; height: 27px; }
-.voice-studio-status { color: var(--voice-muted); font-size: 15px; white-space: nowrap; }
-.voice-studio-wave { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 65px; gap: 3px; overflow: hidden; direction: ltr; }
+.voice-studio-status { color: var(--voice-muted); font-size: 15px; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.voice-studio-wave { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 65px; gap: 3px; overflow: hidden; direction: ltr; min-width: 0; }
 .voice-studio-wave i { display: block; width: 4px; flex-shrink: 0; height: 8px; border-radius: 3px; background: var(--voice-purple); box-shadow: 0 0 9px color-mix(in oklab, var(--voice-purple) 50%, transparent); }
 .voice-studio-wave i:nth-child(3n) { height: 24px; }
 .voice-studio-wave i:nth-child(5n) { height: 48px; }
@@ -987,6 +987,7 @@ body { background: var(--surface-deep); }
   .voice-studio-sing { padding: 12px 10px; gap: 8px; }
   .voice-studio-preview { padding: 12px; gap: 10px; }
   .voice-studio-play { width: 44px; height: 44px; }
+  .voice-studio-replay, .voice-studio-stop { width: 36px; height: 36px; }
   .voice-studio-status { font-size: 12px; }
   .voice-studio-wave { gap: 2px; }
   .voice-studio-wave i { width: 3px; }
@@ -1135,6 +1136,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-stop { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-stop); background: var(--voice-night); border: 2px solid var(--voice-stop); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-stop) 45%,transparent); }
 .voice-studio-stop svg { width: 22px; height: 22px; }
 .voice-studio-stop:disabled { opacity: .45; box-shadow: none; }
+.voice-studio-replay { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 45%,transparent); }
+.voice-studio-replay svg { width: 22px; height: 22px; }
+.voice-studio-replay:disabled { opacity: .45; box-shadow: none; }
 .voice-studio-status { font-size: 11px; }
 .voice-studio-wave { height: 100%; gap: 2px; }
 .voice-studio-wave i { width: 3px; max-height: 85%; background: var(--voice-purple); box-shadow: var(--voice-neon-glow); }
@@ -1145,6 +1149,10 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-form > .voice-studio-actions > .voice-studio-test { background: var(--voice-test-fill); border: 2px solid var(--voice-cyan) !important; color: var(--voice-ink); box-shadow: 0 0 8px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
 .voice-studio-form > .voice-studio-actions > .voice-studio-download { background: var(--voice-download-fill); border: 2px solid var(--voice-purple); color: var(--voice-ink); box-shadow: var(--voice-neon-glow); }
 .voice-studio-form > .voice-studio-actions > .voice-studio-download:disabled { opacity: .75; }
+/* Keep every row inside the phone screen: grid/flex children must be allowed to shrink below their text width. */
+.voice-studio-panel, .voice-studio-form { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.voice-studio-form > *, .voice-neon-choice > *, .voice-neon-choice > * > *, .voice-studio-select, .voice-studio-preview { min-width: 0; }
+.voice-studio-preview { overflow: hidden; }
 .voice-studio-save { height: 100%; min-height: 0; font-size: 19px; gap: 8px; border-radius: 10px; }
 .voice-studio-save svg { width: 25px; height: 25px; }
 .voice-studio-contact { height: 100%; min-height: 0; width: 100%; gap: 8px; border-radius: 10px; border: 1px solid var(--voice-gold-light); background: var(--voice-gold-fill); color: var(--voice-night); font-size: 19px; font-weight: 800; box-shadow: var(--voice-glow); }

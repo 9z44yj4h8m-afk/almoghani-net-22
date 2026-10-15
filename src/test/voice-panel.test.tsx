@@ -79,7 +79,7 @@ describe("female voice panel", () => {
     expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();
     expect(screen.getByRole("combobox", { name: "الإيقاع والرقصة" })).toBeVisible();
   });
-  it("stops the looping preview with the stop button", async () => {
+  it("stops the preview with the stop button", async () => {
     vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
     preview.mockResolvedValue({ audio: btoa("test-audio") });
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
@@ -97,5 +97,24 @@ describe("female voice panel", () => {
     const before = pause.mock.calls.length;
     fireEvent.click(stop);
     expect(pause.mock.calls.length).toBeGreaterThanOrEqual(before);
+  });
+  it("plays the preview once and replays it with the replay button", async () => {
+    vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
+    preview.mockResolvedValue({ audio: btoa("test-audio") });
+    preview.mockClear();
+    const played: HTMLMediaElement[] = [];
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockImplementation(function (this: HTMLMediaElement) { played.push(this); return Promise.resolve(); });
+    render(<SayNowForm />);
+    const replay = screen.getByRole("button", { name: "إعادة الصوت" });
+    expect(replay).toBeDisabled();
+    fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا" } });
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(play).toHaveBeenCalledTimes(1));
+    // the clip is not self-repeating: it stops on its own and only the replay button starts it again
+    expect(played[0]?.loop).toBe(false);
+    await waitFor(() => expect(replay).toBeEnabled());
+    fireEvent.click(replay);
+    await waitFor(() => expect(play).toHaveBeenCalledTimes(2));
+    expect(preview).toHaveBeenCalledTimes(1);
   });
 });
