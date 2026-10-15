@@ -42,9 +42,9 @@ function scheduleBed(ctx: OfflineAudioContext, mode: BedMode, duration: number, 
       note(f, t, 0.9, "triangle", 0.18); note(f * 2, t, 0.4, "sawtooth", 0.025);
     }
   } else if (mode === "piano") {
-    for (let t = 0, i = 0; t < duration; t += 2, i++) PIANO_CHORDS[i % 4].forEach((f, k) => note(f, t + k * 0.12, 2.4, "sine", 0.12));
+    for (let t = 0, i = 0; t < duration; t += 2, i++) PIANO_CHORDS[i % 4]!.forEach((f, k) => note(f, t + k * 0.12, 2.4, "sine", 0.12));
   } else if (mode === "calm") {
-    for (let t = 0, i = 0; t < duration; t += 3, i++) PIANO_CHORDS[i % 4].forEach((f) => { note(f / 2, t, 3.6, "sine", 0.08); note(f, t, 3.6, "triangle", 0.03); });
+    for (let t = 0, i = 0; t < duration; t += 3, i++) PIANO_CHORDS[i % 4]!.forEach((f) => { note(f / 2, t, 3.6, "sine", 0.08); note(f, t, 3.6, "triangle", 0.03); });
   }
 }
 
@@ -57,7 +57,7 @@ function toWav(buf: AudioBuffer) {
   out.setUint32(28, rate * ch * 2, true); out.setUint16(32, ch * 2, true); out.setUint16(34, 16, true); w(36, "data"); out.setUint32(40, len * ch * 2, true);
   const data = Array.from({ length: ch }, (_, c) => buf.getChannelData(c));
   let p = 44;
-  for (let i = 0; i < len; i++) for (let c = 0; c < ch; c++) { const s = Math.max(-1, Math.min(1, data[c][i])); out.setInt16(p, s < 0 ? s * 0x8000 : s * 0x7fff, true); p += 2; }
+  for (let i = 0; i < len; i++) for (let c = 0; c < ch; c++) { const s = Math.max(-1, Math.min(1, data[c]![i]!)); out.setInt16(p, s < 0 ? s * 0x8000 : s * 0x7fff, true); p += 2; }
   return new Uint8Array(out.buffer);
 }
 
