@@ -14,6 +14,24 @@ export type Channel = {
 
 export const channels: Channel[] = [
   {
+    id: "thmanyah",
+    name: "ثمانية",
+    category: "عامة",
+    youtubeId: "OAAEbezyJnU",
+    youtubeChannelId: "UCQPalfEYxVLs8nEB4LutApQ",
+    thumbnail: "https://i.ytimg.com/vi/OAAEbezyJnU/hqdefault.jpg",
+    description: "قناة ثمانية الرسمية: فنجان والوثائقيات وأحدث الحلقات",
+  },
+  {
+    id: "thmanyah-radio",
+    name: "إذاعة ثمانية",
+    category: "عامة",
+    youtubeId: "wPivX6XRlrc",
+    youtubeChannelId: "UCwjLh640nGXSGa9iHRS31ag",
+    thumbnail: "https://i.ytimg.com/vi/wPivX6XRlrc/hqdefault.jpg",
+    description: "بودكاست ثمانية: سقراط ومرتدة وبرامج حوارية",
+  },
+  {
     id: "aljazeera",
     name: "قناة الجزيرة",
     category: "إخبارية",
