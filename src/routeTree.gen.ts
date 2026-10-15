@@ -22,6 +22,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as LiveChatRouteImport } from './routes/live-chat'
 import { Route as MoviesRouteImport } from './routes/movies'
+import { Route as MyAccountRouteImport } from './routes/my-account'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleAdminRouteImport } from './routes/schedule-admin'
@@ -104,6 +105,11 @@ const LiveChatRoute = LiveChatRouteImport.update({
 const MoviesRoute = MoviesRouteImport.update({
   id: '/movies',
   path: '/movies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyAccountRoute = MyAccountRouteImport.update({
+  id: '/my-account',
+  path: '/my-account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuranRoute = QuranRouteImport.update({
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/live': typeof LiveRoute
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
+  '/my-account': typeof MyAccountRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/live': typeof LiveRoute
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
+  '/my-account': typeof MyAccountRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -279,6 +287,7 @@ export interface FileRoutesById {
   '/live': typeof LiveRoute
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
+  '/my-account': typeof MyAccountRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/live-chat'
     | '/movies'
+    | '/my-account'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -347,6 +357,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/live-chat'
     | '/movies'
+    | '/my-account'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -380,6 +391,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/live-chat'
     | '/movies'
+    | '/my-account'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -414,6 +426,7 @@ export interface RootRouteChildren {
   LiveRoute: typeof LiveRoute
   LiveChatRoute: typeof LiveChatRoute
   MoviesRoute: typeof MoviesRoute
+  MyAccountRoute: typeof MyAccountRoute
   QuranRoute: typeof QuranRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleAdminRoute: typeof ScheduleAdminRoute
@@ -525,6 +538,13 @@ declare module '@tanstack/react-router' {
       path: '/movies'
       fullPath: '/movies'
       preLoaderRoute: typeof MoviesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-account': {
+      id: '/my-account'
+      path: '/my-account'
+      fullPath: '/my-account'
+      preLoaderRoute: typeof MyAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quran': {
@@ -670,6 +690,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveRoute: LiveRoute,
   LiveChatRoute: LiveChatRoute,
   MoviesRoute: MoviesRoute,
+  MyAccountRoute: MyAccountRoute,
   QuranRoute: QuranRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ScheduleAdminRoute: ScheduleAdminRoute,
