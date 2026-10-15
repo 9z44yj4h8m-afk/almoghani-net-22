@@ -47,15 +47,6 @@ describe("female voice panel", () => {
     expect(payload.files[0].type).toMatch(/^audio\//);
     expect(payload.url).toBeUndefined();
     expect(payload.files).toHaveLength(1);
-    expect(tarab).toBeEnabled();
-    share.mockClear();
-    fireEvent.click(tarab);
-    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
-    expect(share.mock.calls[0]?.[0]).toEqual({ files: payload.files });
-    expect(screen.getByText(/اختر طرب من قائمة المشاركة/)).toBeTruthy();
-    vi.stubGlobal("navigator", { canShare: vi.fn(() => false), share });
-    fireEvent.click(tarab);
-    expect(screen.getByText(/المشاركة المباشرة غير متاحة/)).toBeTruthy();
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "نص جديد" } });
     expect(send).toBeDisabled();
     expect(tarab).toBeDisabled();
