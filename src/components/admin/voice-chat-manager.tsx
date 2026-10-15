@@ -524,6 +524,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
         <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
       </div>}
+      <div className="voice-neon-fx grid grid-cols-2 gap-2">
+        <select className={field} aria-label="مؤثر الصدى" value={echo} onChange={(e) => { setEcho(e.target.value as EchoMode); setAudioFile(null); }}>{ECHO_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
+        <select className={field} aria-label="لحن الخلفية" value={bed} onChange={(e) => { setBed(e.target.value as BedMode); setAudioFile(null); }}>{BED_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
+      </div>
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={!clipSrc && !audioUrl} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
@@ -536,6 +540,14 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTarab} className="voice-studio-download"><Music2 />إرسال لطرب</Button>
       </div>
+      {history.length > 0 && <div className="voice-studio-history grid gap-2 rounded-xl border border-border p-3" aria-label="المقاطع الأخيرة">
+        <div className="flex items-center justify-between text-sm font-bold"><span>المقاطع الأخيرة (بدون رصيد)</span><Button type="button" size="sm" variant="ghost" onClick={() => setHistory(saveHistory([]))}><Trash2 />مسح</Button></div>
+        {history.map((c) => <div key={c.id} className="flex min-w-0 items-center gap-2 rounded-lg bg-background/40 p-2">
+          <Button type="button" size="icon" variant="outline" aria-label={`تشغيل ${c.name}`} onClick={() => useSaved(c)}><Play /></Button>
+          <div className="min-w-0 flex-1 text-xs"><b className="block">{c.name}</b><span className="block truncate opacity-75">{c.text}</span></div>
+          <Button type="button" size="icon" variant="ghost" aria-label={`حذف ${c.name}`} onClick={() => setHistory((h) => saveHistory(h.filter((x) => x.id !== c.id)))}><Trash2 /></Button>
+        </div>)}
+      </div>}
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
           <DialogTitle>إعدادات الصوت</DialogTitle>
