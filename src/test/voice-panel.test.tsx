@@ -59,7 +59,8 @@ describe("female voice panel", () => {
     const rows = Array.from(panel.querySelectorAll(".voice-studio-actions"));
     const last = rows.at(-1);
     expect(last).toBeTruthy();
-    for (const name of ["إرسال للواتساب", "إرسال الصوت", "إرسال لطرب"]) {
+    expect(screen.queryByRole("button", { name: "إرسال لطرب" })).toBeNull();
+    for (const name of ["إرسال للواتساب", "إرسال الصوت"]) {
       expect(Array.from(last?.querySelectorAll("button") ?? []).some((b) => b.textContent?.includes(name))).toBe(true);
     }
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
