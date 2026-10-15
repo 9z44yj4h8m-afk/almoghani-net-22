@@ -7,8 +7,6 @@ export const PANEL_TEXT_FIELDS = [
   { key: "voiceLabel", label: "عنوان اختيار الصوت", fallback: "اختيار صوت بنت" },
   { key: "singLabel", label: "عبارة الغناء", fallback: "خلّها تغني الكلام بدل ما تقوله" },
   { key: "testBtn", label: "زر التجربة", fallback: "تجريب الصوت" },
-  { key: "downloadBtn", label: "زر الحفظ في الجوال", fallback: "حفظ الصوت في جوالي" },
-  { key: "saveBtn", label: "زر الحفظ الذهبي", fallback: "حفظ اختيار البوت" },
 ] as const;
 export const PANEL_COLOR_FIELDS = [
   { key: "bg", label: "لون الخلفية", fallback: "#05050d" },
