@@ -9,6 +9,7 @@ const items = [
   { to: "/vip", label: "المكتبة الخاصة", icon: Tv },
   { to: "/movies", label: "الأفلام", icon: Film },
   { to: "/chat", label: "ALMOGHANI AI", icon: MessageCircle },
+  { to: "/studio", label: "استوديو الفيديو", icon: Film },
   { to: "/subscription", label: "الاشتراك", icon: Clapperboard },
   { to: "/contact", label: "للتواصل", icon: Mail },
   { to: "/admin", label: "الإعدادات", icon: Settings },
