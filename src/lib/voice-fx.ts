@@ -61,8 +61,8 @@ function toWav(buf: AudioBuffer) {
   return new Uint8Array(out.buffer);
 }
 
-export async function applyVoiceFx(wav: Uint8Array, echo: EchoMode, bed: BedMode): Promise<Uint8Array> {
-  if (echo === "none" && bed === "none") return wav;
+export async function applyVoiceFx(wav: Uint8Array<ArrayBuffer>, echo: EchoMode, bed: BedMode): Promise<Uint8Array<ArrayBuffer>> {
+  if (echo === "none" && bed === "none") return wav.slice();
   const probe = new AudioContext();
   const src = await probe.decodeAudioData(wav.slice().buffer as ArrayBuffer);
   void probe.close();

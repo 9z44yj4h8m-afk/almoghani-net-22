@@ -447,7 +447,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined } });
-      let bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
+      let bytes: Uint8Array<ArrayBuffer> = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       let b64 = audio;
       if (echo !== "none" || bed !== "none") {
         try { bytes = await applyVoiceFx(bytes, echo, bed); b64 = bytesToBase64(bytes); } catch { /* keep the clean voice */ }
