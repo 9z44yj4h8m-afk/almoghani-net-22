@@ -101,6 +101,7 @@ describe("female voice panel", () => {
   it("plays the preview once and replays it with the replay button", async () => {
     vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
     preview.mockResolvedValue({ audio: btoa("test-audio") });
+    preview.mockClear();
     const played: HTMLMediaElement[] = [];
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockImplementation(function (this: HTMLMediaElement) { played.push(this); return Promise.resolve(); });
     render(<SayNowForm />);
