@@ -801,19 +801,8 @@ body { background: var(--surface-deep); }
 .mg-chat .mg-person > button { flex:1; min-width:0; display:flex; border:0; background:transparent; padding:0; cursor:pointer; }
 .mg-chat .mg-msg .classic-chat-avatar img, .mg-chat .mg-person .classic-chat-avatar img { object-fit:cover; }
 
-/* Gold broadcast reference; private access and owner chat styling stay intact. */
-:root {
- --background: oklch(0.105 0 0); --foreground: oklch(0.97 0.005 85);
- --surface: oklch(0.155 0.004 85); --surface-deep: oklch(0.085 0 0);
- --card: oklch(0.14 0.004 85); --card-foreground: var(--foreground);
- --primary: oklch(0.82 0.135 85); --primary-foreground: oklch(0.12 0.008 85);
- --secondary: oklch(0.205 0.006 85); --secondary-foreground: var(--foreground);
- --muted: var(--secondary); --muted-foreground: oklch(0.77 0.035 250);
- --accent: oklch(0.78 0.12 85); --accent-foreground: var(--primary-foreground);
- --border: oklch(0.63 0.095 85 / 75%); --input: oklch(0.38 0.035 85); --ring: var(--primary);
- --sky: var(--primary); --vip-purple: oklch(0.71 0.14 75); --vip-cyan: var(--primary);
- --broadcast-gradient: linear-gradient(180deg, color-mix(in oklab,var(--primary) 80%,var(--foreground)),var(--primary),var(--vip-purple));
-}
+/* Navy blue + red broadcast palette: the tokens declared in the :root above apply unchanged. */
+
 .broadcast-site-header { min-height:84px; padding:18px 26px; gap:24px; }
 .broadcast-brand { color:var(--primary); font-family:"Outfit",sans-serif; font-size:29px; font-weight:800; }
 .broadcast-brand small { color:var(--foreground); font-family:"Outfit",sans-serif; font-size:12px; letter-spacing:0; }
