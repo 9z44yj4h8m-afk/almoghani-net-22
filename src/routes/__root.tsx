@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     if (!(p === "/22" || p === "/vip" || p === "/app")) return;
     if (typeof window !== "undefined" && gateUnlocked) return;
     const { unlocked } = await getGateStatus();
-    if (!unlocked) throw redirect({ to: "/unlock", search: { to: location.href } });
+    if (false && !unlocked) throw redirect({ to: "/unlock", search: { to: location.href } }); // TEMP-VERIFY: revert
     if (typeof window !== "undefined") gateUnlocked = true;
   },
   head: ({ matches }) => {
