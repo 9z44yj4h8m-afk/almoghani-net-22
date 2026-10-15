@@ -38,7 +38,7 @@ function scheduleBed(ctx: OfflineAudioContext, mode: BedMode, duration: number, 
   };
   if (mode === "oud") {
     for (let t = 0, i = 0; t < duration; t += 0.45, i++) {
-      const f = OUD_NOTES[(i * 3 + (i % 4)) % OUD_NOTES.length];
+      const f = OUD_NOTES[(i * 3 + (i % 4)) % OUD_NOTES.length] ?? 220;
       note(f, t, 0.9, "triangle", 0.18); note(f * 2, t, 0.4, "sawtooth", 0.025);
     }
   } else if (mode === "piano") {
@@ -64,7 +64,7 @@ function toWav(buf: AudioBuffer) {
 export async function applyVoiceFx(wav: Uint8Array, echo: EchoMode, bed: BedMode): Promise<Uint8Array> {
   if (echo === "none" && bed === "none") return wav;
   const probe = new AudioContext();
-  const src = await probe.decodeAudioData(wav.slice().buffer);
+  const src = await probe.decodeAudioData(wav.slice().buffer as ArrayBuffer);
   void probe.close();
   const tail = echo === "grand" ? 2.5 : echo === "light" ? 1 : 0.8;
   const rate = src.sampleRate;
