@@ -10,6 +10,7 @@ import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
+import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
 
 import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
 import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
@@ -144,6 +145,16 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     if (clipSrc) void playClip(clipSrc);
   }
   useEffect(() => () => { clipRef.current?.pause(); }, []);
+  const [echo, setEcho] = useState<EchoMode>("none");
+  const [bed, setBed] = useState<BedMode>("none");
+  const [history, setHistory] = useState<SavedClip[]>([]);
+  useEffect(() => { setHistory(loadHistory()); }, []);
+  function useSaved(c: SavedClip) {
+    const bytes = Uint8Array.from(atob(c.data), (ch) => ch.charCodeAt(0));
+    setAudioFile(new File([bytes], `${c.name}.wav`, { type: "audio/wav" }));
+    void playClip(`data:audio/wav;base64,${c.data}`);
+    setNote(`مقطع محفوظ: ${c.name} — تقدر ترسله الحين بدون رصيد ✓`);
+  }
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
@@ -436,10 +447,15 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined } });
-      const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
+      let bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
+      let b64 = audio;
+      if (echo !== "none" || bed !== "none") {
+        try { bytes = await applyVoiceFx(bytes, echo, bed); b64 = bytesToBase64(bytes); } catch { /* keep the clean voice */ }
+      }
       const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
       setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
-      await playClip(`data:audio/wav;base64,${audio}`);
+      await playClip(`data:audio/wav;base64,${b64}`);
+      setHistory((h) => saveHistory([{ id: `${Date.now()}`, name: voiceName, text, at: Date.now(), data: b64 }, ...h]));
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
