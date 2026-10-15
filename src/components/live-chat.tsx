@@ -39,7 +39,6 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const [voiceOn, setVoiceOn] = useState(false);
   const control = useChatControl().data ?? defaultChatControl;
   const [bans, setBans] = useState<ChatBan[]>([]);
-  useEffect(() => { if (!guestName.trim()) { setBans([]); return; } const load = () => void supabase.rpc("get_chat_ban", { _name: guestName.trim() }).then(({ data }) => setBans((data ?? []) as ChatBan[])); load(); const t = setInterval(load, 20000); return () => clearInterval(t); }, [guestName]);
   const [reactions, setReactions] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -80,6 +79,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const isBotRef = useRef(isBotName); isBotRef.current = isBotName;
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
+  useEffect(() => { if (!guestName.trim()) { setBans([]); return; } const load = () => void supabase.rpc("get_chat_ban", { _name: guestName.trim() }).then(({ data }) => setBans((data ?? []) as ChatBan[])); load(); const t = setInterval(load, 20000); return () => clearInterval(t); }, [guestName]);
   const [entered, setEntered] = useState(false);
   const myBan = bans.find((b) => isActiveBan(b) && b.name.trim().toLowerCase() === guestName.trim().toLowerCase());
   const bannedOut = !!myBan && myBan.kind === "ban";
