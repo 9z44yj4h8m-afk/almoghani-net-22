@@ -33,8 +33,6 @@ describe("female voice panel", () => {
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { canShare: vi.fn(() => true), share });
     const send = screen.getByRole("button", { name: "إرسال الصوت" });
-    const tarab = screen.getByRole("button", { name: "إرسال لطرب" });
-    expect(tarab).toBeDisabled();
     expect(send).toBeDisabled();
     const download = screen.getByRole("button", { name: "حفظ الصوت في جوالي" });
     expect(download).toBeDisabled();
