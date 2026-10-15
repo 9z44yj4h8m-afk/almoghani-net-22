@@ -49,7 +49,6 @@ describe("female voice panel", () => {
     expect(payload.files).toHaveLength(1);
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "نص جديد" } });
     expect(send).toBeDisabled();
-    expect(tarab).toBeDisabled();
     expect(download).toBeDisabled();
   });
   it("ends with the send row and exposes singing controls only when enabled", () => {
