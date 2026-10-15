@@ -1177,9 +1177,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .subreq-plan[data-color="gold"] { border-color:rgba(59,130,246,.8); box-shadow:0 0 12px rgba(37,99,235,.4); }
 .subreq-plan[data-checked="true"] { background:rgba(30,58,138,.35); box-shadow:0 0 16px rgba(220,38,38,.5); border-color:var(--primary); }
 .subreq-plan svg { width:26px; height:26px; }
-.subreq-plan[data-color="cyan"] svg { color:#22d3ee; }
-.subreq-plan[data-color="purple"] svg { color:#e879f9; }
-.subreq-plan[data-color="gold"] svg { color:#fbbf24; }
+.subreq-plan[data-color="cyan"] svg { color:#38bdf8; }
+.subreq-plan[data-color="purple"] svg { color:var(--primary); }
+.subreq-plan[data-color="gold"] svg { color:#60a5fa; }
 .subreq-plan-name { font-size:17px; font-weight:900; color:#fff; }
 .subreq-plan-price { width:100%; padding:5px 6px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.06); font-size:12px; font-weight:700; color:#e2e8f0; text-align:center; }
 .subreq-input { width:100%; height:48px; padding:0 44px 0 14px; border-radius:12px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.08); color:#fff; font-size:15px; font-weight:600; }
