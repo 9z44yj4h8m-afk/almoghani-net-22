@@ -33,8 +33,6 @@ describe("female voice panel", () => {
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { canShare: vi.fn(() => true), share });
     const send = screen.getByRole("button", { name: "إرسال الصوت" });
-    const tarab = screen.getByRole("button", { name: "إرسال لطرب" });
-    expect(tarab).toBeDisabled();
     expect(send).toBeDisabled();
     const download = screen.getByRole("button", { name: "حفظ الصوت في جوالي" });
     expect(download).toBeDisabled();
@@ -49,18 +47,8 @@ describe("female voice panel", () => {
     expect(payload.files[0].type).toMatch(/^audio\//);
     expect(payload.url).toBeUndefined();
     expect(payload.files).toHaveLength(1);
-    expect(tarab).toBeEnabled();
-    share.mockClear();
-    fireEvent.click(tarab);
-    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
-    expect(share.mock.calls[0]?.[0]).toEqual({ files: payload.files });
-    expect(screen.getByText(/اختر طرب من قائمة المشاركة/)).toBeTruthy();
-    vi.stubGlobal("navigator", { canShare: vi.fn(() => false), share });
-    fireEvent.click(tarab);
-    expect(screen.getByText(/المشاركة المباشرة غير متاحة/)).toBeTruthy();
     fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "نص جديد" } });
     expect(send).toBeDisabled();
-    expect(tarab).toBeDisabled();
     expect(download).toBeDisabled();
   });
   it("ends with the send row and exposes singing controls only when enabled", () => {
@@ -71,7 +59,8 @@ describe("female voice panel", () => {
     const rows = Array.from(panel.querySelectorAll(".voice-studio-actions"));
     const last = rows.at(-1);
     expect(last).toBeTruthy();
-    for (const name of ["إرسال للواتساب", "إرسال الصوت", "إرسال لطرب"]) {
+    expect(screen.queryByRole("button", { name: "إرسال لطرب" })).toBeNull();
+    for (const name of ["إرسال للواتساب", "إرسال الصوت"]) {
       expect(Array.from(last?.querySelectorAll("button") ?? []).some((b) => b.textContent?.includes(name))).toBe(true);
     }
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
