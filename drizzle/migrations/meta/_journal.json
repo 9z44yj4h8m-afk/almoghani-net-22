@@ -85,6 +85,13 @@
       "when": 1791583584447,
       "tag": "0011_chat_room_moves",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792072048572,
+      "tag": "0012_subscription_requests",
+      "breakpoints": true
     }
   ]
 }

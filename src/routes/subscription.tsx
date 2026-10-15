@@ -5,6 +5,7 @@ import {
   Send, UploadCloud, User, Phone, Wallet,
 } from "lucide-react";
 import subHeader from "@/assets/subscription-request-header.jpg.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/subscription")({
   head: () => ({
@@ -51,6 +52,10 @@ function SubscriptionRequestPage() {
       `طريقة الدفع: ${payment === "bank" ? "تحويل بنكي" : "طريقة أخرى"}`,
     ];
     if (receiptName) lines.push(`إيصال الدفع: ${receiptName} (سأرفقه هنا)`);
+    void supabase.from("subscription_requests").insert({
+      account_name: name.trim().slice(0, 80), phone: phone.trim().slice(0, 30), duration,
+      payment, receipt_name: receiptName.slice(0, 200),
+    });
     window.open("https://wa.me/966557073007?text=" + encodeURIComponent(lines.join("\n")), "_blank", "noreferrer");
   }
 

@@ -333,6 +333,42 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_requests: {
+        Row: {
+          account_name: string
+          amount: number | null
+          created_at: string
+          duration: string
+          id: string
+          payment: string
+          phone: string
+          receipt_name: string
+          status: string
+        }
+        Insert: {
+          account_name: string
+          amount?: number | null
+          created_at?: string
+          duration: string
+          id?: string
+          payment?: string
+          phone: string
+          receipt_name?: string
+          status?: string
+        }
+        Update: {
+          account_name?: string
+          amount?: number | null
+          created_at?: string
+          duration?: string
+          id?: string
+          payment?: string
+          phone?: string
+          receipt_name?: string
+          status?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
