@@ -12,7 +12,9 @@ import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
 import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
 
-import voiceNeonHeader from "@/assets/voice-anime-header-v2.jpg.asset.json";
+import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
+import voiceBotArt from "@/assets/voice-reference/bot.jpg.asset.json";
+import voiceGirlArt from "@/assets/voice-reference/girl.jpg.asset.json";
 import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -475,7 +477,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }, []);
 
   const pc = panel.colors;
-  return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel">
+  return <section aria-label="تجريب أصوات البنات" className="voice-studio-panel voice-reference-panel">
     <Dialog open={subOpen} onOpenChange={setSubOpen}><DialogContent dir="rtl" className="text-center">
       <DialogTitle className="text-center text-2xl font-black">اشترك في ALMOGHANI VOICE</DialogTitle>
       <DialogDescription className="text-center">تشغيل الأصوات متاح للمشتركين فقط. تواصل معنا على واتساب 0557073007 لتفعيل اشتراكك.</DialogDescription>
@@ -489,6 +491,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <Button className="voice-neon-account" variant="ghost" size="icon" aria-label="اختيار البوت" title="اختيار البوت" onClick={() => setSettingsOpen(true)}><UserRound /></Button>
       <h1 className="sr-only">ALMOGHANI VOICE — غير صوتك</h1>
     </div>}
+    <div className="voice-reference-choices" aria-label="اختيار مصدر الصوت">
+      <Button variant="outline" className="voice-reference-card" aria-pressed={sayVoice !== ""} onClick={() => { if (!sayVoice) setSayVoice("Leda"); document.getElementById("voice-select")?.focus(); }}><img src={voiceGirlArt.url} alt="أضواء الموسيقى والرقص" /><span>صوت البنت<Play aria-hidden="true" /></span></Button>
+      <Button variant="outline" className="voice-reference-card" aria-pressed={sayVoice === ""} onClick={() => { setSayVoice(""); setAudioFile(null); }}><img src={voiceBotArt.url} alt="شخصيات كرتونية وموسيقى" /><span>صوت البوت<Play aria-hidden="true" /></span></Button>
+    </div>
     <label className="voice-neon-text voice-studio-field">
       <span><Button variant="ghost" size="icon" disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} title={recording ? "إيقاف التسجيل" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button>{panel.texts.textLabel}</span>
       <textarea id="voice-text" aria-label="الكلام" maxLength={400} placeholder={panel.texts.placeholder} value={sayText} onChange={(e) => { setSayText(e.target.value); setAudioFile(null); }} />
@@ -496,7 +502,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     </label>
     <div className="voice-studio-form" id="voice-settings">
       <div className="voice-neon-choice">
-      <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+      <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select id="voice-select" aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
           const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
