@@ -92,6 +92,13 @@
       "when": 1792072048572,
       "tag": "0012_subscription_requests",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792078233731,
+      "tag": "0013_lock_chat_bans_moves",
+      "breakpoints": true
     }
   ]
 }
