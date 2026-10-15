@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, Download, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight, RotateCcw } from "lucide-react";
+import { ChevronDown, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,6 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
-import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
 import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
@@ -322,39 +321,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     return () => URL.revokeObjectURL(url);
   }, [audioFile]);
 
-  async function downloadVoice() {
-    if (!audioFile) return;
-    try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile], title: "صوت المغني" });
-        return;
-      }
-      const url = URL.createObjectURL(audioFile);
-      const link = document.createElement("a");
-      link.href = url; link.download = audioFile.name;
-      document.body.appendChild(link); link.click(); link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
-      setNote("تم طلب تنزيل المقطع الصوتي ✓");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر تنزيل الصوت؛ حاول مجددًا.");
-    }
-  }
-
-  async function sendToWhatsapp() {
-    if (!audioFile) return;
-    try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile] });
-        setNote("اختر WhatsApp ثم الشخص؛ يوصل المقطع كملف صوتي.");
-        return;
-      }
-      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من واتساب.");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر الإرسال؛ حاول مجددًا.");
-    }
-  }
 
   async function sendToSnapchat() {
     if (!audioFile) return;
@@ -372,23 +338,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
-  async function sendToTelegram() {
-    if (!audioFile) return;
-    try {
-      let file = audioFile;
-      // Telegram shows Ogg/Opus as a voice message with a waveform instead of a named file.
-      if (canMakeVoiceNote()) { try { file = await toOggOpus(audioFile, audioFile.name.replace(/\.[^.]+$/, "")); } catch { file = audioFile; } }
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file] });
-        setNote("اختر Telegram ثم الشخص؛ يوصل المقطع كرسالة صوتية تُشغّل داخل الشات.");
-        return;
-      }
-      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من تيليجرام.");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر الإرسال؛ حاول مجددًا.");
-    }
-  }
 
 
   async function sendToSignal() {
@@ -523,12 +472,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={!clipSrc && !audioUrl} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={downloadVoice} className="voice-studio-download"><Download />{panel.texts.downloadBtn}</Button>
       </div>
-      <div className="voice-studio-actions voice-studio-send" aria-label="إرسال المقطع الصوتي">
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test" title="تيليجرام، سيجنال، سناب"><Send />إرسال الصوت</Button>
-      </div>
+
       {history.length > 0 && <div className="voice-studio-history grid gap-2 rounded-xl border border-border p-3" aria-label="المقاطع الأخيرة">
         <div className="flex items-center justify-between text-sm font-bold"><span>المقاطع الأخيرة (بدون رصيد)</span><Button type="button" size="sm" variant="ghost" onClick={() => setHistory(saveHistory([]))}><Trash2 />مسح</Button></div>
         {history.map((c) => <div key={c.id} className="flex min-w-0 items-center gap-2 rounded-lg bg-background/40 p-2">
