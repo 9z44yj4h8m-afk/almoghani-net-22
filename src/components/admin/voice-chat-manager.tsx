@@ -9,7 +9,6 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
-import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
 import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
