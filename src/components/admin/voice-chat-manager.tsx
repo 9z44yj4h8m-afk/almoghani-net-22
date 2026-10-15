@@ -388,20 +388,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
-  async function sendToTarab() {
-    if (!audioFile) return;
-    setNote("اختر طرب من قائمة المشاركة إن ظهر؛ وإلا احفظ الصوت في الملفات ثم استورده من طرب عبر وسائط الجهاز.");
-    try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile] });
-        return;
-      }
-      setNote("المشاركة المباشرة غير متاحة؛ احفظ الصوت في الملفات ثم افتح طرب واختر وسائط الجهاز لاستيراده.");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّرت المشاركة؛ احفظ الصوت في الملفات ثم استورده من طرب عبر وسائط الجهاز.");
-    }
-  }
 
   async function sendToSignal() {
     if (!audioFile) return;
