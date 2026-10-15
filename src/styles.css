@@ -872,7 +872,12 @@ body { background: var(--surface-deep); }
  .gold-category-art { aspect-ratio:1.8/1; }
  .gold-category-copy { font-size:13px; inset-inline:8px; bottom:8px; padding-inline-end:21px; }
  .gold-category-copy svg { width:22px; height:22px; }
- .gold-channel-row { grid-template-columns:43% minmax(0,1fr); height:108px; min-height:108px; }
+ .gold-channel-list { gap:8px; }
+ .gold-channel-row { grid-template-columns:96px minmax(0,1fr); direction:rtl; height:76px; min-height:76px; border-radius:12px; background:var(--surface); overflow:hidden; }
+ .gold-channel-row > span:first-child { background:var(--surface-deep); }
+ .gold-channel-row .live-badge { display:none; }
+ .gold-channel-copy { direction:rtl; }
+ .gold-channel-tools { flex-direction:row-reverse; }
  .gold-channel-copy { padding:8px 9px; gap:6px; }
  .gold-channel-copy > span:first-child > span:first-child { font-size:16px; }
  .gold-channel-copy > span:first-child > span:nth-child(2) { font-size:10px; max-height:30px; overflow:hidden; }
