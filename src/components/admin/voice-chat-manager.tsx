@@ -197,9 +197,14 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const n = (e as { name?: string })?.name;
     if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/22 مباشرة في سفاري أو كروم";
     if (!navigator.mediaDevices?.getUserMedia) return "المتصفح هذا ما يدعم المايك؛ افتح الصفحة في سفاري أو كروم";
-    if (n === "NotAllowedError") return "المايك مقفل: من إعدادات الجوال ← سفاري/كروم ← الميكروفون ← سماح، ثم حدّث الصفحة";
-    if (n === "NotFoundError") return "ما لقينا مايك في الجهاز";
-    return "ما قدرنا نفتح المايك، اسمح للموقع باستخدامه وحدّث الصفحة";
+    const standalone = typeof window !== "undefined" && (window.matchMedia?.("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true);
+    if (standalone) return "المايك داخل التطبيق المثبّت على الشاشة الرئيسية محدود؛ افتح الصفحة في سفاري مباشرة: almoghani.net/22";
+    if (n === "NotAllowedError") return "المايك مقفل: في سفاري اضغط أيقونة AA بجانب العنوان ← إعدادات الموقع ← الميكروفون ← سماح، ثم حدّث الصفحة (أو إعدادات الجوال ← التطبيقات ← سفاري ← الميكروفون ← سماح)";
+    if (n === "NotReadableError" || n === "TrackStartError") return "المايك مشغول ببرنامج ثاني (مكالمة أو سناب أو واتساب). أغلق البرامج اللي تستخدم المايك ثم جرّب مرة ثانية";
+    if (n === "NotFoundError" || n === "DevicesNotFoundError") return "ما لقينا مايك في الجهاز";
+    if (n === "AbortError") return "انقطع تشغيل المايك لحظة الفتح؛ اضغط الزر مرة ثانية";
+    if (n === "OverconstrainedError") return "إعدادات الصوت ما ناسبت مايك الجهاز؛ جرّب مرة ثانية";
+    return "ما قدرنا نفتح المايك: اسمح للمايك من إعدادات المتصفح، أغلق أي برنامج يستخدم المايك، ثم حدّث الصفحة";
   }
   async function toggleRecord() {
     if (recorder) { recorder.stop(); return; }
