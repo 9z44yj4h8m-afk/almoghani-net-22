@@ -119,30 +119,35 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [panel, setPanel] = useState<VoicePanelConfig>(defaultVoicePanel);
   const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
   const PANEL_STORE = "almoghani-voice-panel";
-  // Preview audio loops: replays itself every time it ends, and a new preview stops the previous loop.
-  const loopRef = useRef<HTMLAudioElement | null>(null);
+  // Preview audio plays once; the replay button starts the same clip again on demand.
+  const clipRef = useRef<HTMLAudioElement | null>(null);
+  const [clipSrc, setClipSrc] = useState("");
   const [playing, setPlaying] = useState(false);
-  function playLooped(src: string) {
-    loopRef.current?.pause();
-    loopRef.current = null;
+  function playClip(src: string) {
+    clipRef.current?.pause();
     const player = new Audio(src);
-    player.loop = true;
-    loopRef.current = player;
+    clipRef.current = player;
+    setClipSrc(src);
     setPlaying(true);
-    player.onpause = () => { if (loopRef.current === player) setPlaying(false); };
+    player.onpause = () => { if (clipRef.current === player) setPlaying(false); };
     return player.play();
   }
-  function stopLoop() {
-    loopRef.current?.pause();
-    loopRef.current = null;
+  function stopClip() {
+    clipRef.current?.pause();
+    clipRef.current = null;
     setPlaying(false);
     if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
   }
-  useEffect(() => () => { loopRef.current?.pause(); }, []);
+  // Replay: the saved-clip player restarts from zero, otherwise the last generated preview plays again.
+  function replayClip() {
+    if (audioRef.current) { audioRef.current.currentTime = 0; void audioRef.current.play(); setPlaying(true); return; }
+    if (clipSrc) void playClip(clipSrc);
+  }
+  useEffect(() => () => { clipRef.current?.pause(); }, []);
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
-    stopLoop();
+    stopClip();
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
     setPlaying(false);
   }
@@ -156,7 +161,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const text = `هلا والله، أنا ${profile?.name ?? "بنت"}، هذي تجربة صوتي`;
     try {
       const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing: false, melody: "najdi", rhythm: "slow" } });
-      await playLooped(`data:audio/wav;base64,${audio}`);
+      await playClip(`data:audio/wav;base64,${audio}`);
       setNote(`هذا صوت ${profile?.name} ✓`);
     } catch {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -198,7 +203,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   }
   async function toggleRecord() {
     if (recorder) { recorder.stop(); return; }
-    stopLoop(); // keep the looping preview out of the recording
+    stopClip(); // keep the preview out of the recording
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const rec = new MediaRecorder(stream);
@@ -429,7 +434,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const bytes = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
       const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
       setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
-      await playLooped(`data:audio/wav;base64,${audio}`);
+      await playClip(`data:audio/wav;base64,${audio}`);
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
