@@ -21,7 +21,7 @@ describe("female voice panel", () => {
     for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
-    expect(screen.getByRole("button", { name: "إرسال للسناب" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "إرسال الصوت" })).toBeTruthy();
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
     expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "حفظ الصوت في جوالي" }));
   });
@@ -32,7 +32,7 @@ describe("female voice panel", () => {
     render(<SayNowForm />);
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { canShare: vi.fn(() => true), share });
-    const send = screen.getByRole("button", { name: "إرسال للسناب" });
+    const send = screen.getByRole("button", { name: "إرسال الصوت" });
     const tarab = screen.getByRole("button", { name: "إرسال لطرب" });
     expect(tarab).toBeDisabled();
     expect(send).toBeDisabled();
@@ -71,7 +71,7 @@ describe("female voice panel", () => {
     const rows = Array.from(panel.querySelectorAll(".voice-studio-actions"));
     const last = rows.at(-1);
     expect(last).toBeTruthy();
-    for (const name of ["إرسال للواتساب", "إرسال لتيليجرام", "إرسال لسيجنال", "إرسال للسناب", "إرسال لطرب"]) {
+    for (const name of ["إرسال للواتساب", "إرسال الصوت", "إرسال لطرب"]) {
       expect(Array.from(last?.querySelectorAll("button") ?? []).some((b) => b.textContent?.includes(name))).toBe(true);
     }
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();

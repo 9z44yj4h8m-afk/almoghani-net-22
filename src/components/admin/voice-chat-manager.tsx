@@ -535,9 +535,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </div>
       <div className="voice-studio-actions voice-studio-send" aria-label="إرسال المقطع الصوتي">
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToWhatsapp} className="voice-studio-download"><Send />إرسال للواتساب</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test"><Send />إرسال لتيليجرام</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSignal} className="voice-studio-download"><Send />إرسال لسيجنال</Button>
-        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat} className="voice-studio-test"><Send />إرسال للسناب</Button>
+        <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTelegram} className="voice-studio-test" title="تيليجرام، سيجنال، سناب"><Send />إرسال الصوت</Button>
         <Button type="button" variant="outline" disabled={!audioFile || testing} onClick={sendToTarab} className="voice-studio-download"><Music2 />إرسال لطرب</Button>
       </div>
       {history.length > 0 && <div className="voice-studio-history grid gap-2 rounded-xl border border-border p-3" aria-label="المقاطع الأخيرة">
