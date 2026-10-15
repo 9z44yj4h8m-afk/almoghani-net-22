@@ -177,7 +177,11 @@ export function LivePlayer({ channel }: { channel: Channel }) {
 
     const playNative = () => {
       if (!video.canPlayType("application/vnd.apple.mpegurl")) return drop();
-      video.src = channel.streamUrl!;
+      const url = channel.streamUrl!;
+      // Native HLS sends the page Referer, which MBC's CDN rejects: use the relay.
+      video.src = url.startsWith("https://shd-gcp-live.edgenextcdn.net/")
+        ? `/api/public/hls?u=${encodeURIComponent(url)}`
+        : url;
       video.addEventListener("error", drop, { once: true });
       void video.play().catch(() => undefined);
     };

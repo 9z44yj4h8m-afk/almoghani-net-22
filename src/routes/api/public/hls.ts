@@ -5,6 +5,8 @@ import { createFileRoute } from "@tanstack/react-router";
 // and rewrites playlists so every nested request also goes through the relay.
 const RULES: { host: string; referer: string }[] = [
   { host: "rotana.hibridcdn.net", referer: "https://rotana.net/" },
+  // MBC/Shahid rejects foreign Referers; Safari's native player always sends one.
+  { host: "shd-gcp-live.edgenextcdn.net", referer: "" },
 ];
 
 const CORS = {
@@ -34,7 +36,7 @@ export const Route = createFileRoute("/api/public/hls")({
         }
 
         const upstream = await fetch(target.toString(), {
-          headers: { Referer: rule.referer, "User-Agent": "Mozilla/5.0" },
+          headers: rule.referer ? { Referer: rule.referer, "User-Agent": "Mozilla/5.0" } : { "User-Agent": "Mozilla/5.0" },
         });
         if (!upstream.ok) {
           return new Response("Upstream error", { status: upstream.status, headers: CORS });
