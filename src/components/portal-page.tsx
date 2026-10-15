@@ -203,7 +203,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                    placeholder="مثال: قناة أخبار بتغطية مستمرة"
+                    placeholder="اكتب اسم القناة مثل MBC أو الجزيرة"
                     autoFocus
                     maxLength={200}
                     aria-label="اسم القناة أو وصفها"
@@ -214,6 +214,18 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                   {searching ? "جارٍ البحث" : "ابحث بالذكاء الاصطناعي"}
                 </Button>
               </div>
+
+              {!searchResults && searchQuery.trim().length >= 2 && (
+                <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {channels.filter((c) => c.name.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 12).map((channel) => (
+                    <Button key={channel.id} type="button" variant="secondary" onClick={() => playChannel(channel)} className="h-auto min-w-0 justify-start whitespace-normal p-3 text-right">
+                      <img src={channel.thumbnail} alt="" className="h-10 w-16 shrink-0 rounded-md object-contain" />
+                      <span className="min-w-0 truncate font-black">{channel.name}</span>
+                      <Play className="mr-auto text-sky" />
+                    </Button>
+                  ))}
+                </div>
+              )}
 
               {searchError && <p role="alert" className="mt-3 text-sm font-bold text-signal">{searchError}</p>}
 
@@ -249,6 +261,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-28 md:pb-12">
+        {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} section={section} />
         {homepage && <BreakingTicker />}
         {homepage && <HomeEntries />}
