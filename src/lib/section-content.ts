@@ -36,6 +36,7 @@ export const sectionDestinations = [
   { value: "/sections", label: "الأقسام" },
   { value: "/contact", label: "التواصل" },
   { value: "/live-chat", label: "الدردشة" },
+  { value: "/studio", label: "استوديو الفيديو المضحك" },
 ] as const;
 export type SectionCard = { title: string; description: string; button: string; image: string; link: string; hidden?: boolean; font?: string; titleSize?: number; descriptionSize?: number; buttonSize?: number; imageWidth?: number; imageHeight?: number; imageFit?: "cover" | "contain"; fontWeight?: number };
 export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string; orders?: Record<string, string[]> };
