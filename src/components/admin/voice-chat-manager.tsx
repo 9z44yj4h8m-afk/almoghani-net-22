@@ -322,39 +322,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     return () => URL.revokeObjectURL(url);
   }, [audioFile]);
 
-  async function downloadVoice() {
-    if (!audioFile) return;
-    try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile], title: "صوت المغني" });
-        return;
-      }
-      const url = URL.createObjectURL(audioFile);
-      const link = document.createElement("a");
-      link.href = url; link.download = audioFile.name;
-      document.body.appendChild(link); link.click(); link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
-      setNote("تم طلب تنزيل المقطع الصوتي ✓");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر تنزيل الصوت؛ حاول مجددًا.");
-    }
-  }
-
-  async function sendToWhatsapp() {
-    if (!audioFile) return;
-    try {
-      if (navigator.canShare?.({ files: [audioFile] })) {
-        await navigator.share({ files: [audioFile] });
-        setNote("اختر WhatsApp ثم الشخص؛ يوصل المقطع كملف صوتي.");
-        return;
-      }
-      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من واتساب.");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر الإرسال؛ حاول مجددًا.");
-    }
-  }
 
   async function sendToSnapchat() {
     if (!audioFile) return;
@@ -372,23 +339,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     }
   }
 
-  async function sendToTelegram() {
-    if (!audioFile) return;
-    try {
-      let file = audioFile;
-      // Telegram shows Ogg/Opus as a voice message with a waveform instead of a named file.
-      if (canMakeVoiceNote()) { try { file = await toOggOpus(audioFile, audioFile.name.replace(/\.[^.]+$/, "")); } catch { file = audioFile; } }
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file] });
-        setNote("اختر Telegram ثم الشخص؛ يوصل المقطع كرسالة صوتية تُشغّل داخل الشات.");
-        return;
-      }
-      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من تيليجرام.");
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") return;
-      setNote("تعذّر الإرسال؛ حاول مجددًا.");
-    }
-  }
 
 
   async function sendToSignal() {
