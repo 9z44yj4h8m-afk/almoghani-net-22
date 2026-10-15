@@ -1140,6 +1140,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-form > .voice-studio-actions > .voice-studio-test { background: var(--voice-test-fill); border: 2px solid var(--voice-cyan) !important; color: var(--voice-ink); box-shadow: 0 0 8px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
 .voice-studio-form > .voice-studio-actions > .voice-studio-download { background: var(--voice-download-fill); border: 2px solid var(--voice-purple); color: var(--voice-ink); box-shadow: var(--voice-neon-glow); }
 .voice-studio-form > .voice-studio-actions > .voice-studio-download:disabled { opacity: .75; }
+.voice-studio-form > .voice-studio-actions > .voice-studio-sendbtn { background: var(--voice-download-fill); border: 2px solid var(--voice-purple); color: var(--voice-ink); box-shadow: var(--voice-neon-glow); }
+.voice-studio-form > .voice-studio-actions > .voice-studio-sendbtn:disabled { opacity: .75; }
+
 /* Keep every row inside the phone screen: grid/flex children must be allowed to shrink below their text width. */
 .voice-studio-panel, .voice-studio-form { grid-template-columns: minmax(0, 1fr); min-width: 0; }
 .voice-studio-form > *, .voice-neon-choice > *, .voice-neon-choice > * > *, .voice-studio-select, .voice-studio-preview { min-width: 0; }

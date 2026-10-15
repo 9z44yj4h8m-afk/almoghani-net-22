@@ -9,7 +9,9 @@ import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions"
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
+import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
 import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
+
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
 import voiceBotArt from "@/assets/voice-reference/bot.jpg.asset.json";
@@ -111,6 +113,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [sayVoice, setSayVoice] = useState("Leda");
   const [sing, setSing] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [sendOpen, setSendOpen] = useState(false);
+
   const [melody, setMelody] = useState("najdi");
   const [rhythm, setRhythm] = useState("slow");
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -340,7 +344,41 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
 
 
 
+  async function sendToWhatsapp() {
+    if (!audioFile) return;
+    try {
+      if (navigator.canShare?.({ files: [audioFile] })) {
+        await navigator.share({ files: [audioFile] });
+        setNote("اختر WhatsApp ثم الشخص؛ يوصل المقطع كملف صوتي.");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من واتساب.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
+    }
+  }
+
+  async function sendToTelegram() {
+    if (!audioFile) return;
+    try {
+      let file = audioFile;
+      // Telegram shows Ogg/Opus as a voice message with a waveform instead of a named file.
+      if (canMakeVoiceNote()) { try { file = await toOggOpus(audioFile, audioFile.name.replace(/\.[^.]+$/, "")); } catch { file = audioFile; } }
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        setNote("اختر Telegram ثم الشخص؛ يوصل المقطع كرسالة صوتية تُشغّل داخل الشات.");
+        return;
+      }
+      setNote("جهازك لا يدعم المشاركة المباشرة؛ احفظ الصوت ثم أرفقه من تيليجرام.");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setNote("تعذّر الإرسال؛ حاول مجددًا.");
+    }
+  }
+
   async function sendToSignal() {
+
     if (!audioFile) return;
     try {
       if (navigator.canShare?.({ files: [audioFile] })) {
@@ -432,6 +470,20 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <DialogDescription className="text-center">تشغيل الأصوات متاح للمشتركين فقط. تواصل معنا على واتساب 0557073007 لتفعيل اشتراكك.</DialogDescription>
       <Button asChild className="voice-studio-contact"><a href={WHATSAPP_URL} target="_blank" rel="noreferrer"><MessageCircle />اشترك الآن</a></Button>
     </DialogContent></Dialog>
+    <Dialog open={sendOpen} onOpenChange={setSendOpen}>
+      <DialogContent dir="rtl" className="voice-neon-dialog">
+        <DialogTitle>{panel.texts.sendBtn}</DialogTitle>
+        <DialogDescription className="sr-only">اختيار الجهة التي يصلها المقطع الصوتي</DialogDescription>
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline" disabled={!audioFile} onClick={() => void sendToWhatsapp()}><MessageCircle />واتساب</Button>
+          <Button variant="outline" disabled={!audioFile} onClick={() => void sendToTelegram()}><AudioLines />تيليجرام صوتي</Button>
+          <Button variant="outline" disabled={!audioFile} onClick={() => void sendToSnapchat()}><Send />سناب شات</Button>
+          <Button variant="outline" disabled={!audioFile} onClick={() => void sendToSignal()}><Radio />سيجنال</Button>
+        </div>
+        <p className="text-xs font-bold opacity-75">تفتح قائمة مشاركة جوالك — اختر التطبيق والشخص ويوصل المقطع صوتيًا.</p>
+      </DialogContent>
+    </Dialog>
+
     {pc.enabled && <style>{`.voice-studio-page{background:${pc.bg}!important}.voice-studio-panel,.voice-studio-panel label,.voice-studio-panel span{color:${pc.text}}.voice-studio-panel .voice-studio-select,.voice-studio-panel textarea,.voice-studio-preview,.voice-studio-sing,.voice-studio-actions button{border-color:${pc.accent}!important}.voice-studio-panel .voice-studio-save{background:${pc.gold}!important;border-color:${pc.gold}!important}`}</style>}
     {!panel.showHeader && <h2 className="font-display text-2xl font-black text-center">ALMOGHANI VOICE</h2>}
     {panel.showHeader && <div className="voice-neon-hero" id="voice-home">
@@ -472,7 +524,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={!clipSrc && !audioUrl} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
         <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
+        <Button type="button" variant="outline" disabled={testing} onClick={() => { if (!audioFile) { setNote("اكتب النص واضغط «تجريب الصوت» أول، أو سجّل بصوتك من أيقونة الإعدادات، وبعدها ترسله."); return; } setSendOpen(true); }} className="voice-studio-sendbtn"><Send />{panel.texts.sendBtn}</Button>
       </div>
+
 
       {history.length > 0 && <div className="voice-studio-history grid gap-2 rounded-xl border border-border p-3" aria-label="المقاطع الأخيرة">
         <div className="flex items-center justify-between text-sm font-bold"><span>المقاطع الأخيرة (بدون رصيد)</span><Button type="button" size="sm" variant="ghost" onClick={() => setHistory(saveHistory([]))}><Trash2 />مسح</Button></div>
@@ -488,7 +542,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
           <DialogDescription id="voice-tools-description" className="sr-only">اختيار البوت والتسجيل ورفع الصوت ومشاركته</DialogDescription>
           <label className="voice-studio-field"><span>صوت البوت</span><div className="voice-studio-select"><UserRound /><select aria-label="البوت المتحدث" value={sayBot || bots[0] || ""} onChange={(e) => setSayBot(e.target.value)}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown /></div></label>
           <div className="voice-studio-actions">
-            <Button variant="outline" disabled={!audioFile || testing} onClick={sendToSnapchat}><Send />إرسال لسناب شات</Button>
             <Button variant="outline" onClick={() => document.getElementById("voice-audio-upload")?.click()}><Upload />رفع أغنية أو تسجيل</Button>
             <Button variant="outline" disabled={testing} onClick={toggleRecord}><Mic />{recording ? "إيقاف التسجيل" : "تسجيل صوتي"}</Button>
             <Button variant="outline" disabled={!audioFile || testing || recording} onClick={() => void convertMyVoice()}><AudioLines />حوّل صوتي</Button>

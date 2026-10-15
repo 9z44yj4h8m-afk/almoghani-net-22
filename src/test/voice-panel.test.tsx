@@ -11,6 +11,14 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
 } }));
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+
+async function makeClip() {
+  fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا يا نورة" } });
+  fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+  await waitFor(() => expect(preview).toHaveBeenCalled());
+  await waitFor(() => expect(screen.getByText("هذا هو الصوت اللي اخترته ✓")).toBeInTheDocument());
+}
+
 describe("female voice panel", () => {
   it("removes send-now, preset songs and male voice options", () => {
     render(<><SayNowForm /><VoiceChatManager /></>);
@@ -21,26 +29,39 @@ describe("female voice panel", () => {
     for (const name of ["حرير", "ليان", "رنيم", "جمان", "رهيل", "أريج", "هتون", "تالين"]) {
       expect(screen.getAllByRole("option", { name: new RegExp(name) }).length).toBeGreaterThan(0);
     }
-    for (const name of ["إرسال الصوت", "إرسال للواتساب", "حفظ الصوت في جوالي"]) {
+    for (const name of ["حفظ الصوت في جوالي", "إرسال للواتساب", "إرسال لسناب شات"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
     const test = screen.getByRole("button", { name: "تجريب الصوت" });
-    expect(test.nextElementSibling).toBeNull();
+    expect(test.nextElementSibling).toBe(screen.getByRole("button", { name: "إرسال الصوت" }));
   });
-  it("previews selected female speech without save or send controls", async () => {
+  it("previews selected female speech and keeps one send control", async () => {
     vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
     preview.mockResolvedValue({ audio: btoa("test-audio") });
     vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
     render(<SayNowForm />);
-    expect(screen.queryByRole("button", { name: "إرسال الصوت" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "إرسال للواتساب" })).toBeNull();
     expect(screen.queryByRole("button", { name: "حفظ الصوت في جوالي" })).toBeNull();
-    fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا يا نورة" } });
+    expect(screen.queryByRole("button", { name: "إرسال الصوت" })).toBeTruthy();
     fireEvent.change(screen.getByRole("combobox", { name: "صوت هذه الجملة" }), { target: { value: "female-hessa" } });
-    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await makeClip();
     await waitFor(() => expect(preview).toHaveBeenCalledWith({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow" } }));
+
   });
-  it("ends with the play control and exposes singing controls only when enabled", () => {
+  it("opens one send menu with the chat apps once a clip exists", async () => {
+    vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
+    preview.mockResolvedValue({ audio: btoa("test-audio") });
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    render(<SayNowForm />);
+    fireEvent.click(screen.getByRole("button", { name: "إرسال الصوت" }));
+    expect(screen.queryByRole("button", { name: "واتساب" })).toBeNull();
+    expect(screen.getByText("اكتب النص واضغط «تجريب الصوت» أول، أو سجّل بصوتك من أيقونة الإعدادات، وبعدها ترسله.")).toBeInTheDocument();
+    await makeClip();
+    fireEvent.click(screen.getByRole("button", { name: "إرسال الصوت" }));
+    for (const app of ["واتساب", "تيليجرام صوتي", "سناب شات", "سيجنال"]) {
+      expect(screen.getByRole("button", { name: app })).toBeEnabled();
+    }
+  });
+  it("ends with the play and send controls and exposes singing controls only when enabled", () => {
     render(<SayNowForm />);
     const panel = screen.getByRole("region", { name: "تجريب أصوات البنات" });
     expect(screen.queryByRole("button", { name: "حفظ اختيار البوت" })).toBeNull();
@@ -48,10 +69,8 @@ describe("female voice panel", () => {
     const rows = Array.from(panel.querySelectorAll(".voice-studio-actions"));
     const last = rows.at(-1);
     expect(last).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "إرسال لطرب" })).toBeNull();
-    for (const name of ["إرسال للواتساب", "إرسال الصوت", "حفظ الصوت في جوالي"]) {
-      expect(Array.from(last?.querySelectorAll("button") ?? []).some((b) => b.textContent?.includes(name))).toBe(false);
-    }
+    const labels = Array.from(last?.querySelectorAll("button") ?? []).map((b) => b.textContent?.trim());
+    expect(labels).toEqual(["تجريب الصوت", "إرسال الصوت"]);
     expect(screen.queryByRole("combobox", { name: "اللحن" })).toBeNull();
     fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
     expect(screen.getByRole("combobox", { name: "اللحن" })).toBeVisible();
