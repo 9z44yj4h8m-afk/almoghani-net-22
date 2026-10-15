@@ -13,6 +13,8 @@ export type Channel = {
 };
 
 export const channels: Channel[] = [
+  { id: "medi1tv-arabic", name: "MEDI1TV Arabic", category: "إخبارية", streamUrl: "https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8", thumbnail: "https://i.imgur.com/3YsZPY6.jpeg", description: "بث مباشر مفتوح — ميدي 1 تي في عربية" },
+  { id: "medi1tv-maghreb", name: "MEDI1TV Maghreb", category: "إخبارية", streamUrl: "https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8", thumbnail: "https://i.imgur.com/F5OFQsp.jpeg", description: "بث مباشر مفتوح — ميدي 1 تي في المغرب العربي" },
   {
     id: "thmanyah",
     name: "ثمانية",

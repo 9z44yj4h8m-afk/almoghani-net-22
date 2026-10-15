@@ -264,7 +264,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
               </ul>
             </details>
           )}
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible" aria-label="الأقسام">
+          <div className="sticky top-0 z-20 -mx-3 flex gap-2 overflow-x-auto bg-background/95 px-3 py-2 backdrop-blur sm:static sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:bg-transparent sm:px-0" aria-label="الأقسام">
             {configuredSections.map((s, i) => {
               const count = channels.filter((c) => c.category === s.category).length;
               return (
