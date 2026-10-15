@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ChatAppearanceStyle } from "@/components/chat-appearance-style";
 import { BotAvatar } from "@/components/bot-avatar";
 import { withoutArabicDiacritics } from "@/lib/chat-text";
-import { useChatControl, useChatBans, isActiveBan, defaultChatControl } from "@/lib/chat-control";
+import { useChatControl, isActiveBan, defaultChatControl, type ChatBan } from "@/lib/chat-control";
 import { Home, Settings, LogOut, Send, Search, Image as ImageIcon } from "lucide-react";
 
 const BOT_LINES = ["هلا والله بالجميع 👋 وش تتابعون الحين؟", "مين يتابع الرياضة اليوم؟ ⚽", "أحد شاف مسلسل بدوي حلو؟ اقترحوا لنا 🐎", "لا تنسون تجربون شات ALMOGHANI AI 🤖", "وش أحلى قناة عندكم في الموقع؟"];
@@ -38,7 +38,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [voiceOn, setVoiceOn] = useState(false);
   const control = useChatControl().data ?? defaultChatControl;
-  const bans = useChatBans().data ?? [];
+  const [bans, setBans] = useState<ChatBan[]>([]);
   const [reactions, setReactions] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -79,6 +79,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   const isBotRef = useRef(isBotName); isBotRef.current = isBotName;
   const listRef = useRef<HTMLDivElement>(null);
   const [guestName, setGuestName] = useState("");
+  useEffect(() => { if (!guestName.trim()) { setBans([]); return; } const load = () => void supabase.rpc("get_chat_ban", { _name: guestName.trim() }).then(({ data }) => setBans((data ?? []) as ChatBan[])); load(); const t = setInterval(load, 20000); return () => clearInterval(t); }, [guestName]);
   const [entered, setEntered] = useState(false);
   const myBan = bans.find((b) => isActiveBan(b) && b.name.trim().toLowerCase() === guestName.trim().toLowerCase());
   const bannedOut = !!myBan && myBan.kind === "ban";
@@ -122,7 +123,7 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
   useEffect(() => {
     if (!entered || !guestName.trim()) return;
     let last: string | null = null; let ready = false;
-    const check = () => { void supabase.from("chat_room_moves").select("room_id,moved_at").eq("name", guestName.trim()).maybeSingle().then(({ data }) => {
+    const check = () => { void supabase.rpc("get_room_move", { _name: guestName.trim() }).then(({ data: rows }) => { const data = rows?.[0];
       const stamp = data?.moved_at ?? ""; if (!ready) { ready = true; last = stamp; return; }
       if (data && stamp !== last) { last = data.moved_at; setRoomId(data.room_id ?? null); setSelectedRoomId(data.room_id ?? null); }
     }); };
