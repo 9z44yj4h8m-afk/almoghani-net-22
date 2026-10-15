@@ -129,7 +129,7 @@ function StudioPage() {
   if (!ready || allowed === null) return null;
   if (!allowed) return <div dir="rtl" className="min-h-screen grid place-items-center p-6 text-center">
     <div className="space-y-4"><h1 className="font-display text-2xl font-black">استوديو الفيديو للأعضاء</h1>
-      <Link to="/unlock" className="inline-block rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground">فتح بالرقم السري</Link></div>
+      <Link to="/unlock" search={{ to: "/studio" }} className="inline-block rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground">فتح بالرقم السري</Link></div>
   </div>;
 
   const chip = (active: boolean) => `rounded-full border px-3 py-1.5 text-sm font-bold ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-secondary text-foreground"}`;
