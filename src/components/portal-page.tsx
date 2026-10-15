@@ -81,6 +81,30 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const found = id && channels.find((c) => c.id === id);
     if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
+  // Auto-fallback: when a channel fails, switch to a similar one from the same section.
+  const [fallbackNote, setFallbackNote] = useState("");
+  useEffect(() => {
+    const tried = new Set<string>();
+    const onFailed = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      tried.add(id);
+      const failed = channels.find((c) => c.id === id);
+      if (!failed) return;
+      const inactive = new Set<string>(JSON.parse(localStorage.getItem("almoghani-inactive-channels") ?? "[]"));
+      const pool = channels.filter((c) => !tried.has(c.id) && !inactive.has(c.id));
+      const words = failed.name.split(/\s+/).filter((w) => w.length > 1);
+      const next =
+        pool.find((c) => c.category === failed.category && words.some((w) => c.name.includes(w))) ??
+        pool.find((c) => c.category === failed.category && Boolean(c.streamUrl) === Boolean(failed.streamUrl)) ??
+        pool.find((c) => c.category === failed.category);
+      if (!next) return;
+      setFallbackNote(`تعطّل بث «${failed.name}» — نقلناك تلقائيًا إلى «${next.name}»`);
+      window.setTimeout(() => setFallbackNote(""), 7000);
+      startTransition(() => setSelected(next));
+    };
+    window.addEventListener("almoghani:channel-failed", onFailed);
+    return () => window.removeEventListener("almoghani:channel-failed", onFailed);
+  }, [channels]);
   const searchWithAi = useServerFn(searchChannelsWithAi);
   const navigate = useNavigate();
   function goBack() {
@@ -179,7 +203,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                    placeholder="مثال: قناة أخبار بتغطية مستمرة"
+                    placeholder="اكتب اسم القناة مثل MBC أو الجزيرة"
                     autoFocus
                     maxLength={200}
                     aria-label="اسم القناة أو وصفها"
@@ -190,6 +214,18 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
                   {searching ? "جارٍ البحث" : "ابحث بالذكاء الاصطناعي"}
                 </Button>
               </div>
+
+              {!searchResults && searchQuery.trim().length >= 2 && (
+                <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {channels.filter((c) => c.name.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 12).map((channel) => (
+                    <Button key={channel.id} type="button" variant="secondary" onClick={() => playChannel(channel)} className="h-auto min-w-0 justify-start whitespace-normal p-3 text-right">
+                      <img src={channel.thumbnail} alt="" className="h-10 w-16 shrink-0 rounded-md object-contain" />
+                      <span className="min-w-0 truncate font-black">{channel.name}</span>
+                      <Play className="mr-auto text-sky" />
+                    </Button>
+                  ))}
+                </div>
+              )}
 
               {searchError && <p role="alert" className="mt-3 text-sm font-bold text-signal">{searchError}</p>}
 
@@ -225,6 +261,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-28 md:pb-12">
+        {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} section={section} />
         {homepage && <BreakingTicker />}
         {homepage && <HomeEntries />}
