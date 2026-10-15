@@ -58,6 +58,9 @@ function StudioPage() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [micBlob, setMicBlob] = useState<Blob | null>(null);
+  const [recording, setRecording] = useState(false);
+  const micRef = useRef<MediaRecorder | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const levelRef = useRef(0);
@@ -98,13 +101,34 @@ function StudioPage() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  async function toggleMic() {
+    if (micRef.current) { micRef.current.stop(); return; }
+    setErr("");
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const r = new MediaRecorder(s); const parts: Blob[] = [];
+      r.ondataavailable = (e) => e.data.size && parts.push(e.data);
+      r.onstop = () => { s.getTracks().forEach((t) => t.stop()); micRef.current = null; setRecording(false); setMicBlob(new Blob(parts, { type: r.mimeType })); };
+      micRef.current = r; r.start(); setRecording(true);
+    } catch { setErr("لم نتمكن من فتح المايك، اسمح للموقع باستخدامه من إعدادات المتصفح."); }
+  }
+
   async function make() {
     setErr(""); setBusy(true); setVideoUrl(null);
     try {
-      const { audio } = await previewVoice({ data: { text: text.trim(), voice } });
-      const bytes = Uint8Array.from(atob(audio), (ch) => ch.charCodeAt(0));
+      let raw: ArrayBuffer;
+      if (micBlob) raw = await micBlob.arrayBuffer();
+      else {
+        try {
+          const { audio } = await previewVoice({ data: { text: text.trim(), voice } });
+          raw = Uint8Array.from(atob(audio), (ch) => ch.charCodeAt(0)).buffer;
+        } catch (e) {
+          const m = e instanceof Error ? e.message : "";
+          throw new Error(/402|credit/i.test(m) ? "الصوت الآلي غير متاح حالياً. سجّل بصوتك من زر المايك 🎙️ واصنع الفيديو مجاناً." : "تعذر توليد الصوت، جرّب التسجيل بصوتك من زر المايك 🎙️.");
+        }
+      }
       const ctx = new AudioContext();
-      const buf = await ctx.decodeAudioData(bytes.buffer);
+      const buf = await ctx.decodeAudioData(raw);
       const src = ctx.createBufferSource(); src.buffer = buf; src.playbackRate.value = pitch;
       const an = ctx.createAnalyser(); an.fftSize = 512;
       const dest = ctx.createMediaStreamDestination();
@@ -146,6 +170,11 @@ function StudioPage() {
       <textarea value={text} maxLength={400} onChange={(e) => setText(e.target.value)} rows={3} className="w-full rounded-xl border border-border bg-background p-3" />
       <select value={voice} onChange={(e) => setVoice(e.target.value)} className="w-full rounded-xl border border-border bg-background p-2">
         {VOICE_LIST.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</select>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={toggleMic} className={`rounded-xl px-4 py-2 text-sm font-bold ${recording ? "bg-destructive text-destructive-foreground animate-pulse" : "border border-border bg-secondary"}`}>{recording ? "⏹️ إيقاف التسجيل" : "🎙️ سجّل بصوتك"}</button>
+        {micBlob && !recording && <><span className="text-sm text-primary font-bold">✓ سيُستخدم صوتك المسجل</span>
+          <button type="button" onClick={() => setMicBlob(null)} className="text-sm underline">حذف التسجيل</button></>}
+      </div>
     </section>
     <section className="space-y-2"><h2 className="font-bold">شكل مضحك</h2>
       <div className="flex flex-wrap gap-2">{LOOKS.map((l) => <button key={l.id} type="button" className={chip(look === l.id)} onClick={() => setLook(l.id)}>{l.label}</button>)}</div>
