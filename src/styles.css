@@ -1135,6 +1135,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-stop { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-stop); background: var(--voice-night); border: 2px solid var(--voice-stop); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-stop) 45%,transparent); }
 .voice-studio-stop svg { width: 22px; height: 22px; }
 .voice-studio-stop:disabled { opacity: .45; box-shadow: none; }
+.voice-studio-replay { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 45%,transparent); }
+.voice-studio-replay svg { width: 22px; height: 22px; }
+.voice-studio-replay:disabled { opacity: .45; box-shadow: none; }
 .voice-studio-status { font-size: 11px; }
 .voice-studio-wave { height: 100%; gap: 2px; }
 .voice-studio-wave i { width: 3px; max-height: 85%; background: var(--voice-purple); box-shadow: var(--voice-neon-glow); }
