@@ -949,8 +949,8 @@ body { background: var(--surface-deep); }
 .voice-studio-preview { display: flex; align-items: center; gap: 18px; min-height: 98px; padding: 16px; border: 1px solid var(--voice-edge); border-radius: 14px; }
 .voice-studio-play { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: var(--voice-night); border-color: var(--voice-cyan); color: var(--voice-cyan); box-shadow: 0 0 16px color-mix(in oklab, var(--voice-cyan) 25%, transparent); }
 .voice-studio-play svg { width: 27px; height: 27px; }
-.voice-studio-status { color: var(--voice-muted); font-size: 15px; white-space: nowrap; }
-.voice-studio-wave { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 65px; gap: 3px; overflow: hidden; direction: ltr; }
+.voice-studio-status { color: var(--voice-muted); font-size: 15px; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.voice-studio-wave { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 65px; gap: 3px; overflow: hidden; direction: ltr; min-width: 0; }
 .voice-studio-wave i { display: block; width: 4px; flex-shrink: 0; height: 8px; border-radius: 3px; background: var(--voice-purple); box-shadow: 0 0 9px color-mix(in oklab, var(--voice-purple) 50%, transparent); }
 .voice-studio-wave i:nth-child(3n) { height: 24px; }
 .voice-studio-wave i:nth-child(5n) { height: 48px; }
