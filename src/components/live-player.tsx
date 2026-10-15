@@ -102,6 +102,8 @@ export function LivePlayer({ channel }: { channel: Channel }) {
       if (!settingsRef.current.autoReconnect || current >= MAX_ATTEMPTS) {
         setStatus("failed");
         markInactive(channel.id);
+        // Let the page swap in a similar working channel automatically.
+        window.dispatchEvent(new CustomEvent("almoghani:channel-failed", { detail: channel.id }));
         if (notify) notifyStream(`توقف بث ${channel.name}`, "تعذّر إعادة الاتصال — نُقلت القناة إلى قائمة القنوات غير النشطة.", channel.id);
         return current;
       }

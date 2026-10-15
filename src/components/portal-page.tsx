@@ -81,6 +81,30 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const found = id && channels.find((c) => c.id === id);
     if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, []);
+  // Auto-fallback: when a channel fails, switch to a similar one from the same section.
+  const [fallbackNote, setFallbackNote] = useState("");
+  useEffect(() => {
+    const tried = new Set<string>();
+    const onFailed = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      tried.add(id);
+      const failed = channels.find((c) => c.id === id);
+      if (!failed) return;
+      const inactive = new Set<string>(JSON.parse(localStorage.getItem("almoghani-inactive-channels") ?? "[]"));
+      const pool = channels.filter((c) => !tried.has(c.id) && !inactive.has(c.id));
+      const words = failed.name.split(/\s+/).filter((w) => w.length > 1);
+      const next =
+        pool.find((c) => c.category === failed.category && words.some((w) => c.name.includes(w))) ??
+        pool.find((c) => c.category === failed.category && Boolean(c.streamUrl) === Boolean(failed.streamUrl)) ??
+        pool.find((c) => c.category === failed.category);
+      if (!next) return;
+      setFallbackNote(`تعطّل بث «${failed.name}» — نقلناك تلقائيًا إلى «${next.name}»`);
+      window.setTimeout(() => setFallbackNote(""), 7000);
+      startTransition(() => setSelected(next));
+    };
+    window.addEventListener("almoghani:channel-failed", onFailed);
+    return () => window.removeEventListener("almoghani:channel-failed", onFailed);
+  }, [channels]);
   const searchWithAi = useServerFn(searchChannelsWithAi);
   const navigate = useNavigate();
   function goBack() {
