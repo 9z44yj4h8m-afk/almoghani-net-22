@@ -99,6 +99,13 @@
       "when": 1792078233731,
       "tag": "0013_lock_chat_bans_moves",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792164735060,
+      "tag": "0014_channel_override_logo",
+      "breakpoints": true
     }
   ]
 }

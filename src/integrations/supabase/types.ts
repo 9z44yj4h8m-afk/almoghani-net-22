@@ -19,6 +19,7 @@ export type Database = {
           category: string | null
           channel_id: string
           hidden: boolean
+          logo: string | null
           name: string | null
           updated_at: string
         }
@@ -26,6 +27,7 @@ export type Database = {
           category?: string | null
           channel_id: string
           hidden?: boolean
+          logo?: string | null
           name?: string | null
           updated_at?: string
         }
@@ -33,6 +35,7 @@ export type Database = {
           category?: string | null
           channel_id?: string
           hidden?: boolean
+          logo?: string | null
           name?: string | null
           updated_at?: string
         }
