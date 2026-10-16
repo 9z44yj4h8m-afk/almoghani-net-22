@@ -1462,4 +1462,9 @@ export const channels: Channel[] = [
   {"id": "extra-marina", "name": "مارينا تي في", "category": "عامة", "streamUrl": "https://ffs.gulfsat.com/Marina-TV-HD/index.m3u8", "thumbnail": "", "description": "أغاني ومنوعات — بث مباشر مفتوح"},
   {"id": "extra-ritmu", "name": "ريتمو تي في", "category": "عامة", "streamUrl": "https://659605a54e9a6.streamlock.net:8443/live/livestream/playlist.m3u8", "thumbnail": "", "description": "موسيقى ومنوعات — بث مباشر مفتوح"},
   {"id": "extra-qatar2", "name": "قطر 2", "category": "عامة", "streamUrl": "https://qatartv.akamaized.net/hls/live/20000611/qtv2/master.m3u8", "thumbnail": "", "description": "التلفزيون القطري الثاني — بث مباشر مفتوح"},
+  {"id": "extra-mbc-masr-usa", "name": "MBC مصر أمريكا", "category": "عامة", "streamUrl": "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-usa/cd8d40acdab28aac0582faa3bd3983f1/index.m3u8", "thumbnail": "", "description": "مجموعة MBC — بث مباشر مفتوح"},
+  {"id": "extra-mosaique", "name": "موزاييك تونس", "category": "عامة", "streamUrl": "https://webcam.mosaiquefm.net/mosatv/_definst_/studio/playlist.m3u8?DVR", "thumbnail": "", "description": "منوعات وموسيقى تونسية — بث مباشر"},
+  {"id": "extra-babyfirst", "name": "BabyFirst للأطفال", "category": "أطفال ووثائقي", "streamUrl": "https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8", "thumbnail": "", "description": "تعليم وترفيه للصغار — بث مباشر"},
+  {"id": "extra-almahriah", "name": "المهرية", "category": "إخبارية", "streamUrl": "https://starmenajo.com/hls/almahriah/index.m3u8", "thumbnail": "", "description": "قناة يمنية إخبارية — بث مباشر"},
+  {"id": "extra-skynews-vertical", "name": "سكاي نيوز عربية — عمودي", "category": "إخبارية", "streamUrl": "https://live-stream.skynewsarabia.com/c-vertical-channel/vertical-stream/index.m3u8", "thumbnail": "", "description": "بث سكاي نيوز عربية بشاشة الجوال"},
 ];
