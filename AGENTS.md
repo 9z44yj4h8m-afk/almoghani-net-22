@@ -18,7 +18,7 @@
 - Keep optional series cover artwork separate from episode thumbnails in the typed drama catalog; render cover banners intact without duplicate overlays so episode imagery stays unchanged.
 - Admin password-only login authenticates the fixed owner account server-side through Cloud Auth and checks user_roles before returning a session; never bypass RLS with a shared PIN.
 
-- Keep channel metadata in one typed array in src/lib/channels.ts so the player, AI search and AI chat share one catalog; deep links use /live?channel=<id> and /channels/<section-slug> (slugs defined once in the sections array in portal-page).
+- Share src/lib/channels.ts across player and AI; synchronize additions to public/channels.m3u preserving BOM and group order. Links: /live?channel=<id> and /channels/<section-slug>, with section slugs defined in portal-page.
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.

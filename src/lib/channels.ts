@@ -1,3 +1,6 @@
+import karbalaArtwork from "@/assets/extra-karbala-documentary.png.asset.json";
+import channelArtwork from "@/assets/satellite-world.jpg";
+
 export type ChannelCategory = "إخبارية" | "رياضية" | "إسلامية" | "مسلسلات وأفلام" | "أفلام كاملة" | "أطفال ووثائقي" | "عامة";
 
 export type Channel = {
@@ -1467,4 +1470,14 @@ export const channels: Channel[] = [
   {"id": "extra-babyfirst", "name": "BabyFirst للأطفال", "category": "أطفال ووثائقي", "streamUrl": "https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8", "thumbnail": "", "description": "تعليم وترفيه للصغار — بث مباشر"},
   {"id": "extra-almahriah", "name": "المهرية", "category": "إخبارية", "streamUrl": "https://starmenajo.com/hls/almahriah/index.m3u8", "thumbnail": "", "description": "قناة يمنية إخبارية — بث مباشر"},
   {"id": "extra-skynews-vertical", "name": "سكاي نيوز عربية — عمودي", "category": "إخبارية", "streamUrl": "https://live-stream.skynewsarabia.com/c-vertical-channel/vertical-stream/index.m3u8", "thumbnail": "", "description": "بث سكاي نيوز عربية بشاشة الجوال"},
+
+  // Free IPTV-org channels verified with manifest, variant and segment GET requests.
+  {"id": "extra-karbala-documentary", "name": "كربلاء الوثائقية", "category": "أطفال ووثائقي", "streamUrl": "https://ktvlive.online/stream/hls/ch3.m3u8", "description": "وثائقيات وبرامج ثقافية — بث مفتوح", "thumbnail": karbalaArtwork.url},
+  {"id": "extra-mta-arabia", "name": "MTA العربية", "category": "إسلامية", "streamUrl": "https://chlivemta1.akamaized.net/hls/live/2010556/mta3alarabia/playlist.m3u8", "description": "برامج دينية باللغة العربية — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-zagros", "name": "زاغروس", "category": "عامة", "streamUrl": "https://hlspackager.akamaized.net/live/DB/ZAGROS_TV/HLS/ZAGROS_TV.m3u8", "description": "أخبار وبرامج عراقية — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-iraq-quran", "name": "القرآن الكريم — العراق", "category": "إسلامية", "streamUrl": "https://ktvlive.online/stream/hls/ch1.m3u8", "description": "تلاوات القرآن الكريم — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-elsharq-tv", "name": "الشرق المصرية", "category": "عامة", "streamUrl": "https://mn-nl.mncdn.com/elsharq_live/live/playlist.m3u8", "description": "برامج وحوارات عربية — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-hala-tv", "name": "هلا تي في", "category": "عامة", "streamUrl": "https://stream.panet.com/edge/halaTV/playlist.m3u8", "description": "برامج ومجتمع باللغة العربية — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-makan33", "name": "مكان 33", "category": "إخبارية", "streamUrl": "https://kancdn.medonecdn.net/livehls/oil/kancdn-live/live/makan/live.livx/playlist.m3u8", "description": "أخبار وبرامج باللغة العربية — بث مفتوح", "thumbnail": channelArtwork},
+  {"id": "extra-mekameleen", "name": "مكملين", "category": "إخبارية", "streamUrl": "https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8", "description": "أخبار وحوارات مصرية — بث مفتوح", "thumbnail": channelArtwork},
 ];
