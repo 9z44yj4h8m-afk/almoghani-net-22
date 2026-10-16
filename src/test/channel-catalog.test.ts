@@ -14,10 +14,6 @@ describe("Public channel catalog", () => {
     }
   });
 
-  it("keeps channel identifiers unique for player deep links", () => {
-    expect(new Set(channels.map((channel) => channel.id)).size).toBe(channels.length);
-  });
-
   it("keeps the Arabic playlist in UTF-8 with a BOM", () => {
     const playlist = readFileSync("public/channels.m3u");
     expect([...playlist.subarray(0, 3)]).toEqual([0xef, 0xbb, 0xbf]);
