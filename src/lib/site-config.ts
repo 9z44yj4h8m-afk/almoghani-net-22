@@ -49,7 +49,7 @@ export type SiteConfig = {
   botNameAliases: Record<string, string>;
   sectionContent: SectionContent;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
-  overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null }[];
+  overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null; logo?: string | null }[];
   customMovies: { id: string; youtube_id: string; title: string; description: string }[];
   hiddenMovies: string[];
 };
@@ -58,7 +58,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
   const [settings, custom, overrides, movies, hidden] = await Promise.all([
     supabase.from("site_settings").select("key,value"),
     supabase.from("custom_channels").select("id,name,category,stream_url,logo,description").order("created_at"),
-    supabase.from("channel_overrides").select("channel_id,hidden,category,name"),
+    supabase.from("channel_overrides").select("channel_id,hidden,category,name,logo"),
     supabase.from("custom_movies").select("id,youtube_id,title,description").order("created_at", { ascending: false }),
     supabase.from("hidden_movies").select("movie_id"),
   ]);
@@ -104,7 +104,8 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
     .map((c) => {
       const o = ov.get(c.id);
       const cat = o?.category;
-      const named = o?.name ? { ...c, name: o.name } : c;
+      const renamed = o?.name ? { ...c, name: o.name } : c;
+      const named = typeof o?.logo === "string" ? { ...renamed, thumbnail: o.logo } : renamed;
       return cat && channelCategories.includes(cat as ChannelCategory) ? { ...named, category: cat as ChannelCategory } : named;
     });
   const extra: Channel[] = config.customChannels
@@ -118,6 +119,7 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
         ...(yt ? { youtubeId: yt } : { streamUrl: c.stream_url }),
         thumbnail: c.logo || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : ""),
         description: c.description || "بث مباشر",
+        ...(typeof ov.get(c.id)?.logo === "string" ? { thumbnail: ov.get(c.id)!.logo as string } : {}),
       };
     });
   return [...base, ...extra];
