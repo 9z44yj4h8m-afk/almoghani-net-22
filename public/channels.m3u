@@ -1,4 +1,6 @@
 ﻿#EXTM3U
+#EXTINF:-1 tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="التراث والجنوب",الوسام الفضائية — نبض الجنوب
+https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="السعودية",الإخبارية السعودية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-ekhbaria/297b3ef1cd0633ad9cfba7473a686a06/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg" group-title="السعودية",قناة القرآن الكريم
@@ -25,8 +27,6 @@ https://live.kwikmotion.com/sbrksasaudiaradiolive/srpksasaudiaradio/playlist.m3u
 https://www.youtube.com/watch?v=OAAEbezyJnU
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/wPivX6XRlrc/hqdefault.jpg" group-title="السعودية",إذاعة ثمانية
 https://www.youtube.com/watch?v=wPivX6XRlrc
-#EXTINF:-1 tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="السعودية",الوسام
-https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 tvg-logo="https://aloula.faulio.com/storage/mediagallery/37/1a/fullhd_399eddcc4305f34f41c7fab24c3518fab5d55d97.png" group-title="السعودية",الرياض راديو
 https://live.kwikmotion.com/sbrksariyadhradiolive/srpksariyadhradio/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://shahid.mbc.net/mediaObject/61010cbc-91c5-4ce1-94a4-ed40adadb97b" group-title="السعودية",الخزامى راديو
