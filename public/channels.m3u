@@ -668,7 +668,7 @@ https://indexforce.com/tvhighres/mystream/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/ga6NXb9.png" group-title="الإخبارية",الغد
 https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg" group-title="الإخبارية",قناة الجزيرة
-https://www.youtube.com/watch?v=bNyUyrR0PHo
+https://live-hls-web-aja.getaj.net/AJA/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/93g513Uth98/hqdefault.jpg" group-title="الإخبارية",فرانس 24 عربي
 https://www.youtube.com/watch?v=93g513Uth98
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg" group-title="الإخبارية",تلفزيون الشرق بلومبرغ
