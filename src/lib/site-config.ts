@@ -98,7 +98,7 @@ export function youtubeIdFrom(url: string): string | null {
 }
 
 export function mergeChannels(config: SiteConfig | undefined): Channel[] {
-  const arted = baseChannels.map((c) => (channelArt[c.id] ? { ...c, thumbnail: channelArt[c.id] } : c));
+  const arted: Channel[] = baseChannels.map((c) => { const art = channelArt[c.id]; return art ? { ...c, thumbnail: art } : c; });
   if (!config) return arted;
   const ov = new Map(config.overrides.map((o) => [o.channel_id, o]));
   const base = arted
