@@ -181,7 +181,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
       if (!video.canPlayType("application/vnd.apple.mpegurl")) return drop();
       const url = channel.streamUrl!;
       // Native HLS sends the page Referer, which MBC's CDN rejects: use the relay.
-      video.src = url.startsWith("https://shd-gcp-live.edgenextcdn.net/")
+      video.src = url.startsWith("https://shd-gcp-live.edgenextcdn.net/") || url.startsWith("https://rotana.hibridcdn.net/")
         ? `/api/public/hls?u=${encodeURIComponent(url)}`
         : url;
       video.addEventListener("error", drop, { once: true });
@@ -222,7 +222,11 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             hlsRef.current = null;
             drop();
           });
-          hls.loadSource(channel.streamUrl!);
+          // Rotana's CDN rejects video pieces without Referer rotana.net: use the relay.
+          const src = channel.streamUrl!.startsWith("https://rotana.hibridcdn.net/")
+            ? `/api/public/hls?u=${encodeURIComponent(channel.streamUrl!)}`
+            : channel.streamUrl!;
+          hls.loadSource(src);
           hls.attachMedia(video);
         })
         .catch(drop);
