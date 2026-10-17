@@ -52,7 +52,7 @@ export const channels: Channel[] = [
     id: "aljazeera",
     name: "قناة الجزيرة",
     category: "إخبارية",
-    youtubeId: "bNyUyrR0PHo",
+    streamUrl: "https://live-hls-web-aja.getaj.net/AJA/index.m3u8",
     thumbnail: "https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg",
     description: "التغطية مستمرة على مدار الساعة",
   },
