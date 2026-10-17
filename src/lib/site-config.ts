@@ -1,3 +1,4 @@
+import { channelArt } from "@/lib/channel-art";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { channels as baseChannels, type Channel, type ChannelCategory } from "./channels";
@@ -97,9 +98,10 @@ export function youtubeIdFrom(url: string): string | null {
 }
 
 export function mergeChannels(config: SiteConfig | undefined): Channel[] {
-  if (!config) return baseChannels;
+  const arted: Channel[] = baseChannels.map((c) => { const art = channelArt[c.id]; return art ? { ...c, thumbnail: art } : c; });
+  if (!config) return arted;
   const ov = new Map(config.overrides.map((o) => [o.channel_id, o]));
-  const base = baseChannels
+  const base = arted
     .filter((c) => !ov.get(c.id)?.hidden)
     .map((c) => {
       const o = ov.get(c.id);
