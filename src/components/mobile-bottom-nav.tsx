@@ -1,12 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, LayoutGrid, MoreHorizontal, MessagesSquare } from "lucide-react";
+import { Tv, Film, Clapperboard, Settings } from "lucide-react";
 import { useSiteConfig, defaultTicker } from "@/lib/site-config";
 
 const items = [
-  { to: "/", label: "الرئيسية", icon: Home },
-  { to: "/sections", label: "الأقسام", icon: LayoutGrid },
-  { to: "/live-chat", label: "الدردشة", icon: MessagesSquare },
-  { to: "/contact", label: "المزيد", icon: MoreHorizontal },
+  { to: "/live", label: "البث المباشر", icon: Tv },
+  { to: "/movies", label: "الأفلام", icon: Film },
+  { to: "/bedouin-drama", label: "المسلسلات", icon: Clapperboard },
+  { to: "/my-account", label: "الإعدادات", icon: Settings },
 ] as const;
 
 export function MobileBottomNav() {
@@ -15,7 +15,7 @@ export function MobileBottomNav() {
     <>
       <nav className="broadcast-bottom-nav" aria-label="التنقل السريع">
         {items.map(({ to, label, icon: Icon }) => {
-          const active = to === "/" ? path === "/" : path.startsWith(to);
+          const active = path.startsWith(to) || (to === "/live" && (path === "/" || path.startsWith("/channels/")));
           return (
             <Link key={to} to={to} className={`broadcast-nav-item ${active ? "text-primary" : "text-muted-foreground"}`}>
               <Icon className="h-5 w-5" />
