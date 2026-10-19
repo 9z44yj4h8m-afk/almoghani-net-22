@@ -72,7 +72,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
   const [playerActive, setPlayerActive] = useState(!homepage);
-  const [smartersOpen, setSmartersOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
@@ -267,16 +266,13 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
 
       <main className="pb-6 md:pb-10">
         <OwnerEditablePage>{(editChannel) => <>
-        {homepage && <nav aria-label="مصدر القنوات" className="mx-auto flex max-w-7xl flex-wrap gap-2 px-3 pt-3">
-          <Button variant={smartersOpen ? "outline" : "broadcast"} aria-pressed={!smartersOpen} onClick={() => setSmartersOpen(false)}><Tv />القنوات المباشرة</Button>
-          <Button variant={smartersOpen ? "broadcast" : "outline"} aria-pressed={smartersOpen} onClick={() => setSmartersOpen(true)}><Lock />سمارتر المغني</Button>
-        </nav>}
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
-        {homepage && smartersOpen ? <MemberLibraryGate><SmartersLibrary embedded onCatalog={() => setSmartersOpen(false)} /></MemberLibraryGate> : <>
         <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} />
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
-        </>}
-
+        {homepage && <section aria-label="قنوات سمارتر المغني" className="mx-auto max-w-7xl px-3 pt-4">
+          <h2 className="mb-2 flex items-center gap-2 font-display text-xl font-black text-foreground"><Lock className="h-5 w-5" />قنوات سمارتر المغني</h2>
+          <MemberLibraryGate><SmartersLibrary embedded initialKind="live" onCatalog={() => document.getElementById("player")?.scrollIntoView({ behavior: "smooth" })} /></MemberLibraryGate>
+        </section>}
         </>}</OwnerEditablePage>
       </main>
 
