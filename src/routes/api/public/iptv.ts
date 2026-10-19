@@ -12,6 +12,14 @@ const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods
 const sign = (u: string) => createHmac("sha256", KEY).update(u).digest("hex").slice(0, 32);
 const proxied = (u: string) => `/api/public/iptv?u=${encodeURIComponent(u)}&s=${sign(u)}`;
 
+/** Bare IPv4 hosts are rewritten to <ip>.sslip.io (resolves to the same IP) so the edge runtime can fetch them. */
+export function fetchableUrl(u: URL): string {
+  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname)) return u.toString();
+  const copy = new URL(u.toString());
+  copy.hostname = `${u.hostname}.sslip.io`;
+  return copy.toString();
+}
+
 function allowed(target: URL, s: string | null) {
   if (target.protocol !== "http:" && target.protocol !== "https:") return false;
   if (target.hostname === PROVIDER_HOST) return true;
@@ -38,11 +46,23 @@ export const Route = createFileRoute("/api/public/iptv")({
         const headers: Record<string, string> = { "User-Agent": "VLC/3.0.20 LibVLC/3.0.20" };
         const range = request.headers.get("range");
         if (range) headers["Range"] = range;
-        const upstream = await fetch(target.toString(), { headers, redirect: "follow" });
-        if (!upstream.ok && upstream.status !== 206) {
-          return new Response("Upstream error", { status: upstream.status, headers: CORS });
+        // Follow redirects manually: the provider redirects to bare-IP stream servers, which the
+        // published edge runtime refuses to fetch directly (Cloudflare 1003 → 403).
+        let current = target;
+        let upstream: Response | null = null;
+        for (let hop = 0; hop < 5; hop++) {
+          upstream = await fetch(fetchableUrl(current), { headers, redirect: "manual" });
+          const loc = upstream.headers.get("location");
+          if (upstream.status >= 300 && upstream.status < 400 && loc) {
+            current = new URL(loc, current);
+            continue;
+          }
+          break;
         }
-        const base = new URL(upstream.url || target.toString());
+        if (!upstream || (!upstream.ok && upstream.status !== 206)) {
+          return new Response("Upstream error", { status: upstream?.status ?? 502, headers: CORS });
+        }
+        const base = current;
         const type = upstream.headers.get("content-type") ?? "";
         const isPlaylist = base.pathname.endsWith(".m3u8") || type.includes("mpegurl");
 
