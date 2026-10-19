@@ -72,7 +72,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
   const [playerActive, setPlayerActive] = useState(!homepage);
-  const [smartersOpen, setSmartersOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultIds, setSearchResultIds] = useState<string[] | null>(null);
