@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ChevronLeft,
@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SmartersPlayer } from "@/components/smarters-player";
 import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
 
 type Kind = "live" | "movie" | "series";
@@ -364,7 +365,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
-              <SitePlayer url={playing.url} />
+              <SmartersPlayer key={playing.url} url={playing.url} />
               <p className="rounded-lg border border-border bg-secondary/40 p-3 text-xs leading-6 text-muted-foreground">لو ما اشتغل هنا، شغّله في تطبيق VLC أو Outplayer.</p>
               <Button type="button" size="lg" className="h-12 w-full" onClick={() => {
                 const u = playing.url;
@@ -387,43 +388,6 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
     </div>
   );
 }
-function SitePlayer({ url }: { url: string }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    setFailed(false);
-    const isLive = url.includes("/live/");
-    const target = isLive ? url.replace(/\.ts$/, ".m3u8") : url;
-    const src = `/api/public/iptv?u=${encodeURIComponent(target)}`;
-    let hls: { destroy: () => void } | undefined;
-    let cancelled = false;
-    if (!isLive || video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = src;
-      void video.play().catch(() => {});
-    } else {
-      void import("hls.js").then(({ default: Hls }) => {
-        if (cancelled) return;
-        if (!Hls.isSupported()) { setFailed(true); return; }
-        const h = new Hls();
-        h.on(Hls.Events.ERROR, (_e, d) => { if (d.fatal) setFailed(true); });
-        h.loadSource(src);
-        h.attachMedia(video);
-        hls = h;
-        void video.play().catch(() => {});
-      });
-    }
-    return () => { cancelled = true; hls?.destroy(); video.removeAttribute("src"); video.load(); };
-  }, [url]);
-  return (
-    <div className="overflow-hidden rounded-lg border border-border bg-background">
-      <video ref={ref} controls playsInline autoPlay className="aspect-video w-full bg-background" onError={() => setFailed(true)} />
-      {failed && <p className="p-2 text-center text-xs text-destructive">تعذّر التشغيل داخل الموقع لهذا المحتوى.</p>}
-    </div>
-  );
-}
-
 function ChannelLogo({ src, name }: { src: string; name: string }) {
   const [broken, setBroken] = useState(false);
   if (src && !broken) return <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={() => setBroken(true)} />;

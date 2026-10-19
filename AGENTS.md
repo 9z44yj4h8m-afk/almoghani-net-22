@@ -41,3 +41,4 @@
 - Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed app shares shell/navigation without changing gates.
 
 - Reuse SmartersLibrary behind MemberLibraryGate on /vip and the homepage source switch, so private playback, ordering and access checks stay identical.
+- Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.
