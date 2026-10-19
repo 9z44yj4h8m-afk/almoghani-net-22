@@ -34,13 +34,13 @@ export function loadRaw(kind: Kind): Promise<Row[]> {
 // Owner overrides from site_settings("smarters"): rename/hide/reorder groups, rename/hide items.
 export type SmartersConfig = {
   groups: Record<string, { label?: string; hidden?: boolean; order?: number }>;
-  items: Record<string, { label?: string; hidden?: boolean }>;
+  items: Record<string, { label?: string; hidden?: boolean; order?: number }>;
 };
 export const configKey = (kind: Kind, part: string | number) => `${kind}:${part}`;
 let cfgCache: { at: number; value: Promise<SmartersConfig> } | undefined;
 export function clearSmartersConfig() { cfgCache = undefined; }
 export function loadConfig(): Promise<SmartersConfig> {
-  if (!cfgCache || Date.now() - cfgCache.at > 30_000) {
+  if (!cfgCache || Date.now() - cfgCache.at > 3_000) {
     cfgCache = {
       at: Date.now(),
       value: (async () => {
@@ -62,16 +62,16 @@ export async function loadKind(kind: Kind): Promise<Row[]> {
   const [rows, cfg] = await Promise.all([loadRaw(kind), loadConfig()]);
   const firstIndex = new Map<string, number>();
   rows.forEach((r, i) => { if (!firstIndex.has(r[1])) firstIndex.set(r[1], i); });
-  const out: [number, number, Row][] = [];
+  const out: [number, number, number, Row][] = [];
   rows.forEach((r, i) => {
     const g = cfg.groups[configKey(kind, r[1])];
     const it = cfg.items[configKey(kind, r[3])];
     if (g?.hidden || it?.hidden) return;
     const order = typeof g?.order === "number" ? g.order : firstIndex.get(r[1])! + 1_000_000;
-    out.push([order, i, [it?.label || r[0], g?.label || r[1], r[2], r[3], r[4]]]);
+    out.push([order, typeof it?.order === "number" ? it.order : 1_000_000, i, [it?.label || r[0], g?.label || r[1], r[2], r[3], r[4]]]);
   });
-  out.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  return out.map((x) => x[2]);
+  out.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+  return out.map((x) => x[3]);
 }
 
 export function streamUrl(kind: Kind, id: number, ext: string) {

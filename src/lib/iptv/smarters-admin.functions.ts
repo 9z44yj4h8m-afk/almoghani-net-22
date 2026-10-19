@@ -31,12 +31,12 @@ export const adminSmartersItems = createServerFn({ method: "POST" })
     const { loadRaw } = await import("./library.server");
     const q = data.q.trim().toLowerCase();
     const rows = (await loadRaw(data.kind)).filter((r) => (!data.group || r[1] === data.group) && (!q || r[0].toLowerCase().includes(q)));
-    return { total: rows.length, items: rows.slice(0, 200).map((r) => ({ id: r[3], name: r[0], group: r[1] })) };
+    return { total: rows.length, items: rows.slice(0, data.group && !q ? 2000 : 200).map((r) => ({ id: r[3], name: r[0], group: r[1] })) };
   });
 
 const config = z.object({
   groups: z.record(z.string().max(400), z.object({ label: z.string().max(120).optional(), hidden: z.boolean().optional(), order: z.number().int().min(0).max(100000).optional() })),
-  items: z.record(z.string().max(60), z.object({ label: z.string().max(200).optional(), hidden: z.boolean().optional() })),
+  items: z.record(z.string().max(60), z.object({ label: z.string().max(200).optional(), hidden: z.boolean().optional(), order: z.number().int().min(0).max(100000).optional() })),
 });
 
 export const saveSmartersConfig = createServerFn({ method: "POST" })
@@ -56,6 +56,6 @@ export const loadSmartersConfig = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     await assertAdmin(context.supabase, context.userId);
     const { data } = await context.supabase.from("site_settings").select("value").eq("key", "smarters").maybeSingle();
-    const v = (data?.value ?? {}) as { groups?: Record<string, { label?: string; hidden?: boolean; order?: number }>; items?: Record<string, { label?: string; hidden?: boolean }> };
+    const v = (data?.value ?? {}) as { groups?: Record<string, { label?: string; hidden?: boolean; order?: number }>; items?: Record<string, { label?: string; hidden?: boolean; order?: number }> };
     return { groups: v.groups ?? {}, items: v.items ?? {} };
   });
