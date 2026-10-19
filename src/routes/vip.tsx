@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ChevronLeft,
@@ -317,11 +317,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
                 className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
                 <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
-                  {entry.logo ? (
-                    <img src={entry.logo} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={(event) => { event.currentTarget.hidden = true; }} />
-                  ) : (
-                    <activeTab.Icon className="h-6 w-6 text-muted-foreground" />
-                  )}
+                  <ChannelLogo src={entry.logo} name={entry.name} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{entry.name}</span>
@@ -345,19 +341,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
                 className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
                 <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
-                  {item.logo ? (
-                    <img
-                      src={item.logo}
-                      alt=""
-                      loading="lazy"
-                      className="h-full w-full object-contain p-1"
-                      onError={(event) => {
-                        event.currentTarget.hidden = true;
-                      }}
-                    />
-                  ) : (
-                    <activeTab.Icon className="h-6 w-6 text-muted-foreground" />
-                  )}
+                  <ChannelLogo src={item.logo} name={item.name} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{item.name}</span>
@@ -389,7 +373,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
 
       {playing && (
         <div className="fixed inset-0 z-[70] grid place-items-end bg-background/85 backdrop-blur-sm sm:place-items-center" onClick={() => setPlaying(null)}>
-          <section className="w-full max-w-md rounded-t-lg border border-border bg-card p-5 shadow-2xl sm:rounded-lg" onClick={(event) => event.stopPropagation()} aria-modal="true" role="dialog" aria-label={playing.name}>
+          <section className="w-full max-w-2xl rounded-t-lg border border-border bg-card p-5 shadow-2xl sm:rounded-lg" onClick={(event) => event.stopPropagation()} aria-modal="true" role="dialog" aria-label={playing.name}>
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-xs font-bold text-accent">جاهز للمشاهدة</p>
@@ -404,7 +388,8 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
               almoghani.net <ChevronLeft className="h-3 w-3" />
             </a>
             <div className="mt-5 grid gap-2">
-              <p className="rounded-lg border border-border bg-secondary/40 p-3 text-xs leading-6 text-muted-foreground">سيرفر المزوّد يمنع التشغيل داخل المتصفح، شغّل الفيلم أو القناة في تطبيق VLC (أندرويد وآيفون) أو Outplayer (آيفون).</p>
+              <SitePlayer url={playing.url} />
+              <p className="rounded-lg border border-border bg-secondary/40 p-3 text-xs leading-6 text-muted-foreground">لو ما اشتغل هنا، شغّله في تطبيق VLC أو Outplayer.</p>
               <Button type="button" size="lg" className="h-12 w-full" onClick={() => {
                 const u = playing.url;
                 window.location.href = /android/i.test(navigator.userAgent)
@@ -425,4 +410,47 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
       )}
     </div>
   );
+}
+function SitePlayer({ url }: { url: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    setFailed(false);
+    const isLive = url.includes("/live/");
+    const target = isLive ? url.replace(/\.ts$/, ".m3u8") : url;
+    const src = `/api/public/iptv?u=${encodeURIComponent(target)}`;
+    let hls: { destroy: () => void } | undefined;
+    let cancelled = false;
+    if (!isLive || video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = src;
+      void video.play().catch(() => {});
+    } else {
+      void import("hls.js").then(({ default: Hls }) => {
+        if (cancelled) return;
+        if (!Hls.isSupported()) { setFailed(true); return; }
+        const h = new Hls();
+        h.on(Hls.Events.ERROR, (_e, d) => { if (d.fatal) setFailed(true); });
+        h.loadSource(src);
+        h.attachMedia(video);
+        hls = h;
+        void video.play().catch(() => {});
+      });
+    }
+    return () => { cancelled = true; hls?.destroy(); video.removeAttribute("src"); video.load(); };
+  }, [url]);
+  return (
+    <div className="overflow-hidden rounded-lg border border-border bg-background">
+      <video ref={ref} controls playsInline autoPlay className="aspect-video w-full bg-background" onError={() => setFailed(true)} />
+      {failed && <p className="p-2 text-center text-xs text-destructive">تعذّر التشغيل داخل الموقع لهذا المحتوى.</p>}
+    </div>
+  );
+}
+
+function ChannelLogo({ src, name }: { src: string; name: string }) {
+  const [broken, setBroken] = useState(false);
+  if (src && !broken) return <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={() => setBroken(true)} />;
+  const short = name.replace(/[^\p{L}\p{N} ]/gu, "").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  return <span className="grid h-full w-full place-items-center bg-gradient-to-br from-primary/40 to-accent/30 text-lg font-black text-foreground">{short || "TV"}</span>;
 }
