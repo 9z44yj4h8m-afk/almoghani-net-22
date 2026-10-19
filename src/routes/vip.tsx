@@ -326,7 +326,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{entry.name}</span>
                   <span className="block text-xs text-vip-foreground/50">
-                    {entry.count.toLocaleString("ar")} {kind === "series" ? "حلقة" : "قناة"}
+                    {entry.count > 0 ? `${entry.count.toLocaleString("ar")} ${kind === "series" ? "حلقة" : "قناة"}` : "اضغط لعرض الحلقات"}
                   </span>
                 </span>
                 <ChevronLeft className="h-5 w-5 shrink-0 text-vip-cyan" />
