@@ -23,7 +23,7 @@ afterEach(() => { cleanup(); vi.clearAllMocks(); api.config = { groups: {}, item
 it("saves a manual film genre assignment and genre navigation order", async () => {
   api.save.mockResolvedValue({ ok: true });
   render(<SmartersManager />);
-  fireEvent.click(screen.getByRole("button", { name: "الأفلام", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: /^الأفلام$/ }));
   fireEvent.click(await screen.findByRole("button", { name: "تقديم أكشن" }));
   fireEvent.click(screen.getByText("أفلام عربية", { exact: true }));
   fireEvent.change(await screen.findByLabelText("نوع فيلم اختبار"), { target: { value: "comedy" } });
@@ -37,10 +37,10 @@ it("passes comedy to film search and drama to series-title search", async () => 
   api.search.mockResolvedValue({ total: 0, items: [] });
   api.titles.mockResolvedValue({ total: 0, titles: [] });
   render(<QueryClientProvider client={new QueryClient()}><SmartersLibrary onCatalog={() => undefined} /></QueryClientProvider>);
-  fireEvent.click(screen.getByRole("button", { name: "الأفلام", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: /^الأفلام$/ }));
   fireEvent.click(await screen.findByRole("button", { name: /كوميديا/ }));
   await waitFor(() => expect(api.search).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ kind: "movie", genre: "comedy" }) })));
-  fireEvent.click(screen.getByRole("button", { name: "المسلسلات", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: /^المسلسلات$/ }));
   fireEvent.click(await screen.findByRole("button", { name: /دراما/ }));
   await waitFor(() => expect(api.titles).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ kind: "series", genre: "drama" }) })));
 });
