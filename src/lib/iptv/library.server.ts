@@ -67,7 +67,7 @@ export async function loadKind(kind: Kind, genre: Genre | "" = ""): Promise<Row[
     const order = typeof g?.order === "number" ? g.order : (firstIndex.get(r[1]) ?? i) + 1_000_000;
     out.push([order, typeof it?.order === "number" ? it.order : 1_000_000, i, [it?.label || r[0], g?.label || r[1], r[2], r[3], r[4]]]);
   });
-  out.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+  out.sort((a, b) => (genre ? a[1] - b[1] || a[0] - b[0] : a[0] - b[0] || a[1] - b[1]) || a[2] - b[2]);
   return out.map((x) => x[3]);
 }
 

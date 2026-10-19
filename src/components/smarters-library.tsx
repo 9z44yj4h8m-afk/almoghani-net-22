@@ -36,6 +36,7 @@ const TABS: {
 
 export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: { initialGroup?: string | undefined; onCatalog: () => void; embedded?: boolean }) {
   const pin = "member-session";
+  const [kind, setKind] = useState<Kind>("live");
   const [genre, setGenre] = useState<Genre | "">("");
   const [genres, setGenres] = useState<{ id: Genre; label: string; count: number }[]>([]);
   const [revision, setRevision] = useState(0);
@@ -53,7 +54,6 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
     return () => { active = false; };
   }, [kind, revision, fetchGenres]);
   const [fetchError, setFetchError] = useState("");
-  const [kind, setKind] = useState<Kind>("live");
   const [libraryOpen, setLibraryOpen] = useState(true);
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
   const [group, setGroup] = useState("");

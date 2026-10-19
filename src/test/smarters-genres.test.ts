@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { Blob as NodeBlob } from "node:buffer";
 import { GENRES, itemGenre, moveGenre, orderedGenres, smartersConfigSchema, type SmartersConfig } from "@/lib/iptv/smarters-config";
 
 const state = vi.hoisted(() => ({ config: { groups: {}, items: {} } as SmartersConfig }));
@@ -12,7 +13,7 @@ vi.mock("@/lib/iptv/series-data.server", async () => {
   return { default: gzipSync(JSON.stringify([["Funny series", "COMEDY", "", 10, "mp4"], ["Drama series", "DRAMA", "", 11, "mp4"]])).toString("base64") };
 });
 import { clearSmartersConfig, genresOf, loadKind, titles } from "@/lib/iptv/library.server";
-beforeEach(() => { state.config = { groups: {}, items: {} }; clearSmartersConfig(); });
+beforeEach(() => { vi.stubGlobal("Blob", NodeBlob); state.config = { groups: {}, items: {} }; clearSmartersConfig(); });
 
 describe("Smarters genres and manual ordering", () => {
   it("provides the requested comedy, drama and action genres", () => {
