@@ -444,6 +444,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      open_member_library_session: { Args: never; Returns: boolean }
       unlock_member_library: { Args: { p_pin: string }; Returns: boolean }
     }
     Enums: {
