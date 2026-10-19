@@ -1252,3 +1252,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .iptv-navigation-item:hover,.iptv-navigation-item:focus-visible{color:var(--foreground);background:var(--secondary)}
 .iptv-navigation-active{color:var(--primary-foreground)!important;background:var(--primary)!important}
 }
+.iptv-home-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:80rem;margin:1rem auto;padding:0 1rem}
+.iptv-mode{height:7rem!important;flex-direction:column;gap:.5rem;border-radius:1rem;font-size:1rem;font-weight:900;box-shadow:0 10px 25px -12px var(--primary)}
+.iptv-mode svg{width:2rem!important;height:2rem!important}
+.iptv-mode span{display:flex;flex-direction:column;align-items:center}
+.iptv-mode small{font-size:.65rem;opacity:.75}
+@media (min-width:768px){.iptv-mode{height:10rem!important;font-size:1.25rem}}
