@@ -271,7 +271,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
         {homepage && <section aria-label="قنوات سمارتر المغني" className="mx-auto max-w-7xl px-3 pt-4">
           <h2 className="mb-2 flex items-center gap-2 font-display text-xl font-black text-foreground"><Lock className="h-5 w-5" />قنوات سمارتر المغني</h2>
-          <MemberLibraryGate><SmartersLibrary embedded initialKind="live" /></MemberLibraryGate>
+          <MemberLibraryGate><SmartersLibrary embedded initialKind="live" onCatalog={() => document.getElementById("player")?.scrollIntoView({ behavior: "smooth" })} /></MemberLibraryGate>
         </section>}
         </>}</OwnerEditablePage>
       </main>
