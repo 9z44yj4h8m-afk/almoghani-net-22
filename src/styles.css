@@ -1319,7 +1319,7 @@ body { background:var(--background); }
 .iptv-channel-items { height:520px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; display:flex; flex-direction:column; gap:6px; }
 .iptv-channel-item { display:flex; align-items:center; gap:0; min-height:96px; border:1px solid transparent; background:var(--surface); border-radius:6px; }
 .iptv-channel-selected { border-color:var(--primary); box-shadow:inset 0 0 0 1px var(--primary); }
-.iptv-channel-select { flex:1; min-width:0; height:94px; gap:8px; justify-content:flex-start; padding:8px; white-space:normal; text-align:right; }
+.iptv-channel-select { flex:1; min-width:0; height:94px; gap:14px; justify-content:flex-start; padding:8px 10px; white-space:normal; text-align:right; }
 .iptv-channel-select img { height:80px; width:80px; object-fit:contain; flex-shrink:0; border-radius:4px; }
 .iptv-channel-select > span:last-child { overflow-wrap:anywhere; font-size:18px; font-weight:800; line-height:1.5; color:var(--foreground); }
 .iptv-channel-number { color:var(--muted-foreground); font-size:10px; font-family:Arial,sans-serif; }
