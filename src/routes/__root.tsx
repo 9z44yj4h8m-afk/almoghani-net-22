@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BroadcastHeader, BroadcastFooter } from "@/components/broadcast-shell";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { IptvNavigation } from "@/components/iptv-navigation";
 import {
   Outlet,
   Link,
@@ -187,7 +188,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="broadcast-app"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div><MobileBottomNav /><BroadcastFooter /></div><IosInstallBanner /></>}</MemberProvider>
+      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="iptv-site-layout"><IptvNavigation /><div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div><MobileBottomNav /><BroadcastFooter /></div></div><IosInstallBanner /></>}</MemberProvider>
     </QueryClientProvider>
   );
 }
