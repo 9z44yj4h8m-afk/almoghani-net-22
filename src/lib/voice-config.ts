@@ -63,11 +63,18 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-style-khajoola", female: true, name: "خجولة", label: "هادئة خجولة", providerId: "Vindemiatrix", delivery: "أداء امرأة بالغة خجولة هادئة، كلام منخفض متردد قليلا مع ضحكة خجولة قصيرة، طبقة متوسطة رقيقة ولهجة أهل القصيم" },
   { id: "female-style-jaddah", female: true, name: "الجدة نورة", label: "جدة حنونة كبيرة", providerId: "Sulafat", delivery: "أداء امرأة كبيرة في السن حنونة جدا، صوت مبحوح خفيف وإيقاع بطيء، كلمات دعاء وحنان ولهجة نجدية قديمة" },
   { id: "female-style-mudarrisa", female: true, name: "أستاذة", label: "معلّمة صبورة", providerId: "Erinome", delivery: "أداء امرأة بالغة معلّمة صبورة وواضحة، تشرح بهدوء وتشدد على الكلمات المهمة، نطق نقي وإيقاع متوسط مشجع" },
+  { id: "female-style-comedy", female: true, name: "ضحوكة", label: "كوميدية تنكّت", providerId: "Autonoe", delivery: "أداء امرأة بالغة كوميدية خفيفة الدم، تقول الكلام كأنها تنكّت وتضحك ضحكة قصيرة، تبالغ بالتعابير وتغيّر نبرتها بمرح، لهجة سعودية عامية" },
+  { id: "female-style-comedy2", female: true, name: "سوالف", label: "كوميدية ساخرة", providerId: "Despina", delivery: "أداء امرأة بالغة ساخرة بخفة دم، نبرة مستغربة ومبالغة مضحكة ووقفات قبل الإفيه، لهجة خليجية عامية" },
+  { id: "female-style-recorded", female: true, name: "الرسالة المسجلة", label: "صوت مسجّل آلي", providerId: "Kore", delivery: "أداء امرأة بالغة كأنها رسالة مسجلة مسبقا في الهاتف أو المطار، نبرة رسمية مهذبة ثابتة جدا، نطق فصيح واضح ووقفات منتظمة بين الجمل" },
+  { id: "female-style-recorded2", female: true, name: "المجيب الآلي", label: "تسجيل خدمة عملاء", providerId: "Erinome", delivery: "أداء امرأة بالغة كمجيب آلي لخدمة العملاء، ترحيب مهذب مبتسم وإيقاع متزن ثابت، نطق واضح كأنه تسجيل مسبق" },
+  { id: "female-style-3amiya", female: true, name: "نوير", label: "عامية سعودية يومية", providerId: "Laomedeia", delivery: "أداء امرأة بالغة تسولف بالعامية السعودية اليومية بعفوية تامة، كلمات دارجة وإيقاع طبيعي سريع كأنها تكلم صديقتها، دون فصحى" },
+  { id: "female-style-3amiya2", female: true, name: "هيا", label: "عامية خليجية عفوية", providerId: "Leda", delivery: "أداء امرأة بالغة تتكلم بالعامية الخليجية الدارجة بعفوية وحنان، مثل رسالة صوتية بين صديقات، إيقاع مريح دون فصحى" },
 ];
 
 // Panel categories: ordered groups shown as card sections in the voice studio.
 export const FEMALE_VOICE_CATEGORIES = ["أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة", "أساليب جديدة"] as const;
 const VOICE_CATEGORY: Record<string, string> = {
+  "female-style-comedy": "أساليب جديدة", "female-style-comedy2": "أساليب جديدة", "female-style-recorded": "أساليب جديدة", "female-style-recorded2": "أساليب جديدة", "female-style-3amiya": "أساليب جديدة", "female-style-3amiya2": "أساليب جديدة", 
   "female-style-hakawatiya": "أساليب جديدة", "female-style-mudhee3a": "أساليب جديدة", "female-style-radio": "أساليب جديدة", "female-style-sha3era": "أساليب جديدة", "female-style-mu3alliqa": "أساليب جديدة", "female-style-khajoola": "أساليب جديدة", "female-style-jaddah": "أساليب جديدة", "female-style-mudarrisa": "أساليب جديدة", 
   "female-saudi-lateefa": "أصوات سعودية", "female-saudi-muneera": "أصوات سعودية", "female-saudi-bayan": "أصوات سعودية", "female-saudi-ibtisam": "أصوات سعودية",
   "female-saudi-lulwa": "أصوات سعودية", "female-saudi-nawwarah": "أصوات سعودية", "female-saudi-wadha": "أصوات سعودية", "female-saudi-athir": "أصوات سعودية",
