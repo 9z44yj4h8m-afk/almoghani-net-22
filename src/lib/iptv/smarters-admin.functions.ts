@@ -1,3 +1,4 @@
+import { genreSchema, itemGenre, smartersConfigSchema, type SmartersConfig } from "./smarters-config";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -25,23 +26,19 @@ export const adminSmartersGroups = createServerFn({ method: "POST" })
 /** Raw items for the owner (names only, never stream URLs). */
 export const adminSmartersItems = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ kind, group: z.string().max(300), q: z.string().max(100) }).parse(d))
+  .inputValidator((d) => z.object({ kind, group: z.string().max(300), q: z.string().max(100), genre: genreSchema.optional() }).parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
-    const { loadRaw } = await import("./library.server");
+    const { loadRaw, loadConfig } = await import("./library.server");
+    const cfg = await loadConfig();
     const q = data.q.trim().toLowerCase();
-    const rows = (await loadRaw(data.kind)).filter((r) => (!data.group || r[1] === data.group) && (!q || r[0].toLowerCase().includes(q)));
-    return { total: rows.length, items: rows.slice(0, data.group && !q ? 2000 : 200).map((r) => ({ id: r[3], name: r[0], group: r[1] })) };
+    const rows = (await loadRaw(data.kind)).filter((r) => (!data.group || r[1] === data.group) && (!q || r[0].toLowerCase().includes(q)) && (!data.genre || (data.kind !== "live" && itemGenre(data.kind, r[3], r[1], cfg) === data.genre)));
+    return { total: rows.length, items: rows.slice(0, (data.group || data.genre) && !q ? 2000 : 200).map((r) => ({ id: r[3], name: r[0], group: r[1] })) };
   });
-
-const config = z.object({
-  groups: z.record(z.string().max(400), z.object({ label: z.string().max(120).optional(), hidden: z.boolean().optional(), order: z.number().int().min(0).max(100000).optional() })),
-  items: z.record(z.string().max(60), z.object({ label: z.string().max(200).optional(), hidden: z.boolean().optional(), order: z.number().int().min(0).max(100000).optional() })),
-});
 
 export const saveSmartersConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => config.parse(d))
+  .inputValidator((d) => smartersConfigSchema.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
     const { error } = await context.supabase.from("site_settings").upsert({ key: "smarters", value: data as never, updated_at: new Date().toISOString() });
@@ -56,6 +53,7 @@ export const loadSmartersConfig = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     await assertAdmin(context.supabase, context.userId);
     const { data } = await context.supabase.from("site_settings").select("value").eq("key", "smarters").maybeSingle();
-    const v = (data?.value ?? {}) as { groups?: Record<string, { label?: string; hidden?: boolean; order?: number }>; items?: Record<string, { label?: string; hidden?: boolean; order?: number }> };
-    return { groups: v.groups ?? {}, items: v.items ?? {} };
+    const v = (data?.value ?? {}) as Partial<SmartersConfig>;
+    return { groups: v.groups ?? {}, items: v.items ?? {}, genreOrders: v.genreOrders };
+
   });
