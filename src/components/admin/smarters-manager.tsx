@@ -51,7 +51,7 @@ export function SmartersManager() {
     const next = [...ordered];
     const j = index + dir;
     if (j < 0 || j >= next.length) return;
-    [next[index], next[j]] = [next[j], next[index]];
+    const a = next[index]!; next[index] = next[j]!; next[j] = a;
     setCfg((c) => {
       const g = { ...c.groups };
       next.forEach((row, i) => { g[gk(row.name)] = { ...g[gk(row.name)], order: i }; });
