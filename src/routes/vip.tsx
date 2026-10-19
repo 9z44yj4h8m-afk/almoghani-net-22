@@ -317,11 +317,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
                 className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
                 <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
-                  {entry.logo ? (
-                    <img src={entry.logo} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={(event) => { event.currentTarget.hidden = true; }} />
-                  ) : (
-                    <activeTab.Icon className="h-6 w-6 text-muted-foreground" />
-                  )}
+                  <ChannelLogo src={entry.logo} name={entry.name} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{entry.name}</span>
