@@ -3,7 +3,7 @@ import { type SectionCard } from "@/lib/section-content";
 
 const bounded = (value: unknown, min: number, max: number) => typeof value === "number" && Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : undefined;
 export function SectionCardStyle({ id, card }: { id: string; card: SectionCard }) {
-  if (!/^[a-z-]+$/.test(id)) return null;
+  if (!/^[a-z0-9-]+$/.test(id)) return null;
   const selector = `[data-section-card="${id}"]`;
   const rules: string[] = [];
   if (siteFonts.some((font) => font === card.font)) rules.push(`${selector},${selector} [data-card-text]{font-family:"${card.font}",sans-serif!important}`);

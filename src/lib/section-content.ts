@@ -39,7 +39,9 @@ export const sectionDestinations = [
   { value: "/studio", label: "استوديو الفيديو المضحك" },
 ] as const;
 export type SectionCard = { title: string; description: string; button: string; image: string; link: string; hidden?: boolean; font?: string; titleSize?: number; descriptionSize?: number; buttonSize?: number; imageWidth?: number; imageHeight?: number; imageFit?: "cover" | "contain"; fontWeight?: number };
-export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string; orders?: Record<string, string[]> };
+export type SectionGroup = "categories" | "sections" | "member";
+export type CustomSection = { id: string; group: SectionGroup; defaults: SectionCard };
+export type SectionContent = { cards: Record<string, Partial<SectionCard>>; titles: Record<string, string>; pageTitle: string; pageDescription: string; orders?: Record<string, string[]>; customSections?: CustomSection[]; deletedIds?: string[] };
 export const defaultSectionContent: SectionContent = { cards: {}, titles: {}, pageTitle: "الأقسام", pageDescription: "اختر ما تريد مشاهدته" };
 export const editableCards: { id: string; location: string; defaults: SectionCard }[] = [
   { id: "sections-bedouin", location: "صفحة الأقسام · البدوية دراما", defaults: { title: "البدوية دراما", description: "المسلسلات البدوية وجميع حلقاتها", button: "استعرض المسلسلات", image: bedouinImage, link: "/bedouin-drama" } },
@@ -53,16 +55,39 @@ export const editableCards: { id: string; location: string; defaults: SectionCar
   ...homeCategoryCards.map((c) => ({ id: `category-${c.id}`, location: `الرئيسية · ${c.title}`, defaults: { title: c.title, description: "", button: "دخول", image: c.image, link: c.link } })),
 ];
 export function getSectionCard(id: string, content?: SectionContent): SectionCard {
-  const base = editableCards.find((c) => c.id === id)?.defaults ?? { title: "", description: "", button: "", image: liveImage, link: "/live" };
+  const base = editableCards.find((c) => c.id === id)?.defaults ?? content?.customSections?.find((c) => c.id === id)?.defaults ?? { title: "", description: "", button: "", image: liveImage, link: "/live" };
   const card = { ...base, ...content?.cards?.[id] };
   if (!card.image) card.image = base.image;
-  if (!sectionDestinations.some((d) => d.value === card.link)) card.link = base.link;
+  if (!sectionDestinations.some((d) => d.value === card.link)) card.link = sectionDestinations.some((d) => d.value === base.link) ? base.link : "/live";
   if (!/^(https:\/\/|\/)/.test(card.image) || card.image.startsWith("//")) card.image = base.image;
   return card;
 }
 
 export function orderedSectionIds(group: string, defaults: string[], content?: SectionContent): string[] {
+  const custom = (content?.customSections ?? []).filter((c) => c.group === group).map((c) => group === "categories" ? c.id.replace(/^category-/, "") : c.id);
+  const available = [...new Set([...defaults, ...custom])].filter((id) => !content?.deletedIds?.includes(sectionCardId(group, id)));
   const saved = content?.orders?.[group];
-  const ordered = Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string" && defaults.includes(id)) : [];
-  return [...new Set([...ordered, ...defaults])];
+  const ordered = Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string" && available.includes(id)) : [];
+  return [...new Set([...ordered, ...available])];
+}
+
+export const sectionCardId = (group: string, id: string) => group === "categories" ? `category-${id}` : id;
+export const sectionGroups = [
+  { group: "categories", title: "صور الرئيسية", ids: homeCategoryCards.map((c) => c.id) },
+  { group: "sections", title: "صفحة الأقسام", ids: ["sections-live", "sections-movie", "sections-series", "sections-bedouin", "sections-member"] },
+  { group: "member", title: "منصات الأعضاء", ids: ["home-live", "home-movie", "home-series"] },
+] as const;
+export function sectionEditorCards(content: SectionContent) {
+  return [...editableCards, ...(content.customSections ?? []).map((c) => ({ ...c, location: `${sectionGroups.find((g) => g.group === c.group)?.title} · ${getSectionCard(c.id, content).title}` }))].filter((c) => !content.deletedIds?.includes(c.id));
+}
+export function deleteSection(content: SectionContent, id: string): SectionContent {
+  return { ...content, deletedIds: [...new Set([...(content.deletedIds ?? []), id])] };
+}
+export function restoreSection(content: SectionContent, id: string): SectionContent {
+  return { ...content, deletedIds: (content.deletedIds ?? []).filter((v) => v !== id) };
+}
+export function addSection(content: SectionContent, group: SectionGroup, id: string, source?: SectionCard): SectionContent {
+  const cardId = sectionCardId(group, id);
+  if (sectionEditorCards(content).some((c) => c.id === cardId) || content.customSections?.some((c) => c.id === cardId)) return content;
+  return { ...content, customSections: [...(content.customSections ?? []), { id: cardId, group, defaults: { ...(source ?? editableCards[0]?.defaults ?? { title: "", description: "", image: liveImage, button: "دخول", link: "/live" }), title: source ? `${source.title} — نسخة` : "قسم جديد", hidden: false } }] };
 }
