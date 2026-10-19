@@ -33,7 +33,7 @@
 - Share shell and wordmark through the sidebar rail only; the contact footer strip and the four-item bottom nav were removed at the owner's request (19 Oct 2026) and must not come back, so every destination stays reachable from the rail. Preserve guards. Keep artwork browser-safe, separate from streams; owner images win.
 - Admin content manager uses existing admin-RLS tables for bulk channels and schedules; validate streams before insertion and invalidate schedule queries after saves.
 - Store default/custom cards, edits, placement, order and recoverable deletion in section-content; shared helpers merge them across home, sections and members, preserving destination gates and channel IDs.
-- Subdirectories have their own AGENTS.md; read it before changing files there.
+- Read subdirectories' AGENTS.md before editing there.
 - Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
