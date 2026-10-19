@@ -14,7 +14,9 @@ async function toSmallImage(file: File): Promise<string> {
     const scale = Math.min(1, 400 / Math.max(img.width, img.height));
     const c = document.createElement("canvas");
     c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
-    c.getContext("2d")!.drawImage(img, 0, 0, c.width, c.height);
+    const context = c.getContext("2d");
+    if (!context) throw new Error("Image canvas unavailable");
+    context.drawImage(img, 0, 0, c.width, c.height);
     return c.toDataURL("image/webp", 0.85);
   } finally { URL.revokeObjectURL(url); }
 }

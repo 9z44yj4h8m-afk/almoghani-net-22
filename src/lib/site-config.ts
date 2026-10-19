@@ -114,14 +114,16 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
     .filter((c) => !ov.get(c.id)?.hidden)
     .map((c) => {
       const yt = youtubeIdFrom(c.stream_url);
+      const o = ov.get(c.id);
+      const category = o?.category ?? c.category;
       return {
         id: c.id,
-        name: c.name,
-        category: (channelCategories.includes(c.category as ChannelCategory) ? c.category : "عامة") as ChannelCategory,
+        name: o?.name || c.name,
+        category: (channelCategories.includes(category as ChannelCategory) ? category : "عامة") as ChannelCategory,
         ...(yt ? { youtubeId: yt } : { streamUrl: c.stream_url }),
         thumbnail: c.logo || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : ""),
         description: c.description || "بث مباشر",
-        ...(typeof ov.get(c.id)?.logo === "string" ? { thumbnail: ov.get(c.id)!.logo as string } : {}),
+        ...(typeof o?.logo === "string" ? { thumbnail: o.logo } : {}),
       };
     });
   const all = [...base, ...extra];
