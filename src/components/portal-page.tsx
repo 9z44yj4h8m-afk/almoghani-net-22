@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { IptvHomeModes } from "@/components/iptv-navigation";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
@@ -264,6 +265,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} section={section} />
         {homepage && <BreakingTicker />}
+        {homepage && <IptvHomeModes />}
         {homepage && <HomeEntries />}
         {homepage && <HomeCategoryBanners />}
         {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
