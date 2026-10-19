@@ -39,3 +39,5 @@
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
 
 - Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed app shares shell/navigation without changing gates.
+
+- Reuse SmartersLibrary behind MemberLibraryGate on /vip and the homepage source switch, so private playback, ordering and access checks stay identical.
