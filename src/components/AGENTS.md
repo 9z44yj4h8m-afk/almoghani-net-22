@@ -8,3 +8,5 @@
 - Normalize bot message vocalization through the shared chat-text helper on write and historical display; preserve visitor text and decorative names so cleanup does not alter identities.
 - Voice chat (/voice-chat) reuses LiveChat with voice mode; bot speech is generated server-side only for existing chat message IDs so the endpoint cannot be used as open TTS.
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
+
+- Film and series pages embed the gated SmartersLibrary with an explicit initialKind so private playback stays protected.

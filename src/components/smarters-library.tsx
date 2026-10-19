@@ -34,9 +34,9 @@ const TABS: {
   { k: "series", label: "المسلسلات", eyebrow: "جميع الحلقات", Icon: Clapperboard, activeClass: "bg-accent text-accent-foreground" },
 ];
 
-export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: { initialGroup?: string | undefined; onCatalog: () => void; embedded?: boolean }) {
+export function SmartersLibrary({ initialGroup, initialKind, onCatalog, embedded = false }: { initialGroup?: string | undefined; initialKind?: Kind; onCatalog: () => void; embedded?: boolean }) {
   const pin = "member-session";
-  const [kind, setKind] = useState<Kind>("live");
+  const [kind, setKind] = useState<Kind>(initialKind ?? "live");
   const [genre, setGenre] = useState<Genre | "">("");
   const [genres, setGenres] = useState<{ id: Genre; label: string; count: number }[]>([]);
   const [revision, setRevision] = useState(0);
@@ -71,6 +71,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
   const fetchItems = useServerFn(searchLibrary);
 
   useEffect(() => {
+    if (initialKind) return;
     const params = new URLSearchParams(window.location.search);
     const requestedKind = params.get("kind");
     if (requestedKind !== "live" && requestedKind !== "movie" && requestedKind !== "series") return;

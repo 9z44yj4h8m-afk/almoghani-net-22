@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Heart, Lock, Search, Shuffle, Clapperboard } from "l
 import { Button } from "@/components/ui/button";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
+import { SmartersPageCollection } from "@/components/smarters-page-collection";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/movies")({
@@ -119,6 +120,7 @@ function MoviesPage() {
           ))}
         </div>
         {list.length === 0 && <p className="py-16 text-center text-muted-foreground">لا توجد أفلام مطابقة.</p>}
+        <SmartersPageCollection kind="movie" />
       </main>
 
     </div>

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, ListVideo, Play, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SmartersPageCollection } from "@/components/smarters-page-collection";
 import { bedouinSeries, type BedouinEpisode } from "@/lib/bedouin-series";
 
 export const Route = createFileRoute("/bedouin-drama")({
@@ -60,5 +61,6 @@ function BedouinDramaPage() {
         {!episodes.some((e) => `${e.title} ${e.number}`.includes(query.trim())) && <p className="col-span-full py-8 text-muted-foreground">لا توجد حلقات مطابقة.</p>}
       </section>
     </>}
+    {!series && <SmartersPageCollection kind="series" />}
   </main>;
 }
