@@ -503,14 +503,22 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     </label>
     <div className="voice-studio-form" id="voice-settings">
       <div className="voice-neon-choice">
-      <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select id="voice-select" aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
-        <option value="">صوت البوت المحفوظ</option>
-        {FEMALE_VOICE_CATEGORIES.map((cat) => {
-          const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
-          return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup> : null;
-        })}
-        {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
-      </select><ChevronDown aria-hidden="true" /></div></label>
+      <div className="voice-studio-field" id="voice-select" role="radiogroup" aria-label="صوت هذه الجملة"><span><Mic />{panel.texts.voiceLabel}</span>
+        <div className="max-h-[50vh] space-y-3 overflow-y-auto rounded-xl border border-border bg-background/40 p-2">
+          <button type="button" role="radio" aria-checked={sayVoice === ""} onClick={() => { setSayVoice(""); setAudioFile(null); }} className={`w-full rounded-lg border px-3 py-2 text-right text-sm font-bold ${sayVoice === "" ? "border-primary bg-primary/15 text-primary" : "border-border bg-secondary"}`}>صوت البوت المحفوظ</button>
+          {FEMALE_VOICE_CATEGORIES.map((cat) => {
+            const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
+            return list.length ? <div key={cat}><h3 className="mb-1.5 text-xs font-black text-primary">{cat}</h3><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{list.map((v) => {
+              const on = sayVoice === v.id;
+              return <div key={v.id} className={`flex items-center gap-2 rounded-lg border p-2 ${on ? "border-primary bg-primary/15" : "border-border bg-secondary"}`}>
+                <button type="button" aria-label={`تشغيل صوت ${v.name}`} disabled={testing || (quick !== "" && quick !== v.id)} onClick={() => void quickTest(v.id)} className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground disabled:opacity-50">{quick === v.id ? <Square className="size-4" /> : <Play className="size-4" />}</button>
+                <button type="button" role="radio" aria-checked={on} disabled={testing} onClick={() => { setSayVoice(v.id); setAudioFile(null); }} className="min-w-0 flex-1 text-right"><b className="block truncate text-sm">{v.name}</b><small className="block truncate text-[11px] text-muted-foreground">{v.label}</small></button>
+              </div>;
+            })}</div></div> : null;
+          })}
+          {panel.custom.length > 0 && <div><h3 className="mb-1.5 text-xs font-black text-primary">أصواتي المضافة</h3><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{panel.custom.map((v) => <button key={v.id} type="button" role="radio" aria-checked={sayVoice === v.id} onClick={() => { setSayVoice(v.id); setAudioFile(null); }} className={`rounded-lg border p-2 text-right text-sm font-bold ${sayVoice === v.id ? "border-primary bg-primary/15" : "border-border bg-secondary"}`}>{v.name}</button>)}</div></div>}
+        </div>
+      </div>
       <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       </div>
       {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
