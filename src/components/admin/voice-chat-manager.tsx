@@ -16,7 +16,6 @@ import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BE
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
 import voiceBotArt from "@/assets/voice-reference/bot.jpg.asset.json";
 import voiceGirlArt from "@/assets/voice-reference/girl.jpg.asset.json";
-import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
