@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { OwnerEditablePage } from "@/components/admin/page-content-editor";
 import { IptvWorkspace } from "@/components/iptv-workspace";
 import { MemberLibraryGate } from "@/components/member-library-gate";
 import { SmartersLibrary } from "@/components/smarters-library";
@@ -265,17 +266,18 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-6 md:pb-10">
+        <OwnerEditablePage>{(editChannel) => <>
         {homepage && <nav aria-label="مصدر القنوات" className="mx-auto flex max-w-7xl flex-wrap gap-2 px-3 pt-3">
           <Button variant={smartersOpen ? "outline" : "broadcast"} aria-pressed={!smartersOpen} onClick={() => setSmartersOpen(false)}><Tv />القنوات المباشرة</Button>
           <Button variant={smartersOpen ? "broadcast" : "outline"} aria-pressed={smartersOpen} onClick={() => setSmartersOpen(true)}><Lock />سمارتر المغني</Button>
         </nav>}
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         {homepage && smartersOpen ? <MemberLibraryGate><SmartersLibrary embedded onCatalog={() => setSmartersOpen(false)} /></MemberLibraryGate> : <>
-        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} />
+        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} />
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
         </>}
 
-
+        </>}</OwnerEditablePage>
       </main>
 
     </div>
