@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { MemberLibraryGate } from "@/components/member-library-gate";
 
@@ -31,18 +31,19 @@ describe("Homepage Smarters member protection", () => {
     await waitFor(() => expect(mocks.status).toHaveBeenCalled());
     expect(mocks.privateRead).not.toHaveBeenCalled();
   });
-  it("opens private channels only after successful PIN 0550 verification", async () => {
+  it("opens an authorized member library without PIN 0550 or browser unlock flags", async () => {
     mocks.user = { id: "member" };
-    let unlocked = false;
-    mocks.status.mockImplementation(async () => ({ unlocked, name: "عضو" }));
-    mocks.unlock.mockImplementation(async () => { unlocked = true; return { ok: true }; });
+    mocks.status.mockResolvedValue({ unlocked: true, name: "عضو" });
     mount();
-    await screen.findByLabelText("الرقم السري");
-    expect(mocks.privateRead).not.toHaveBeenCalled();
-    fireEvent.change(screen.getByLabelText("الرقم السري"), { target: { value: "0550" } });
-    fireEvent.click(screen.getByRole("button", { name: "فتح المكتبة" }));
     await waitFor(() => expect(mocks.privateRead).toHaveBeenCalled());
-    expect(mocks.unlock).toHaveBeenCalledWith({ data: { pin: "0550" } });
-    expect(sessionStorage.getItem("library-pin-ok")).toBe("member");
+    expect(mocks.unlock).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem("library-pin-ok")).toBeNull();
+  });
+  it("does not read private content if the authenticated access check fails", async () => {
+    mocks.user = { id: "member" };
+    mocks.status.mockRejectedValue(new Error("Suspended"));
+    mount();
+    await screen.findByRole("alert");
+    expect(mocks.privateRead).not.toHaveBeenCalled();
   });
 });
