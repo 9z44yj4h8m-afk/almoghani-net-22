@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Clock, Heart, Lock, Search, Shuffle } from "lucide-react";
+import { ArrowRight, Clock, Heart, Lock, Search, Shuffle, Clapperboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
@@ -89,6 +89,7 @@ function MoviesPage() {
             <button key={f} type="button" onClick={() => setFilter(f)}
               className={`shrink-0 rounded-xl border px-5 py-2 text-sm font-black ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-sky/40 text-foreground"}`}>{f}</button>
           ))}
+          <Button asChild variant="outline" className="shrink-0"><Link to="/bedouin-drama"><Clapperboard className="h-4 w-4" />المسلسلات</Link></Button>
           <Link to="/vip" search={{ kind: "movie" }} className="flex shrink-0 items-center gap-1.5 rounded-xl border border-sky/40 px-5 py-2 text-sm font-black"><Lock className="h-3.5 w-3.5" /> خاص</Link>
         </div>
 
