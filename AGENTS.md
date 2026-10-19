@@ -41,5 +41,5 @@
 - Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule.
 - Share smarters-config genre schema, filters and ordering across admin/library to keep saved classifications consistent.
 
-- Reuse SmartersLibrary behind MemberLibraryGate on /vip and home so private playback, order and access checks stay identical.
+- /vip defaults to homepage PortalPage for identical live/search; private kind/group links and home share gated SmartersLibrary to preserve access/order.
 - Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.
