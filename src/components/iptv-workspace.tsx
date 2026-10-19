@@ -8,12 +8,13 @@ type Section = { slug: string; title: string; category: ChannelCategory; icon: L
 export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection }: {
   channels: Channel[]; sections: Section[]; selected: Channel; active: boolean;
   onWatch: () => void; onSelect: (channel: Channel) => void;
-  favorites: string[]; onFavorite: (id: string) => void; initialSection?: string;
+  favorites: string[]; onFavorite: (id: string) => void; initialSection?: string | undefined;
 }) {
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");
   const selectedSection = sections.find(s => s.slug === category);
-  const visible = channels.filter(c => (category === "all" || (category === "favorites" ? favorites.includes(c.id) : c.category === selectedSection?.category)) && c.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const uniqueChannels = channels.filter((c, index) => channels.findIndex(item => item.id === c.id) === index);
+  const visible = uniqueChannels.filter(c => (category === "all" || (category === "favorites" ? favorites.includes(c.id) : c.category === selectedSection?.category)) && c.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
   return <section className="iptv-workspace" aria-label="البث المباشر">
     <nav className="iptv-categories" aria-label="تصنيفات القنوات">
       {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => setCategory(slug)}><Icon /><span>{title}</span></Button>)}

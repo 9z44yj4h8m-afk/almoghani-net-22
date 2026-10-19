@@ -1293,7 +1293,7 @@ body:has(.voice-studio-page) { overflow: hidden; }
 }
 body { background:var(--background); }
 .iptv-site-main { max-width:none; margin:0; border:0; padding-bottom:100px; }
-.iptv-site-layout { flex-direction:column; }
+.iptv-site-layout { flex-direction:column; --primary:oklch(0.79 0.135 88); --primary-foreground:oklch(0.2 0.02 80); --accent:var(--primary); --sky:var(--primary); --ring:var(--primary); --vip-purple:var(--iptv-gold-dark); --vip-cyan:var(--primary); --background:oklch(0.115 0.004 265); --surface:oklch(0.165 0.007 265); --surface-deep:oklch(0.13 0.005 265); --card:var(--surface); --secondary:oklch(0.21 0.009 265); --border:oklch(0.265 0.009 265); --input:var(--border); }
 .iptv-navigation { display:block; width:100%; height:auto; position:static; padding:8px 18px; border-bottom:1px solid var(--border); background:var(--surface-deep); }
 .iptv-rail-brand { display:none; }
 .iptv-navigation nav { display:flex; flex-direction:row; flex-wrap:wrap; gap:4px; }

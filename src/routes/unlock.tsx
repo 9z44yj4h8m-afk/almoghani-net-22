@@ -11,6 +11,8 @@ export const Route = createFileRoute("/unlock")({
       { name: "description", content: "الموقع قيد التجهيز، الدخول برقم سري." },
       { property: "og:title", content: "الموقع مغلق مؤقتًا | المغني لايف" },
       { property: "og:description", content: "الموقع قيد التجهيز، الدخول برقم سري." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
