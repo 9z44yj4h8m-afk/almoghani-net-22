@@ -12,6 +12,7 @@ import { ChannelOrderManager } from "@/components/admin/channel-order-manager";
 import { ChannelImagesManager } from "@/components/admin/channel-images-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
+import { SmartersManager } from "@/components/admin/smarters-manager";
 
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
@@ -22,6 +23,7 @@ import {
 } from "@/lib/site-config";
 
 const ADMIN_SECTIONS = [
+  { id: "smarters", label: "سمارتر", content: SmartersManager },
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
   { id: "channels", label: "القنوات", content: ChannelsTab },
   { id: "channel-order", label: "ترتيب القنوات", content: ChannelOrderManager },
