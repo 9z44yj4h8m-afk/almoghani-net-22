@@ -265,10 +265,6 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} />
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
-        {homepage && <BreakingTicker />}
-        {homepage && <HomeEntries />}
-        {homepage && <HomeCategoryBanners />}
-        {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
 
 
