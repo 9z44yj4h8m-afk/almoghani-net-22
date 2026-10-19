@@ -8,6 +8,7 @@ import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
 import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
+import { ChannelOrderManager } from "@/components/admin/channel-order-manager";
 import { ChannelImagesManager } from "@/components/admin/channel-images-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
@@ -23,6 +24,7 @@ import {
 const ADMIN_SECTIONS = [
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
   { id: "channels", label: "القنوات", content: ChannelsTab },
+  { id: "channel-order", label: "ترتيب القنوات", content: ChannelOrderManager },
   { id: "channel-images", label: "صور القنوات", content: ChannelImagesManager },
   { id: "movies", label: "الأفلام", content: MoviesTab },
   { id: "content", label: "الإضافة الجماعية", content: ContentManager },
