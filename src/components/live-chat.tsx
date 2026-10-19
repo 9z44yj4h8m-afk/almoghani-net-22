@@ -233,8 +233,9 @@ export function LiveChat({ onIncoming, bare = false, voice = false }: { onIncomi
                 <div className="mg-msg-text">
                   <p className="classic-chat-message-meta mg-name"><b>{name || (mine ? "أنت" : "عضو")}</b>
                     {((mine && user) || isAdmin) && <Button type="button" variant="ghost" size="icon-xs" aria-label="حذف الرسالة" onClick={() => supabase.from("chat_messages").delete().eq("id", m.id).then(() => setMsgs((x) => x.filter((y) => y.id !== m.id)))}><Trash2 /></Button>}
+                    {isBot && <Button type="button" variant="ghost" size="icon-xs" className="mg-voice-btn" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}
                   </p>
-                  <p className="classic-chat-body mg-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}{isBot && <Button type="button" variant="ghost" size="icon-xs" aria-label={`استمع لصوت ${name}`} disabled={voiceLoading === m.id} onClick={() => playVoice(m.id)}>{voiceLoading === m.id ? <Loader2 className="animate-spin" /> : <Volume2 />}</Button>}</p>
+                  <p className="classic-chat-body mg-body">{isBot ? withoutArabicDiacritics(m.body) : m.body}</p>
                 </div>
                 <time dateTime={m.created_at}>{new Date(m.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Riyadh" })}</time>
               </div>

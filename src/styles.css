@@ -735,6 +735,10 @@ body { background: var(--surface-deep); }
 .mg-chat .mg-msg-text { flex:1; min-width:0; text-align:right; }
 .classic-chat.mg-chat .mg-name { display:flex; align-items:center; gap:6px; margin:0 0 2px; font-size:calc(var(--chat-font,17px) * 1.05); font-weight:800; line-height:1.3; direction:rtl; }
 .classic-chat.mg-chat .mg-name b { color:var(--chat-name,var(--mg-name)); }
+.mg-chat .mg-name .mg-voice-btn { flex-shrink:0; width:30px; height:30px; min-height:30px; padding:0; color:var(--mg-maroon); touch-action:manipulation; }
+.mg-chat .mg-name .mg-voice-btn svg { width:18px; height:18px; }
+.mg-chat .mg-name .mg-voice-btn:disabled { opacity:.6; pointer-events:none; }
+@media (max-width:640px){ .mg-chat .mg-name .mg-voice-btn { width:34px; height:34px; min-height:34px; } .mg-chat .mg-name .mg-voice-btn svg { width:20px; height:20px; } }
 .classic-chat.mg-chat .mg-body { margin:0; direction:rtl; text-align:right; font-size:var(--chat-font,17px); font-weight:500; line-height:1.5; color:#1f1f1f; overflow-wrap:anywhere; white-space:pre-wrap; }
 .mg-chat .mg-msg time { flex-shrink:0; margin-inline-start:auto; color:#777; font-size:14px; font-family:Arial,sans-serif; direction:ltr; }
 .mg-chat .mg-tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--mg-deep); }
