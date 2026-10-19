@@ -91,3 +91,12 @@ export function addSection(content: SectionContent, group: SectionGroup, id: str
   if (sectionEditorCards(content).some((c) => c.id === cardId) || content.customSections?.some((c) => c.id === cardId)) return content;
   return { ...content, customSections: [...(content.customSections ?? []), { id: cardId, group, defaults: { ...(source ?? editableCards[0]?.defaults ?? { title: "", description: "", image: liveImage, button: "دخول", link: "/live" }), title: source ? `${source.title} — نسخة` : "قسم جديد", hidden: false } }] };
 }
+export function moveCustomSection(content: SectionContent, id: string, group: SectionGroup): SectionContent {
+  const current = content.customSections?.find((c) => c.id === id);
+  if (!current || current.group === group) return content;
+  const newId = sectionCardId(group, id.replace(/^category-/, ""));
+  const cards = { ...content.cards };
+  if (cards[id]) { cards[newId] = cards[id]; if (newId !== id) delete cards[id]; }
+  const orders = Object.fromEntries(Object.entries(content.orders ?? {}).map(([key, ids]) => [key, ids.filter((v) => sectionCardId(key, v) !== id)]));
+  return { ...content, cards, orders, customSections: content.customSections?.map((c) => c.id === id ? { ...c, id: newId, group } : c), deletedIds: content.deletedIds?.map((v) => v === id ? newId : v) };
+}

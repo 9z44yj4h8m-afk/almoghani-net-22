@@ -1,8 +1,33 @@
 import { describe, expect, it } from "vitest";
-import { orderedSectionIds, getSectionCard, defaultSectionContent } from "@/lib/section-content";
+import { orderedSectionIds, getSectionCard, defaultSectionContent, addSection, deleteSection, restoreSection, moveCustomSection } from "@/lib/section-content";
 import { FEMALE_VOICE_PROFILES, normalizeVoiceChat, providerVoiceId, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
 
 describe("admin content controls", () => {
+  it("adds an editable section in the requested placement", () => {
+    const content = addSection(defaultSectionContent, "categories", "custom-one");
+    expect(orderedSectionIds("categories", ["news"], content)).toEqual(["news", "custom-one"]);
+    expect(getSectionCard("category-custom-one", content).title).toBe("قسم جديد");
+    expect(orderedSectionIds("member", ["home-live"], content)).toEqual(["home-live"]);
+  });
+  it("removes a default section from display without deleting its content and restores it", () => {
+    const original = { ...defaultSectionContent, cards: { "sections-live": { title: "البث الخاص بي" } } };
+    const deleted = deleteSection(original, "sections-live");
+    expect(orderedSectionIds("sections", ["sections-live", "sections-movie"], deleted)).toEqual(["sections-movie"]);
+    expect(getSectionCard("sections-live", deleted).title).toBe("البث الخاص بي");
+    expect(orderedSectionIds("sections", ["sections-live", "sections-movie"], restoreSection(deleted, "sections-live"))).toEqual(["sections-live", "sections-movie"]);
+  });
+  it("moves custom sections without losing saved edits", () => {
+    const added = addSection(defaultSectionContent, "categories", "custom-two");
+    const edited = { ...added, cards: { "category-custom-two": { title: "الرياضة", link: "/channels/sports", hidden: true } } };
+    const moved = moveCustomSection(edited, "category-custom-two", "member");
+    expect(orderedSectionIds("categories", ["news"], moved)).toEqual(["news"]);
+    expect(orderedSectionIds("member", [], moved)).toEqual(["custom-two"]);
+    expect(getSectionCard("custom-two", moved)).toMatchObject({ title: "الرياضة", link: "/channels/sports", hidden: true });
+  });
+  it("refuses external destinations on custom cards", () => {
+    const content = addSection(defaultSectionContent, "sections", "custom-bad", { title: "اختبار", description: "", button: "دخول", image: "/assets/test.jpg", link: "https://outside.example" });
+    expect(getSectionCard("custom-bad", content).link).toBe("/live");
+  });
   it("preserves distinct female profiles and resolves supported synthesis voices", () => {
     expect(FEMALE_VOICE_PROFILES.length).toBeGreaterThan(0);
     expect(new Set(FEMALE_VOICE_PROFILES.map((v) => v.delivery)).size).toBe(FEMALE_VOICE_PROFILES.length);

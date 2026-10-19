@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteConfig, siteConfigKey, siteFonts } from "@/lib/site-config";
 import { SectionCardStyle } from "@/components/section-card-style";
-import { defaultSectionContent, editableCards, getSectionCard, orderedSectionIds, sectionDestinations, sectionGroups, sectionCardId, sectionEditorCards, addSection, deleteSection, restoreSection, type SectionGroup, type SectionContent, type SectionCard } from "@/lib/section-content";
+import { defaultSectionContent, editableCards, getSectionCard, orderedSectionIds, sectionDestinations, sectionGroups, sectionCardId, sectionEditorCards, addSection, deleteSection, restoreSection, moveCustomSection, type SectionGroup, type SectionContent, type SectionCard } from "@/lib/section-content";
 import { liveSections } from "@/components/portal-page";
 
 const input = "w-full min-w-0 rounded-lg border border-border bg-background px-3 py-2 text-foreground";
@@ -50,6 +50,7 @@ export function SectionEditor() {
       </div>
       <label className="block space-y-2">اختر البطاقة<select aria-label="اختر البطاقة" className={input} value={selected} onChange={(e) => { setSelected(e.target.value); setMessage(""); }}>{availableCards.map((c) => <option key={c.id} value={c.id}>{c.location}</option>)}</select></label>
       <label className="flex items-center gap-2"><input type="checkbox" checked={!card.hidden} onChange={(e) => update({ hidden: !e.target.checked })} />إظهار البطاقة</label>
+      {content.customSections?.some((c) => c.id === selected) && <label className="block space-y-2">نقل القسم إلى<select aria-label="نقل القسم إلى" className={input} value={content.customSections.find((c) => c.id === selected)?.group} onChange={(e) => { const group = e.target.value as SectionGroup; setContent((old) => moveCustomSection(old, selected, group)); setSelected(sectionCardId(group, selected.replace(/^category-/, ""))); }}>{sectionGroups.map((g) => <option key={g.group} value={g.group}>{g.title}</option>)}</select></label>}
       <SectionCardStyle id="editor-preview" card={card} />
       <div data-section-card="editor-preview" className="section-page-card grid grid-cols-[minmax(0,1fr)_40%] items-center gap-3 overflow-hidden rounded-lg border border-border bg-card p-3">
         <div className="min-w-0 space-y-2"><h3 data-card-text="title" className="text-xl font-bold">{card.title}</h3><p data-card-text="description" className="text-sm text-muted-foreground">{card.description}</p><span data-card-text="button" className="block text-sm font-bold text-primary">{card.button}</span></div>
