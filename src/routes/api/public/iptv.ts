@@ -13,7 +13,7 @@ const sign = (u: string) => createHmac("sha256", KEY).update(u).digest("hex").sl
 const proxied = (u: string) => `/api/public/iptv?u=${encodeURIComponent(u)}&s=${sign(u)}`;
 
 /** Bare IPv4 hosts are rewritten to <ip>.sslip.io (resolves to the same IP) so the edge runtime can fetch them. */
-export function fetchableUrl(u: URL): string {
+function fetchableUrl(u: URL): string {
   if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname)) return u.toString();
   const copy = new URL(u.toString());
   copy.hostname = `${u.hostname}.sslip.io`;
