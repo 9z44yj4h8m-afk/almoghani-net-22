@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { adminSmartersGroups, adminSmartersItems, loadSmartersConfig, saveSmartersConfig } from "@/lib/iptv/smarters-admin.functions";
 
 type Kind = "live" | "movie" | "series";
-type Config = { groups: Record<string, { label?: string; hidden?: boolean; order?: number }>; items: Record<string, { label?: string; hidden?: boolean }> };
+type Config = { groups: Record<string, { label?: string; hidden?: boolean; order?: number }>; items: Record<string, { label?: string; hidden?: boolean; order?: number }> };
 const KINDS: { id: Kind; label: string }[] = [
   { id: "live", label: "القنوات" },
   { id: "movie", label: "الأفلام" },
@@ -58,9 +58,22 @@ export function SmartersManager() {
       return { ...c, groups: g };
     });
   }
+  const orderedItems = [...items].map((it, i) => ({ ...it, order: cfg.items[ik(it.id)]?.order ?? 1_000_000 + i })).sort((a, b) => a.order - b.order);
+  const canSortItems = !!group && !q.trim();
+  function moveItem(index: number, dir: -1 | 1) {
+    const next = [...orderedItems];
+    const j = index + dir;
+    if (j < 0 || j >= next.length) return;
+    const a = next[index]!; next[index] = next[j]!; next[j] = a;
+    setCfg((c) => {
+      const m = { ...c.items };
+      next.forEach((row, i) => { m[ik(row.id)] = { ...m[ik(row.id)], order: i }; });
+      return { ...c, items: m };
+    });
+  }
   async function persist() {
     setBusy(true); setMsg("");
-    try { await save({ data: cfg }); setMsg("تم الحفظ ✓ — التغييرات تظهر للأعضاء خلال دقيقة."); }
+    try { await save({ data: cfg }); setMsg("تم الحفظ ✓ — الترتيب الجديد يظهر في المكتبة فورًا بعد تحديثها."); }
     catch (e) { setMsg(e instanceof Error && e.message ? e.message : "تعذّر الحفظ."); }
     finally { setBusy(false); }
   }
@@ -94,13 +107,15 @@ export function SmartersManager() {
 
     <section className="rounded-2xl border border-border bg-card/50 p-4">
       <h2 className="mb-3 font-black">{kind === "live" ? "القنوات" : kind === "movie" ? "الأفلام" : "المسلسلات"}{group ? ` — ${cfg.groups[gk(group)]?.label || group}` : ""}</h2>
+      <p className="mb-2 text-xs text-muted-foreground">للترتيب اليدوي: اختر قسمًا واترك البحث فاضيًا، ثم استخدم الأسهم واحفظ.</p>
       <input className={input} placeholder="ابحث بالاسم (حرفين أو أكثر)…" value={q} onChange={(e) => setQ(e.target.value)} />
       {total > items.length && <p className="mt-2 text-xs text-muted-foreground">يظهر أول {items.length} من {total.toLocaleString("ar")} — اكتب اسمًا لتضييق النتائج.</p>}
       <ul className="mt-3 max-h-[60vh] divide-y divide-border overflow-y-auto">
-        {items.map((it) => {
+        {orderedItems.map((it, idx) => {
           const c = cfg.items[ik(it.id)] ?? {};
           return <li key={it.id} className={`flex items-center gap-2 py-2 ${c.hidden ? "opacity-50" : ""}`}>
             <span className="min-w-0 flex-1"><b className="block truncate">{c.label || it.name}</b>{c.label && <span className="block truncate text-xs text-muted-foreground">الأصلي: {it.name}</span>}</span>
+            {canSortItems && <><Button size="icon" variant="ghost" aria-label="تقديم" onClick={() => moveItem(idx, -1)}><ArrowUp className="h-4 w-4" /></Button><Button size="icon" variant="ghost" aria-label="تأخير" onClick={() => moveItem(idx, 1)}><ArrowDown className="h-4 w-4" /></Button></>}
             <Button size="icon" variant="ghost" aria-label="تغيير الاسم" onClick={() => { const v = window.prompt("الاسم (اتركه فارغًا للاسم الأصلي)", c.label ?? it.name); if (v !== null) setItemCfg(it.id, { label: v.trim() === it.name ? "" : v.trim().slice(0, 200) }); }}><Pencil className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label={c.hidden ? "إظهار" : "إخفاء"} onClick={() => setItemCfg(it.id, { hidden: !c.hidden })}>{c.hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
           </li>;
