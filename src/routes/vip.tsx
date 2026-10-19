@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ChevronLeft,
@@ -345,19 +345,7 @@ function VipPage({ initialGroup, onCatalog }: { initialGroup?: string | undefine
                 className="group h-auto w-full min-w-0 justify-start gap-3 overflow-hidden border border-vip-foreground/10 bg-vip-surface p-3 text-right text-vip-foreground hover:border-vip-cyan hover:bg-vip-foreground/10"
               >
                 <span className="grid h-14 w-16 shrink-0 place-items-center overflow-hidden rounded-md bg-vip-background/70">
-                  {item.logo ? (
-                    <img
-                      src={item.logo}
-                      alt=""
-                      loading="lazy"
-                      className="h-full w-full object-contain p-1"
-                      onError={(event) => {
-                        event.currentTarget.hidden = true;
-                      }}
-                    />
-                  ) : (
-                    <activeTab.Icon className="h-6 w-6 text-muted-foreground" />
-                  )}
+                  <ChannelLogo src={item.logo} name={item.name} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-black">{item.name}</span>
@@ -462,4 +450,11 @@ function SitePlayer({ url }: { url: string }) {
       {failed && <p className="p-2 text-center text-xs text-destructive">تعذّر التشغيل داخل الموقع لهذا المحتوى.</p>}
     </div>
   );
+}
+
+function ChannelLogo({ src, name }: { src: string; name: string }) {
+  const [broken, setBroken] = useState(false);
+  if (src && !broken) return <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={() => setBroken(true)} />;
+  const short = name.replace(/[^\p{L}\p{N} ]/gu, "").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  return <span className="grid h-full w-full place-items-center bg-gradient-to-br from-primary/40 to-accent/30 text-lg font-black text-foreground">{short || "TV"}</span>;
 }
