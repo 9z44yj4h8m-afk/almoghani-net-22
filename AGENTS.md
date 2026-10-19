@@ -40,4 +40,4 @@
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
 
-- Homepage and public channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed web app shares shell/navigation for consistency without changing gates.
+- Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed app shares shell/navigation without changing gates.
