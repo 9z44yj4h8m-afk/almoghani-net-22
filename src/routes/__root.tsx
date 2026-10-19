@@ -18,10 +18,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
 import { designColorFields, useSiteConfig } from "@/lib/site-config";
 import { IosInstallBanner } from "@/components/ios-install-banner";
-import { getGateStatus } from "@/lib/site-gate.functions";
-import { redirect } from "@tanstack/react-router";
-
-let gateUnlocked = false;
 
 function NotFoundComponent() {
   return (
@@ -90,14 +86,6 @@ const ADMIN_MANIFESTS: Record<string, string> = {
 };
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  beforeLoad: async ({ location }) => {
-    const p = location.pathname;
-    if (!(p === "/22" || p === "/100" || p === "/admin-voices" || p === "/vip" || p === "/app")) return;
-    if (typeof window !== "undefined" && gateUnlocked) return;
-    const { unlocked } = await getGateStatus();
-    if (!unlocked) throw redirect({ to: "/unlock", search: { to: location.href } });
-    if (typeof window !== "undefined") gateUnlocked = true;
-  },
   head: ({ matches }) => {
     const leafPath = matches[matches.length - 1]?.pathname ?? "/";
     const manifestHref = ADMIN_MANIFESTS[leafPath] ?? "/manifest.webmanifest";

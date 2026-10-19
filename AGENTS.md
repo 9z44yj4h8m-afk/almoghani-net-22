@@ -26,7 +26,7 @@
 - Build the featured-movies list server-side from official YouTube channel searches (getFeaturedMovies, 1h cache, full-length filter) with the hand-picked list in src/lib/movies.ts as fallback.
 - Keep the private IPTV library as one responsive Smarters-style interface with server-side search and external-player actions; group series episodes by series title and live channels by stream group before listing individual items, and support movie group/search deep links from homepage collections.
 
-- Persist member names in profiles and gate all private stream reads with authenticated, JWT-session-scoped unlock rows; a separate public Smarters catalog exposes only channel names and groups, never URLs, provider IDs or credential-bearing logos.
+- Open private member sessions via open_member_library_session without a PIN; keep authenticated JWT-scoped stream reads, suspension checks and admin guards. Public catalog metadata never exposes URLs, provider IDs or private logos.
 - Keep featured subscription metadata separate from public streams and resolve library matches server-side; detail pages must never substitute unrelated channels or fabricate schedules.
 - Owner-editable site data (texts, contacts, design colors, extra/hidden channels and movies) lives in admin-only-write tables and is merged client-side via src/lib/site-config.ts on top of the static catalogs, so the code catalogs stay the fallback.
 

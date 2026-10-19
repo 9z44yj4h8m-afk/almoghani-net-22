@@ -5,6 +5,9 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 export const getMemberAccess = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const opened = await context.supabase.rpc("open_member_library_session");
+    if (opened.error) throw opened.error;
+    if (opened.data !== true) throw new Error("حسابك غير مسموح له بفتح المكتبة.");
     let { data: profile, error } = await context.supabase.from("profiles").select("display_name,last_login_at").eq("user_id", context.userId).maybeSingle();
     if (error) throw error;
     if (!profile) {
