@@ -10,7 +10,7 @@ import type { Channel, ChannelCategory } from "@/lib/channels";
 export function ChannelOrderManager() {
   const { data } = useSiteConfig();
   const qc = useQueryClient();
-  const [cat, setCat] = useState<ChannelCategory>(channelCategories[0]);
+  const [cat, setCat] = useState<ChannelCategory>(channelCategories[0] as ChannelCategory);
   const [list, setList] = useState<Channel[]>([]);
   const [dirty, setDirty] = useState(false);
   const [msg, setMsg] = useState("");
@@ -21,7 +21,7 @@ export function ChannelOrderManager() {
 
   function move(i: number, to: number) {
     if (to < 0 || to >= list.length || to === i) return;
-    const next = [...list]; const [item] = next.splice(i, 1); next.splice(to, 0, item);
+    const next = [...list]; const [item] = next.splice(i, 1); if (item) next.splice(to, 0, item);
     setList(next); setDirty(true); setMsg("");
   }
 
