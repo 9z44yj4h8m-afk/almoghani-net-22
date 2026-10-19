@@ -55,11 +55,20 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-lebanese-ruba", female: true, name: "ربى", label: "لبنانية · ناضجة", providerId: "Vindemiatrix", delivery: "أداء امرأة بالغة ناضجة رقيق وحنون بلهجة لبنانية طبيعية، طبقة متوسطة ونغم محادثي خفيف ووقفات قصيرة، دون تمطيط مسرحي أو نطق خليجي" },
   { id: "female-jordanian-deema", female: true, name: "ديما", label: "أردنية · شابة بالغة", providerId: "Achernar", delivery: "أداء امرأة بالغة شابة رقيق وصاف وحنون بلهجة أردنية مدينية طبيعية، طبقة متوسطة عالية غير حادة ونطق واضح بإيقاع مريح، دون تصنع أو تغيير النص" },
   { id: "female-moroccan-kenza", female: true, name: "كنزة", label: "مغربية · ناضجة", providerId: "Zephyr", delivery: "أداء امرأة بالغة ناضجة مشرق وحنون، عربية واضحة بلكنة مغربية خفيفة مع الحفاظ على كلمات النص كما هي، طبقة متوسطة وإيقاع هادئ، دون ترجمة النص إلى الدارجة أو تقليد شخصية" },
+  { id: "female-style-hakawatiya", female: true, name: "حكواتية", label: "راوية قصص مشوقة", providerId: "Aoede", delivery: "أداء امرأة بالغة راوية قصص مشوقة، تغيّر نبرتها مع الأحداث بين الهمس الخفيف والحماس، وقفات تشويق قبل المفاجآت، لهجة نجدية دافئة" },
+  { id: "female-style-mudhee3a", female: true, name: "مذيعة", label: "مذيعة نشرة رسمية", providerId: "Kore", delivery: "أداء امرأة بالغة مذيعة نشرة أخبار، نطق فصيح دقيق وواثق، إيقاع ثابت ونبرة رسمية هادئة دون عاطفة زائدة" },
+  { id: "female-style-radio", female: true, name: "سهى", label: "مذيعة إذاعة صباحية", providerId: "Laomedeia", delivery: "أداء امرأة بالغة مذيعة إذاعة صباحية مرحة ونشيطة، ترحيب حماسي وابتسامة مسموعة، إيقاع سريع خفيف ولهجة أهل الرياض" },
+  { id: "female-style-sha3era", female: true, name: "شاعرة", label: "إلقاء شعر فخم", providerId: "Gacrux", delivery: "أداء امرأة بالغة شاعرة تلقي بفخامة ورصانة، تمدّ القوافي وتقف بين الأبيات، طبقة منخفضة رنانة ولهجة بدوية نجدية" },
+  { id: "female-style-mu3alliqa", female: true, name: "معلّقة", label: "حماس رياضي", providerId: "Zephyr", delivery: "أداء امرأة بالغة معلّقة رياضية متحمسة جدا، صوت مرتفع واثق وإيقاع سريع يتصاعد مع الحماس، لهجة خليجية" },
+  { id: "female-style-khajoola", female: true, name: "خجولة", label: "هادئة خجولة", providerId: "Vindemiatrix", delivery: "أداء امرأة بالغة خجولة هادئة، كلام منخفض متردد قليلا مع ضحكة خجولة قصيرة، طبقة متوسطة رقيقة ولهجة أهل القصيم" },
+  { id: "female-style-jaddah", female: true, name: "الجدة نورة", label: "جدة حنونة كبيرة", providerId: "Sulafat", delivery: "أداء امرأة كبيرة في السن حنونة جدا، صوت مبحوح خفيف وإيقاع بطيء، كلمات دعاء وحنان ولهجة نجدية قديمة" },
+  { id: "female-style-mudarrisa", female: true, name: "أستاذة", label: "معلّمة صبورة", providerId: "Erinome", delivery: "أداء امرأة بالغة معلّمة صبورة وواضحة، تشرح بهدوء وتشدد على الكلمات المهمة، نطق نقي وإيقاع متوسط مشجع" },
 ];
 
 // Panel categories: ordered groups shown as card sections in the voice studio.
-export const FEMALE_VOICE_CATEGORIES = ["أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة"] as const;
+export const FEMALE_VOICE_CATEGORIES = ["أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة", "أساليب جديدة"] as const;
 const VOICE_CATEGORY: Record<string, string> = {
+  "female-style-hakawatiya": "أساليب جديدة", "female-style-mudhee3a": "أساليب جديدة", "female-style-radio": "أساليب جديدة", "female-style-sha3era": "أساليب جديدة", "female-style-mu3alliqa": "أساليب جديدة", "female-style-khajoola": "أساليب جديدة", "female-style-jaddah": "أساليب جديدة", "female-style-mudarrisa": "أساليب جديدة", 
   "female-saudi-lateefa": "أصوات سعودية", "female-saudi-muneera": "أصوات سعودية", "female-saudi-bayan": "أصوات سعودية", "female-saudi-ibtisam": "أصوات سعودية",
   "female-saudi-lulwa": "أصوات سعودية", "female-saudi-nawwarah": "أصوات سعودية", "female-saudi-wadha": "أصوات سعودية", "female-saudi-athir": "أصوات سعودية",
   "female-emirati-meera": "لهجات عربية", "female-kuwaiti-dalal": "لهجات عربية", "female-egyptian-salma": "لهجات عربية", "female-lebanese-ruba": "لهجات عربية", "female-jordanian-deema": "لهجات عربية", "female-moroccan-kenza": "لهجات عربية",
