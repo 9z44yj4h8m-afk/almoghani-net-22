@@ -9,7 +9,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
   channels: Channel[]; sections: Section[]; selected: Channel; active: boolean;
   onWatch: () => void; onSelect: (channel: Channel) => void;
   favorites: string[]; onFavorite: (id: string) => void; initialSection?: string | undefined;
-  onEditChannel?: (channel: Channel) => void;
+  onEditChannel?: ((channel: Channel) => void) | undefined;
 }) {
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");

@@ -62,8 +62,8 @@ export function ChannelOrderManager() {
       <input aria-label="بحث عن قناة" placeholder="بحث عن قناة…" value={q} onChange={(e) => setQ(e.target.value)} className="h-9 rounded-md border border-border bg-background px-2 text-sm text-foreground" />
       {msg && <p role="status" className="text-sm text-muted-foreground">{msg}</p>}
     </div>
-    <ol className="space-y-2">
-      {list.map((c, i) => (needle && !c.name.toLocaleLowerCase().includes(needle)) ? null : <li key={c.id} className="flex items-center gap-2 rounded-lg border border-border bg-card p-2">
+    <ol className="max-h-96 space-y-2 overflow-y-auto">
+      {list.map((c, i) => (needle && !c.name.toLocaleLowerCase().includes(needle)) ? null : <li key={c.id} className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card p-2">
         <input type="number" min={1} max={list.length} aria-label={`مكان ${c.name}`} defaultValue={i + 1} key={`${c.id}-${i}`}
           onBlur={(e) => { const n = Number(e.target.value); if (n >= 1) move(i, Math.min(n, list.length) - 1); }}
           onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
