@@ -33,7 +33,7 @@ function SectionsPage() {
           const c = getSectionCard(id, content);
           if (c.hidden) return null;
           return <a
-            key={c.title}
+            key={id}
             href={c.link}
             data-section-card={id}
             className="section-page-card group grid grid-cols-[1fr_auto] items-center gap-3 overflow-hidden rounded-2xl border border-sky/60 bg-surface-deep p-3 shadow-[0_0_24px_-8px_var(--color-sky)] transition hover:border-sky"

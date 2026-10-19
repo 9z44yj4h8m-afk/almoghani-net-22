@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Save, RotateCcw, ArrowUp, ArrowDown } from "lucide-react";
+import { Save, RotateCcw, ArrowUp, ArrowDown, Plus, Copy, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteConfig, siteConfigKey, siteFonts } from "@/lib/site-config";
 import { SectionCardStyle } from "@/components/section-card-style";
-import { defaultSectionContent, editableCards, getSectionCard, orderedSectionIds, sectionDestinations, type SectionContent, type SectionCard } from "@/lib/section-content";
+import { defaultSectionContent, editableCards, getSectionCard, orderedSectionIds, sectionDestinations, sectionGroups, sectionCardId, sectionEditorCards, addSection, deleteSection, restoreSection, moveCustomSection, type SectionGroup, type SectionContent, type SectionCard } from "@/lib/section-content";
 import { liveSections } from "@/components/portal-page";
 
 const input = "w-full min-w-0 rounded-lg border border-border bg-background px-3 py-2 text-foreground";
@@ -16,26 +16,41 @@ export function SectionEditor() {
   const [selected, setSelected] = useState("home-live");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [newGroup, setNewGroup] = useState<SectionGroup>("sections");
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   useEffect(() => { if (data) setContent(data.sectionContent); }, [data]);
+  const availableCards = sectionEditorCards(content);
+  function create(source?: SectionCard) {
+    const id = `custom-${crypto.randomUUID()}`;
+    setContent((old) => addSection(old, newGroup, id, source));
+    setSelected(sectionCardId(newGroup, id));
+    setMessage("");
+  }
   const card = getSectionCard(selected, content);
   const update = (patch: Partial<SectionCard>) => setContent((old) => ({ ...old, cards: { ...old.cards, [selected]: { ...old.cards[selected], ...patch } } }));
   async function save(e: React.FormEvent) {
     e.preventDefault(); setBusy(true); setMessage("");
     try {
-      for (const c of Object.values(content.cards)) {
+      for (const c of [...Object.values(content.cards), ...(content.customSections ?? []).map((s) => s.defaults)]) {
         if (c.image && !/^(https:\/\/|\/__l5e\/assets-v1\/|\/assets\/|\/src\/assets\/)/.test(c.image) && !editableCards.some((item) => item.defaults.image === c.image)) throw new Error("رابط الصورة يجب أن يبدأ بـ https.");
       }
       const { error } = await supabase.from("site_settings").upsert({ key: "section-content", value: JSON.parse(JSON.stringify(content)), updated_at: new Date().toISOString() });
       if (error) throw new Error("تعذّر الحفظ؛ حاول مجددًا.");
-      await qc.invalidateQueries({ queryKey: siteConfigKey }); setMessage("تم حفظ الصور والعناوين والروابط ✓");
+      await qc.invalidateQueries({ queryKey: siteConfigKey }); setMessage("تم حفظ الأقسام والصور والترتيب ✓");
     } catch (error) { setMessage(error instanceof Error ? error.message : "تعذّر الحفظ."); }
     finally { setBusy(false); }
   }
   return <form onSubmit={save} className="space-y-6">
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">الصور والأقسام</h2><Button disabled={busy || isPending} type="submit"><Save />{busy ? "جارٍ الحفظ…" : "حفظ التغييرات"}</Button></div>
     <fieldset disabled={busy || isPending} className="space-y-6">
-      <label className="block space-y-2">اختر البطاقة<select className={input} value={selected} onChange={(e) => { setSelected(e.target.value); setMessage(""); }}>{editableCards.map((c) => <option key={c.id} value={c.id}>{c.location}</option>)}</select></label>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="min-w-0 flex-1 space-y-2">مكان القسم الجديد<select aria-label="مكان القسم الجديد" className={input} value={newGroup} onChange={(e) => setNewGroup(e.target.value as SectionGroup)}>{sectionGroups.map((g) => <option key={g.group} value={g.group}>{g.title}</option>)}</select></label>
+        <Button type="button" onClick={() => create()}><Plus />إضافة قسم</Button>
+        <Button type="button" variant="outline" onClick={() => create(card)}><Copy />نسخ القسم المحدد</Button>
+      </div>
+      <label className="block space-y-2">اختر البطاقة<select aria-label="اختر البطاقة" className={input} value={selected} onChange={(e) => { setSelected(e.target.value); setMessage(""); }}>{availableCards.map((c) => <option key={c.id} value={c.id}>{c.location}</option>)}</select></label>
       <label className="flex items-center gap-2"><input type="checkbox" checked={!card.hidden} onChange={(e) => update({ hidden: !e.target.checked })} />إظهار البطاقة</label>
+      {content.customSections?.some((c) => c.id === selected) && <label className="block space-y-2">نقل القسم إلى<select aria-label="نقل القسم إلى" className={input} value={content.customSections.find((c) => c.id === selected)?.group} onChange={(e) => { const group = e.target.value as SectionGroup; setContent((old) => moveCustomSection(old, selected, group)); setSelected(sectionCardId(group, selected.replace(/^category-/, ""))); }}>{sectionGroups.map((g) => <option key={g.group} value={g.group}>{g.title}</option>)}</select></label>}
       <SectionCardStyle id="editor-preview" card={card} />
       <div data-section-card="editor-preview" className="section-page-card grid grid-cols-[minmax(0,1fr)_40%] items-center gap-3 overflow-hidden rounded-lg border border-border bg-card p-3">
         <div className="min-w-0 space-y-2"><h3 data-card-text="title" className="text-xl font-bold">{card.title}</h3><p data-card-text="description" className="text-sm text-muted-foreground">{card.description}</p><span data-card-text="button" className="block text-sm font-bold text-primary">{card.button}</span></div>
@@ -63,15 +78,11 @@ export function SectionEditor() {
         <label className="block space-y-1">وصف الصفحة<input className={input} maxLength={200} value={content.pageDescription} onChange={(e) => setContent({ ...content, pageDescription: e.target.value })} /></label>
       </div>
       <div className="space-y-4 border-t border-border pt-6"><h3 className="font-bold">عناوين أقسام القنوات</h3><div className="grid gap-4 sm:grid-cols-2">{liveSections.map((s) => <label key={s.slug} className="block space-y-1">{s.title}<input className={input} required maxLength={80} value={content.titles[s.slug] ?? s.title} onChange={(e) => setContent({ ...content, titles: { ...content.titles, [s.slug]: e.target.value } })} /></label>)}</div></div>
-      {[
-        { group: "categories", title: "ترتيب صور الرئيسية", ids: ["arabic-movies", "foreign-movies", "news", "islamic", "kids", "sports", "general"], labels: ["الأفلام العربية", "الأفلام الأجنبية", "الإخبارية", "الإسلامية", "الأطفال والوثائقية", "الرياضية", "العامة"] },
-        { group: "sections", title: "ترتيب صفحة الأقسام", ids: ["sections-live", "sections-movie", "sections-series", "sections-bedouin", "sections-member"] },
-        { group: "member", title: "ترتيب منصات الأعضاء", ids: ["home-live", "home-movie", "home-series"] },
-      ].map(({ group, title, ids, ...rest }) => {
-        const order = orderedSectionIds(group, ids, content);
+      {sectionGroups.map(({ group, title, ids }) => {
+        const order = orderedSectionIds(group, [...ids], content);
         return <div key={group} className="space-y-3 border-t border-border pt-6"><h3 className="font-bold">{title}</h3><ul className="divide-y divide-border">{order.map((id, i) => {
-          const label = rest.labels?.[ids.indexOf(id)] ?? getSectionCard(id, content).title;
-          const key = group === "categories" ? `category-${id}` : id;
+          const key = sectionCardId(group, id);
+          const label = getSectionCard(key, content).title;
           const move = (direction: number) => {
             const next = [...order]; const target = i + direction;
             if (target < 0 || target >= next.length) return;
@@ -80,9 +91,11 @@ export function SectionEditor() {
             next[i] = other; next[target] = current;
             setContent((old) => ({ ...old, orders: { ...old.orders, [group]: next } }));
           };
-          return <li key={id} className="flex flex-wrap items-center gap-2 py-3"><span className="min-w-0 flex-1 font-bold">{i + 1}. {label}</span><label className="flex items-center gap-1 text-sm"><input type="checkbox" checked={!content.cards[key]?.hidden} onChange={(e) => setContent((old) => ({ ...old, cards: { ...old.cards, [key]: { ...old.cards[key], hidden: !e.target.checked } } }))} />ظاهر</label><Button type="button" variant="outline" size="icon" disabled={i === 0} aria-label={`تقديم ${label}`} onClick={() => move(-1)}><ArrowUp /></Button><Button type="button" variant="outline" size="icon" disabled={i === order.length - 1} aria-label={`تأخير ${label}`} onClick={() => move(1)}><ArrowDown /></Button></li>;
+          return <li key={id} className="flex flex-wrap items-center gap-2 py-3"><span className="min-w-0 basis-full font-bold sm:basis-auto sm:flex-1">{i + 1}. {label}</span><label className="flex items-center gap-1 text-sm"><input type="checkbox" checked={!getSectionCard(key, content).hidden} onChange={(e) => setContent((old) => ({ ...old, cards: { ...old.cards, [key]: { ...old.cards[key], hidden: !e.target.checked } } }))} />ظاهر</label><Button type="button" variant="outline" size="icon" title={`تعديل ${label}`} aria-label={`تعديل ${label}`} onClick={() => { setSelected(key); }}><Pencil /></Button><Button type="button" variant="outline" size="icon" disabled={i === 0} title={`تقديم ${label}`} aria-label={`تقديم ${label}`} onClick={() => move(-1)}><ArrowUp /></Button><Button type="button" variant="outline" size="icon" disabled={i === order.length - 1} title={`تأخير ${label}`} aria-label={`تأخير ${label}`} onClick={() => move(1)}><ArrowDown /></Button><Button type="button" variant="outline" size="icon" title={`حذف ${label}`} aria-label={`حذف ${label}`} onClick={() => setConfirmDelete(key)}><Trash2 /></Button></li>;
         })}</ul></div>;
       })}
+      {confirmDelete && <div role="alert" className="space-y-3 border-t border-border pt-4"><p>حذف قسم «{getSectionCard(confirmDelete, content).title}» من العرض؟ القنوات والمحتوى داخله لن تُحذف.</p><div className="flex gap-2"><Button type="button" variant="destructive" onClick={() => { const next = deleteSection(content, confirmDelete); setContent(next); if (selected === confirmDelete) setSelected(sectionEditorCards(next)[0]?.id ?? "home-live"); setConfirmDelete(null); }}>تأكيد الحذف</Button><Button type="button" variant="outline" onClick={() => setConfirmDelete(null)}>إلغاء</Button></div></div>}
+      {!!content.deletedIds?.length && <div className="space-y-3 border-t border-border pt-6"><h3 className="font-bold">الأقسام المحذوفة</h3>{content.deletedIds.map((id) => <div key={id} className="flex items-center justify-between gap-3"><span>{getSectionCard(id, content).title}</span><Button type="button" variant="outline" onClick={() => setContent((old) => restoreSection(old, id))}><RotateCcw />استعادة</Button></div>)}</div>}
     </fieldset>
     {message && <p role="status" className="text-sm text-muted-foreground">{message}</p>}
   </form>;

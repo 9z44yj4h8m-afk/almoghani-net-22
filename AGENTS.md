@@ -15,14 +15,12 @@
 - Store performers and named clips in private chat-recordings with admin-only storage and normalized voice_chat settings; public playback serves only enabled configured paths to prevent arbitrary private-file access.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
 - Merge per-series YouTube metadata into one ordered drama catalog at /bedouin-drama; never mix public videos with private IPTV or claim a live channel.
-- Keep optional series cover artwork separate from episode thumbnails in the typed drama catalog; render cover banners intact without duplicate overlays so episode imagery stays unchanged.
 - Admin password-only login authenticates the fixed owner account server-side through Cloud Auth and checks user_roles before returning a session; never bypass RLS with a shared PIN.
 
 - Share src/lib/channels.ts across player and AI; synchronize additions to public/channels.m3u preserving BOM and group order. Links: /live?channel=<id> and /channels/<section-slug>, with section slugs defined in portal-page.
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.
-- Keep the homepage player explicit-start and public category/live players active on entry; public movie pages choose a language-matched random film after hydration and autoplay muted to respect browser policies.
 - Ship the site as an installable web app via public/manifest.webmanifest (start_url /vip) with no service worker, so installs never serve stale cached files.
 - Relay streams whose CDN demands a specific Referer through /api/public/hls (host allow-list, playlists rewritten), because browsers cannot set Referer.
 - Build the featured-movies list server-side from official YouTube channel searches (getFeaturedMovies, 1h cache, full-length filter) with the hand-picked list in src/lib/movies.ts as fallback.
@@ -34,10 +32,10 @@
 
 - Share shell, wordmark, footer and four-item nav; preserve guards. Keep artwork browser-safe, separate from streams; owner images win.
 - Admin content manager uses existing admin-RLS tables for bulk channels and schedules; validate streams before insertion and invalidate schedule queries after saves.
-- Store card copy, images, allow-listed destinations, order and visibility in section-content with static defaults; apply ordering to home categories, member platforms and sections without changing category IDs or access guards.
+- Store default/custom cards, edits, placement, order and recoverable deletion in section-content; shared helpers merge them across home, sections and members, preserving destination gates and channel IDs.
+- Subdirectories have their own AGENTS.md; read it before changing files there.
 - Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
-- Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
 
 - Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed app shares shell/navigation without changing gates.

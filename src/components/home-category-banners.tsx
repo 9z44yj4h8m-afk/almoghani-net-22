@@ -18,7 +18,8 @@ export function HomeCategoryBanners() {
         const card = getSectionCard(`category-${id}`, data?.sectionContent);
         if (card.hidden) return null;
         const art = !data?.sectionContent.cards?.[`category-${id}`]?.image ? broadcastArt[id] : undefined;
-        return <a key={id} data-section-card={`category-${id}`} href={card.link} aria-label={card.title} className={`gold-category-card design-gleam ${art ? "gold-category-art" : ""}`}><SectionCardStyle id={`category-${id}`} card={card} /><img src={art ?? card.image} alt={card.title} loading="lazy" />{art && <span className="gold-category-copy"><span data-card-text="title">{card.title}</span>{card.description && <small data-card-text="description">{card.description}</small>}<ChevronLeft aria-hidden="true" /></span>}</a>;
+        const showCopy = !!art || !!data?.sectionContent.customSections?.some((c) => c.id === `category-${id}`);
+        return <a key={id} data-section-card={`category-${id}`} href={card.link} aria-label={card.title} className={`gold-category-card design-gleam ${showCopy ? "gold-category-art" : ""}`}><SectionCardStyle id={`category-${id}`} card={card} /><img src={art ?? card.image} alt={card.title} loading="lazy" />{showCopy && <span className="gold-category-copy"><span data-card-text="title">{card.title}</span>{card.description && <small data-card-text="description">{card.description}</small>}<ChevronLeft aria-hidden="true" /></span>}</a>;
       })}
       </div>
     </section>
