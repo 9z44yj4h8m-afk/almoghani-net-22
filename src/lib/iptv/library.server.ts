@@ -14,7 +14,7 @@ async function decode(b64: string): Promise<Row[]> {
   return JSON.parse(await new Response(stream).text());
 }
 
-export function loadKind(kind: Kind): Promise<Row[]> {
+export function loadRaw(kind: Kind): Promise<Row[]> {
   let p = cache.get(kind);
   if (!p) {
     p = (async () => {
@@ -29,6 +29,49 @@ export function loadKind(kind: Kind): Promise<Row[]> {
     cache.set(kind, p);
   }
   return p;
+}
+
+// Owner overrides from site_settings("smarters"): rename/hide/reorder groups, rename/hide items.
+export type SmartersConfig = {
+  groups: Record<string, { label?: string; hidden?: boolean; order?: number }>;
+  items: Record<string, { label?: string; hidden?: boolean }>;
+};
+export const configKey = (kind: Kind, part: string | number) => `${kind}:${part}`;
+let cfgCache: { at: number; value: Promise<SmartersConfig> } | undefined;
+export function clearSmartersConfig() { cfgCache = undefined; }
+export function loadConfig(): Promise<SmartersConfig> {
+  if (!cfgCache || Date.now() - cfgCache.at > 30_000) {
+    cfgCache = {
+      at: Date.now(),
+      value: (async () => {
+        try {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data } = await supabaseAdmin.from("site_settings").select("value").eq("key", "smarters").maybeSingle();
+          const v = (data?.value ?? {}) as Partial<SmartersConfig>;
+          return { groups: v.groups ?? {}, items: v.items ?? {} };
+        } catch {
+          return { groups: {}, items: {} };
+        }
+      })(),
+    };
+  }
+  return cfgCache.value;
+}
+
+export async function loadKind(kind: Kind): Promise<Row[]> {
+  const [rows, cfg] = await Promise.all([loadRaw(kind), loadConfig()]);
+  const firstIndex = new Map<string, number>();
+  rows.forEach((r, i) => { if (!firstIndex.has(r[1])) firstIndex.set(r[1], i); });
+  const out: [number, number, Row][] = [];
+  rows.forEach((r, i) => {
+    const g = cfg.groups[configKey(kind, r[1])];
+    const it = cfg.items[configKey(kind, r[3])];
+    if (g?.hidden || it?.hidden) return;
+    const order = typeof g?.order === "number" ? g.order : firstIndex.get(r[1])! + 1_000_000;
+    out.push([order, i, [it?.label || r[0], g?.label || r[1], r[2], r[3], r[4]]]);
+  });
+  out.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return out.map((x) => x[2]);
 }
 
 export function streamUrl(kind: Kind, id: number, ext: string) {
