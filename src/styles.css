@@ -1252,6 +1252,11 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .iptv-navigation-item:hover,.iptv-navigation-item:focus-visible{color:var(--foreground);background:var(--secondary)}
 .iptv-navigation-active{color:var(--primary-foreground)!important;background:var(--primary)!important}
 }
+.iptv-rail-logo{height:2.75rem;width:2.75rem;border-radius:.75rem;flex-shrink:0;animation:logo-neon-pulse 2.6s ease-in-out infinite}
+@keyframes logo-neon-pulse{0%,100%{box-shadow:0 0 10px rgba(239,68,68,.45),0 0 22px rgba(239,68,68,.18)}50%{box-shadow:0 0 18px rgba(239,68,68,.8),0 0 34px rgba(59,130,246,.35)}}
+.broadcast-brand{flex-direction:row;align-items:center;gap:.55rem}
+.broadcast-brand-logo{height:2.4rem;width:2.4rem;border-radius:.6rem;flex-shrink:0;box-shadow:0 0 12px rgba(239,68,68,.5),0 0 26px rgba(239,68,68,.2)}
+.broadcast-footer .broadcast-brand-logo{height:2.9rem;width:2.9rem}
 .iptv-home-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:80rem;margin:1rem auto;padding:0 1rem}
 .iptv-mode{height:7rem!important;flex-direction:column;gap:.5rem;border-radius:1rem;font-size:1rem;font-weight:900;box-shadow:0 10px 25px -12px var(--primary)}
 .iptv-mode svg{width:2rem!important;height:2rem!important}
