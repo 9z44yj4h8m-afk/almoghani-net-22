@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Tv, Film, Clapperboard, LayoutGrid, MessageCircle, UserRound, Phone, Radio } from "lucide-react";
+import { Home, Tv, Film, Clapperboard, LayoutGrid, MessageCircle, UserRound, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoNeon from "@/assets/logo-neon.png.asset.json";
 
 const destinations = [
   { to: "/", label: "الرئيسية", Icon: Home },

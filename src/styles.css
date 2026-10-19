@@ -1246,7 +1246,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 @media (min-width:1024px){
 .iptv-navigation{display:flex;flex-direction:column;gap:1rem;position:sticky;top:0;height:100vh;width:15rem;flex-shrink:0;padding:1.25rem .75rem;background:color-mix(in oklab,var(--card) 92%,transparent);border-inline-start:1px solid var(--border);overflow-y:auto}
 .iptv-rail-brand{display:flex;align-items:center;gap:.5rem;padding:.5rem;color:var(--primary);font-weight:900;letter-spacing:.08em}
-.iptv-rail-brand small{display:block;font-size:.7rem;color:var(--muted-foreground)}
+.iptv-rail-brand small{display:block;font-size:.62rem;color:var(--muted-foreground);letter-spacing:.14em}
+.iptv-rail-logo{height:2.75rem;width:2.75rem;border-radius:.75rem;flex-shrink:0;animation:logo-neon-pulse 2.6s ease-in-out infinite}
+@keyframes logo-neon-pulse{0%,100%{box-shadow:0 0 10px rgba(239,68,68,.45),0 0 22px rgba(239,68,68,.18)}50%{box-shadow:0 0 18px rgba(239,68,68,.8),0 0 34px rgba(59,130,246,.35)}}
 .iptv-navigation nav{display:flex;flex-direction:column;gap:.25rem}
 .iptv-navigation-item{justify-content:flex-start!important;gap:.75rem;height:2.75rem;font-weight:800;color:var(--muted-foreground)}
 .iptv-navigation-item:hover,.iptv-navigation-item:focus-visible{color:var(--foreground);background:var(--secondary)}
