@@ -26,7 +26,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
         {visible.map((channel, index) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""}`}>
           <Button variant="ghost" className="iptv-channel-select" aria-label={`شغّل ${channel.name}`} aria-pressed={selected.id === channel.id} onClick={() => onSelect(channel)}>
             <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
-            {channel.thumbnail ? <img src={channel.thumbnail} alt="" loading="lazy" width={48} height={48} /> : <Tv />}
+            {channel.thumbnail ? <img src={channel.thumbnail} alt="" loading="lazy" width={80} height={80} /> : <Tv />}
             <span>{channel.name}</span>
           </Button>
           <Button size="icon" variant="ghost" className="iptv-favorite" aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة" onClick={() => onFavorite(channel.id)}><Star className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button>
