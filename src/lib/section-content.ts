@@ -98,5 +98,5 @@ export function moveCustomSection(content: SectionContent, id: string, group: Se
   const cards = { ...content.cards };
   if (cards[id]) { cards[newId] = cards[id]; if (newId !== id) delete cards[id]; }
   const orders = Object.fromEntries(Object.entries(content.orders ?? {}).map(([key, ids]) => [key, ids.filter((v) => sectionCardId(key, v) !== id)]));
-  return { ...content, cards, orders, customSections: content.customSections?.map((c) => c.id === id ? { ...c, id: newId, group } : c), deletedIds: content.deletedIds?.map((v) => v === id ? newId : v) };
+  return { ...content, cards, orders, customSections: (content.customSections ?? []).map((c) => c.id === id ? { ...c, id: newId, group } : c), deletedIds: (content.deletedIds ?? []).map((v) => v === id ? newId : v) };
 }
