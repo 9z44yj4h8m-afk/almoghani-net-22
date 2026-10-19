@@ -187,7 +187,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="iptv-site-layout"><IptvNavigation /><div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div><IosInstallBanner /></>}</MemberProvider>
+      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="iptv-site-layout"><IptvNavigation /><div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div></div><IosInstallBanner /></>}</MemberProvider>
     </QueryClientProvider>
   );
 }
