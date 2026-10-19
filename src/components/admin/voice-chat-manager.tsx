@@ -10,12 +10,13 @@ import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
-import { applyVoiceFx, bytesToBase64, loadHistory, saveHistory, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode, type SavedClip } from "@/lib/voice-fx";
+import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode } from "@/lib/voice-fx";
 
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
 import voiceBotArt from "@/assets/voice-reference/bot.jpg.asset.json";
 import voiceGirlArt from "@/assets/voice-reference/girl.jpg.asset.json";
+import voiceAvatar from "@/assets/voice-anime-avatar-v2.jpg.asset.json";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const field = "h-10 w-full rounded-xl border border-border bg-background/60 px-3 text-sm text-foreground outline-none";
@@ -122,7 +123,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [recording, setRecording] = useState(false);
   const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
   const [panel, setPanel] = useState<VoicePanelConfig>(defaultVoicePanel);
-  const [quick, setQuick] = useState(""); // voice id currently quick-previewing from its card
   const PANEL_STORE = "almoghani-voice-panel";
   // Preview audio plays once; the replay button starts the same clip again on demand.
   const clipRef = useRef<HTMLAudioElement | null>(null);
@@ -151,44 +151,12 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   useEffect(() => () => { clipRef.current?.pause(); }, []);
   const [echo, setEcho] = useState<EchoMode>("none");
   const [bed, setBed] = useState<BedMode>("none");
-  const [history, setHistory] = useState<SavedClip[]>([]);
-  useEffect(() => { setHistory(loadHistory()); }, []);
-  function useSaved(c: SavedClip) {
-    const bytes = Uint8Array.from(atob(c.data), (ch) => ch.charCodeAt(0));
-    setAudioFile(new File([bytes], `${c.name}.wav`, { type: "audio/wav" }));
-    void playClip(`data:audio/wav;base64,${c.data}`);
-    setNote(`مقطع محفوظ: ${c.name} — تقدر ترسله الحين بدون رصيد ✓`);
-  }
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
     stopClip();
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
     setPlaying(false);
-  }
-
-  // Quick play straight from a voice card: speaks a short sample with that voice only.
-  async function quickTest(voiceId: string) {
-    if (locked) { setSubOpen(true); return; }
-    if (testing || quick) return;
-    setQuick(voiceId); setNote("");
-    const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voiceId);
-    const text = `هلا والله، أنا ${profile?.name ?? "بنت"}، هذي تجربة صوتي`;
-    try {
-      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing: false, melody: "najdi", rhythm: "slow" } });
-      await playClip(`data:audio/wav;base64,${audio}`);
-      setNote(`هذا صوت ${profile?.name} ✓`);
-    } catch {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = "ar-SA"; u.pitch = 1.4; u.rate = 0.95;
-        const ar = window.speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
-        if (ar) u.voice = ar;
-        window.speechSynthesis.speak(u);
-        setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني.");
-      } else setNote("تعذّر تجربة الصوت.");
-    } finally { setQuick(""); }
   }
 
   // Remember the owner's panel choices on this device so it reopens the same way.
@@ -429,7 +397,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
       setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
       await playClip(`data:audio/wav;base64,${b64}`);
-      setHistory((h) => saveHistory([{ id: `${Date.now()}`, name: voiceName, text, at: Date.now(), data: b64 }, ...h]));
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
@@ -502,22 +469,14 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     </label>
     <div className="voice-studio-form" id="voice-settings">
       <div className="voice-neon-choice">
-      <div className="voice-studio-field" id="voice-select" role="radiogroup" aria-label="صوت هذه الجملة"><span><Mic />{panel.texts.voiceLabel}</span>
-        <div className="max-h-[50vh] space-y-3 overflow-y-auto rounded-xl border border-border bg-background/40 p-2">
-          <button type="button" role="radio" aria-checked={sayVoice === ""} onClick={() => { setSayVoice(""); setAudioFile(null); }} className={`w-full rounded-lg border px-3 py-2 text-right text-sm font-bold ${sayVoice === "" ? "border-primary bg-primary/15 text-primary" : "border-border bg-secondary"}`}>صوت البوت المحفوظ</button>
-          {FEMALE_VOICE_CATEGORIES.map((cat) => {
-            const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
-            return list.length ? <div key={cat}><h3 className="mb-1.5 text-xs font-black text-primary">{cat}</h3><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{list.map((v) => {
-              const on = sayVoice === v.id;
-              return <div key={v.id} className={`flex items-center gap-2 rounded-lg border p-2 ${on ? "border-primary bg-primary/15" : "border-border bg-secondary"}`}>
-                <button type="button" aria-label={`تشغيل صوت ${v.name}`} disabled={testing || (quick !== "" && quick !== v.id)} onClick={() => void quickTest(v.id)} className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground disabled:opacity-50">{quick === v.id ? <Square className="size-4" /> : <Play className="size-4" />}</button>
-                <button type="button" role="radio" aria-checked={on} disabled={testing} onClick={() => { setSayVoice(v.id); setAudioFile(null); }} className="min-w-0 flex-1 text-right"><b className="block truncate text-sm">{v.name}</b><small className="block truncate text-[11px] text-muted-foreground">{v.label}</small></button>
-              </div>;
-            })}</div></div> : null;
-          })}
-          {panel.custom.length > 0 && <div><h3 className="mb-1.5 text-xs font-black text-primary">أصواتي المضافة</h3><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{panel.custom.map((v) => <button key={v.id} type="button" role="radio" aria-checked={sayVoice === v.id} onClick={() => { setSayVoice(v.id); setAudioFile(null); }} className={`rounded-lg border p-2 text-right text-sm font-bold ${sayVoice === v.id ? "border-primary bg-primary/15" : "border-border bg-secondary"}`}>{v.name}</button>)}</div></div>}
-        </div>
-      </div>
+      <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select id="voice-select" aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
+        <option value="">صوت البوت المحفوظ</option>
+        {FEMALE_VOICE_CATEGORIES.map((cat) => {
+          const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
+          return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup> : null;
+        })}
+        {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
+      </select><ChevronDown aria-hidden="true" /></div></label>
       <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       </div>
       {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
@@ -535,14 +494,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </div>
 
 
-      {history.length > 0 && <div className="voice-studio-history grid gap-2 rounded-xl border border-border p-3" aria-label="المقاطع الأخيرة">
-        <div className="flex items-center justify-between text-sm font-bold"><span>المقاطع الأخيرة (بدون رصيد)</span><Button type="button" size="sm" variant="ghost" onClick={() => setHistory(saveHistory([]))}><Trash2 />مسح</Button></div>
-        {history.map((c) => <div key={c.id} className="flex min-w-0 items-center gap-2 rounded-lg bg-background/40 p-2">
-          <Button type="button" size="icon" variant="outline" aria-label={`تشغيل ${c.name}`} onClick={() => useSaved(c)}><Play /></Button>
-          <div className="min-w-0 flex-1 text-xs"><b className="block">{c.name}</b><span className="block truncate opacity-75">{c.text}</span></div>
-          <Button type="button" size="icon" variant="ghost" aria-label={`حذف ${c.name}`} onClick={() => setHistory((h) => saveHistory(h.filter((x) => x.id !== c.id)))}><Trash2 /></Button>
-        </div>)}
-      </div>}
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent dir="rtl" className="voice-neon-dialog" aria-describedby="voice-tools-description">
           <DialogTitle>إعدادات الصوت</DialogTitle>
