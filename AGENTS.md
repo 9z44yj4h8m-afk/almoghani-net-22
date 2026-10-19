@@ -38,7 +38,8 @@
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
 
-- Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed app shares shell/navigation without changing gates.
+- Home/channel routes share IPTV workspace, LivePlayer and ChannelSchedule.
+- Share smarters-config genre schema, filters and ordering across admin/library to keep saved classifications consistent.
 
-- Reuse SmartersLibrary behind MemberLibraryGate on /vip and the homepage source switch, so private playback, ordering and access checks stay identical.
+- Reuse SmartersLibrary behind MemberLibraryGate on /vip and home so private playback, order and access checks stay identical.
 - Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.

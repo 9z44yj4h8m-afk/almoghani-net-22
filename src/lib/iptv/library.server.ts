@@ -1,3 +1,4 @@
+import { itemGenre, orderedGenres, type Genre, type SmartersConfig } from "./smarters-config";
 // Private IPTV library (owner's personal subscription). Never import from client code.
 export type Kind = "live" | "movie" | "series";
 type Row = [name: string, group: string, logo: string, id: number, ext: string];
@@ -32,10 +33,6 @@ export function loadRaw(kind: Kind): Promise<Row[]> {
 }
 
 // Owner overrides from site_settings("smarters"): rename/hide/reorder groups, rename/hide items.
-export type SmartersConfig = {
-  groups: Record<string, { label?: string; hidden?: boolean; order?: number }>;
-  items: Record<string, { label?: string; hidden?: boolean; order?: number }>;
-};
 export const configKey = (kind: Kind, part: string | number) => `${kind}:${part}`;
 let cfgCache: { at: number; value: Promise<SmartersConfig> } | undefined;
 export function clearSmartersConfig() { cfgCache = undefined; }
@@ -48,7 +45,7 @@ export function loadConfig(): Promise<SmartersConfig> {
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const { data } = await supabaseAdmin.from("site_settings").select("value").eq("key", "smarters").maybeSingle();
           const v = (data?.value ?? {}) as Partial<SmartersConfig>;
-          return { groups: v.groups ?? {}, items: v.items ?? {} };
+          return { groups: v.groups ?? {}, items: v.items ?? {}, genreOrders: v.genreOrders };
         } catch {
           return { groups: {}, items: {} };
         }
@@ -58,7 +55,7 @@ export function loadConfig(): Promise<SmartersConfig> {
   return cfgCache.value;
 }
 
-export async function loadKind(kind: Kind): Promise<Row[]> {
+export async function loadKind(kind: Kind, genre: Genre | "" = ""): Promise<Row[]> {
   const [rows, cfg] = await Promise.all([loadRaw(kind), loadConfig()]);
   const firstIndex = new Map<string, number>();
   rows.forEach((r, i) => { if (!firstIndex.has(r[1])) firstIndex.set(r[1], i); });
@@ -66,11 +63,11 @@ export async function loadKind(kind: Kind): Promise<Row[]> {
   rows.forEach((r, i) => {
     const g = cfg.groups[configKey(kind, r[1])];
     const it = cfg.items[configKey(kind, r[3])];
-    if (g?.hidden || it?.hidden) return;
-    const order = typeof g?.order === "number" ? g.order : firstIndex.get(r[1])! + 1_000_000;
+    if (g?.hidden || it?.hidden || (genre && (kind === "live" || itemGenre(kind, r[3], r[1], cfg) !== genre))) return;
+    const order = typeof g?.order === "number" ? g.order : (firstIndex.get(r[1]) ?? i) + 1_000_000;
     out.push([order, typeof it?.order === "number" ? it.order : 1_000_000, i, [it?.label || r[0], g?.label || r[1], r[2], r[3], r[4]]]);
   });
-  out.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+  out.sort((a, b) => (genre ? a[1] - b[1] || a[0] - b[0] : a[0] - b[0] || a[1] - b[1]) || a[2] - b[2]);
   return out.map((x) => x[3]);
 }
 
@@ -85,8 +82,8 @@ export async function groupsOf(kind: Kind) {
   return [...m.entries()].map(([name, count]) => ({ name, count }));
 }
 
-export async function titles(kind: Exclude<Kind, "movie">, q: string, page: number) {
-  const rows = await loadKind(kind);
+export async function titles(kind: Exclude<Kind, "movie">, q: string, page: number, genre: Genre | "" = "") {
+  const rows = await loadKind(kind, genre);
   const ql = q.trim().toLowerCase();
   if (kind === "series") {
     // Series rows are one row per series; episodes load on demand in search().
@@ -135,8 +132,8 @@ async function episodes(seriesName: string) {
   return out;
 }
 
-export async function search(kind: Kind, q: string, group: string, page: number) {
-  const rows = kind === "series" && group ? await episodes(group) : await loadKind(kind);
+export async function search(kind: Kind, q: string, group: string, page: number, genre: Genre | "" = "") {
+  const rows = kind === "series" && group ? await episodes(group) : await loadKind(kind, genre);
   const ql = q.trim().toLowerCase();
   const hits = rows.filter(
     (r) => (!group || r[1] === group || kind === "series") && (!ql || r[0].toLowerCase().includes(ql)),
@@ -151,4 +148,9 @@ export async function search(kind: Kind, q: string, group: string, page: number)
       url: streamUrl(kind, r[3], r[4]),
     })),
   };
+}
+
+export async function genresOf(kind: "movie" | "series") {
+  const [rows, config] = await Promise.all([loadRaw(kind), loadConfig()]);
+  return orderedGenres(kind, config).map((genre) => ({ ...genre, count: rows.filter((r) => !config.groups[configKey(kind, r[1])]?.hidden && !config.items[configKey(kind, r[3])]?.hidden && itemGenre(kind, r[3], r[1], config) === genre.id).length }));
 }

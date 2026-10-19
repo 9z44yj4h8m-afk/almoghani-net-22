@@ -1,3 +1,4 @@
+import { GENRES, itemGenre, orderedGenres, moveGenre, type Genre, type SmartersConfig } from "@/lib/iptv/smarters-config";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowDown, ArrowUp, Eye, EyeOff, Pencil } from "lucide-react";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { adminSmartersGroups, adminSmartersItems, loadSmartersConfig, saveSmartersConfig } from "@/lib/iptv/smarters-admin.functions";
 
 type Kind = "live" | "movie" | "series";
-type Config = { groups: Record<string, { label?: string; hidden?: boolean; order?: number }>; items: Record<string, { label?: string; hidden?: boolean; order?: number }> };
+type Config = SmartersConfig;
 const KINDS: { id: Kind; label: string }[] = [
   { id: "live", label: "القنوات" },
   { id: "movie", label: "الأفلام" },
@@ -22,6 +23,7 @@ export function SmartersManager() {
   const [cfg, setCfg] = useState<Config>({ groups: {}, items: {} });
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
   const [group, setGroup] = useState("");
+  const [genre, setGenre] = useState<Genre | "">("");
   const [q, setQ] = useState("");
   const [items, setItems] = useState<{ id: number; name: string; group: string }[]>([]);
   const [total, setTotal] = useState(0);
@@ -29,12 +31,12 @@ export function SmartersManager() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => { void fetchConfig().then(setCfg).catch(() => setMsg("تعذّر تحميل الإعدادات.")); }, [fetchConfig]);
-  useEffect(() => { setGroup(""); setItems([]); void fetchGroups({ data: { kind } }).then(setGroups).catch(() => setMsg("تعذّر تحميل الأقسام.")); }, [kind, fetchGroups]);
+  useEffect(() => { setGroup(""); setGenre(""); setItems([]); void fetchGroups({ data: { kind } }).then(setGroups).catch(() => setMsg("تعذّر تحميل الأقسام.")); }, [kind, fetchGroups]);
   useEffect(() => {
-    if (!group && q.trim().length < 2) { setItems([]); setTotal(0); return; }
-    const t = setTimeout(() => { void fetchItems({ data: { kind, group, q } }).then((r) => { setItems(r.items); setTotal(r.total); }); }, 300);
+    if (!group && !genre && q.trim().length < 2) { setItems([]); setTotal(0); return; }
+    const t = setTimeout(() => { void fetchItems({ data: { kind, group, q, genre: genre || undefined } }).then((r) => { setItems(r.items); setTotal(r.total); }).catch(() => setMsg("تعذّر تحميل المحتوى.")); }, 300);
     return () => clearTimeout(t);
-  }, [kind, group, q, fetchItems]);
+  }, [kind, group, q, genre, fetchItems]);
 
   const gk = (name: string) => `${kind}:${name}`;
   const ik = (id: number) => `${kind}:${id}`;
@@ -51,7 +53,7 @@ export function SmartersManager() {
     const next = [...ordered];
     const j = index + dir;
     if (j < 0 || j >= next.length) return;
-    const a = next[index]!; next[index] = next[j]!; next[j] = a;
+    const a = next[index], b = next[j]; if (!a || !b) return; next[index] = b; next[j] = a;
     setCfg((c) => {
       const g = { ...c.groups };
       next.forEach((row, i) => { g[gk(row.name)] = { ...g[gk(row.name)], order: i }; });
@@ -59,12 +61,12 @@ export function SmartersManager() {
     });
   }
   const orderedItems = [...items].map((it, i) => ({ ...it, order: cfg.items[ik(it.id)]?.order ?? 1_000_000 + i })).sort((a, b) => a.order - b.order);
-  const canSortItems = !!group && !q.trim();
+  const canSortItems = (!!group || !!genre) && !q.trim();
   function moveItem(index: number, dir: -1 | 1) {
     const next = [...orderedItems];
     const j = index + dir;
     if (j < 0 || j >= next.length) return;
-    const a = next[index]!; next[index] = next[j]!; next[j] = a;
+    const a = next[index], b = next[j]; if (!a || !b) return; next[index] = b; next[j] = a;
     setCfg((c) => {
       const m = { ...c.items };
       next.forEach((row, i) => { m[ik(row.id)] = { ...m[ik(row.id)], order: i }; });
@@ -73,7 +75,7 @@ export function SmartersManager() {
   }
   async function persist() {
     setBusy(true); setMsg("");
-    try { await save({ data: cfg }); setMsg("تم الحفظ ✓ — الترتيب الجديد يظهر في المكتبة فورًا بعد تحديثها."); }
+    try { await save({ data: cfg }); window.dispatchEvent(new Event("smarters-config-saved")); setMsg("تم الحفظ ✓ — الترتيب الجديد يظهر في المكتبة فورًا بعد تحديثها."); }
     catch (e) { setMsg(e instanceof Error && e.message ? e.message : "تعذّر الحفظ."); }
     finally { setBusy(false); }
   }
@@ -85,6 +87,15 @@ export function SmartersManager() {
     </div>
     {msg && <p role="status" className="text-sm text-muted-foreground">{msg}</p>}
 
+    {kind !== "live" && <section aria-label="إدارة الأنواع" className="space-y-3 border-b border-border pb-4">
+      <h2 className="font-black">الأنواع</h2>
+      <Button size="sm" variant={!genre ? "default" : "outline"} onClick={() => setGenre("")}>كل الأنواع</Button>
+      <ul className="divide-y divide-border">{orderedGenres(kind, cfg).map((g, i, all) => <li key={g.id} className="flex items-center gap-2 py-2">
+        <Button variant={genre === g.id ? "default" : "ghost"} onClick={() => { setGenre(g.id); setGroup(""); }}>{g.label}</Button>
+        <Button variant="ghost" size="icon" disabled={i === 0} aria-label={`تقديم ${g.label}`} onClick={() => setCfg((c) => moveGenre(kind, c, i, -1))}><ArrowUp className="h-4 w-4" /></Button>
+        <Button variant="ghost" size="icon" disabled={i === all.length - 1} aria-label={`تأخير ${g.label}`} onClick={() => setCfg((c) => moveGenre(kind, c, i, 1))}><ArrowDown className="h-4 w-4" /></Button>
+      </li>)}</ul>
+    </section>}
     <section className="rounded-2xl border border-border bg-card/50 p-4">
       <h2 className="mb-1 font-black">الأقسام ({groups.length})</h2>
       <p className="mb-3 text-sm text-muted-foreground">غيّر الاسم، أخفِ القسم، أو قدّمه وأخّره. اضغط اسم القسم لعرض محتواه تحت.</p>
@@ -98,6 +109,9 @@ export function SmartersManager() {
             </button>
             <Button size="icon" variant="ghost" aria-label="تقديم" onClick={() => move(i, -1)}><ArrowUp className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label="تأخير" onClick={() => move(i, 1)}><ArrowDown className="h-4 w-4" /></Button>
+            {kind !== "live" && <select aria-label={`نوع القسم ${g.name}`} className="h-10 max-w-32 rounded-md border border-border bg-card px-2 text-foreground" value={c.genre ?? "auto"} onChange={(e) => setGroupCfg(g.name, { genre: e.target.value === "auto" ? undefined : e.target.value as Genre | "" })}>
+              <option value="auto">تلقائي</option><option value="">دون نوع</option>{GENRES.map((g) => <option key={g.id} value={g.id}>{g.label}</option>)}
+            </select>}
             <Button size="icon" variant="ghost" aria-label="تغيير الاسم" onClick={() => { const v = window.prompt("اسم القسم (اتركه فارغًا للاسم الأصلي)", c.label ?? g.name); if (v !== null) setGroupCfg(g.name, { label: v.trim() === g.name ? "" : v.trim().slice(0, 120) }); }}><Pencil className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label={c.hidden ? "إظهار" : "إخفاء"} onClick={() => setGroupCfg(g.name, { hidden: !c.hidden })}>{c.hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
           </li>;
@@ -115,6 +129,9 @@ export function SmartersManager() {
           const c = cfg.items[ik(it.id)] ?? {};
           return <li key={it.id} className={`flex items-center gap-2 py-2 ${c.hidden ? "opacity-50" : ""}`}>
             <span className="min-w-0 flex-1"><b className="block truncate">{c.label || it.name}</b>{c.label && <span className="block truncate text-xs text-muted-foreground">الأصلي: {it.name}</span>}</span>
+            {kind !== "live" && <select aria-label={`نوع ${it.name}`} className="h-10 max-w-32 rounded-md border border-border bg-card px-2 text-foreground" value={c.genre ?? "auto"} onChange={(e) => setItemCfg(it.id, { genre: e.target.value === "auto" ? undefined : e.target.value as Genre | "" })}>
+              <option value="auto">{itemGenre(kind, it.id, it.group, cfg) ? `تلقائي: ${GENRES.find((g) => g.id === itemGenre(kind, it.id, it.group, cfg))?.label}` : "تلقائي"}</option><option value="">دون نوع</option>{GENRES.map((g) => <option key={g.id} value={g.id}>{g.label}</option>)}
+            </select>}
             {canSortItems && <><Button size="icon" variant="ghost" aria-label="تقديم" onClick={() => moveItem(idx, -1)}><ArrowUp className="h-4 w-4" /></Button><Button size="icon" variant="ghost" aria-label="تأخير" onClick={() => moveItem(idx, 1)}><ArrowDown className="h-4 w-4" /></Button></>}
             <Button size="icon" variant="ghost" aria-label="تغيير الاسم" onClick={() => { const v = window.prompt("الاسم (اتركه فارغًا للاسم الأصلي)", c.label ?? it.name); if (v !== null) setItemCfg(it.id, { label: v.trim() === it.name ? "" : v.trim().slice(0, 200) }); }}><Pencil className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label={c.hidden ? "إظهار" : "إخفاء"} onClick={() => setItemCfg(it.id, { hidden: !c.hidden })}>{c.hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>

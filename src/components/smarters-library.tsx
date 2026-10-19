@@ -1,3 +1,4 @@
+import { type Genre } from "@/lib/iptv/smarters-config";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SmartersPlayer } from "@/components/smarters-player";
-import { getLibraryGroups, getLibraryTitles, searchLibrary } from "@/lib/iptv/library.functions";
+import { getLibraryGroups, getLibraryTitles, searchLibrary, getLibraryGenres } from "@/lib/iptv/library.functions";
 
 type Kind = "live" | "movie" | "series";
 type Item = { name: string; group: string; logo: string; url: string };
@@ -35,8 +36,24 @@ const TABS: {
 
 export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: { initialGroup?: string | undefined; onCatalog: () => void; embedded?: boolean }) {
   const pin = "member-session";
-  const [fetchError, setFetchError] = useState("");
   const [kind, setKind] = useState<Kind>("live");
+  const [genre, setGenre] = useState<Genre | "">("");
+  const [genres, setGenres] = useState<{ id: Genre; label: string; count: number }[]>([]);
+  const [revision, setRevision] = useState(0);
+  const fetchGenres = useServerFn(getLibraryGenres);
+  useEffect(() => {
+    const refresh = () => { setPage(0); setRevision((v) => v + 1); };
+    window.addEventListener("smarters-config-saved", refresh);
+    window.addEventListener("focus", refresh);
+    return () => { window.removeEventListener("smarters-config-saved", refresh); window.removeEventListener("focus", refresh); };
+  }, []);
+  useEffect(() => {
+    if (kind === "live") { setGenres([]); return; }
+    let active = true;
+    fetchGenres({ data: { kind } }).then((rows) => { if (active) setGenres(rows); }).catch(() => setFetchError("تعذّر تحميل الأنواع."));
+    return () => { active = false; };
+  }, [kind, revision, fetchGenres]);
+  const [fetchError, setFetchError] = useState("");
   const [libraryOpen, setLibraryOpen] = useState(true);
   const [groups, setGroups] = useState<{ name: string; count: number }[]>([]);
   const [group, setGroup] = useState("");
@@ -77,7 +94,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
       setGroup("");
       setGroups([]);
     }
-  }, [pin, kind]);
+  }, [pin, kind, revision]);
 
   useEffect(() => {
     if (!pin) return;
@@ -85,7 +102,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
     const timer = setTimeout(async () => {
       setBusy(true);
       try {
-        const result = await fetchItems({ data: { pin, kind, q, group: selectedTitle || group, page } });
+        const result = await fetchItems({ data: { pin, kind, q, group: selectedTitle || group, page, genre: genre || undefined } });
         setItems((current) => (page === 0 ? result.items : [...current, ...result.items]));
         setTotal(result.total);
       } catch {
@@ -95,14 +112,14 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
       }
     }, 250);
     return () => clearTimeout(timer);
-  }, [pin, kind, q, group, selectedTitle, page]);
+  }, [pin, kind, q, group, selectedTitle, page, genre, revision]);
 
   useEffect(() => {
     if (!pin || kind === "movie" || selectedTitle) return;
     const timer = setTimeout(async () => {
       setBusy(true);
       try {
-        const result = await fetchTitles({ data: { pin, kind, q, page } });
+        const result = await fetchTitles({ data: { pin, kind, q, page, genre: genre || undefined } });
         setTitles((current) => (page === 0 ? result.titles : [...current, ...result.titles]));
         setTitleTotal(result.total);
         setItems([]);
@@ -113,7 +130,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
       }
     }, 250);
     return () => clearTimeout(timer);
-  }, [pin, kind, q, selectedTitle, page]);
+  }, [pin, kind, q, selectedTitle, page, genre, revision]);
 
   useEffect(() => setPage(0), [kind, q, group, selectedTitle]);
 
@@ -122,6 +139,7 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
   const copy = (url: string) => navigator.clipboard.writeText(url).then(() => alert("تم نسخ الرابط"));
   const openLibrary = (nextKind: Kind) => {
     setKind(nextKind);
+    setGenre(""); setPage(0); setItems([]); setTitles([]); setPlaying(null);
     setGroup("");
     setSelectedTitle("");
     setQ("");
@@ -156,6 +174,10 @@ export function SmartersLibrary({ initialGroup, onCatalog, embedded = false }: {
 
       <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-6">
         <nav aria-label="محتوى سمارتر" className="flex flex-wrap gap-2">{TABS.map(({ k, label, Icon }) => <Button key={k} variant={kind === k ? "broadcast" : "outline"} aria-pressed={kind === k} onClick={() => openLibrary(k)}><Icon className="h-4 w-4" />{label}</Button>)}</nav>
+        {kind !== "live" && <nav aria-label="أنواع الأفلام والمسلسلات" className="mt-4 flex flex-wrap gap-2">
+          <Button size="sm" variant={!genre ? "broadcast" : "outline"} onClick={() => { setGenre(""); setSelectedTitle(""); setPage(0); setItems([]); setTitles([]); }}>كل الأنواع</Button>
+          {genres.map((g) => <Button key={g.id} size="sm" variant={genre === g.id ? "broadcast" : "outline"} onClick={() => { setGenre(g.id); setSelectedTitle(""); setPage(0); setItems([]); setTitles([]); }}>{g.label} ({g.count.toLocaleString("ar")})</Button>)}
+        </nav>}
         {fetchError && <p role="alert" className="mb-4 text-sm text-destructive">{fetchError}</p>}
         {!libraryOpen ? (
         <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center pb-16" aria-label="أقسام المكتبة">
