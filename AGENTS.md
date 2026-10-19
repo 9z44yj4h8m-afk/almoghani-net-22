@@ -32,12 +32,12 @@
 - Keep featured subscription metadata separate from public streams and resolve library matches server-side; detail pages must never substitute unrelated channels or fabricate schedules.
 - Owner-editable site data (texts, contacts, design colors, extra/hidden channels and movies) lives in admin-only-write tables and is merged client-side via src/lib/site-config.ts on top of the static catalogs, so the code catalogs stay the fallback.
 
-- Share the broadcast shell, wordmark, footer and four-item nav; preserve page guards. Keep section artwork in a browser-safe map separate from streams, with owner image overrides winning.
-- Keep bulk channel creation and editable broadcast schedules in the admin content manager using existing admin-RLS tables; validate streams before batch insertion and invalidate shared schedule queries after saves so public schedules stay current.
+- Share shell, wordmark, footer and four-item nav; preserve guards. Keep artwork browser-safe, separate from streams; owner images win.
+- Admin content manager uses existing admin-RLS tables for bulk channels and schedules; validate streams before insertion and invalidate schedule queries after saves.
 - Store card copy, images, allow-listed destinations, order and visibility in section-content with static defaults; apply ordering to home categories, member platforms and sections without changing category IDs or access guards.
 - Manage chat rooms via create_chat_room and admin-RLS deletion; the general room has no deletable row.
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
 
-- Share the IPTV workspace across homepage and public channel routes, reusing LivePlayer and ChannelSchedule; keep the shared shell and bottom navigation for the installed web app so presentation stays consistent without changing access gates.
+- Homepage and public channel routes share IPTV workspace, LivePlayer and ChannelSchedule; installed web app shares shell/navigation for consistency without changing gates.
