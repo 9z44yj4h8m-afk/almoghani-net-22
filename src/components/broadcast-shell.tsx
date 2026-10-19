@@ -2,6 +2,7 @@ import { useSiteConfig } from "@/lib/site-config";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft, Radio, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoNeon from "@/assets/logo-neon.png.asset.json";
 
 export function BroadcastWordmark({ compact = false }: { compact?: boolean }) {
   const { data } = useSiteConfig();
@@ -9,7 +10,7 @@ export function BroadcastWordmark({ compact = false }: { compact?: boolean }) {
   const cut = name.lastIndexOf(" ");
   const first = cut > 0 ? name.slice(0, cut) : name;
   const last = cut > 0 ? name.slice(cut) : "";
-  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><span>{first}<Radio className="brand-signal" aria-hidden="true" /></span><small>{last.trim() || "LIVE"} PLAY ▸</small></span>;
+  return <span className={`broadcast-brand ${compact ? "broadcast-brand-compact" : ""}`} dir="ltr"><img src={logoNeon.url} alt="" width={38} height={38} className="broadcast-brand-logo" loading="lazy" /><span className="broadcast-brand-text"><span>{first}<Radio className="brand-signal" aria-hidden="true" /></span><small>{last.trim() || "LIVE"} PLAY ▸</small></span></span>;
 }
 
 export function BroadcastHeader() {

@@ -1249,6 +1249,9 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .iptv-rail-brand small{display:block;font-size:.62rem;color:var(--muted-foreground);letter-spacing:.14em}
 .iptv-rail-logo{height:2.75rem;width:2.75rem;border-radius:.75rem;flex-shrink:0;animation:logo-neon-pulse 2.6s ease-in-out infinite}
 @keyframes logo-neon-pulse{0%,100%{box-shadow:0 0 10px rgba(239,68,68,.45),0 0 22px rgba(239,68,68,.18)}50%{box-shadow:0 0 18px rgba(239,68,68,.8),0 0 34px rgba(59,130,246,.35)}}
+.broadcast-brand{flex-direction:row;align-items:center;gap:.55rem}
+.broadcast-brand-logo{height:2.4rem;width:2.4rem;border-radius:.6rem;flex-shrink:0;box-shadow:0 0 12px rgba(239,68,68,.5),0 0 26px rgba(239,68,68,.2)}
+.broadcast-footer .broadcast-brand-logo{height:2.9rem;width:2.9rem}
 .iptv-navigation nav{display:flex;flex-direction:column;gap:.25rem}
 .iptv-navigation-item{justify-content:flex-start!important;gap:.75rem;height:2.75rem;font-weight:800;color:var(--muted-foreground)}
 .iptv-navigation-item:hover,.iptv-navigation-item:focus-visible{color:var(--foreground);background:var(--secondary)}
