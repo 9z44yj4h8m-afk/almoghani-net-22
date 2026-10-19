@@ -42,7 +42,7 @@ describe("female voice panel", () => {
     render(<SayNowForm />);
     expect(screen.queryByRole("button", { name: "حفظ الصوت في جوالي" })).toBeNull();
     expect(screen.queryByRole("button", { name: "إرسال الصوت" })).toBeTruthy();
-    fireEvent.change(screen.getByRole("combobox", { name: "صوت هذه الجملة" }), { target: { value: "female-hessa" } });
+    fireEvent.click(screen.getByRole("radio", { name: /حصة/ }));
     await makeClip();
     await waitFor(() => expect(preview).toHaveBeenCalledWith({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow" } }));
 
