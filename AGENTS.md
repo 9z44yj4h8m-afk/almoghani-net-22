@@ -39,3 +39,5 @@
 - Persist per-card font and size overrides alongside section content and render them through bounded, allow-listed scoped SectionCardStyle rules; preserve existing styles when no override is saved.
 - Keep Smarters banner presentation in a shared catalog component using featured-channel metadata; live banners filter public names and VOD links retain the existing member gate so artwork never exposes private streams.
 - /100 edits site_settings("voice_panel") (panel texts, colors, hidden/custom voices); custom voices store only a built-in provider ID plus delivery prompt.
+
+- Share the IPTV workspace across homepage and public channel routes, reusing LivePlayer and ChannelSchedule; keep the shared shell and bottom navigation for the installed web app so presentation stays consistent without changing access gates.

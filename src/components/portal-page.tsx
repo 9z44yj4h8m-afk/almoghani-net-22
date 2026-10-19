@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { IptvHomeModes } from "@/components/iptv-navigation";
+import { IptvWorkspace } from "@/components/iptv-workspace";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
@@ -263,174 +263,13 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
 
       <main className="pb-28 md:pb-12">
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
-        <BroadcastHero channel={selected} active={playerActive} onWatch={() => setPlayerActive(true)} sectionTitle={section ? heroTitle : undefined} section={section} />
+        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} />
         {homepage && <BreakingTicker />}
-        {homepage && <IptvHomeModes />}
         {homepage && <HomeEntries />}
         {homepage && <HomeCategoryBanners />}
         {homepage && <section className="mx-auto max-w-4xl px-3 pt-5 sm:px-6" aria-label="البدوية دراما"><BedouinDramaBanner /></section>}
 
 
-        {!previewMode && (
-        <div id="channels" className="mx-auto max-w-7xl space-y-10 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
-
-          {inactiveChannels.length > 0 && (
-            <details className="rounded-xl border border-border bg-surface">
-              <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-black">
-                <WifiOff className="h-4 w-4 text-muted-foreground" />
-                قنوات غير نشطة ({inactiveChannels.length})
-              </summary>
-              <ul className="divide-y divide-border border-t border-border">
-                {inactiveChannels.map((c) => (
-                  <li key={c.id} className="flex items-center justify-between gap-3 px-4 py-2.5">
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-bold">{c.name}</span>
-                      <span className="block truncate text-xs text-muted-foreground">{c.category}</span>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        markActive(c.id);
-                        playChannel(c);
-                      }}
-                      className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground"
-                    >
-                      <RefreshCw className="h-3.5 w-3.5" />
-                      تحديث الرابط
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
-          <div className="sticky top-0 z-20 -mx-3 flex gap-2 overflow-x-auto bg-background/95 px-3 py-2 backdrop-blur sm:static sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:bg-transparent sm:px-0" aria-label="الأقسام">
-            {configuredSections.map((s, i) => {
-              const count = channels.filter((c) => c.category === s.category).length;
-              return (
-                <Link
-                  key={s.slug}
-                  to="/channels/$section"
-                  params={{ section: s.slug }}
-                  className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:border-sky hover:text-sky"
-                >
-                  <s.icon className="h-4 w-4 shrink-0 text-sky" />
-                  <span className="whitespace-nowrap">{s.title}</span>
-                  <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-black text-muted-foreground">{count}</span>
-                </Link>
-              );
-            })}
-          </div>
-          {visibleSections.map((section, index) => {
-            const sectionChannels = channels.filter((channel) => channel.category === section.category);
-            const previewChannels = previewMode ? sectionChannels.slice(0, 8) : sectionChannels;
-            const hiddenCount = sectionChannels.length - previewChannels.length;
-            return (
-              <section id={`section-${index}`} key={section.title} className="scroll-mt-28 border-t border-border/60 pt-9 first:border-t-0 first:pt-0 sm:pt-12">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-sky/40 bg-secondary text-sky sm:h-12 sm:w-12">
-                      <section.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </span>
-                    <div className="min-w-0">
-                      <h2 className="truncate font-display text-lg font-black sm:text-2xl">{section.title}</h2>
-                      <p className="truncate text-xs font-bold text-muted-foreground sm:text-sm">
-                        {sectionChannels.length ? `${sectionChannels.length} قناة مباشرة` : "قريبًا"}
-                      </p>
-                    </div>
-                  </div>
-                  {previewMode && sectionChannels.length > 8 && (
-                    <Link
-                      to="/channels/$section"
-                      params={{ section: section.slug }}
-                      className="shrink-0 rounded-full border border-primary/70 px-4 py-2 text-xs font-black text-sky transition-colors hover:bg-primary/10"
-                    >
-                      عرض الكل
-                    </Link>
-                  )}
-                  {section.slug === "movies" && (
-                    <Link
-                      to="/vip"
-                      search={{ kind: "live" }}
-                      className="shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-black text-primary-foreground"
-                    >
-                      almoghani smarter
-                    </Link>
-                  )}
-                </div>
-
-                {sectionChannels.length ? (
-                  <>
-                    <div className="gold-channel-list">
-                      {previewChannels.map((channel, i) => (
-                      <div
-                        key={channel.id}
-                        onPointerEnter={() => warmChannel(channel)}
-                        onTouchStart={() => warmChannel(channel)}
-                        onFocus={() => warmChannel(channel)}
-                        className={`gold-channel-row channel-card ${selected.id === channel.id ? "channel-card-active" : ""}`}
-                      >
-                        <span className="relative block aspect-video overflow-hidden bg-surface-deep">
-                          <span className="absolute inset-0 animate-pulse bg-muted/40" aria-hidden />
-                          <img
-                            loading={index === 0 && i < 4 ? "eager" : "lazy"}
-                            fetchPriority={index === 0 && i < 4 ? "high" : "low"}
-                            decoding="async"
-                            width={320}
-                            height={180}
-                            onLoad={(e) => (e.currentTarget.previousElementSibling as HTMLElement | null)?.remove()}
-                            className={`relative h-full w-full transition-transform duration-500 ${channel.streamUrl ? "object-contain p-4" : "object-cover group-hover:scale-105"}`}
-                            src={channel.thumbnail}
-                            alt={`صورة ${channel.name}`}
-                          />
-                          <span className="absolute inset-0 bg-player-overlay" />
-                          <Button variant="ghost" onClick={() => playChannel(channel)} aria-label={`تشغيل صورة ${channel.name}`} className="absolute inset-0 h-full w-full rounded-none" />
-                          <span className="absolute left-2 top-2 live-badge px-2 py-0.5 text-[9px] sm:left-3 sm:top-3 sm:text-[10px]">
-                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-live-foreground" />
-                            {selected.id === channel.id ? "يُعرض الآن" : "مباشر"}
-                          </span>
-                          <span className="pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-live">
-                              <Play className="h-5 w-5 fill-current" />
-                            </span>
-                          </span>
-                        </span>
-                        <span className="gold-channel-copy">
-                          <span className="min-w-0">
-                            <span className="block truncate text-sm font-bold sm:text-base">{channel.name}</span>
-                            <span className="mt-0.5 hidden truncate text-xs text-muted-foreground sm:block">{channel.description}</span>
-                          </span>
-                          <span className="gold-channel-tools"><Button variant="outline" size="icon" onClick={() => playChannel(channel)} aria-label={`شغّل ${channel.name}`} title={`شغّل ${channel.name}`}><Play className="fill-current" /></Button><Button variant="ghost" size="icon" onClick={() => toggleFavorite(channel.id)} aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة"><Heart className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button></span>
-                        </span>
-                      </div>
-                     ))}
-                    </div>
-                    {hiddenCount > 0 && (
-                      <Link
-                        to="/channels/$section"
-                        params={{ section: section.slug }}
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3 text-sm font-black text-sky transition-colors hover:border-sky hover:bg-primary/5"
-                      >
-                        <ListVideo className="h-4 w-4" />
-                        عرض كل قنوات {section.title} ({sectionChannels.length})
-                      </Link>
-                    )}
-                  </>
-                ) : (
-                  <div className="empty-channel-row">
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-secondary text-muted-foreground">
-                      <ListVideo className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="font-bold">لا توجد قنوات مضافة بعد</p>
-                      <p className="mt-1 text-xs text-muted-foreground sm:text-sm">ستظهر القنوات هنا عند تزويدي بالاسم ورابط البث.</p>
-                    </div>
-                  </div>
-                )}
-              </section>
-            );
-          })}
-        </div>
-        )}
 
       </main>
 
