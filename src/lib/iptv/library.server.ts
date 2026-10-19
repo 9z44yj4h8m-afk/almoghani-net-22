@@ -2,9 +2,9 @@
 export type Kind = "live" | "movie" | "series";
 type Row = [name: string, group: string, logo: string, id: number, ext: string];
 
-const HOST = "http://ebh48.top:80";
-const USER = "169704281902";
-const PASS = "425912890502";
+const HOST = "http://freeiptv.ottc.xyz:80";
+const USER = "767910324250";
+const PASS = "313285624258";
 
 const cache = new Map<Kind, Promise<Row[]>>();
 
@@ -45,6 +45,11 @@ export async function groupsOf(kind: Kind) {
 export async function titles(kind: Exclude<Kind, "movie">, q: string, page: number) {
   const rows = await loadKind(kind);
   const ql = q.trim().toLowerCase();
+  if (kind === "series") {
+    // Series rows are one row per series; episodes load on demand in search().
+    const hits = rows.filter((r) => !ql || r[0].toLowerCase().includes(ql) || r[1].toLowerCase().includes(ql));
+    return { total: hits.length, titles: hits.slice(page * 60, page * 60 + 60).map((r) => ({ name: r[0], count: 0, logo: r[2] })) };
+  }
   const grouped = new Map<string, { count: number; logo: string; matches: boolean }>();
   for (const row of rows) {
     const current = grouped.get(row[1]);
@@ -69,11 +74,29 @@ export async function titles(kind: Exclude<Kind, "movie">, q: string, page: numb
   };
 }
 
+async function episodes(seriesName: string) {
+  const rows = await loadKind("series");
+  const row = rows.find((r) => r[0] === seriesName);
+  if (!row) return [];
+  const res = await fetch(`${HOST}/player_api.php?username=${USER}&password=${PASS}&action=get_series_info&series_id=${row[3]}`, {
+    headers: { "User-Agent": "VLC/3.0.20 LibVLC/3.0.20" },
+  });
+  if (!res.ok) return [];
+  const info = (await res.json()) as { episodes?: Record<string, { id: string; title?: string; episode_num?: number; container_extension?: string }[]> };
+  const out: Row[] = [];
+  for (const [season, list] of Object.entries(info.episodes ?? {})) {
+    for (const ep of list ?? []) {
+      out.push([ep.title || `الموسم ${season} - الحلقة ${ep.episode_num ?? ""}`, seriesName, row[2], Number(ep.id), ep.container_extension || "mp4"]);
+    }
+  }
+  return out;
+}
+
 export async function search(kind: Kind, q: string, group: string, page: number) {
-  const rows = await loadKind(kind);
+  const rows = kind === "series" && group ? await episodes(group) : await loadKind(kind);
   const ql = q.trim().toLowerCase();
   const hits = rows.filter(
-    (r) => (!group || r[1] === group) && (!ql || r[0].toLowerCase().includes(ql)),
+    (r) => (!group || r[1] === group || kind === "series") && (!ql || r[0].toLowerCase().includes(ql)),
   );
   const size = 60;
   return {
