@@ -96,6 +96,14 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const found = id && channels.find((c) => c.id === id);
     if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, [catalog.data]);
+  // Owner request (20 Oct 2026): members landing on the homepage start on beIN SPORTS 1 immediately.
+  const [autoBein, setAutoBein] = useState(false);
+  useEffect(() => {
+    if (!homepage || autoBein || !memberChannels.length || new URLSearchParams(window.location.search).get("channel")) return;
+    const bein = memberChannels.find((c) => c.name.trim().toUpperCase() === "BEIN SPORTS 1");
+    setAutoBein(true);
+    if (bein) { setSelected(bein); setPlayerActive(true); }
+  }, [catalog.data]);
   // Auto-fallback: when a channel fails, switch to a similar one from the same section.
   const [fallbackNote, setFallbackNote] = useState("");
   useEffect(() => {
