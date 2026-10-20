@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, render, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Channel } from "@/lib/channels";
-import { mergeLiveChannels, smartersCategory } from "@/lib/unified-channels";
+import { mergeLiveChannels, smartersCategory, matchesChannelSearch } from "@/lib/unified-channels";
 
 const mocks = vi.hoisted(() => ({ user: null as { id: string } | null, access: vi.fn(), resolve: vi.fn(), play: vi.fn() }));
 vi.mock("@/components/member-provider", () => ({ useMember: () => ({ user: mocks.user, ready: true }) }));
@@ -16,6 +16,10 @@ import { UnifiedMemberPlayer } from "@/components/unified-member-player";
 function mount() { return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><UnifiedMemberPlayer channelId="smarters:test" /></QueryClientProvider>); }
 afterEach(() => { cleanup(); vi.clearAllMocks(); mocks.user = null; });
 describe("Unified live channels", () => {
+  it.each(["بي ان", "بي إن", "بين", "beIN", "بي ان سبورت"])("finds beIN with %s", (query) => {
+    expect(matchesChannelSearch("BEIN SPORT TOD 1", query)).toBe(query !== "بي ان سبورت");
+    expect(matchesChannelSearch("AL JAZEERA", query)).toBe(false);
+  });
   it("places Smarters between site channels in one list without dropping any channels", () => {
     const channel = (id: string): Channel => ({ id, name: id, category: "إخبارية", thumbnail: "", description: "" });
     const merged = mergeLiveChannels([channel("site1"), channel("site2")], [channel("smarters:1"), channel("smarters:2"), channel("smarters:3")]);
