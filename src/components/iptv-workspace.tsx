@@ -1,4 +1,10 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+function Clock() {
+  const [now, setNow] = useState("");
+  useEffect(() => { const tick = () => setNow(new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })); tick(); const t = setInterval(tick, 30000); return () => clearInterval(t); }, []);
+  return <time>{now}</time>;
+}
 import { ChevronDown, ChevronUp, LayoutGrid, Pencil, Search, Star, Tv, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BroadcastHero } from "@/components/broadcast-hero";
@@ -30,6 +36,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
     {onEditChannel && !isSmartersChannel(channel) && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
   </div>;
   return <section className="iptv-workspace" aria-label="البث المباشر">
+    <header className="iptv-ref-head"><h2>البث المباشر</h2><div className="iptv-ref-meta"><span>VIP Premium</span><Clock /></div></header>
     <nav className="iptv-categories" aria-label="تصنيفات القنوات">
       {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => setCategory(slug)}><Icon /><span>{title}</span></Button>)}
     </nav>
