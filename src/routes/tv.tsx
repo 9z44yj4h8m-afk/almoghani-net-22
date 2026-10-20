@@ -27,7 +27,7 @@ function TvHub() {
     { to: "/movies", ar: "الأفلام", en: "MOVIES", img: movies, Icon: Film },
     { to: "/live", ar: "البث المباشر", en: "LIVE TV", img: live, Icon: Tv },
   ] as const;
-  return <main dir="rtl" className="tv-hub">
+  return <div dir="rtl" className="tv-hub">
     <header className="iptv-ref-head"><h1 dir="ltr">ALMOGHANI <small>LIVE</small></h1><div className="iptv-ref-meta"><span><Crown className="inline h-4 w-4" /> VIP Premium</span><time>{now}</time></div></header>
     <div className="tv-hub-tiles">
       {[...tiles].reverse().map(({ to, ar, en, img, Icon }) => <Link key={to} to={to} className="tv-hub-tile">
@@ -39,5 +39,5 @@ function TvHub() {
       <Link to="/live" className="tv-hub-bar"><Tv /> <span>متابعة المشاهدة — افتح البث المباشر</span><ChevronLeft /></Link>
       <Link to="/my-account" className="tv-hub-settings"><Settings /><strong>الإعدادات</strong><small dir="ltr">SETTINGS</small></Link>
     </div>
-  </main>;
+  </div>;
 }

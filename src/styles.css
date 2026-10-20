@@ -1451,3 +1451,4 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .tv-hub-settings { align-items:center; justify-content:center; padding:18px; gap:6px; } .tv-hub-settings svg { width:64px; height:64px; } .tv-hub-settings strong { font-size:28px; font-weight:900; }
 @media (max-width:767px) { .tv-hub-tiles, .tv-hub-row { grid-template-columns:minmax(0,1fr); } .tv-hub-label strong { font-size:26px; } .tv-hub-art { aspect-ratio:16/9; } }
 .tv-hub { grid-template-columns:minmax(0,1fr) !important; grid-auto-flow:row !important; }
+.tv-hub { display:flex !important; flex-direction:column; width:100%; }
