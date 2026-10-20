@@ -507,8 +507,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       <label className="voice-studio-field"><span><Mic />{panel.texts.voiceLabel}</span><div className="voice-studio-select"><img className="voice-choice-avatar" src={voiceAvatar.url} alt="" /><select id="voice-select" aria-label="صوت هذه الجملة" value={sayVoice} disabled={testing} onChange={(e) => { setSayVoice(e.target.value); setAudioFile(null); }}>
         <option value="">صوت البوت المحفوظ</option>
         {FEMALE_VOICE_CATEGORIES.map((cat) => {
-          const list = FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id));
-          return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.label}</option>)}</optgroup> : null;
+          const list = orderVoices(FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat && !panel.hidden.includes(v.id)), panel.order);
+          return list.length ? <optgroup key={cat} label={cat}>{list.map((v) => <option key={v.id} value={v.id}>{panel.names[v.id] || v.name} · {v.label}</option>)}</optgroup> : null;
         })}
         {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
       </select><ChevronDown aria-hidden="true" /></div></label>
