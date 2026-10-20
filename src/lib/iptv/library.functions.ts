@@ -7,6 +7,32 @@ const kind = z.enum(["live", "movie", "series"]);
 const pin = z.string().max(200);
 const requireLibraryAccess = requireSupabaseAuth;
 
+export const getUnifiedVodCatalog = createServerFn({ method: "GET" })
+  .inputValidator(data => z.object({ kind: z.enum(["movie", "series"]), q: z.string().max(100), page: z.number().int().min(0).max(5000), lang: z.enum(["عربي", "عالمي"]).optional() }).parse(data))
+  .handler(async ({ data }) => {
+    const { vodCatalogRows } = await import("./vod-catalog.server");
+    const { matchesChannelSearch } = await import("../unified-channels");
+    const rows = (await vodCatalogRows(data.kind)).filter(({ row }) => {
+      const arabic = /arab|عرب/i.test(row[1]) || /[\u0600-\u06ff]/.test(row[0]);
+      return (!data.lang || (data.lang === "عربي" ? arabic : !arabic)) && (!data.q || matchesChannelSearch(row[0], data.q));
+    });
+    return { total: rows.length, items: rows.slice(data.page * 60, (data.page + 1) * 60).map(({ id, row }) => ({ id, title: row[0] })) };
+  });
+
+export const resolveUnifiedVod = createServerFn({ method: "POST" })
+  .middleware([requireLibraryAccess])
+  .inputValidator(data => z.object({ kind: z.enum(["movie", "series"]), id: z.string().regex(/^vod:[a-f0-9]{64}$/) }).parse(data))
+  .handler(async ({ data, context }) => {
+    const { data: session, error } = await context.supabase.from("member_library_sessions").select("unlocked").maybeSingle();
+    if (error || !session?.unlocked) throw new Error("تعذّر التحقق من جلسة العضو.");
+    const { vodCatalogRows } = await import("./vod-catalog.server");
+    const match = (await vodCatalogRows(data.kind)).find(item => item.id === data.id);
+    if (!match) throw new Error("المحتوى غير متاح حاليًا.");
+    const { streamUrl, search } = await import("./library.server");
+    if (data.kind === "movie") return { items: [{ name: match.row[0], url: streamUrl("movie", match.row[3], match.row[4]) }] };
+    return { items: (await search("series", "", match.row[0], 0)).items.map(item => ({ name: item.name, url: item.url })) };
+  });
+
 export const getUnifiedLiveCatalog = createServerFn({ method: "GET" }).handler(async () => {
   const { liveCatalogRows } = await import("./live-catalog.server");
   return (await liveCatalogRows()).map(({ id, row }) => ({ id, name: row[0], group: row[1] }));

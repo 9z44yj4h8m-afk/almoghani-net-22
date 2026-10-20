@@ -4,7 +4,7 @@ import { ArrowRight, Clock, Heart, Lock, Search, Shuffle, Clapperboard } from "l
 import { Button } from "@/components/ui/button";
 import { type Movie } from "@/lib/movies";
 import { getFeaturedMovies } from "@/lib/featured-movies.functions";
-import { SmartersPageCollection } from "@/components/smarters-page-collection";
+import { useUnifiedVod, UnifiedVodCard, UnifiedVodDialog, VodPagination, type VodTitle } from "@/components/unified-vod";
 import { useSiteConfig, applyMovieConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/movies")({
@@ -52,6 +52,9 @@ function MoviesPage() {
   const [filter, setFilter] = useState<"الكل" | Movie["lang"] | "المفضلة">(lang ?? "الكل");
   useEffect(() => { setFilter(lang ?? "الكل"); }, [lang]);
   const [q, setQ] = useState("");
+  const vod = useUnifiedVod("movie", q, filter === "عربي" || filter === "عالمي" ? filter : undefined, filter !== "المفضلة");
+  const [privatePlaying, setPrivatePlaying] = useState<VodTitle | null>(null);
+  const privateItems = filter === "المفضلة" ? [] : vod.data?.items ?? [];
   const [favs, setFavs] = useState<string[]>([]);
   const [playing, setPlaying] = useState<Movie | null>(null);
   const [muted, setMuted] = useState(true);
@@ -96,11 +99,13 @@ function MoviesPage() {
 
         <h1 className="mt-6 flex items-center gap-3 font-display text-2xl font-black sm:text-3xl">
           <span className="h-8 w-1.5 rounded-full bg-primary" />أفلام مميزة كاملة
-          <span className="ms-auto text-xs font-bold text-muted-foreground">{list.length} فيلم</span>
+          <span className="ms-auto text-xs font-bold text-muted-foreground">{list.length + (filter === "المفضلة" ? 0 : vod.data?.total ?? 0)} فيلم</span>
         </h1>
 
         <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-3">
-          {list.map((m, i) => (
+          {list.flatMap((m, i) => {
+            const privateItem = privateItems[i];
+            return [ (
             <div key={m.id} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-sky/50 bg-surface-deep shadow-lg">
               <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
               <span className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--background)_92%,transparent)_0%,color-mix(in_oklab,var(--background)_55%,transparent)_45%,transparent_75%)]" />
@@ -117,10 +122,12 @@ function MoviesPage() {
                 <Button type="button" onClick={() => watch(m)} className="mt-auto h-auto px-3 py-1.5 text-xs font-black shadow-live sm:px-5 sm:py-2 sm:text-base">شاهد الآن</Button>
               </div>
             </div>
-          ))}
+          ), ...(privateItem ? [<UnifiedVodCard key={privateItem.id} item={privateItem} onSelect={setPrivatePlaying} />] : [])]; })}
+          {privateItems.slice(list.length).map(item => <UnifiedVodCard key={item.id} item={item} onSelect={setPrivatePlaying} />)}
         </div>
-        {list.length === 0 && <p className="py-16 text-center text-muted-foreground">لا توجد أفلام مطابقة.</p>}
-        <SmartersPageCollection kind="movie" />
+        {list.length === 0 && privateItems.length === 0 && !vod.isPending && <p className="py-16 text-center text-muted-foreground">لا توجد أفلام مطابقة.</p>}
+        <VodPagination catalog={vod} />
+        <UnifiedVodDialog kind="movie" item={privatePlaying} onClose={() => setPrivatePlaying(null)} />
       </main>
 
     </div>

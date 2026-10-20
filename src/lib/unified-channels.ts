@@ -6,6 +6,23 @@ export function normalizeChannelSearch(value: string): string {
 export function matchesChannelSearch(name: string, query: string): boolean {
   return normalizeChannelSearch(name).includes(normalizeChannelSearch(query));
 }
+export function groupBeinChannels(channels: Channel[]): { id: string; name: string; channels: Channel[]; grouped: boolean }[] {
+  const groups: { id: string; name: string; channels: Channel[]; grouped: boolean }[] = [];
+  const byNumber = new Map<string, typeof groups[number]>();
+  for (const channel of channels) {
+    const normalized = normalizeChannelSearch(channel.name).replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)));
+    const number = normalized.match(/bein[^\d]*(\d{1,2})(?!\d)/)?.[1];
+    if (channel.category !== "رياضية" || !number) { groups.push({ id: channel.id, name: channel.name, channels: [channel], grouped: false }); continue; }
+    const key = String(Number(number));
+    const existing = byNumber.get(key);
+    if (existing) existing.channels.push(channel);
+    else {
+      const group = { id: `bein-group:${key}`, name: `بي إن سبورت ${key}`, channels: [channel], grouped: true };
+      byNumber.set(key, group); groups.push(group);
+    }
+  }
+  return groups;
+}
 export function smartersCategory(group: string): ChannelCategory {
   if (/news|أخبار|إخبار|اخبار/i.test(group)) return "إخبارية";
   if (/sport|bein|ssc|رياض/i.test(group)) return "رياضية";
