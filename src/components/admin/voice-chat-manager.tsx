@@ -8,7 +8,7 @@ import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOIC
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
-import { defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
+import { defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
 import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode } from "@/lib/voice-fx";
 
