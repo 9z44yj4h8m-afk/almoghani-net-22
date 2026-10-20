@@ -17,9 +17,9 @@
 - Merge per-series YouTube metadata into one ordered drama catalog at /bedouin-drama; never mix public videos with private IPTV or claim a live channel.
 - Admin password-only login authenticates the fixed owner account server-side through Cloud Auth and checks user_roles before returning a session; never bypass RLS with a shared PIN.
 
-- Share src/lib/channels.ts across player and AI; synchronize additions to public/channels.m3u preserving BOM and group order. Links: /live?channel=<id> and /channels/<section-slug>, with section slugs defined in portal-page.
+- Share channels.ts across player/AI; sync channels.m3u with BOM/group order and channels-iptv.m3u with only direct HLS, no BOM, CRLF, same order. Links: /live?channel=<id>, /channels/<section-slug> (portal-page).
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
-- Resolve each YouTube channel's current live video server-side (resolveYoutubeLive, using youtubeChannelId) and embed by video ID, because YouTube's embed/live_stream?channel= URL shows "video unavailable".
+- Resolve YouTube live server-side (resolveYoutubeLive, youtubeChannelId); embed video IDs, not the broken embed/live_stream?channel= URL.
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.
 - PWA starts /vip without service-worker caching; voices-only Android uses net.almoghani.voices and /22, preserving account guards.
 - Relay Referer-locked CDNs via /api/public/hls (allow-list); Smarters relay follows redirects manually via <ip>.sslip.io, since the edge refuses bare-IP fetches.
