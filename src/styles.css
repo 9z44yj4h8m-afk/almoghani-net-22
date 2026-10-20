@@ -1469,3 +1469,10 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
  .tv-hub-bar { padding:14px; font-size:14px; } .tv-hub-settings { padding:10px; } .tv-hub-settings strong { font-size:16px; }
  .tv-hub .iptv-ref-head h1 { font-size:20px; } .tv-hub .iptv-ref-head h1 small { font-size:10px; }
 }
+
+/* Fast-response controls */
+button, a, [role="button"] { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button:active, a:active, [role="button"]:active { transform: scale(.97); transition-duration: 60ms !important; }
+.tv-hub-tile, .tv-hub-bar, .tv-hub-settings, .iptv-category, .iptv-channel-select { transition-duration: 90ms !important; }
+.tv-hub-actions { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+.tv-hub-expiry { text-align:center; margin-top:.75rem; color: var(--muted-foreground); font-size:.85rem; }
