@@ -1435,3 +1435,20 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .chrome-page .broadcast-screen { border:3px solid oklch(0.9 0.003 260); border-radius:16px; }
 .chrome-series .grid > * { border:3px solid oklch(0.9 0.003 260) !important; border-radius:14px !important; }
 .chrome-series h1 { background:var(--chrome); color:var(--primary-foreground); padding:10px 16px; border-radius:14px; }
+.tv-hub { max-width:1720px; margin:0 auto; padding:14px; display:grid; gap:14px; }
+.tv-hub .iptv-ref-head h1 { font-size:28px; font-weight:900; } .tv-hub .iptv-ref-head h1 small { font-size:14px; letter-spacing:.3em; }
+.tv-hub-tiles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.tv-hub-tile, .tv-hub-settings, .tv-hub-bar { display:flex; flex-direction:column; overflow:hidden; border-radius:18px; border:3px solid oklch(0.92 0.003 260); background:var(--chrome); color:var(--primary-foreground); box-shadow:0 0 0 1px oklch(0.4 0.005 260), var(--broadcast-shadow); transition:transform .2s; }
+.tv-hub-tile:hover, .tv-hub-settings:hover, .tv-hub-bar:hover { transform:scale(1.02); }
+.tv-hub-art { position:relative; aspect-ratio:4/3; margin:8px 8px 0; border-radius:12px; overflow:hidden; background:var(--surface-deep); }
+.tv-hub-art img { width:100%; height:100%; object-fit:cover; }
+.tv-hub-art span { position:absolute; inset:0; display:grid; place-items:center; }
+.tv-hub-art svg { width:72px; height:72px; color:oklch(0.97 0.002 260); filter:drop-shadow(0 4px 12px oklch(0 0 0 / 70%)); }
+.tv-hub-label { display:flex; flex-direction:column; align-items:center; padding:12px; }
+.tv-hub-label strong { font-size:34px; font-weight:900; } .tv-hub-label small, .tv-hub-settings small { letter-spacing:.3em; font-size:14px; }
+.tv-hub-row { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:14px; }
+.tv-hub-bar { flex-direction:row; align-items:center; gap:12px; padding:22px; font-size:20px; font-weight:900; } .tv-hub-bar span { flex:1; }
+.tv-hub-settings { align-items:center; justify-content:center; padding:18px; gap:6px; } .tv-hub-settings svg { width:64px; height:64px; } .tv-hub-settings strong { font-size:28px; font-weight:900; }
+@media (max-width:767px) { .tv-hub-tiles, .tv-hub-row { grid-template-columns:minmax(0,1fr); } .tv-hub-label strong { font-size:26px; } .tv-hub-art { aspect-ratio:16/9; } }
+.tv-hub { grid-template-columns:minmax(0,1fr) !important; grid-auto-flow:row !important; }
+.tv-hub { display:flex !important; flex-direction:column; width:100%; }
