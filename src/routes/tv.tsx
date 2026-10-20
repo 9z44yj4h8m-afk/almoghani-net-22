@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { LayoutCanvas, type CanvasItem } from "@/components/layout-canvas";
 import { useEffect, useState } from "react";
 import { Settings, Tv, Film, Clapperboard, ChevronRight, RefreshCw, User, LogOut, CalendarDays, MonitorPlay, Globe } from "lucide-react";
 
@@ -16,6 +17,12 @@ export const Route = createFileRoute("/tv")({
   component: TvHub,
 });
 
+const tvDefaults: CanvasItem[] = [
+  { id: "live", type: "tile", x: 1, y: 2, w: 40, h: 96, label: "البث المباشر", sub: "LIVE TV", link: "/live", color: "#1d4ed8", radius: 18 },
+  { id: "movies", type: "tile", x: 43, y: 2, w: 27, h: 96, label: "الأفلام", sub: "MOVIES", link: "/movies", color: "#7c3aed", radius: 18 },
+  { id: "series", type: "tile", x: 72, y: 2, w: 27, h: 96, label: "المسلسلات", sub: "SERIES", link: "/bedouin-drama", color: "#0d9488", radius: 18 },
+];
+
 function TvHub() {
   const [now, setNow] = useState({ time: "", day: "", date: "" });
   useEffect(() => {
@@ -29,7 +36,8 @@ function TvHub() {
     };
     t(); const i = setInterval(t, 15000); return () => clearInterval(i);
   }, []);
-  const tiles = [
+  /* tiles now editable via LayoutCanvas */
+  const _tiles = [
     { to: "/live", ar: "البث المباشر", en: "LIVE TV", Icon: Tv, cls: "sp-live" },
     { to: "/movies", ar: "الأفلام", en: "MOVIES", Icon: Film, cls: "sp-movies" },
     { to: "/bedouin-drama", ar: "المسلسلات", en: "SERIES", Icon: Clapperboard, cls: "sp-series" },
@@ -47,14 +55,7 @@ function TvHub() {
         <Link to="/my-account" aria-label="الحساب" className="sp-icon"><User /></Link>
       </div>
     </header>
-    <div className="sp-tiles">
-      {tiles.map(({ to, ar, en, Icon, cls }) => <Link key={to} to={to} preload="intent" className={`sp-tile ${cls}`}>
-        <Icon className="sp-tile-icon" />
-        <strong>{en}</strong>
-        <span dir="rtl">{ar}</span>
-        <ChevronRight className="sp-chev" />
-      </Link>)}
-    </div>
+    <LayoutCanvas settingsKey="tv_layout" defaults={tvDefaults} />
     <div className="sp-actions" dir="rtl">
       <Link to="/auth" preload="intent" className="sp-btn"><span>تسجيل الخروج</span><LogOut /></Link>
       <Link to="/my-account" preload="intent" className="sp-btn"><span>الحساب</span><User /></Link>

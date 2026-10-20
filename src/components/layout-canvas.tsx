@@ -75,7 +75,7 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
     const d = drag.current; const r = box.current?.getBoundingClientRect();
     if (!d || !r) return;
     const dx = ((e.clientX - d.sx) / r.width) * 100, dy = ((e.clientY - d.sy) / r.height) * 100;
-    if (d.mode === "move") update(d.id, { x: clamp(d.o.x - dx * -1, 0, 100 - d.o.w), y: clamp(d.o.y + dy, 0, 100 - Math.min(d.o.h, 100)) });
+    if (d.mode === "move") update(d.id, { x: clamp(d.o.x + dx, 0, 100 - d.o.w), y: clamp(d.o.y + dy, 0, 100 - Math.min(d.o.h, 100)) });
     else update(d.id, { w: clamp(d.o.w + dx, 4, 100 - d.o.x), h: clamp(d.o.h + dy, 4, 100) });
   };
   const add = (type: CanvasItem["type"]) => {
