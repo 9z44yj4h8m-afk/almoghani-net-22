@@ -5,6 +5,7 @@ import logoNeon from "@/assets/logo-neon.png.asset.json";
 
 const destinations = [
   { to: "/", label: "الرئيسية", Icon: Home },
+  { to: "/tv", label: "واجهة التطبيق", Icon: LayoutGrid },
   { to: "/live", label: "البث المباشر", Icon: Tv },
   { to: "/movies", label: "الأفلام", Icon: Film },
   { to: "/bedouin-drama", label: "البدوية دراما", Icon: Clapperboard },
