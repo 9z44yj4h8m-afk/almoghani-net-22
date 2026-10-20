@@ -72,7 +72,7 @@ function VoiceStore() {
   const html = useMemo(() => build(cfg), [cfg]);
   const save = async () => {
     const { error } = await supabase.from("site_settings").upsert({ key: KEY, value: cfg, updated_at: new Date().toISOString() });
-    if (error) return toast.error("ما انحفظ: " + error.message);
+    if (error) { toast.error("ما انحفظ: " + error.message); return; }
     setSaved(cfg); toast.success("انحفظ المتجر");
   };
   const f = (k: keyof Cfg, label: string, long = false) => <label className="vs-field"><span>{label}</span>
