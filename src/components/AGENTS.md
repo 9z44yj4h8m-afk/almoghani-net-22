@@ -9,4 +9,4 @@
 - Voice chat (/voice-chat) reuses LiveChat with voice mode; bot speech is generated server-side only for existing chat message IDs so the endpoint cannot be used as open TTS.
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
 
-- Film and series pages embed the gated SmartersLibrary with an explicit initialKind so private playback stays protected.
+- Film and series pages interleave public cards with paginated safe VOD metadata through unified-vod; only an authenticated selected-item resolver returns private playback, keeping one search/grid without exposing provider IDs, logos or URLs.
