@@ -1,0 +1,3 @@
+CREATE POLICY "Anyone reads design images" ON storage.objects FOR SELECT TO anon, authenticated USING (bucket_id = 'design-images');
+CREATE POLICY "Admins upload design images" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'design-images' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins delete design images" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'design-images' AND public.has_role(auth.uid(), 'admin'));
