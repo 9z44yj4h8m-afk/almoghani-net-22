@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { OwnerEditablePage } from "@/components/admin/page-content-editor";
 import { IptvWorkspace } from "@/components/iptv-workspace";
-import { MemberLibraryGate } from "@/components/member-library-gate";
-import { SmartersLibrary } from "@/components/smarters-library";
+import { UnifiedMemberPlayer } from "@/components/unified-member-player";
+import { useQuery } from "@tanstack/react-query";
+import { getUnifiedLiveCatalog } from "@/lib/iptv/library.functions";
+import { isSmartersChannel, mergeLiveChannels, smartersCategory } from "@/lib/unified-channels";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
@@ -63,7 +65,16 @@ export const liveSections = sections;
 
 
 export function PortalPage({ section, homepage = false }: { section?: string; homepage?: boolean }) {
-  const channels = useCatalog();
+  const publicChannels = useCatalog();
+  const fetchLiveCatalog = useServerFn(getUnifiedLiveCatalog);
+  const catalog = useQuery({ queryKey: ["unified-live-catalog"], queryFn: () => fetchLiveCatalog(), staleTime: 3_000, retry: false });
+  const memberChannels: Channel[] = (catalog.data ?? []).map(item => ({ id: item.id, name: item.name, category: smartersCategory(item.group), thumbnail: publicChannels.find(channel => channel.name.toLowerCase() === item.name.toLowerCase())?.thumbnail ?? "", description: item.group }));
+  const channels = mergeLiveChannels(publicChannels, memberChannels);
+  useEffect(() => {
+    const refresh = () => { void catalog.refetch(); };
+    window.addEventListener("smarters-config-saved", refresh);
+    return () => window.removeEventListener("smarters-config-saved", refresh);
+  }, [catalog.refetch]);
   const { data: siteConfig } = useSiteConfig();
   const texts = siteConfig?.texts ?? defaultTexts;
   const configuredSections = sections.map((s) => ({ ...s, title: siteConfig?.sectionContent.titles[s.slug] || s.title }));
@@ -84,7 +95,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const id = new URLSearchParams(window.location.search).get("channel");
     const found = id && channels.find((c) => c.id === id);
     if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
-  }, []);
+  }, [catalog.data]);
   // Auto-fallback: when a channel fails, switch to a similar one from the same section.
   const [fallbackNote, setFallbackNote] = useState("");
   useEffect(() => {
@@ -92,10 +103,10 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const onFailed = (e: Event) => {
       const id = (e as CustomEvent<string>).detail;
       tried.add(id);
-      const failed = channels.find((c) => c.id === id);
+      const failed = publicChannels.find((c) => c.id === id);
       if (!failed) return;
       const inactive = new Set<string>(JSON.parse(localStorage.getItem("almoghani-inactive-channels") ?? "[]"));
-      const pool = channels.filter((c) => !tried.has(c.id) && !inactive.has(c.id));
+      const pool = publicChannels.filter((c) => !tried.has(c.id) && !inactive.has(c.id));
       const words = failed.name.split(/\s+/).filter((w) => w.length > 1);
       const next =
         pool.find((c) => c.category === failed.category && words.some((w) => c.name.includes(w))) ??
@@ -267,12 +278,8 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       <main className="pb-6 md:pb-10">
         <OwnerEditablePage>{(editChannel) => <>
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
-        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} />
+        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} player={isSmartersChannel(selected) ? <UnifiedMemberPlayer key={selected.id} channelId={selected.id} /> : undefined} />
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
-        {homepage && <section aria-label="قنوات سمارتر المغني" className="mx-auto max-w-7xl px-3 pt-4">
-          <h2 className="mb-2 flex items-center gap-2 font-display text-xl font-black text-foreground"><Lock className="h-5 w-5" />قنوات سمارتر المغني</h2>
-          <MemberLibraryGate><SmartersLibrary embedded initialKind="live" onCatalog={() => document.getElementById("player")?.scrollIntoView({ behavior: "smooth" })} /></MemberLibraryGate>
-        </section>}
         </>}</OwnerEditablePage>
       </main>
 

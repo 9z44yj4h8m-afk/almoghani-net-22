@@ -7,6 +7,23 @@ const kind = z.enum(["live", "movie", "series"]);
 const pin = z.string().max(200);
 const requireLibraryAccess = requireSupabaseAuth;
 
+export const getUnifiedLiveCatalog = createServerFn({ method: "GET" }).handler(async () => {
+  const { liveCatalogRows } = await import("./live-catalog.server");
+  return (await liveCatalogRows()).map(({ id, row }) => ({ id, name: row[0], group: row[1] }));
+});
+export const resolveUnifiedLiveChannel = createServerFn({ method: "POST" })
+  .middleware([requireLibraryAccess])
+  .inputValidator((data) => z.object({ id: z.string().regex(/^smarters:[a-f0-9]{64}$/) }).parse(data))
+  .handler(async ({ data, context }) => {
+    const { data: session, error } = await context.supabase.from("member_library_sessions").select("unlocked").maybeSingle();
+    if (error || !session?.unlocked) throw new Error("تعذّر التحقق من جلسة العضو.");
+    const { liveCatalogRows } = await import("./live-catalog.server");
+    const match = (await liveCatalogRows()).find(item => item.id === data.id);
+    if (!match) throw new Error("القناة غير متاحة حاليًا.");
+    const { streamUrl } = await import("./library.server");
+    return { url: streamUrl("live", match.row[3], match.row[4]) };
+  });
+
 // Public metadata only; never use search(), which resolves credential-bearing URLs.
 export const browseSmartersChannels = createServerFn({ method: "GET" })
   .inputValidator((d) => z.object({ q: z.string().max(100), group: z.string().max(200), page: z.number().int().min(0).max(5000) }).parse(d))

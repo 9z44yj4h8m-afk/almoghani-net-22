@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { LayoutGrid, Pencil, Search, Star, Tv, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BroadcastHero } from "@/components/broadcast-hero";
 import type { Channel, ChannelCategory } from "@/lib/channels";
+import { isSmartersChannel } from "@/lib/unified-channels";
 
 type Section = { slug: string; title: string; category: ChannelCategory; icon: LucideIcon };
-export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection, onEditChannel }: {
+export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection, onEditChannel, player }: {
   channels: Channel[]; sections: Section[]; selected: Channel; active: boolean;
   onWatch: () => void; onSelect: (channel: Channel) => void;
   favorites: string[]; onFavorite: (id: string) => void; initialSection?: string | undefined;
   onEditChannel?: ((channel: Channel) => void) | undefined;
+  player?: ReactNode;
 }) {
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");
@@ -31,11 +33,11 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
             <span>{channel.name}</span>
           </Button>
           <Button size="icon" variant="ghost" className="iptv-favorite" aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة" onClick={() => onFavorite(channel.id)}><Star className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button>
-          {onEditChannel && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
+          {onEditChannel && !isSmartersChannel(channel) && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
         </div>)}
         {!visible.length && <p className="iptv-empty">{category === "favorites" ? "لا توجد قنوات في المفضلة بعد." : "لا توجد قنوات مطابقة."}</p>}
       </div>
     </div>
-    <div className="iptv-viewing-column"><BroadcastHero channel={selected} active={active} onWatch={onWatch} /></div>
+    <div className="iptv-viewing-column"><BroadcastHero channel={selected} active={active} onWatch={onWatch} player={player} /></div>
   </section>;
 }
