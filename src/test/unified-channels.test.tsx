@@ -17,7 +17,7 @@ function mount() { return render(<QueryClientProvider client={new QueryClient({ 
 afterEach(() => { cleanup(); vi.clearAllMocks(); mocks.user = null; });
 describe("Unified live channels", () => {
   it.each(["بي ان", "بي إن", "بين", "beIN", "بي ان سبورت"])("finds beIN with %s", (query) => {
-    expect(matchesChannelSearch("BEIN SPORT TOD 1", query)).toBe(query !== "بي ان سبورت");
+    expect(matchesChannelSearch("BEIN SPORT TOD 1", query)).toBe(true);
     expect(matchesChannelSearch("AL JAZEERA", query)).toBe(false);
   });
   it("places Smarters between site channels in one list without dropping any channels", () => {
