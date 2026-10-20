@@ -1414,6 +1414,9 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .iptv-ref-head h2 { font-size:28px; font-weight:900; }
 .iptv-ref-head .iptv-ref-meta { display:flex; align-items:center; gap:14px; font-weight:800; font-size:13px; direction:ltr; }
 .iptv-ref-head time { font-size:26px; font-weight:900; font-family:Arial,sans-serif; }
+.iptv-ref-title { display:inline-flex; align-items:center; gap:8px; color:inherit; text-decoration:none; cursor:pointer; }
+.iptv-ref-title:hover { text-decoration:underline; }
+.iptv-ref-title-icon { width:22px; height:22px; flex:0 0 auto; }
 .iptv-categories { grid-area: cats; flex-direction:row !important; min-height:0 !important; padding:6px; gap:6px; background:var(--chrome) !important; }
 .iptv-categories .iptv-category { flex:1; justify-content:center; border:0; border-radius:12px; min-height:52px; background:transparent; font-size:17px; }
 .iptv-channel-column { grid-area: list; }
@@ -1421,7 +1424,7 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .iptv-viewing-column > * { border-radius:14px; }
 @media (max-width: 1023px) {
  .iptv-workspace { grid-template-columns: minmax(0,1fr) !important; grid-template-areas: "head" "cats" "view" "list"; }
- .iptv-ref-head { padding:8px 12px; } .iptv-ref-head h2 { font-size:20px; } .iptv-ref-head time { font-size:18px; } .iptv-ref-head .iptv-ref-meta span { display:none; }
+ .iptv-ref-head { padding:8px 12px; } .iptv-ref-head h2 { font-size:20px; } .iptv-ref-head time { font-size:18px; } .iptv-ref-head .iptv-ref-meta span { display:none; } .iptv-ref-title-icon { width:16px; height:16px; }
  .iptv-categories { overflow-x:auto; } .iptv-categories .iptv-category { flex:0 0 auto; font-size:13px; min-height:42px; }
 }
 .iptv-ref-head { background:var(--chrome) !important; color:var(--primary-foreground) !important; }
@@ -1502,4 +1505,6 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .sp-btn svg { width:clamp(16px,2.4vw,36px); height:clamp(16px,2.4vw,36px); }
 .sp-expiry { display:flex; align-items:center; justify-content:center; gap:12px; color:oklch(0.78 0.08 265); font-size:clamp(12px,1.6vw,22px); }
 .sp-expiry svg { width:22px; height:22px; }
+.sp-site-btn { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:12px; border:1.5px solid var(--sp-line); background:var(--sp-card); color:var(--sp-ink); font-weight:800; font-size:clamp(12px,1.6vw,20px); touch-action:manipulation; }
+.sp-site-btn svg { width:clamp(16px,2vw,26px); height:clamp(16px,2vw,26px); }
 @media (max-width:640px) { .sp-actions { grid-template-columns:minmax(0,1fr); } .sp-btn { justify-content:space-between; padding-inline:18px; } .sp-sep, .sp-date { display:none; } }

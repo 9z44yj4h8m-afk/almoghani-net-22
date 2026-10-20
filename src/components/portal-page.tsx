@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { OwnerEditablePage } from "@/components/admin/page-content-editor";
 import { IptvWorkspace } from "@/components/iptv-workspace";
 import { UnifiedMemberPlayer } from "@/components/unified-member-player";
@@ -65,7 +65,7 @@ export const liveSections = sections;
 
 
 export function PortalPage({ section, homepage = false }: { section?: string; homepage?: boolean }) {
-  const publicChannels = useCatalog();
+  const pathname = useLocation({ select: (location) => location.pathname }); const publicChannels = useCatalog();
   const fetchLiveCatalog = useServerFn(getUnifiedLiveCatalog);
   const catalog = useQuery({ queryKey: ["unified-live-catalog"], queryFn: () => fetchLiveCatalog(), staleTime: 3_000, retry: false });
   const memberChannels: Channel[] = (catalog.data ?? []).map(item => ({ id: item.id, name: item.name, category: smartersCategory(item.group), thumbnail: publicChannels.find(channel => channel.name.toLowerCase() === item.name.toLowerCase())?.thumbnail ?? "", description: item.group }));
@@ -278,7 +278,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       <main className="pb-6 md:pb-10">
         <OwnerEditablePage>{(editChannel) => <>
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
-        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} player={isSmartersChannel(selected) ? <UnifiedMemberPlayer key={selected.id} channelId={selected.id} /> : undefined} />
+        <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} liveTitle={pathname === "/live" ? undefined : <Link to="/live" preload="intent" className="iptv-ref-title"><Play className="iptv-ref-title-icon" />البث المباشر</Link>} player={isSmartersChannel(selected) ? <UnifiedMemberPlayer key={selected.id} channelId={selected.id} /> : undefined} />
         {inactiveChannels.length > 0 && <details className="mx-3 my-3 border-y border-border py-3"><summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"><WifiOff className="h-4 w-4" />قنوات غير نشطة ({inactiveChannels.length})</summary><div className="mt-3 flex flex-wrap gap-2">{inactiveChannels.map((channel, index) => <Button key={`${channel.id}-${index}`} variant="outline" onClick={() => { markActive(channel.id); playChannel(channel); }}><RefreshCw className="h-4 w-4" />{channel.name}</Button>)}</div></details>}
         </>}</OwnerEditablePage>
       </main>
