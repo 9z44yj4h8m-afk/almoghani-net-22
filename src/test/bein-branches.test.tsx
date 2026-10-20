@@ -15,7 +15,9 @@ describe("Numbered beIN branches", () => {
   });
   it("opens branches without selecting a stream, then selects the original branch ID", () => {
     const select = vi.fn();
-    render(<IptvWorkspace channels={channels} sections={[]} selected={channels[0]} active={false} onWatch={() => undefined} onSelect={select} favorites={[]} onFavorite={() => undefined} />);
+    const selected = channels[0];
+    if (!selected) throw new Error("Missing selected channel fixture");
+    render(<IptvWorkspace channels={channels} sections={[]} selected={selected} active={false} onWatch={() => undefined} onSelect={select} favorites={[]} onFavorite={() => undefined} />);
     expect(screen.queryByRole("button", { name: "شغّل BEIN SPORTS 1 ENGLISH" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "فروع بي إن سبورت 1" }));
     expect(select).not.toHaveBeenCalled();

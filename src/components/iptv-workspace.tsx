@@ -20,7 +20,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
   const uniqueChannels = channels.filter((c, index) => channels.findIndex(item => item.id === c.id) === index);
   const visible = uniqueChannels.filter(c => (category === "all" || (category === "favorites" ? favorites.includes(c.id) : c.category === selectedSection?.category)) && matchesChannelSearch(c.name, query));
   const groups = groupBeinChannels(visible);
-  const renderChannel = (channel: Channel, index: number, branch = false) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""} ${branch ? "ms-4 border-s border-border [&_.iptv-channel-select]:!text-sm [&_.iptv-channel-select]:!font-medium" : ""}`}>
+  const renderChannel = (channel: Channel, index: number, branch = false) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""} ${branch ? "ms-4 border-s border-border [&_.iptv-channel-select>span:last-child]:!text-sm [&_.iptv-channel-select>span:last-child]:!font-medium" : ""}`}>
     <Button variant="ghost" className="iptv-channel-select" aria-label={`شغّل ${channel.name}`} aria-pressed={selected.id === channel.id} onClick={() => onSelect(channel)}>
       <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
       {channel.thumbnail ? <img src={channel.thumbnail} alt="" loading="lazy" width={80} height={80} /> : <Tv />}
@@ -46,7 +46,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
             <div className="iptv-channel-item"><Button variant="ghost" className="iptv-channel-select" aria-label={`فروع ${group.name}`} aria-expanded={open} aria-controls={group.id} onClick={() => setExpanded(current => open ? current.filter(id => id !== group.id) : [...current, group.id])}>
               <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
               {channel.thumbnail ? <img src={channel.thumbnail} alt="" width={80} height={80} /> : <Tv />}
-              <span>{group.name}</span>{open ? <ChevronUp /> : <ChevronDown />}
+              {open ? <ChevronUp className="shrink-0" /> : <ChevronDown className="shrink-0" />}<span>{group.name}</span>
             </Button></div>
             {open && <div id={group.id} role="group" aria-label={`نسخ ${group.name}`}>{group.channels.map((item, childIndex) => renderChannel(item, childIndex, true))}</div>}
           </div>;
