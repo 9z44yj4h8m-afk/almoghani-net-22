@@ -27,6 +27,15 @@ describe("Unified live channels", () => {
     expect(merged.every(item => item.streamUrl === undefined)).toBe(true);
   });
   it("keeps sports in the shared sports category", () => { expect(smartersCategory("beIN SPORTS")).toBe("رياضية"); });
+  it("starts sports with Arabic beIN numerically, then foreign beIN, preserving all channels", () => {
+    const channel = (id: string, name: string, category: Channel["category"] = "رياضية"): Channel => ({ id, name, category, thumbnail: "", description: "" });
+    const site = [channel("news", "الأخبار", "إخبارية"), channel("espn", "ESPN"), channel("ssc", "SSC 1")];
+    const member = [channel("smarters:eng", "BEIN SPORTS 2 ENGLISH"), channel("smarters:10", "BEIN SPORTS 10"), channel("smarters:2", "BEIN SPORTS 2"), channel("smarters:1", "بي إن سبورت ١")];
+    const merged = mergeLiveChannels(site, member);
+    expect(merged.filter(c => c.category === "رياضية").map(c => c.id)).toEqual(["smarters:1", "smarters:2", "smarters:10", "smarters:eng", "espn", "ssc"]);
+    expect(merged[0]?.id).toBe("news");
+    expect(new Set(merged.map(c => c.id)).size).toBe(7);
+  });
   it("never resolves a private stream for a visitor", async () => {
     mount(); await waitFor(() => expect(mocks.access).not.toHaveBeenCalled());
     expect(mocks.resolve).not.toHaveBeenCalled(); expect(mocks.play).not.toHaveBeenCalled();
