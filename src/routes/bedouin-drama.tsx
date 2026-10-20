@@ -33,7 +33,7 @@ function BedouinDramaPage() {
     setPlaying(episode);
     requestAnimationFrame(() => document.getElementById("bedouin-player")?.scrollIntoView({ behavior: "auto", block: "start" }));
   }
-  return <main dir="rtl" className="mx-auto min-h-[70vh] max-w-6xl px-3 pb-28 pt-6 sm:px-6">
+  return <main dir="rtl" className="chrome-series mx-auto min-h-[70vh] max-w-6xl px-3 pb-28 pt-6 sm:px-6">
     <div className="mb-6 flex items-center gap-3">
       <Button variant="outline" size="icon" aria-label={opened ? "رجوع إلى المسلسلات" : "رجوع إلى الرئيسية"} asChild={!opened} onClick={opened ? () => { setOpened(null); setQuery(""); } : undefined}>
         {opened ? <ArrowRight className="h-5 w-5" /> : <Link to="/"><ArrowRight className="h-5 w-5" /></Link>}

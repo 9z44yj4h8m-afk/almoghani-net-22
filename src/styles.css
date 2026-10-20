@@ -1433,3 +1433,5 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .chrome-page main .grid > * { border:3px solid oklch(0.9 0.003 260) !important; border-radius:14px !important; box-shadow:0 0 0 1px oklch(0.4 0.005 260), var(--broadcast-shadow); }
 .chrome-page h1 { background:var(--chrome); color:var(--primary-foreground); padding:10px 16px; border-radius:14px; }
 .chrome-page .broadcast-screen { border:3px solid oklch(0.9 0.003 260); border-radius:16px; }
+.chrome-series .grid > * { border:3px solid oklch(0.9 0.003 260) !important; border-radius:14px !important; }
+.chrome-series h1 { background:var(--chrome); color:var(--primary-foreground); padding:10px 16px; border-radius:14px; }
