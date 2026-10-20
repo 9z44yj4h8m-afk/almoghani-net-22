@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Crown, Settings, Tv, Film, Clapperboard, ChevronLeft } from "lucide-react";
+import { Crown, Settings, Tv, Film, Clapperboard, ChevronLeft, RefreshCw, User, LogOut } from "lucide-react";
 import live from "@/assets/section-live.jpg";
 import movies from "@/assets/section-movies.jpg";
 import series from "@/assets/section-series.jpg";
@@ -30,7 +30,7 @@ function TvHub() {
   return <div dir="rtl" className="tv-hub">
     <header className="iptv-ref-head"><h1 dir="ltr">ALMOGHANI <small>LIVE</small></h1><div className="iptv-ref-meta"><span><Crown className="inline h-4 w-4" /> VIP Premium</span><time>{now}</time></div></header>
     <div className="tv-hub-tiles">
-      {[...tiles].reverse().map(({ to, ar, en, img, Icon }) => <Link key={to} to={to} className="tv-hub-tile">
+      {[...tiles].reverse().map(({ to, ar, en, img, Icon }) => <Link key={to} to={to} preload="intent" className="tv-hub-tile">
         <div className="tv-hub-art"><img src={img} alt="" loading="lazy" /><span><Icon /></span></div>
         <div className="tv-hub-label"><strong>{ar}</strong><small dir="ltr">{en}</small></div>
       </Link>)}
@@ -39,5 +39,11 @@ function TvHub() {
       <Link to="/live" className="tv-hub-bar"><Tv /> <span>متابعة المشاهدة — افتح البث المباشر</span><ChevronLeft /></Link>
       <Link to="/my-account" className="tv-hub-settings"><Settings /><strong>الإعدادات</strong><small dir="ltr">SETTINGS</small></Link>
     </div>
+    <div className="tv-hub-actions">
+      <button type="button" className="tv-hub-bar" onClick={() => window.location.reload()}><RefreshCw /><span>إعادة التحميل</span></button>
+      <Link to="/my-account" preload="intent" className="tv-hub-bar"><User /><span>الحساب</span></Link>
+      <Link to="/auth" preload="intent" className="tv-hub-bar"><LogOut /><span>تسجيل الخروج</span></Link>
+    </div>
+    <p className="tv-hub-expiry">انتهاء الاشتراك: من صفحة الحساب</p>
   </div>;
 }
