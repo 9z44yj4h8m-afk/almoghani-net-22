@@ -1,5 +1,6 @@
 // Owner or subscribed-member voice preview: speaks admin-written text with a chosen voice via Lovable AI Gateway.
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { singFallbacks, speakWithFallback, VOICE_LIST, voiceDelivery } from "@/lib/voice-config";
@@ -17,7 +18,7 @@ export const previewVoice = createServerFn({ method: "POST" })
     if (!apiKey) throw new Error("not configured");
     const voice = data.voice && VOICE_LIST.some((v) => v.id === data.voice) ? data.voice : "Leda";
     const custom = data.delivery?.trim() ? `قولي الكلام بصوت بنت ناعم، ${data.delivery.trim()}، اقرئي الكلام التالي فقط` : "";
-    const res = await speakWithFallback(apiKey, voice, data.text, data.sing ? singFallbacks(data.melody, data.rhythm) : custom ? [custom, voiceDelivery(voice), ""] : [voiceDelivery(voice), ""]);
+    const res = await speakWithFallback(apiKey, voice, data.text, data.sing ? singFallbacks(data.melody, data.rhythm) : custom ? [custom, voiceDelivery(voice), ""] : [voiceDelivery(voice), ""], getRequest().signal);
     if (!res.ok) throw new Error(await res.text());
     const bytes = new Uint8Array(await res.arrayBuffer());
     let bin = "";
