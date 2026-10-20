@@ -1542,3 +1542,28 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .vs-frame{flex:1;width:100%;border:0}
 .vs-canvas{flex:0 0 auto;max-height:45vh;overflow:auto;padding:.5rem}
 .vs-canvas .lc-canvas{min-height:clamp(140px,26vh,320px)}
+
+/* Cloudtve-style light theme approved by owner 21 Oct 2026 — overrides earlier palettes */
+:root, .iptv-site-layout, .dark {
+  --background: oklch(0.975 0.012 150);
+  --surface-deep: oklch(0.995 0.004 150);
+  --surface: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 150);
+  --foreground: oklch(0.25 0.02 150);
+  --primary: oklch(0.62 0.17 150);
+  --primary-foreground: oklch(1 0 0);
+  --accent: oklch(0.62 0.17 150);
+  --accent-foreground: oklch(1 0 0);
+  --sky: oklch(0.62 0.17 150);
+  --ring: oklch(0.62 0.17 150);
+  --secondary: oklch(0.95 0.02 150);
+  --secondary-foreground: oklch(0.3 0.03 150);
+  --muted: oklch(0.95 0.015 150);
+  --muted-foreground: oklch(0.5 0.02 150);
+  --border: oklch(0.88 0.02 150);
+  --input: oklch(0.88 0.02 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 150);
+}
+body { background: linear-gradient(180deg, oklch(0.96 0.04 150), var(--background) 220px); color: var(--foreground); }
