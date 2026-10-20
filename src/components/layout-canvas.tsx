@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent as RPE } from "react";
 import { Link } from "@tanstack/react-router";
-import { Plus, Save, Trash2, RotateCcw, Pencil, X, Square, Image as ImageIcon, Type, LayoutGrid } from "lucide-react";
+import { Undo2, History, Eraser, Tv, Film, Clapperboard, Plus, Save, Trash2, RotateCcw, Pencil, X, Square, Image as ImageIcon, Type, LayoutGrid } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { safeHttpsImage } from "@/lib/site-config";
 import { toast } from "sonner";
@@ -53,13 +53,17 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
   const [saved, setSaved] = useState<CanvasItem[]>(defaults);
   const [edit, setEdit] = useState(false);
   const [sel, setSel] = useState<string | null>(null);
+  const [prev, setPrev] = useState<CanvasItem[] | null>(null);
+  const [added, setAdded] = useState<string[]>([]);
   const box = useRef<HTMLDivElement>(null);
   const drag = useRef<{ id: string; mode: "move" | "size"; sx: number; sy: number; o: CanvasItem } | null>(null);
 
   useEffect(() => {
     void supabase.from("site_settings").select("value").eq("key", settingsKey).maybeSingle().then(({ data }) => {
-      const n = normalizeItems((data?.value as { items?: unknown } | null)?.items);
+      const v = data?.value as { items?: unknown; previous?: unknown } | null;
+      const n = normalizeItems(v?.items);
       if (n) { setItems(n); setSaved(n); }
+      setPrev(normalizeItems(v?.previous));
     });
   }, [settingsKey]);
 
@@ -80,13 +84,13 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
   };
   const add = (type: CanvasItem["type"]) => {
     const it = { id: newId(), type, x: 5, y: 5, ...presets[type] } as CanvasItem;
-    setItems((l) => [...l, it]); setSel(it.id);
+    setItems((l) => [...l, it]); setAdded((a) => [...a, it.id]); setSel(it.id);
   };
   const save = async () => {
     const clean = normalizeItems(items) ?? [];
-    const { error } = await supabase.from("site_settings").upsert({ key: settingsKey, value: { items: clean }, updated_at: new Date().toISOString() });
+    const { error } = await supabase.from("site_settings").upsert({ key: settingsKey, value: { items: clean, previous: saved }, updated_at: new Date().toISOString() });
     if (error) { toast.error("ما انحفظ: " + error.message); return; }
-    setSaved(clean); toast.success("انحفظ التصميم");
+    setPrev(saved); setSaved(clean); toast.success("انحفظ التصميم");
   };
   const cur = items.find((i) => i.id === sel);
 
@@ -99,6 +103,9 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
         <button className="lc-btn" onClick={() => add("text")}><Type />نص</button>
         <button className="lc-btn lc-save" onClick={save}><Save />حفظ</button>
         <button className="lc-btn" onClick={() => { setItems(saved); setSel(null); }}><RotateCcw />تراجع</button>
+        <button className="lc-btn" disabled={!added.length} onClick={() => { const last = added[added.length - 1]; setItems((l) => l.filter((i) => i.id !== last)); setAdded((a) => a.slice(0, -1)); setSel(null); }}><Undo2 />حذف آخر إضافة</button>
+        <button className="lc-btn" disabled={!prev} onClick={() => { if (prev) { setItems(prev); setSel(null); toast("رجع التصميم السابق — اضغط حفظ لتثبيته"); } }}><History />التصميم السابق</button>
+        <button className="lc-btn lc-del" disabled={!sel} onClick={() => { setItems((l) => l.filter((i) => i.id !== sel)); setSel(null); }}><Eraser />حذف المحدد</button>
         <button className="lc-btn" onClick={() => { if (confirm("ترجع التصميم الأصلي؟")) setItems(defaults); }}><Plus className="rotate-45" />الأصلي</button>
         <button className="lc-btn" onClick={() => { setEdit(false); setSel(null); }}><X />إغلاق</button>
       </>}
@@ -106,7 +113,8 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
     <div ref={box} className={`lc-canvas${edit ? " lc-editing" : ""}`} onPointerMove={move} onPointerUp={() => (drag.current = null)} onPointerDown={() => edit && setSel(null)}>
       {items.map((it) => {
         const style = { left: `${it.x}%`, top: `${it.y}%`, width: `${it.w}%`, height: `${it.h}%`, borderRadius: it.radius, ...(it.type === "text" ? { color: it.color } : { background: it.image ? `center/cover url("${it.image}")` : `linear-gradient(135deg, ${it.color}, ${it.color}99)` }) };
-        const inner = <>{it.type !== "shape" && <><strong>{it.label}</strong>{it.sub && <span>{it.sub}</span>}</>}</>;
+        const TileIcon = it.type === "tile" ? (it.link === "/live" ? Tv : it.link === "/movies" ? Film : it.link === "/bedouin-drama" ? Clapperboard : null) : null;
+        const inner = <>{TileIcon && <TileIcon className="lc-icon" />}{it.type !== "shape" && <><strong>{it.label}</strong>{it.sub && <span>{it.sub}</span>}</>}</>;
         const cls = `lc-item lc-${it.type}${sel === it.id && edit ? " lc-sel" : ""}`;
         return <div key={it.id} className={cls} style={style} onPointerDown={(e) => start(e, it, "move")} dir="rtl">
           {!edit && it.link ? <Link to={it.link} preload="intent" className="lc-fill">{inner}</Link> : <div className="lc-fill">{inner}</div>}
