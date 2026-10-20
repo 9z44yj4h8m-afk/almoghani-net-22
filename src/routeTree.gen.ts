@@ -33,6 +33,7 @@ import { Route as TvRouteImport } from './routes/tv'
 import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as VoiceChatRouteImport } from './routes/voice-chat'
+import { Route as VoiceStoreRouteImport } from './routes/voice-store'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ChannelsSectionRouteImport } from './routes/channels.$section'
 import { Route as FeaturedIndexRouteImport } from './routes/featured.index'
@@ -164,6 +165,11 @@ const VoiceChatRoute = VoiceChatRouteImport.update({
   path: '/voice-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VoiceStoreRoute = VoiceStoreRouteImport.update({
+  id: '/voice-store',
+  path: '/voice-store',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
+  '/voice-store': typeof VoiceStoreRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
+  '/voice-store': typeof VoiceStoreRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -314,6 +322,7 @@ export interface FileRoutesById {
   '/unlock': typeof UnlockRoute
   '/vip': typeof VipRoute
   '/voice-chat': typeof VoiceChatRoute
+  '/voice-store': typeof VoiceStoreRoute
   '/api/chat': typeof ApiChatRoute
   '/channels/$section': typeof ChannelsSectionRoute
   '/featured/$channel': typeof FeaturedChannelRoute
@@ -352,6 +361,7 @@ export interface FileRouteTypes {
     | '/unlock'
     | '/vip'
     | '/voice-chat'
+    | '/voice-store'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -388,6 +398,7 @@ export interface FileRouteTypes {
     | '/unlock'
     | '/vip'
     | '/voice-chat'
+    | '/voice-store'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -424,6 +435,7 @@ export interface FileRouteTypes {
     | '/unlock'
     | '/vip'
     | '/voice-chat'
+    | '/voice-store'
     | '/api/chat'
     | '/channels/$section'
     | '/featured/$channel'
@@ -461,6 +473,7 @@ export interface RootRouteChildren {
   UnlockRoute: typeof UnlockRoute
   VipRoute: typeof VipRoute
   VoiceChatRoute: typeof VoiceChatRoute
+  VoiceStoreRoute: typeof VoiceStoreRoute
   ApiChatRoute: typeof ApiChatRoute
   ChannelsSectionRoute: typeof ChannelsSectionRoute
   FeaturedChannelRoute: typeof FeaturedChannelRoute
@@ -643,6 +656,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VoiceChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/voice-store': {
+      id: '/voice-store'
+      path: '/voice-store'
+      fullPath: '/voice-store'
+      preLoaderRoute: typeof VoiceStoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -741,6 +761,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnlockRoute: UnlockRoute,
   VipRoute: VipRoute,
   VoiceChatRoute: VoiceChatRoute,
+  VoiceStoreRoute: VoiceStoreRoute,
   ApiChatRoute: ApiChatRoute,
   ChannelsSectionRoute: ChannelsSectionRoute,
   FeaturedChannelRoute: FeaturedChannelRoute,

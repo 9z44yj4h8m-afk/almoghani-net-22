@@ -1531,3 +1531,12 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .lc-panel label{display:flex;flex-direction:column;gap:.2rem;font-size:.75rem;color:var(--muted-foreground)}
 .lc-panel input:not([type=color]):not([type=range]){padding:.35rem .5rem;border-radius:.4rem;background:var(--input);color:var(--foreground);border:1px solid var(--border);min-width:9rem}
 .lc-icon{width:clamp(2.5rem,6vw,5rem);height:clamp(2.5rem,6vw,5rem);color:#fff;opacity:.95}.lc-btn:disabled{opacity:.4}
+
+.vs-root{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--background)}
+.vs-bar{display:flex;flex-wrap:wrap;gap:.5rem;padding:.5rem;border-bottom:1px solid var(--border);background:var(--card)}
+.vs-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:.6rem;border:1px solid var(--border);background:var(--secondary);color:var(--foreground);font-size:.85rem}
+.vs-btn svg{width:1rem;height:1rem}.vs-save{background:var(--primary);color:var(--primary-foreground)}
+.vs-panel{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;padding:.75rem;max-height:40vh;overflow:auto;border-bottom:1px solid var(--border);background:var(--card)}
+.vs-field{display:flex;flex-direction:column;gap:.25rem;font-size:.8rem;color:var(--muted-foreground)}
+.vs-field input,.vs-field textarea{border:1px solid var(--border);background:var(--background);color:var(--foreground);border-radius:.5rem;padding:.4rem .6rem}
+.vs-frame{flex:1;width:100%;border:0}
