@@ -149,7 +149,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       const result = await searchWithAi({
         data: {
           query,
-          channels: channels.map(({ id, name, category, description }) => ({ id, name, category, description })),
+          channels: [...channels].sort((a, b) => Number(b.name.toLowerCase().includes(query.toLowerCase())) - Number(a.name.toLowerCase().includes(query.toLowerCase()))).slice(0, 200).map(({ id, name, category, description }) => ({ id, name: name.slice(0, 120), category, description: description.slice(0, 240) })),
         },
       });
       setSearchResultIds(result.ids);
