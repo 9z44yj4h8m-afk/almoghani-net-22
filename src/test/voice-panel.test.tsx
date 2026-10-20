@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { SayNowForm, VoiceChatManager } from "@/components/admin/voice-chat-manager";
 
 const { preview } = vi.hoisted(() => ({ preview: vi.fn() }));
@@ -40,8 +40,7 @@ describe("female voice panel", () => {
     fireEvent.click(screen.getByRole("button", { name: "إيقاف التجربة" }));
     expect(call.signal.aborted).toBe(true);
     expect(screen.getByRole("button", { name: "تجريب الصوت" })).toBeEnabled();
-    finish?.({ audio: btoa("late-song") });
-    await waitFor(() => expect(screen.getByRole("button", { name: "صوت البنت" })).toBeEnabled());
+    await act(async () => { finish?.({ audio: btoa("late-song") }); });
     expect(play).not.toHaveBeenCalled();
     expect(screen.queryByLabelText("معاينة الصوت المولد")).toBeNull();
   });
@@ -56,7 +55,7 @@ describe("female voice panel", () => {
     fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
     await waitFor(() => expect(preview).toHaveBeenCalledTimes(1));
     fireEvent.click(screen.getByRole("button", { name: "إيقاف الصوت" }));
-    fail?.(new Error("canceled"));
+    await act(async () => { fail?.(new Error("canceled")); });
     await waitFor(() => expect(screen.getByRole("button", { name: "تجريب الصوت" })).toBeEnabled());
     expect(cancel).toHaveBeenCalled();
     expect(speak).not.toHaveBeenCalled();

@@ -138,7 +138,8 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     setClipSrc(src);
     setPlaying(true);
     player.onpause = () => { if (clipRef.current === player) setPlaying(false); };
-    player.onended = player.onerror = player.onpause;
+    player.onended = () => { if (clipRef.current === player) setPlaying(false); };
+    player.onerror = () => { if (clipRef.current === player) setPlaying(false); };
     return player.play();
   }
   function stopClip() {

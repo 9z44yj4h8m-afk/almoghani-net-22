@@ -211,7 +211,7 @@ export async function speakWithFallback(apiKey: string, voice: string, text: str
     signal?.throwIfAborted();
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
-      signal,
+      signal: signal ?? null,
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-tts-preview",

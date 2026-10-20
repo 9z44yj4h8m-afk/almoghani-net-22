@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
-- Resolve voice profile IDs to supported provider IDs centrally; share preview/chat delivery prompts for compatibility.
+- Resolve voice IDs/prompts centrally; cancel previews, ignore late results and reuse four local clips keyed by settings.
 - Keep /admin-chat open and /admin-voices viewport-height, ending with the play control and one send menu, no save button; extra tools stay in a dialog, owner guards and writes protected. Crop voice artwork; never flatten controls into images.
 - Store performers and named clips in private chat-recordings with admin-only storage and normalized voice_chat settings; public playback serves only enabled configured paths to prevent arbitrary private-file access.
 - Render the chat transcript and roster above one full-width composer; use container-bounded appearance sizing so saved owner dimensions never overflow the chat window.
