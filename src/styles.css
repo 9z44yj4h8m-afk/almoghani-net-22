@@ -1407,3 +1407,20 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 .iptv-channel-search { background: var(--chrome); color: var(--primary-foreground); border-radius: 999px; }
 .iptv-channel-search input::placeholder { color: oklch(0.3 0.005 260); }
 .iptv-channel-search svg { color: var(--primary-foreground); }
+
+/* Reference layout: chrome header, horizontal categories, channel list right, player left. */
+.iptv-workspace { grid-template-columns: 420px minmax(0,1fr) !important; grid-template-areas: "head head" "cats cats" "list view"; }
+.iptv-ref-head { grid-area: head; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 22px; background:var(--chrome); color:var(--primary-foreground); border-radius:18px; border:2px solid oklch(0.95 0.002 260); box-shadow:var(--broadcast-shadow); }
+.iptv-ref-head h2 { font-size:28px; font-weight:900; }
+.iptv-ref-head .iptv-ref-meta { display:flex; align-items:center; gap:14px; font-weight:800; font-size:13px; direction:ltr; }
+.iptv-ref-head time { font-size:26px; font-weight:900; font-family:Arial,sans-serif; }
+.iptv-categories { grid-area: cats; flex-direction:row !important; min-height:0 !important; padding:6px; gap:6px; background:var(--chrome) !important; }
+.iptv-categories .iptv-category { flex:1; justify-content:center; border:0; border-radius:12px; min-height:52px; background:transparent; font-size:17px; }
+.iptv-channel-column { grid-area: list; }
+.iptv-viewing-column { grid-area: view; }
+.iptv-viewing-column > * { border-radius:14px; }
+@media (max-width: 1023px) {
+ .iptv-workspace { grid-template-columns: minmax(0,1fr) !important; grid-template-areas: "head" "cats" "view" "list"; }
+ .iptv-ref-head { padding:8px 12px; } .iptv-ref-head h2 { font-size:20px; } .iptv-ref-head time { font-size:18px; } .iptv-ref-head .iptv-ref-meta span { display:none; }
+ .iptv-categories { overflow-x:auto; } .iptv-categories .iptv-category { flex:0 0 auto; font-size:13px; min-height:42px; }
+}
