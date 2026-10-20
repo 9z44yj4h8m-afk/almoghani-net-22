@@ -1,4 +1,4 @@
-﻿#EXTM3U
+#EXTM3U
 #EXTINF:-1 tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="التراث والجنوب",الوسام الفضائية — نبض الجنوب
 https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="السعودية",الإخبارية السعودية
@@ -9,7 +9,7 @@ https://www.youtube.com/watch?v=eC4LfEVxvKg
 https://www.youtube.com/watch?v=iw0YDBYgaUU
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/lxpmm36-1Ww/hqdefault.jpg" group-title="السعودية",القناة الرياضية السعودية
 https://www.youtube.com/watch?v=lxpmm36-1Ww
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/Rs7St51oDDc/hqdefault.jpg" group-title="السعودية",قناة السنة النبوية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_mQEOSPf6okcuPezKOKSfhc6kKQxF1q57i2SsTOazhCg2s=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",قناة السنة النبوية
 https://www.youtube.com/watch?v=Rs7St51oDDc
 #EXTINF:-1 tvg-logo="https://i.imgur.com/GRQTndk.png" group-title="السعودية",السعودية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8
@@ -23,9 +23,9 @@ https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thaqafeyyah/28c0d2a20dbf1dc04
 https://www.youtube.com/watch?v=V45NoYljnZQ
 #EXTINF:-1 tvg-logo="" group-title="السعودية",Saudia Radio
 https://live.kwikmotion.com/sbrksasaudiaradiolive/srpksasaudiaradio/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/OAAEbezyJnU/hqdefault.jpg" group-title="السعودية",ثمانية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/Of52TD4mOCdcLf35VgQr9XuzyyZh9Oc5XE1R2o_rgNYsIpO94AcvZvCOumUSEps3oDK9Iumqeg=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",ثمانية
 https://www.youtube.com/watch?v=OAAEbezyJnU
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/wPivX6XRlrc/hqdefault.jpg" group-title="السعودية",إذاعة ثمانية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/_9wWam_L4MvicW3_o9kWduw12oHMzWiAUYiDmBYiwD1YXXytnNXaQ33IRPZk6GT_Cofw2SlWMA=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",إذاعة ثمانية
 https://www.youtube.com/watch?v=wPivX6XRlrc
 #EXTINF:-1 tvg-logo="https://aloula.faulio.com/storage/mediagallery/37/1a/fullhd_399eddcc4305f34f41c7fab24c3518fab5d55d97.png" group-title="السعودية",الرياض راديو
 https://live.kwikmotion.com/sbrksariyadhradiolive/srpksariyadhradio/playlist.m3u8
@@ -157,33 +157,33 @@ https://cdn.streamlane.tv/hls/ltv/master.m3u8
 https://sw1.tanitweb.net/TunisiaTV/_definst_/watania2/playlist.m3u8?DVR
 #EXTINF:-1 tvg-logo="https://i.imgur.com/MvpntzA.png" group-title="العامة",2M Monde
 https://d2qh3gh0k5vp3v.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-n6pess5lwbghr/2M_ES.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/tW_78_pmCo4/hqdefault.jpg" group-title="العامة",مسلسل البحر الأسود
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lSr-teEvgfITDdZvbN5CMFknHEsS8I791tl7T4uRa1ZvM=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",مسلسل البحر الأسود
 https://www.youtube.com/watch?v=tW_78_pmCo4
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/Va6QU9n3q18/hqdefault.jpg" group-title="العامة",أفلام عربي مباشر
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lZ1_LtuvwobOOPuGRHx03wyFaHEJZTDA_b4kHF06gYlw=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",أفلام عربي مباشر
 https://www.youtube.com/watch?v=Va6QU9n3q18
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/M3HKLzjvKPc/hqdefault.jpg" group-title="العامة",NASA — محطة الفضاء الدولية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/eIf5fNPcIcj9ig-wZBeq4stFy1lgjWTW1nLT5dYlFkHZprZ03QBiMcbpwNMB6XSBjrSFGtAGQg=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",NASA — محطة الفضاء الدولية
 https://www.youtube.com/watch?v=M3HKLzjvKPc
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/hNcn_i8tEOo/hqdefault.jpg" group-title="العامة",WWE
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_muzDjR0hfGdlXBS-2A8NfR-Q9e-PO96K-gxrm2i1jSStI7=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",WWE
 https://www.youtube.com/watch?v=hNcn_i8tEOo
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/tbLcWRxPel0/hqdefault.jpg" group-title="العامة",National Geographic
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/i9rVmcq-AiZ1yHc7fdn3Yd34JXmCG6ZFwBXkQwxwUXFykvatrR58C9VZLHStf9ud8FlGFyxMloA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",National Geographic
 https://www.youtube.com/watch?v=tbLcWRxPel0
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/oPonPGALYaU/hqdefault.jpg" group-title="العامة",Mr. Bean
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/LlZmu7iWpEIgKk-8YbguQEHECFPEfCjraE9ElZ59SHJ6bhivu3PI6oymSNE039Az5Y_W8zVDPQ=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Mr. Bean
 https://www.youtube.com/watch?v=oPonPGALYaU
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/SkjgMm6xRbg/hqdefault.jpg" group-title="العامة",SpongeBob
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/_rK1piAhqZFyKfzvWGqoPL8n2SFdAmm8pHxikuA2s68RqJ5zw4tO9jFTpMFaKurB_8_Wx2zW=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",SpongeBob
 https://www.youtube.com/watch?v=SkjgMm6xRbg
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/kRn_n6uoc9M/hqdefault.jpg" group-title="العامة",Scooby-Doo
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/R2KYxsEnGbM3nEp_VzD0dA8zkn_APB6Kil0TOCWQpNR5RcfcSOt9DYnT0MgbckxWfeNEpj3CvA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Scooby-Doo
 https://www.youtube.com/watch?v=kRn_n6uoc9M
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/80ijzf3ct68/hqdefault.jpg" group-title="العامة",Nickelodeon
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/M32uDDSlMkH2-XRmZMvcM64uMzotjxbpzngMS-pnmoDoD-ei--PAHiA0EC9tyiW-5lcXfa6Aqg=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Nickelodeon
 https://www.youtube.com/watch?v=80ijzf3ct68
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/8NcoRe_kFgE/hqdefault.jpg" group-title="العامة",Peppa Pig
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/rif9IX4_RzmYGQylB0lO0R1jp-Jt7lOYxyOlgBdPtlZZdEhxSu0pMQctyHEInn_wW-0rtb8i7A=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Peppa Pig
 https://www.youtube.com/watch?v=8NcoRe_kFgE
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/3Uw_n19-g0E/hqdefault.jpg" group-title="العامة",قناة اقرأ
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/DkEVEAGFIr_mGAdt_Trv-NuEJeAPVd9KPcd2Oyf-t_BO8yYIBY6m7GvQg2MXpFUEZ6vSyZrPjQ=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",قناة اقرأ
 https://www.youtube.com/watch?v=3Uw_n19-g0E
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/NAsWOpz9O94/hqdefault.jpg" group-title="العامة",Discovery
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ehrDmn6oT-04uDOu7Gsq6xx-G1vLpMXH02Jw9K6aTFFxec8_L_jvhk8DMcq1VkIRXOnLU6vbgQ=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Discovery
 https://www.youtube.com/watch?v=NAsWOpz9O94
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/spLY34LecBA/hqdefault.jpg" group-title="العامة",Animal Planet
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/mgv0mC1bviOylGyuUOLveaJhWI1uGCaJ7gpLNAuIFtjcK_H13OsrKDIieTXYPnu7qpovt_peBA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Animal Planet
 https://www.youtube.com/watch?v=spLY34LecBA
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/4uvohdqHOMk/hqdefault.jpg" group-title="العامة",Baby Shark
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/knG-QhPZd_7hXTl9rzhS6cdDSwwZ18-JQjhGlG5MBnaYYhZ0BGpM9XWimktYU-hgo7KLkBFfKoo=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Baby Shark
 https://www.youtube.com/watch?v=4uvohdqHOMk
 #EXTINF:-1 tvg-logo="https://i.imgur.com/YTyCBvB.png" group-title="العامة",التغيير
 https://jmc-live.ercdn.net/altaghier/altaghier.m3u8
@@ -265,13 +265,13 @@ https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8
 https://shd-amg-fast.edgenextcdn.net/tx012/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/1ENdbZn.png" group-title="العامة",Mix Hollywood
 https://ml-pull-hwc.myco.io/MixTV/hls/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/K-Ldz_7ddhw/hqdefault.jpg" group-title="العامة",FIFA
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/9UB1blxIJIz-OQmtHTsGEvYnMSYU3i77CRrYyD4EIA34kxseG0z5BYebP_P7KkWniL1W-7ZN=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",FIFA
 https://www.youtube.com/watch?v=K-Ldz_7ddhw
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/q5xC6wv9Ut0/hqdefault.jpg" group-title="العامة",Nat Geo Kids
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/GsBWcfJJbCKMQ-ndyaeLPqIwfqvU2dughQEl0eGRP8MfvML-HIl5HK_vamdjOWzbvMSLdLINGA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Nat Geo Kids
 https://www.youtube.com/watch?v=q5xC6wv9Ut0
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/MJoH4ILxEBU/hqdefault.jpg" group-title="العامة",PBS KIDS
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ZBcGbfxSEOigEe07nPd5AsSrYRO9NLqyxBZ1rGLtFC4Fr6eUqoL5D97U_aHLN4wO-p66Q7sO0g=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",PBS KIDS
 https://www.youtube.com/watch?v=MJoH4ILxEBU
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/J7ZrIDvqlic/hqdefault.jpg" group-title="العامة",شلالات بروكس — ألاسكا
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_njJhFIyFuOAL-5sOx1CRsBjTDVLm1nGPOxO6J5ADU-fSc=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",شلالات بروكس — ألاسكا
 https://www.youtube.com/watch?v=J7ZrIDvqlic
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Y2BqP9m.png" group-title="العامة",أطفال ومواهب
 https://5aafcc5de91f1.streamlock.net/atfal1.com/atfal2/playlist.m3u8
@@ -521,25 +521,25 @@ https://d6izdil55uftn.cloudfront.net/out/v1/0a06d1d6377c47edbd48721ed724bd08/ind
 https://hls.dabangasudan.org/hls/stream.m3u8
 #EXTINF:-1 tvg-logo="" group-title="العامة",Al-Sahat TV
 https://assahat.b-cdn.net/Assahat/assahatobs/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/YAQQ1RLfQtY/hqdefault.jpg" group-title="العامة",قناة المملكة
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k2Q10aeHs5-DCmdpJghKWzPdB0iqLpM00pUcvt2KKijFc=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",قناة المملكة
 https://www.youtube.com/watch?v=YAQQ1RLfQtY
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/O1pGmVtj2Y8/hqdefault.jpg" group-title="العامة",بي بي سي نيوز عربي
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/lNnHQPUKQCFpFV2bIMEfexakkowja2RCVOsRRV8eOCFslwk_a4tRR5oNwg_S67J9zyYP_wAw=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",بي بي سي نيوز عربي
 https://www.youtube.com/watch?v=O1pGmVtj2Y8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/gCNeDWCI0vo/hqdefault.jpg" group-title="العامة",Al Jazeera English
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/XsTga3Nsfc1E6ZgC6HfHfzTG_3zhuZleOnsKxSK2aILMjwkkIm-0vdALFaU-yt0Lw07iLtbSifk=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Al Jazeera English
 https://www.youtube.com/watch?v=gCNeDWCI0vo
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/oIuWBQeglfs/hqdefault.jpg" group-title="العامة",الميادين مباشر
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/v8xEx3kGQ31RB-_RzPBi_vVeFpwR_1gJUYHFp9APrmQ4QOZAr9NXwCNqLcDg4ZIgWD_9kSnr=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",الميادين مباشر
 https://www.youtube.com/watch?v=oIuWBQeglfs
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/GotlA1KKWoo/hqdefault.jpg" group-title="العامة",CNN Headlines
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/wSqAf5WdxsGsl7ZMtlyfz3qKULo_URoFjmKky0gLThm_Jtu2wsVHMu-XzGZPAb-z8zeMBYUUMYA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",CNN Headlines
 https://www.youtube.com/watch?v=GotlA1KKWoo
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/ngzEhyaFbas/hqdefault.jpg" group-title="العامة",WION
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/evxeFzRem76hjPRh_S_B5MvjNhl4yKjSrIzmvwFx3nyEWHBOPHA4jTum6Yys3HRR0IvYmWud=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",WION
 https://www.youtube.com/watch?v=ngzEhyaFbas
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/z0nHA8i4j2M/hqdefault.jpg" group-title="العامة",LiveNOW from FOX
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/AqzY5ePezRAQ2136-TbM_88d43JfIovkzztge92WKQ4K_ISfJMFA9yuX0Nw87DLWms4W9r2c3Q=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",LiveNOW from FOX
 https://www.youtube.com/watch?v=z0nHA8i4j2M
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/DFYaNjzI1aI/hqdefault.jpg" group-title="العامة",Talk
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/AE1NnKqj3MRItpRaGk24XX8wf-k1zyzdNoYlDt_vLXcqKau8z2pnZva4N9YlpOB2vf3zwHdAHg=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Talk
 https://www.youtube.com/watch?v=DFYaNjzI1aI
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/KQp-e_XQnDE/hqdefault.jpg" group-title="العامة",Yahoo Finance
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/Z6BMAACHMcGAFniv21LArJ3gc2nFDpjP4QAmEuTxUi3VZLBbkNH2Hqc3n2rIvCbVVJQ8lnCjsg=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",Yahoo Finance
 https://www.youtube.com/watch?v=KQp-e_XQnDE
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/IimtbuqYIE8/hqdefault.jpg" group-title="العامة",NHK WORLD-JAPAN
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_m9YDtPWqgZW91_-QTdsVWLbnR0ZQ1BaHX38ZcSRVGnfd0=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",NHK WORLD-JAPAN
 https://www.youtube.com/watch?v=IimtbuqYIE8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/fvYBSnXrdEA/hqdefault.jpg" group-title="العامة",المشهد
 https://www.youtube.com/watch?v=fvYBSnXrdEA
@@ -549,7 +549,7 @@ https://www.youtube.com/watch?v=LWDgtxQhubQ
 https://www.youtube.com/watch?v=C96oohpWBGw
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/9shxDbKJnZw/hqdefault.jpg" group-title="العامة",قناة شمال أفريقيا
 https://www.youtube.com/watch?v=9shxDbKJnZw
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/0Qb-8ix4OeI/hqdefault.jpg" group-title="العامة",قناة دجلة
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/Jvz8eXWsTSUOrboHhpstfexresQqms9Yrw0YPLy34eu19xlA1zr_bMTahSTg0yaHmr26zgjbtA=s240-c-k-c0x00ffffff-no-rj" group-title="العامة",قناة دجلة
 https://www.youtube.com/watch?v=0Qb-8ix4OeI
 #EXTINF:-1 tvg-logo="" group-title="العامة",Alhaqeqa Aldawlia
 https://ghaasiflu.online/alhqeqa/index.m3u8
@@ -631,9 +631,9 @@ https://hlspackager.akamaized.net/live/DB/ALYAUM_TV/HLS/ALYAUM_TV.m3u8
 https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/f8WcqRY.png" group-title="الإخبارية",صوت لبنان
 https://svs.itworkscdn.net/vdltvlive/vdltv.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/zZ-EysS8Eq8/hqdefault.jpg" group-title="الإخبارية",القاهرة الإخبارية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/CyQT_pmSYzQKc5lfmmgmFgFDwpyPqPPT2pcuNAHTE1QY2jtPras9qsCC9Faa-ArQc3q1YEnCNw=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",القاهرة الإخبارية
 https://www.youtube.com/watch?v=zZ-EysS8Eq8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/A1cZxijueg4/hqdefault.jpg" group-title="الإخبارية",رؤيا الإخبارية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/TPhHZ1aLMeUZCX7HNxjo3VwCQZcw14b4V-z5cS215HCsJdd_T3uUOeq7bJO8BSU778-5d_bFHw=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",رؤيا الإخبارية
 https://www.youtube.com/watch?v=A1cZxijueg4
 #EXTINF:-1 tvg-logo="https://i.imgur.com/De4SEWE.png" group-title="الإخبارية",الحدث
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-hadath/2ff87ec4c2f3ede35295a20637d9f8fd/index.m3u8
@@ -641,7 +641,7 @@ https://shd-gcp-live.edgenextcdn.net/live/bitmovin-hadath/2ff87ec4c2f3ede35295a2
 https://www.youtube.com/watch?v=n7eQejkXbnM
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg" group-title="الإخبارية",قناة الحدث
 https://www.youtube.com/watch?v=au8t81S0tag
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/O0ZppASlI6o/hqdefault.jpg" group-title="الإخبارية",CGTN العربية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_llZ-RZnLdQ8Ye7uHcb9T3w-fEGThSSv1ABt10FihmtQtk=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",CGTN العربية
 https://www.youtube.com/watch?v=O0ZppASlI6o
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/CNBC_Arabia_2025.svg/960px-CNBC_Arabia_2025.svg.png" group-title="الإخبارية",CNBC العربية
 https://cnbc-live.akamaized.net/cnbc/master.m3u8
@@ -651,7 +651,7 @@ https://live.alarabiya.net/alarabiapublish/english/playlist_dvr.m3u8
 https://www.youtube.com/watch?v=27TJ45U-HJ8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Hoc3cfO.png" group-title="الإخبارية",العربية برامج
 https://live.alarabiya.net/alarabiapublish/aaprograms.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/U_JpgQHmJTY/hqdefault.jpg" group-title="الإخبارية",قناة العربي أخبار
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/dz6b5iIsG9pzbuvlAfytZ4DNJFkPV7_7RjDfKKRG-kloyFsreQjtNMF8e3vDJxFZToB38--_BA=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",قناة العربي أخبار
 https://www.youtube.com/watch?v=U_JpgQHmJTY
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/e2RgSa1Wt5o/hqdefault.jpg" group-title="الإخبارية",العربي أخبار
 https://www.youtube.com/watch?v=e2RgSa1Wt5o
@@ -675,33 +675,33 @@ https://www.youtube.com/watch?v=93g513Uth98
 https://www.youtube.com/watch?v=f6VpkfV7m4Y
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg" group-title="الإخبارية",سكاي نيوز عربية
 https://www.youtube.com/watch?v=ppgTP8xQQsM
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/NNnZLWHRmd4/hqdefault.jpg" group-title="الإخبارية",قناة الجزيرة مباشر
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/h0_bBdVgCAXIPJFnQ4hZtE87cDY_qO7rkDAue8qXdmOFxZ5NaO3AFD1uCUcst-EsBcGJ8zl8EQ=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",قناة الجزيرة مباشر
 https://www.youtube.com/watch?v=NNnZLWHRmd4
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/sat-YpJQ-fg/hqdefault.jpg" group-title="الإخبارية",TRT عربي
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/gYgMDstQrKquZlKMpynGak3fik58-0UdhvIFvRNk8Z1KAGDzn6Kuz8uULtWRwVM3bJcqBuWfxQ=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",TRT عربي
 https://www.youtube.com/watch?v=sat-YpJQ-fg
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/AGkp2AL8e7o/hqdefault.jpg" group-title="الإخبارية",DW عربية
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/1diREnd5d5mj0zM8AmZYfuccwIppbzSBz0ERjzRl9kydXSPKREif3GyigSpYq2P_d8GH0RMKj5I=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",DW عربية
 https://www.youtube.com/watch?v=AGkp2AL8e7o
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/mo_6IkfLstk/hqdefault.jpg" group-title="الإخبارية",قناة الغد
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/APZoy6Df0krnDFUirRPohH62PwNOs8xU_hjlDHdYZvsYQqdpWZc9857mjUYkClHFH2MWXWwv=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",قناة الغد
 https://www.youtube.com/watch?v=mo_6IkfLstk
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/N8xxOD0nT1Y/hqdefault.jpg" group-title="الإخبارية",الجزيرة 2
 https://www.youtube.com/watch?v=N8xxOD0nT1Y
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/xDWQ3LkccY8/hqdefault.jpg" group-title="الإخبارية",Sky News
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",Sky News
 https://www.youtube.com/watch?v=xDWQ3LkccY8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/LuKwFajn37U/hqdefault.jpg" group-title="الإخبارية",DW News
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/NSOdTQTWlqMy8O_j32dx-ftfTCHMOt04Hm7KZ4pfAK6-eQzQSZMWvvss90kG8KQfJ7iNP3phyA=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",DW News
 https://www.youtube.com/watch?v=LuKwFajn37U
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/HvZt-nh9sGg/hqdefault.jpg" group-title="الإخبارية",FRANCE 24 English
 https://www.youtube.com/watch?v=HvZt-nh9sGg
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/qBe59l6p_EU/hqdefault.jpg" group-title="الإخبارية",TRT World
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/luLQWmGFG4iDC1U_2JlzZ1mquci_sUdfZfFl4eWgBkDpW6tvZT0MEA4c4JebJdi9hCo518q1=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",TRT World
 https://www.youtube.com/watch?v=qBe59l6p_EU
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/_sKZFIZvwP8/hqdefault.jpg" group-title="الإخبارية",NBC News NOW
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/PJj5jtuEOi5UmkFy4IBonj5WcabNcnJAIJe-jZMd1ArwIuVyQxFH_2zryBHwvfv6mJujwRpWDCM=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",NBC News NOW
 https://www.youtube.com/watch?v=_sKZFIZvwP8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/KOxtExhuaSw/hqdefault.jpg" group-title="الإخبارية",ABC News Live
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/GJ8V0NX6NddGh9bf4zED4tsjPjjBK2hdp5FWHMy09pV7sdSkkE3yEhCRSch4waEb9ZavyUrWfw=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",ABC News Live
 https://www.youtube.com/watch?v=KOxtExhuaSw
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/pykpO5kQJ98/hqdefault.jpg" group-title="الإخبارية",Euronews English
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/8MyE7rxMBfLZOpYkJVJFm1C8I9jxbceBbOJS9OhrepZMVGxGV-OEJU-UdLOew_qR_l-knETWeu4=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",Euronews English
 https://www.youtube.com/watch?v=pykpO5kQJ98
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/QXw3ryva6MI/hqdefault.jpg" group-title="الإخبارية",beIN SPORTS Xtra
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_m1eHN0iyOn0rawZCtwzRqk8Tbf_vd58vYuWeL36EDhbLzd=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",beIN SPORTS Xtra
 https://www.youtube.com/watch?v=QXw3ryva6MI
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/vOTiJkg1voo/hqdefault.jpg" group-title="الإخبارية",ABC NEWS Australia
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sc9xa2bYk6pIuKX3qgMHSrxEkuPmg57JMl_lRaJqCZxuSIeQt1B6BV23c-16Q3b7Aep0on1b=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",ABC NEWS Australia
 https://www.youtube.com/watch?v=vOTiJkg1voo
 #EXTINF:-1 tvg-logo="https://i0.wp.com/africa24tv.com/wp-content/uploads/2023/12/LOGO-AFRICASPORT-4-HD-sans-fond.png?fit=512%2C107&ssl=1" group-title="الإخبارية",Africa 24 Sport
 https://africa24.vedge.infomaniak.com/livecast/ik:africa24sport/manifest.m3u8
@@ -737,17 +737,17 @@ https://livetr.teleromagna.it/mia/live/playlist.m3u8
 https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/lta5Mog.png" group-title="الإخبارية",World of Freesports
 https://mainstreammedia-worldoffreesportsintl-rakuten.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/5vfaDsMhCF4/hqdefault.jpg" group-title="الإخبارية",CBC News
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/9bJu0WRWPRgja30h3i5gh3Mg4T94dVfcm6L8SEhjkM3j-AwqFKQZp1JxLhXpSVYzQjJTOXiw2vM=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",CBC News
 https://www.youtube.com/watch?v=5vfaDsMhCF4
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/a47ckXKZjxI/hqdefault.jpg" group-title="الإخبارية",FRANCE 24 Français
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k9aU_SRhYAWJjQ6AO7uzQDZE5mb7gmv4synLrC7hEWGjE=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",FRANCE 24 Français
 https://www.youtube.com/watch?v=a47ckXKZjxI
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/GefoJ-LXYfc/hqdefault.jpg" group-title="الإخبارية",TRT Haber
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/X-b7tJvjfBMDHCAafwyNV89qJ_FlzlXChymSisVsncnPpgOLLHknR6n1wtm8huk0SJz3KhNRTQ=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",TRT Haber
 https://www.youtube.com/watch?v=GefoJ-LXYfc
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/ECZpPjkkvOI/hqdefault.jpg" group-title="الإخبارية",i24NEWS English
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/UqLrgUgD2JxhoLZ1p_i8_p4jJqmg06-H-H64zySmmmPUbg2O0SPFIxT3H7yw5pNjqxc393gy=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",i24NEWS English
 https://www.youtube.com/watch?v=ECZpPjkkvOI
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/9NyxcX3rhQs/hqdefault.jpg" group-title="الإخبارية",CNBC
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sS9OtcPLL1vQNfGnRudALfNzfpHVy7qwRRKTYF4HEfyICGTfXfHsfP2hhIPgKK0iBxW7p1lH1g=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",CNBC
 https://www.youtube.com/watch?v=9NyxcX3rhQs
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/-tTr0qs50Cc/hqdefault.jpg" group-title="الإخبارية",Cartoonito
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/Mle8CiTSmWUF4AiXNeu2yChK8OMUIlck93I8YDfzi2YI_bjovWhWy0ahzZxhjpHwUqsPv6aS1g=s240-c-k-c0x00ffffff-no-rj" group-title="الإخبارية",Cartoonito
 https://www.youtube.com/watch?v=-tTr0qs50Cc
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Czxi7yk.png" group-title="الإخبارية",الشرق ديسكفري
 https://svs.itworkscdn.net/asharqdiscoverylive/asharqd.smil/playlist_dvr.m3u8
