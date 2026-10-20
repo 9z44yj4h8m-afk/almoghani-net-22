@@ -25,6 +25,8 @@ export type VoicePanelConfig = {
   showHeader: boolean;
   hidden: string[];
   custom: CustomVoice[];
+  names: Record<string, string>;
+  order: string[];
 };
 export const FEMALE_PROVIDERS = VOICE_LIST.filter((v) => v.female && !v.providerId).map((v) => ({ id: v.id, label: `${v.name} · ${v.label}` }));
 const providerIds = new Set(FEMALE_PROVIDERS.map((p) => p.id));
@@ -40,6 +42,15 @@ export function normalizeVoicePanel(raw: unknown): VoicePanelConfig {
   const custom = Array.isArray(o.custom) ? o.custom.filter((c) => c && typeof c.id === "string" && /^custom-[a-z0-9]{4,20}$/.test(c.id) && providerIds.has(c.providerId)).slice(0, 60)
     .map((c) => ({ id: c.id, name: clean(c.name, 30) || "صوت", label: clean(c.label, 40), providerId: c.providerId, delivery: clean(c.delivery, 300) })) : [];
   const hidden = Array.isArray(o.hidden) ? o.hidden.filter((h): h is string => typeof h === "string" && builtinIds.has(h)) : [];
-  return { texts, colors, showHeader: o.showHeader !== false, hidden, custom };
+  const names: Record<string, string> = {};
+  if (o.names && typeof o.names === "object") for (const [k, v] of Object.entries(o.names)) { const n = clean(v, 30); if (builtinIds.has(k) && n) names[k] = n; }
+  const order = Array.isArray(o.order) ? [...new Set(o.order.filter((h): h is string => typeof h === "string" && builtinIds.has(h)))] : [];
+  return { texts, colors, showHeader: o.showHeader !== false, hidden, custom, names, order };
 }
 export const defaultVoicePanel = normalizeVoicePanel({});
+
+/** Sort voices by the owner's manual order; unlisted voices keep their original order after. */
+export function orderVoices<T extends { id: string }>(list: T[], order: string[]): T[] {
+  const pos = new Map(order.map((id, i) => [id, i]));
+  return list.map((v, i) => ({ v, k: pos.get(v.id) ?? 1_000_000 + i })).sort((a, b) => a.k - b.k).map((x) => x.v);
+}

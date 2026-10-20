@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Eye, EyeOff, Plus, RotateCcw, Save, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Eye, EyeOff, Pencil, Plus, RotateCcw, Save, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { FEMALE_VOICE_CATEGORIES, FEMALE_VOICE_PROFILES, voiceCategory } from "@/lib/voice-config";
-import { FEMALE_PROVIDERS, PANEL_COLOR_FIELDS, PANEL_TEXT_FIELDS, defaultVoicePanel, normalizeVoicePanel, type VoicePanelConfig } from "@/lib/voice-panel";
+import { FEMALE_PROVIDERS, PANEL_COLOR_FIELDS, PANEL_TEXT_FIELDS, defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
 
 export const Route = createFileRoute("/100")({
   ssr: false,
@@ -91,14 +91,29 @@ function Editor() {
     </section>
 
     <section className={card}>
-      <h2 className="text-lg font-bold">الأصوات الحالية (إظهار / إخفاء)</h2>
-      {FEMALE_VOICE_CATEGORIES.map((cat) => <div key={cat} className="space-y-1">
-        <p className="text-sm font-bold text-primary">{cat}</p>
-        <div className="flex flex-wrap gap-2">{FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat).map((v) => {
-          const off = cfg.hidden.includes(v.id);
-          return <Button key={v.id} size="sm" variant={off ? "outline" : "secondary"} onClick={() => toggleHidden(v.id)} className={off ? "opacity-60 line-through" : ""}>{off ? <EyeOff /> : <Eye />}{v.name}</Button>;
-        })}</div>
-      </div>)}
+      <h2 className="text-lg font-bold">الأصوات الحالية — تسمية، إخفاء، ترتيب</h2>
+      <p className="text-xs text-muted-foreground">غيّر الاسم بالقلم، أخفِ بالعين، وقدّم أو أخّر بالأسهم، ثم احفظ.</p>
+      {FEMALE_VOICE_CATEGORIES.map((cat) => {
+        const list = orderVoices(FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === cat), cfg.order);
+        const moveV = (i: number, d: -1 | 1) => {
+          const j = i + d; if (j < 0 || j >= list.length) return;
+          const next = [...list]; [next[i], next[j]] = [next[j]!, next[i]!];
+          setCfg((c) => { const others = orderVoices(FEMALE_VOICE_PROFILES, c.order).map((v) => v.id).filter((id) => !next.some((n) => n.id === id)); return { ...c, order: [...others, ...next.map((n) => n.id)] }; });
+        };
+        return <div key={cat} className="space-y-1">
+          <p className="text-sm font-bold text-primary">{cat}</p>
+          <ul className="divide-y divide-border">{list.map((v, i) => {
+            const off = cfg.hidden.includes(v.id); const nm = cfg.names[v.id];
+            return <li key={v.id} className={`flex items-center gap-1 py-1 ${off ? "opacity-50" : ""}`}>
+              <span className="min-w-0 flex-1"><b className="block truncate">{nm || v.name}</b>{nm && <span className="text-xs text-muted-foreground">الأصلي: {v.name}</span>}</span>
+              <Button size="icon" variant="ghost" aria-label="تقديم" disabled={i === 0} onClick={() => moveV(i, -1)}><ArrowUp /></Button>
+              <Button size="icon" variant="ghost" aria-label="تأخير" disabled={i === list.length - 1} onClick={() => moveV(i, 1)}><ArrowDown /></Button>
+              <Button size="icon" variant="ghost" aria-label="تغيير الاسم" onClick={() => { const n = window.prompt("اسم الصوت (فارغ = الأصلي)", nm ?? v.name); if (n !== null) setCfg((c) => { const names = { ...c.names }; const t = n.trim().slice(0, 30); if (!t || t === v.name) delete names[v.id]; else names[v.id] = t; return { ...c, names }; }); }}><Pencil /></Button>
+              <Button size="icon" variant="ghost" aria-label={off ? "إظهار" : "إخفاء"} onClick={() => toggleHidden(v.id)}>{off ? <EyeOff /> : <Eye />}</Button>
+            </li>;
+          })}</ul>
+        </div>;
+      })}
     </section>
 
     <section className={card}>
