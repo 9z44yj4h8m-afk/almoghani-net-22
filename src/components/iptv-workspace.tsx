@@ -12,12 +12,12 @@ import type { Channel, ChannelCategory } from "@/lib/channels";
 import { groupBeinChannels, isSmartersChannel, matchesChannelSearch } from "@/lib/unified-channels";
 
 type Section = { slug: string; title: string; category: ChannelCategory; icon: LucideIcon };
-export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection, onEditChannel, player }: {
+export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection, onEditChannel, player, liveTitle }: {
   channels: Channel[]; sections: Section[]; selected: Channel; active: boolean;
   onWatch: () => void; onSelect: (channel: Channel) => void;
   favorites: string[]; onFavorite: (id: string) => void; initialSection?: string | undefined;
   onEditChannel?: ((channel: Channel) => void) | undefined;
-  player?: ReactNode;
+  player?: ReactNode; liveTitle?: ReactNode;
 }) {
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");
@@ -36,7 +36,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
     {onEditChannel && !isSmartersChannel(channel) && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
   </div>;
   return <section className="iptv-workspace" aria-label="البث المباشر">
-    <header className="iptv-ref-head"><h2>البث المباشر</h2><div className="iptv-ref-meta"><span>VIP Premium</span><Clock /></div></header>
+    <header className="iptv-ref-head"><h2>{liveTitle ?? "البث المباشر"}</h2><div className="iptv-ref-meta"><span>VIP Premium</span><Clock /></div></header>
     <nav className="iptv-categories" aria-label="تصنيفات القنوات">
       {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => setCategory(slug)}><Icon /><span>{title}</span></Button>)}
     </nav>

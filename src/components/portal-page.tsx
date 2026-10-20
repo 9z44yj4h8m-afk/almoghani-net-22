@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { OwnerEditablePage } from "@/components/admin/page-content-editor";
 import { IptvWorkspace } from "@/components/iptv-workspace";
 import { UnifiedMemberPlayer } from "@/components/unified-member-player";
