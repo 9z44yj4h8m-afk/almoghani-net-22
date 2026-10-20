@@ -128,6 +128,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const clipRef = useRef<HTMLAudioElement | null>(null);
   const [clipSrc, setClipSrc] = useState("");
   const [playing, setPlaying] = useState(false);
+  const previewRequestRef = useRef<AbortController | null>(null);
+  const previewCacheRef = useRef(new Map<string, File>());
+  const previewUrlRef = useRef("");
   function playClip(src: string) {
     clipRef.current?.pause();
     const player = new Audio(src);
@@ -135,6 +138,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     setClipSrc(src);
     setPlaying(true);
     player.onpause = () => { if (clipRef.current === player) setPlaying(false); };
+    player.onended = player.onerror = player.onpause;
     return player.play();
   }
   function stopClip() {
@@ -148,15 +152,24 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     if (audioRef.current) { audioRef.current.currentTime = 0; void audioRef.current.play(); setPlaying(true); return; }
     if (clipSrc) void playClip(clipSrc);
   }
-  useEffect(() => () => { clipRef.current?.pause(); }, []);
+  useEffect(() => () => {
+    previewRequestRef.current?.abort();
+    clipRef.current?.pause();
+    window.speechSynthesis?.cancel();
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+  }, []);
   const [echo, setEcho] = useState<EchoMode>("none");
   const [bed, setBed] = useState<BedMode>("none");
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
+    previewRequestRef.current?.abort();
+    previewRequestRef.current = null;
+    setTesting(false);
     stopClip();
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
     setPlaying(false);
+    setNote("");
   }
 
   // Remember the owner's panel choices on this device so it reopens the same way.
@@ -380,25 +393,44 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
 
   async function testVoice(spoken?: string) {
     if (locked) { setSubOpen(true); return; }
-    if (testing) return;
+    if (previewRequestRef.current) return;
+    stopAll();
+    const request = new AbortController();
+    previewRequestRef.current = request;
+    const active = () => previewRequestRef.current === request && !request.signal.aborted;
     const name = sayBot || bots[0] || "";
     setTesting(true); setNote(""); setAudioFile(null);
     const text = (typeof spoken === "string" ? spoken : sayText).trim() || "هلا والله، هذي تجربة للصوت من لوحة التحكم";
     const selected = sayVoice || cfg.botVoices[name];
     const customVoice = panel.custom.find((c) => c.id === selected);
     const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
+    const cacheKey = JSON.stringify([text, voiceId, customVoice?.delivery, sing, melody, rhythm, echo, bed]);
     try {
-      const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined } });
-      let bytes: Uint8Array<ArrayBuffer> = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
-      let b64 = audio;
-      if (echo !== "none" || bed !== "none") {
-        try { bytes = await applyVoiceFx(bytes, echo, bed); b64 = bytesToBase64(bytes); } catch { /* keep the clean voice */ }
+      let file = previewCacheRef.current.get(cacheKey);
+      if (!file) {
+        const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined }, signal: request.signal });
+        if (!active()) return;
+        let bytes: Uint8Array<ArrayBuffer> = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
+        if (echo !== "none" || bed !== "none") {
+          try { bytes = await applyVoiceFx(bytes, echo, bed); } catch { /* keep the clean voice */ }
+        }
+        if (!active()) return;
+        const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
+        file = new File([bytes], `${voiceName}.wav`, { type: "audio/wav" });
+        if (previewCacheRef.current.size >= 4) {
+          const oldest = previewCacheRef.current.keys().next().value;
+          if (oldest !== undefined) previewCacheRef.current.delete(oldest);
+        }
+        previewCacheRef.current.set(cacheKey, file);
       }
-      const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
-      setAudioFile(new File([bytes], `${voiceName}.wav`, { type: "audio/wav" }));
-      await playClip(`data:audio/wav;base64,${b64}`);
+      setAudioFile(file);
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = URL.createObjectURL(file);
+      await playClip(previewUrlRef.current);
+      if (!active()) return;
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
+      if (!active()) return;
       // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
         const synth = window.speechSynthesis;
@@ -409,11 +441,13 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         if (ar) u.voice = ar;
         u.pitch = 1.4;
         u.rate = 0.95;
+        u.onend = u.onerror = () => setPlaying(false);
+        setPlaying(true);
         synth.speak(u);
         setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني، ولا يمكن حفظ صوته كملف.");
       } else setNote("تعذّر تجريب الصوت.");
     }
-    finally { setTesting(false); }
+    finally { if (active()) { previewRequestRef.current = null; setTesting(false); } }
   }
 
   useEffect(() => {
@@ -488,9 +522,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         <select className={field} aria-label="مؤثر الصدى" value={echo} onChange={(e) => { setEcho(e.target.value as EchoMode); setAudioFile(null); }}>{ECHO_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
         <select className={field} aria-label="لحن الخلفية" value={bed} onChange={(e) => { setBed(e.target.value as BedMode); setAudioFile(null); }}>{BED_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
       </div>
-      <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={!clipSrc && !audioUrl} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
+      <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} onPlay={() => { clipRef.current?.pause(); setPlaying(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={testing || (!clipSrc && !audioUrl)} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!testing && !playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">
-        <Button type="button" variant="outline" disabled={testing} onClick={() => void testVoice()} className="voice-studio-test"><Play />{testing ? "جارٍ التجريب…" : panel.texts.testBtn}</Button>
+        <Button type="button" variant="outline" onClick={() => { if (testing) stopAll(); else void testVoice(); }} className="voice-studio-test">{testing ? <SquareStop /> : <Play />}{testing ? "إيقاف التجربة" : panel.texts.testBtn}</Button>
         <Button type="button" variant="outline" disabled={testing} onClick={() => { if (!audioFile) { setNote("اكتب النص واضغط «تجريب الصوت» أول، أو سجّل بصوتك من أيقونة الإعدادات، وبعدها ترسله."); return; } setSendOpen(true); }} className="voice-studio-sendbtn"><Send />{panel.texts.sendBtn}</Button>
       </div>
 
