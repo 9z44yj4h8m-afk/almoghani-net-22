@@ -3,9 +3,9 @@ import { itemGenre, orderedGenres, type Genre, type SmartersConfig } from "./sma
 export type Kind = "live" | "movie" | "series";
 type Row = [name: string, group: string, logo: string, id: number, ext: string];
 
-const HOST = "http://freeiptv.ottc.xyz:80";
-const USER = "767910324250";
-const PASS = "313285624258";
+const HOST = "http://ebh48.top:80";
+const USER = "169704281902";
+const PASS = "425912890502";
 
 const cache = new Map<Kind, Promise<Row[]>>();
 
