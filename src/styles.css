@@ -1505,4 +1505,6 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .sp-btn svg { width:clamp(16px,2.4vw,36px); height:clamp(16px,2.4vw,36px); }
 .sp-expiry { display:flex; align-items:center; justify-content:center; gap:12px; color:oklch(0.78 0.08 265); font-size:clamp(12px,1.6vw,22px); }
 .sp-expiry svg { width:22px; height:22px; }
+.sp-site-btn { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:12px; border:1.5px solid var(--sp-line); background:var(--sp-card); color:var(--sp-ink); font-weight:800; font-size:clamp(12px,1.6vw,20px); touch-action:manipulation; }
+.sp-site-btn svg { width:clamp(16px,2vw,26px); height:clamp(16px,2vw,26px); }
 @media (max-width:640px) { .sp-actions { grid-template-columns:minmax(0,1fr); } .sp-btn { justify-content:space-between; padding-inline:18px; } .sp-sep, .sp-date { display:none; } }

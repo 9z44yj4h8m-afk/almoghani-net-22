@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Settings, Tv, Film, Clapperboard, ChevronRight, RefreshCw, User, LogOut, CalendarDays, MonitorPlay } from "lucide-react";
+import { Settings, Tv, Film, Clapperboard, ChevronRight, RefreshCw, User, LogOut, CalendarDays, MonitorPlay, Globe } from "lucide-react";
 
 export const Route = createFileRoute("/tv")({
   head: () => ({
@@ -38,6 +38,8 @@ function TvHub() {
     <header className="sp-head">
       <div className="sp-brand"><MonitorPlay className="sp-logo" /><div><strong>ALMOGHANI <b>LIVE</b></strong><small>IPTV SOLUTIONS</small></div></div>
       <div className="sp-meta">
+        <Link to="/" preload="intent" className="sp-site-btn"><Globe /><span>الموقع</span></Link>
+        <span className="sp-sep" />
         <time className="sp-time">{now.time}</time>
         <span className="sp-sep" />
         <div className="sp-date"><span dir="rtl">{now.day}</span><span>{now.date}</span></div>
