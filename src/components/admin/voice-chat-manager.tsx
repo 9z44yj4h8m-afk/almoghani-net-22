@@ -460,7 +460,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     </div>}
     <div className="voice-reference-choices" aria-label="اختيار مصدر الصوت">
       <Button variant="outline" className="voice-reference-card" aria-pressed={sayVoice !== ""} onClick={() => { if (!sayVoice) setSayVoice("Leda"); document.getElementById("voice-select")?.focus(); }}><img src={voiceGirlArt.url} alt="أضواء الموسيقى والرقص" /><span>صوت البنت<Play aria-hidden="true" /></span></Button>
-      <Button variant="outline" className="voice-reference-card" aria-pressed={sayVoice === ""} onClick={() => { setSayVoice(""); setAudioFile(null); }}><img src={voiceBotArt.url} alt="شخصيات كرتونية وموسيقى" /><span>صوت البوت<Play aria-hidden="true" /></span></Button>
+      <Button variant="outline" className="voice-reference-card" aria-pressed={sayVoice === ""} onClick={() => { setSayVoice(""); setAudioFile(null); setTimeout(() => document.getElementById("voice-bot-select")?.focus(), 0); }}><img src={voiceBotArt.url} alt="شخصيات كرتونية وموسيقى" /><span>صوت البوت<Play aria-hidden="true" /></span></Button>
     </div>
     <label className="voice-neon-text voice-studio-field">
       <span><Button variant="ghost" size="icon" disabled={testing} onClick={toggleRecord} aria-label={recording ? "إيقاف التسجيل الآن" : "ابدأ التسجيل"} title={recording ? "إيقاف التسجيل" : "ابدأ التسجيل"} className={recording ? "is-recording" : ""}>{recording ? <Square /> : <Mic />}</Button>{panel.texts.textLabel}</span>
@@ -477,6 +477,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         })}
         {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
       </select><ChevronDown aria-hidden="true" /></div></label>
+      {sayVoice === "" && bots.length > 0 && <label className="voice-studio-field"><span><UserRound />اختر البوت</span><div className="voice-studio-select"><UserRound /><select id="voice-bot-select" aria-label="اختيار البوت" value={sayBot || bots[0] || ""} disabled={testing} onChange={(e) => { setSayBot(e.target.value); setAudioFile(null); }}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown aria-hidden="true" /></div></label>}
       <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       </div>
       {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
