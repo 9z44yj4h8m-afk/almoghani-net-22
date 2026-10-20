@@ -85,7 +85,7 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
   const save = async () => {
     const clean = normalizeItems(items) ?? [];
     const { error } = await supabase.from("site_settings").upsert({ key: settingsKey, value: { items: clean }, updated_at: new Date().toISOString() });
-    if (error) return toast.error("ما انحفظ: " + error.message);
+    if (error) { toast.error("ما انحفظ: " + error.message); return; }
     setSaved(clean); toast.success("انحفظ التصميم");
   };
   const cur = items.find((i) => i.id === sel);
