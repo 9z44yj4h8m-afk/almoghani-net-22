@@ -4,6 +4,11 @@ import { Pencil, Save, RotateCcw, X, Globe, Image as ImageIcon } from "lucide-re
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import template from "@/lib/voice-store.html?raw";
+import { LayoutCanvas, type CanvasItem } from "@/components/layout-canvas";
+
+const storeCanvas: CanvasItem[] = [
+  { id: "vs-banner", type: "banner", x: 2, y: 8, w: 96, h: 80, label: "ALMOGHANI VOICE", sub: "اشتراكات الأصوات — اطلب الآن", color: "#7c1fa8", radius: 18 },
+];
 
 export const Route = createFileRoute("/voice-store")({
   head: () => ({
@@ -95,6 +100,7 @@ function VoiceStore() {
       <label className="vs-field"><span><ImageIcon className="inline size-4" /> صورة المتجر</span>
         <input type="file" accept="image/*" onChange={async (e) => { const file = e.target.files?.[0]; if (file) setCfg({ ...cfg, image: await shrink(file) }); }} /></label>
     </div>}
+    <div className="vs-canvas"><LayoutCanvas settingsKey="voice_store_layout" defaults={storeCanvas} /></div>
     <iframe title="متجر ALMOGHANI VOICE" srcDoc={html} className="vs-frame" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" />
   </div>;
 }
