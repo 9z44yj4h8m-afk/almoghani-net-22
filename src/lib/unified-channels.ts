@@ -1,5 +1,11 @@
 import type { Channel, ChannelCategory } from "./channels";
 export const isSmartersChannel = (channel: Channel) => channel.id.startsWith("smarters:");
+export function normalizeChannelSearch(value: string): string {
+  return value.toLocaleLowerCase().replace(/[\u064B-\u065F\u0670ـ]/g, "").replace(/[أإآ]/g, "ا").replace(/[^\p{L}\p{N}]/gu, "").replace(/بيان|بين/g, "bein").replace(/سبورت|sports/g, "sport");
+}
+export function matchesChannelSearch(name: string, query: string): boolean {
+  return normalizeChannelSearch(name).includes(normalizeChannelSearch(query));
+}
 export function smartersCategory(group: string): ChannelCategory {
   if (/news|أخبار|إخبار|اخبار/i.test(group)) return "إخبارية";
   if (/sport|bein|ssc|رياض/i.test(group)) return "رياضية";
