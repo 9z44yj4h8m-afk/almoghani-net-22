@@ -202,13 +202,16 @@ export function singDelivery(melody?: string, rhythm?: string) {
 }
 
 /** Retry only transient upstream errors; refusals and configuration errors are terminal. */
-export async function speakWithFallback(apiKey: string, voice: string, text: string, directions: string[]) {
+export async function speakWithFallback(apiKey: string, voice: string, text: string, directions: string[], signal?: AbortSignal) {
   let last: Response | null = null;
   const profile = FEMALE_VOICE_PROFILES.find((v) => v.id === voice);
   for (const [index, d] of directions.entries()) {
+    signal?.throwIfAborted();
     if (index > 0) await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (index - 1)));
+    signal?.throwIfAborted();
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
+      signal: signal ?? null,
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-tts-preview",

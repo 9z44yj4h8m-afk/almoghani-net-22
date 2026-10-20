@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { SayNowForm, VoiceChatManager } from "@/components/admin/voice-chat-manager";
 
 const { preview } = vi.hoisted(() => ({ preview: vi.fn() }));
@@ -10,6 +10,11 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   from: () => ({ select: () => ({ in: () => Promise.resolve({ data: [] }) }) }),
 } }));
 
+beforeEach(() => {
+  localStorage.clear();
+  preview.mockReset();
+  vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+});
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 async function makeClip() {
@@ -20,6 +25,56 @@ async function makeClip() {
 }
 
 describe("female voice panel", () => {
+  it("cancels pending singing immediately and ignores its late audio", async () => {
+    let finish: ((value: { audio: string }) => void) | undefined;
+    preview.mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    render(<SayNowForm />);
+    fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(preview).toHaveBeenCalledTimes(1));
+    const call = preview.mock.calls[0]?.[0];
+    expect(call.data.sing).toBe(true);
+    expect(call.signal.aborted).toBe(false);
+    expect(screen.getByRole("button", { name: "إيقاف الصوت" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "إيقاف التجربة" }));
+    expect(call.signal.aborted).toBe(true);
+    expect(screen.getByRole("button", { name: "تجريب الصوت" })).toBeEnabled();
+    await act(async () => { finish?.({ audio: btoa("late-song") }); });
+    expect(play).not.toHaveBeenCalled();
+    expect(screen.queryByLabelText("معاينة الصوت المولد")).toBeNull();
+  });
+  it("does not start device speech when a canceled singing request fails", async () => {
+    let fail: ((reason: Error) => void) | undefined;
+    preview.mockImplementation(() => new Promise((_, reject) => { fail = reject; }));
+    const speak = vi.fn();
+    const cancel = vi.fn();
+    vi.stubGlobal("speechSynthesis", { speak, cancel });
+    render(<SayNowForm />);
+    fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(preview).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByRole("button", { name: "إيقاف الصوت" }));
+    await act(async () => { fail?.(new Error("canceled")); });
+    await waitFor(() => expect(screen.getByRole("button", { name: "تجريب الصوت" })).toBeEnabled());
+    expect(cancel).toHaveBeenCalled();
+    expect(speak).not.toHaveBeenCalled();
+  });
+  it("reuses identical singing immediately but generates changed lyrics", async () => {
+    vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: vi.fn(() => "blob:voice-preview"), revokeObjectURL: vi.fn() }));
+    preview.mockResolvedValue({ audio: btoa("test-song") });
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    render(<SayNowForm />);
+    fireEvent.click(screen.getByRole("switch", { name: "خلّها تغني الكلام بدل ما تقوله" }));
+    await makeClip();
+    fireEvent.click(screen.getByRole("button", { name: "إيقاف الصوت" }));
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(play).toHaveBeenCalledTimes(2));
+    expect(preview).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "يا هلا بالغالي" } });
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(preview).toHaveBeenCalledTimes(2));
+  });
   it("removes send-now, preset songs and male voice options", () => {
     render(<><SayNowForm /><VoiceChatManager /></>);
     expect(screen.queryByRole("button", { name: "قلها الآن" })).toBeNull();
@@ -44,7 +99,7 @@ describe("female voice panel", () => {
     expect(screen.queryByRole("button", { name: "إرسال الصوت" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("صوت هذه الجملة"), { target: { value: "female-hessa" } });
     await makeClip();
-    await waitFor(() => expect(preview).toHaveBeenCalledWith({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow" } }));
+    await waitFor(() => expect(preview).toHaveBeenCalledWith(expect.objectContaining({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow", delivery: undefined }, signal: expect.any(AbortSignal) })));
 
   });
   it("opens one send menu with the chat apps once a clip exists", async () => {
