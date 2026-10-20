@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, ListVideo, Play, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SmartersPageCollection } from "@/components/smarters-page-collection";
+import { useUnifiedVod, UnifiedVodCard, UnifiedVodDialog, VodPagination, type VodTitle } from "@/components/unified-vod";
 import { bedouinSeries, type BedouinEpisode } from "@/lib/bedouin-series";
 
 export const Route = createFileRoute("/bedouin-drama")({
@@ -21,6 +21,10 @@ function BedouinDramaPage() {
   const [opened, setOpened] = useState<string | null>(null);
   const [playing, setPlaying] = useState<BedouinEpisode | null>(bedouinSeries[0]?.episodes[0] ?? null);
   const [query, setQuery] = useState("");
+  const vod = useUnifiedVod("series", query, undefined, !opened);
+  const [privatePlaying, setPrivatePlaying] = useState<VodTitle | null>(null);
+  const privateItems = vod.data?.items ?? [];
+  const publicSeries = bedouinSeries.filter(s => s.title.includes(query.trim()));
   const series = bedouinSeries.find((s) => s.id === opened);
   const episodes = series ? [...series.episodes].sort((a, b) => a.number - b.number) : [];
   const missingNumbers = series ? Array.from({ length: series.expectedEpisodeCount }, (_, i) => i + 1).filter((number) => !episodes.some((e) => e.number === number)) : [];
@@ -34,7 +38,7 @@ function BedouinDramaPage() {
       <Button variant="outline" size="icon" aria-label={opened ? "رجوع إلى المسلسلات" : "رجوع إلى الرئيسية"} asChild={!opened} onClick={opened ? () => { setOpened(null); setQuery(""); } : undefined}>
         {opened ? <ArrowRight className="h-5 w-5" /> : <Link to="/"><ArrowRight className="h-5 w-5" /></Link>}
       </Button>
-      <div className="min-w-0"><h1 className="font-display text-2xl font-black sm:text-3xl">البدوية دراما</h1>{series && <p className="mt-1 font-bold text-muted-foreground">{series.title} · {episodes.length} حلقة متاحة</p>}</div>
+      <div className="min-w-0"><h1 className="font-display text-2xl font-black sm:text-3xl">المسلسلات · البدوية دراما</h1>{series && <p className="mt-1 font-bold text-muted-foreground">{series.title} · {episodes.length} حلقة متاحة</p>}</div>
     </div>
     {playing && <section id="bedouin-player" aria-label="مشغل الحلقات" className="mb-6 scroll-mt-24">
       <div className="broadcast-screen design-gleam aspect-video"><iframe key={playing.youtubeId} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&mute=1&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
@@ -42,14 +46,16 @@ function BedouinDramaPage() {
     </section>}
     <label className="mb-6 flex items-center gap-3 rounded-lg border border-border bg-surface-deep px-4 py-3"><Search className="h-5 w-5 shrink-0 text-sky" /><input value={query} onChange={(e) => setQuery(e.target.value)} aria-label={series ? "ابحث عن حلقة" : "ابحث عن مسلسل"} placeholder={series ? "ابحث عن حلقة…" : "ابحث عن مسلسل…"} className="min-w-0 flex-1 bg-transparent outline-none" /></label>
     {!series && <section aria-label="المسلسلات البدوية" className="grid gap-4 md:grid-cols-2">
-      {bedouinSeries.filter((s) => s.title.includes(query.trim())).map((s) => {
+      {publicSeries.flatMap((s, i) => {
+        const privateItem = privateItems[i];
         const cover = s.episodes.find((e) => e.number === 1) ?? s.episodes[0];
-        return <Button key={s.id} variant="ghost" onClick={() => { setOpened(s.id); setPlaying(s.episodes[0] ?? null); setQuery(""); }} aria-label={`عرض حلقات ${s.title}`} className="group block h-auto w-full overflow-hidden whitespace-normal rounded-lg border border-sky/50 bg-surface-deep p-0 text-right hover:border-sky">
+        return [<Button key={s.id} variant="ghost" onClick={() => { setOpened(s.id); setPlaying(s.episodes[0] ?? null); setQuery(""); }} aria-label={`عرض حلقات ${s.title}`} className="group block h-auto w-full overflow-hidden whitespace-normal rounded-lg border border-sky/50 bg-surface-deep p-0 text-right hover:border-sky">
           {s.coverImage ? <span className="block aspect-[1920/712]"><img src={s.coverImage} alt={s.title} width={1920} height={712} loading="lazy" decoding="async" className="h-full w-full object-contain" /></span> : <span className="relative block aspect-video"><img src={cover?.image} alt={s.title} width={480} height={360} className="h-full w-full object-cover" /><span className="absolute inset-0 bg-player-overlay" /><span className="absolute bottom-4 right-4 left-4 flex items-center justify-between gap-3"><span className="font-display text-2xl font-black text-foreground">{s.title}</span><Play className="h-8 w-8 shrink-0 fill-current text-primary" /></span></span>}
           <span className="flex items-center justify-between gap-2 p-4"><span className="flex items-center gap-2 text-sm font-bold"><ListVideo className="h-4 w-4 text-sky" />{s.episodes.length} حلقة متاحة</span><span className="text-sm font-bold text-sky">جميع الحلقات <ChevronLeft className="inline h-4 w-4" /></span></span>
-        </Button>;
+        </Button>, ...(privateItem ? [<UnifiedVodCard key={privateItem.id} item={privateItem} onSelect={setPrivatePlaying} />] : [])];
       })}
-      {!bedouinSeries.some((s) => s.title.includes(query.trim())) && <p className="py-8 text-muted-foreground">لا توجد مسلسلات مطابقة.</p>}
+      {privateItems.slice(publicSeries.length).map(item => <UnifiedVodCard key={item.id} item={item} onSelect={setPrivatePlaying} />)}
+      {publicSeries.length === 0 && privateItems.length === 0 && !vod.isPending && <p className="py-8 text-muted-foreground">لا توجد مسلسلات مطابقة.</p>}
     </section>}
     {series && <>
       {missingNumbers.length > 0 && <p className="mb-5 border-r-2 border-primary pr-3 text-sm text-muted-foreground">لم يتوفر رابط موثّق للحلقات: {missingNumbers.join("، ")}.</p>}
@@ -61,6 +67,7 @@ function BedouinDramaPage() {
         {!episodes.some((e) => `${e.title} ${e.number}`.includes(query.trim())) && <p className="col-span-full py-8 text-muted-foreground">لا توجد حلقات مطابقة.</p>}
       </section>
     </>}
-    {!series && <SmartersPageCollection kind="series" />}
+    {!series && <VodPagination catalog={vod} />}
+    <UnifiedVodDialog kind="series" item={privatePlaying} onClose={() => setPrivatePlaying(null)} />
   </main>;
 }
