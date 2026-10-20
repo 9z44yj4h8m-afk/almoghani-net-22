@@ -1452,3 +1452,20 @@ body { background: radial-gradient(ellipse at top right, oklch(0.25 0.01 260), v
 @media (max-width:767px) { .tv-hub-tiles, .tv-hub-row { grid-template-columns:minmax(0,1fr); } .tv-hub-label strong { font-size:26px; } .tv-hub-art { aspect-ratio:16/9; } }
 .tv-hub { grid-template-columns:minmax(0,1fr) !important; grid-auto-flow:row !important; }
 .tv-hub { display:flex !important; flex-direction:column; width:100%; }
+/* TV hub sizing: fit one screen */
+.tv-hub { min-height:calc(100dvh - 140px); }
+.tv-hub-tiles { flex:1; }
+.tv-hub-art { aspect-ratio:auto; height:clamp(160px, 38vh, 420px); }
+.tv-hub-label strong { font-size:clamp(20px, 2.4vw, 34px); }
+.tv-hub-row { grid-template-columns:minmax(0,1fr) minmax(180px, 26%); }
+.tv-hub-settings svg { width:clamp(36px,4vw,64px); height:clamp(36px,4vw,64px); }
+@media (max-width:767px) {
+ .tv-hub { padding:10px; gap:10px; min-height:0; }
+ .tv-hub-tiles { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:8px; }
+ .tv-hub-art { height:auto; aspect-ratio:3/4; margin:5px 5px 0; }
+ .tv-hub-art svg { width:36px; height:36px; }
+ .tv-hub-label { padding:6px 2px; } .tv-hub-label strong { font-size:15px; white-space:nowrap; } .tv-hub-label small, .tv-hub-settings small { font-size:9px; letter-spacing:.15em; }
+ .tv-hub-row { grid-template-columns:minmax(0,1fr) 110px !important; gap:8px; }
+ .tv-hub-bar { padding:14px; font-size:14px; } .tv-hub-settings { padding:10px; } .tv-hub-settings strong { font-size:16px; }
+ .tv-hub .iptv-ref-head h1 { font-size:20px; } .tv-hub .iptv-ref-head h1 small { font-size:10px; }
+}
