@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export type CanvasItem = {
   id: string;
-  type: "tile" | "banner" | "shape" | "text";
+  type: "tile" | "banner" | "shape" | "text" | "image";
   x: number; y: number; w: number; h: number; // percent of canvas
   label?: string; sub?: string; link?: string; image?: string; color?: string; radius?: number;
 };
@@ -18,16 +18,27 @@ const newId = () => Math.random().toString(36).slice(2, 9);
 
 export function normalizeItems(raw: unknown): CanvasItem[] | null {
   if (!Array.isArray(raw)) return null;
-  const types = ["tile", "banner", "shape", "text"];
+  const types = ["tile", "banner", "shape", "text", "image"];
   return raw.filter((r) => r && types.includes(r.type)).slice(0, 60).map((r) => ({
     id: String(r.id || newId()), type: r.type,
     x: clamp(Number(r.x) || 0, 0, 95), y: clamp(Number(r.y) || 0, 0, 95),
     w: clamp(Number(r.w) || 20, 4, 100), h: clamp(Number(r.h) || 20, 4, 100),
     label: String(r.label ?? "").slice(0, 80), sub: String(r.sub ?? "").slice(0, 80),
-    link: safeLink(r.link), image: safeHttpsImage(r.image),
+    link: safeLink(r.link), image: /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(String(r.image ?? "")) && String(r.image).length < 900000 ? String(r.image) : safeHttpsImage(r.image),
     color: /^#[0-9a-f]{6}$/i.test(r.color) ? r.color : "#1e3a8a",
     radius: clamp(Number(r.radius ?? 18), 0, 60),
   }));
+}
+
+async function shrinkImage(file: File): Promise<string> {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = url; });
+    const scale = Math.min(1, 1200 / Math.max(img.width, img.height));
+    const c = document.createElement("canvas"); c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+    c.getContext("2d")!.drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL("image/jpeg", 0.8);
+  } finally { URL.revokeObjectURL(url); }
 }
 
 function useIsAdmin() {
@@ -41,6 +52,7 @@ function useIsAdmin() {
 }
 
 const presets: Record<CanvasItem["type"], Partial<CanvasItem>> = {
+  image: { w: 30, h: 35, color: "#111827", radius: 18 },
   tile: { w: 26, h: 40, label: "مربع جديد", sub: "", link: "/live", color: "#1e3a8a" },
   banner: { w: 90, h: 22, label: "بنر جديد", sub: "", link: "/movies", color: "#7c2d12" },
   shape: { w: 15, h: 15, color: "#0e7490", radius: 999 },
@@ -99,6 +111,7 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
       {!edit ? <button className="lc-btn" onClick={() => setEdit(true)}><Pencil />تعديل التصميم</button> : <>
         <button className="lc-btn" onClick={() => add("tile")}><LayoutGrid />مربع</button>
         <button className="lc-btn" onClick={() => add("banner")}><ImageIcon />بنر</button>
+        <button className="lc-btn" onClick={() => add("image")}><ImageIcon />صورة</button>
         <button className="lc-btn" onClick={() => add("shape")}><Square />شكل</button>
         <button className="lc-btn" onClick={() => add("text")}><Type />نص</button>
         <button className="lc-btn lc-save" onClick={save}><Save />حفظ</button>
@@ -114,7 +127,7 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
       {items.map((it) => {
         const style = { left: `${it.x}%`, top: `${it.y}%`, width: `${it.w}%`, height: `${it.h}%`, borderRadius: it.radius, ...(it.type === "text" ? { color: it.color } : { background: it.image ? `center/cover url("${it.image}")` : `linear-gradient(135deg, ${it.color}, ${it.color}99)` }) };
         const TileIcon = it.type === "tile" ? (it.link === "/live" ? Tv : it.link === "/movies" ? Film : it.link === "/bedouin-drama" ? Clapperboard : null) : null;
-        const inner = <>{TileIcon && <TileIcon className="lc-icon" />}{it.type !== "shape" && <><strong>{it.label}</strong>{it.sub && <span>{it.sub}</span>}</>}</>;
+        const inner = <>{TileIcon && <TileIcon className="lc-icon" />}{it.type !== "shape" && it.type !== "image" && <><strong>{it.label}</strong>{it.sub && <span>{it.sub}</span>}</>}</>;
         const cls = `lc-item lc-${it.type}${sel === it.id && edit ? " lc-sel" : ""}`;
         return <div key={it.id} className={cls} style={style} onPointerDown={(e) => start(e, it, "move")} dir="rtl">
           {!edit && it.link ? <Link to={it.link} preload="intent" className="lc-fill">{inner}</Link> : <div className="lc-fill">{inner}</div>}
@@ -123,11 +136,12 @@ export function LayoutCanvas({ settingsKey, defaults }: { settingsKey: string; d
       })}
     </div>
     {edit && cur && <div className="lc-panel" dir="rtl">
-      {cur.type !== "shape" && <label>النص<input value={cur.label} onChange={(e) => update(cur.id, { label: e.target.value })} /></label>}
-      {(cur.type === "tile" || cur.type === "banner") && <>
+      {cur.type !== "shape" && cur.type !== "image" && <label>النص<input value={cur.label} onChange={(e) => update(cur.id, { label: e.target.value })} /></label>}
+      {(cur.type === "tile" || cur.type === "banner" || cur.type === "image") && <>
         <label>نص صغير<input value={cur.sub} onChange={(e) => update(cur.id, { sub: e.target.value })} /></label>
         <label>يفتح صفحة<input dir="ltr" placeholder="/movies" value={cur.link} onChange={(e) => update(cur.id, { link: e.target.value })} /></label>
-        <label>رابط صورة<input dir="ltr" placeholder="https://..." value={cur.image} onChange={(e) => update(cur.id, { image: e.target.value })} /></label>
+        <label>صورة من جهازك<input type="file" accept="image/*" onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; try { update(cur.id, { image: await shrinkImage(f) }); } catch { toast.error("ما قدرت أقرأ الصورة"); } }} /></label>
+        {cur.image && <button className="lc-btn" onClick={() => update(cur.id, { image: "" })}>شيل الصورة</button>}
       </>}
       <label>اللون<input type="color" value={cur.color} onChange={(e) => update(cur.id, { color: e.target.value })} /></label>
       <label>تدوير الزوايا<input type="range" min={0} max={60} value={Math.min(cur.radius ?? 18, 60)} onChange={(e) => update(cur.id, { radius: Number(e.target.value) })} /></label>
