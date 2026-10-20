@@ -1476,3 +1476,30 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .tv-hub-tile, .tv-hub-bar, .tv-hub-settings, .iptv-category, .iptv-channel-select { transition-duration: 90ms !important; }
 .tv-hub-actions { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
 .tv-hub-expiry { text-align:center; margin-top:.75rem; color: var(--muted-foreground); font-size:.85rem; }
+
+/* Smarters Pro hub (/tv) — matches approved sample */
+.sp-hub { --sp-bg: oklch(0.16 0.06 265); --sp-ink: oklch(0.97 0.01 260); --sp-accent: oklch(0.62 0.2 255); --sp-card: oklch(0.22 0.07 265 / 70%); --sp-line: oklch(0.4 0.1 265 / 60%);
+  min-height:100dvh; display:flex; flex-direction:column; gap:clamp(16px,3vh,36px); padding:clamp(14px,3vw,48px); color:var(--sp-ink);
+  background: radial-gradient(ellipse at 80% 0%, oklch(0.32 0.14 262 / 70%), transparent 55%), radial-gradient(ellipse at 0% 100%, oklch(0.3 0.13 262 / 60%), transparent 50%), var(--sp-bg); }
+.sp-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.sp-brand { display:flex; align-items:center; gap:12px; } .sp-logo { width:clamp(36px,5vw,64px); height:auto; color:var(--sp-accent); }
+.sp-brand strong { display:block; font-size:clamp(16px,2.4vw,34px); font-weight:900; line-height:1; } .sp-brand b { color:var(--sp-accent); }
+.sp-brand small { letter-spacing:.3em; font-size:clamp(8px,1vw,13px); opacity:.6; }
+.sp-meta { display:flex; align-items:center; gap:clamp(8px,2vw,28px); } .sp-time { font-size:clamp(18px,2.8vw,40px); font-weight:800; }
+.sp-sep { width:2px; height:36px; background:var(--sp-line); } .sp-date { display:flex; flex-direction:column; align-items:center; font-size:clamp(10px,1.2vw,16px); }
+.sp-icon svg { width:clamp(22px,2.6vw,40px); height:clamp(22px,2.6vw,40px); }
+.sp-tiles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(8px,1.8vw,28px); align-items:center; }
+.sp-tile { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; aspect-ratio:16/11; border-radius:clamp(10px,1.4vw,20px); border:2px solid var(--sp-line); color:var(--sp-ink); transition:transform 90ms; }
+.sp-tile:hover, .sp-tile:focus-visible { transform:scale(1.03); }
+.sp-live { aspect-ratio:16/12; border-color:oklch(0.85 0.08 260); box-shadow:0 0 24px oklch(0.62 0.2 255 / 60%); background:linear-gradient(110deg, oklch(0.55 0.22 258), oklch(0.45 0.2 330), oklch(0.58 0.22 22)); }
+.sp-movies { background:linear-gradient(120deg, oklch(0.38 0.2 285), oklch(0.26 0.1 300)); }
+.sp-series { border-color:oklch(0.6 0.1 210 / 60%); background:linear-gradient(120deg, oklch(0.42 0.09 215), oklch(0.26 0.06 225)); }
+.sp-tile-icon { width:clamp(36px,8vw,130px); height:clamp(36px,8vw,130px); }
+.sp-tile strong { font-size:clamp(14px,3vw,44px); font-weight:900; line-height:1; } .sp-tile span { font-size:clamp(12px,2.4vw,34px); font-weight:800; }
+.sp-chev { position:absolute; right:8%; top:62%; width:clamp(14px,2.4vw,36px); height:clamp(14px,2.4vw,36px); }
+.sp-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(8px,1.6vw,26px); width:min(100%,1100px); margin:0 auto; }
+.sp-btn { display:flex; align-items:center; justify-content:center; gap:clamp(8px,4vw,70px); padding:clamp(12px,2.2vh,30px) 8px; border-radius:14px; border:1.5px solid var(--sp-line); background:var(--sp-card); color:var(--sp-ink); font-size:clamp(12px,1.8vw,26px); font-weight:700; touch-action:manipulation; }
+.sp-btn svg { width:clamp(16px,2.4vw,36px); height:clamp(16px,2.4vw,36px); }
+.sp-expiry { display:flex; align-items:center; justify-content:center; gap:12px; color:oklch(0.78 0.08 265); font-size:clamp(12px,1.6vw,22px); }
+.sp-expiry svg { width:22px; height:22px; }
+@media (max-width:640px) { .sp-actions { grid-template-columns:minmax(0,1fr); } .sp-btn { justify-content:space-between; padding-inline:18px; } .sp-sep, .sp-date { display:none; } }
