@@ -28,5 +28,17 @@ export function mergeLiveChannels(publicChannels: Channel[], memberChannels: Cha
     if (next) merged.push(next);
   }
   const used = new Set(merged.map(channel => channel.id));
-  return [...merged, ...memberChannels.filter(channel => !used.has(channel.id))];
+  const all = [...merged, ...memberChannels.filter(channel => !used.has(channel.id))];
+  const sports = all.filter(channel => channel.category === "رياضية");
+  const rank = (channel: Channel) => {
+    if (!normalizeChannelSearch(channel.name).includes("bein")) return 2;
+    return /english|eng\b|france|french|fr\b|turk|spain|spanish|إنجليزي|انجليزي|فرنسي/i.test(`${channel.name} ${channel.description}`) ? 1 : 0;
+  };
+  const number = (channel: Channel) => {
+    const digits = channel.name.replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)));
+    return Number(digits.match(/\d+/)?.[0] ?? 1000);
+  };
+  sports.sort((a, b) => rank(a) - rank(b) || (rank(a) < 2 ? number(a) - number(b) : 0));
+  let index = 0;
+  return all.map(channel => channel.category === "رياضية" ? sports[index++] ?? channel : channel);
 }

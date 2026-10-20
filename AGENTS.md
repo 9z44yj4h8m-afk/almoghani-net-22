@@ -41,5 +41,5 @@
 - Home/channel share workspace/player/schedule; in-page editors reuse admin tools and RLS.
 - Share smarters-config genre schema, filters and ordering across admin/library to keep saved classifications consistent.
 
-- PortalPage and /vip interleave public/Smarters live metadata in one list/search/player; opaque IDs resolve only after member access. Private VOD/group links stay gated.
+- PortalPage and /vip share mergeLiveChannels ordering and one list/search/player; sports reorder without losing channels or moving non-sports. Opaque IDs and VOD remain member-gated.
 - Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.
