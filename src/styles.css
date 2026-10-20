@@ -1530,3 +1530,4 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .lc-panel{display:flex;flex-wrap:wrap;gap:.6rem;align-items:end;padding:.7rem;border-radius:.8rem;background:var(--card);border:1px solid var(--border)}
 .lc-panel label{display:flex;flex-direction:column;gap:.2rem;font-size:.75rem;color:var(--muted-foreground)}
 .lc-panel input:not([type=color]):not([type=range]){padding:.35rem .5rem;border-radius:.4rem;background:var(--input);color:var(--foreground);border:1px solid var(--border);min-width:9rem}
+.lc-icon{width:clamp(2.5rem,6vw,5rem);height:clamp(2.5rem,6vw,5rem);color:#fff;opacity:.95}.lc-btn:disabled{opacity:.4}
