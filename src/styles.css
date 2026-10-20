@@ -1508,3 +1508,25 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .sp-site-btn { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:12px; border:1.5px solid var(--sp-line); background:var(--sp-card); color:var(--sp-ink); font-weight:800; font-size:clamp(12px,1.6vw,20px); touch-action:manipulation; }
 .sp-site-btn svg { width:clamp(16px,2vw,26px); height:clamp(16px,2vw,26px); }
 @media (max-width:640px) { .sp-actions { grid-template-columns:minmax(0,1fr); } .sp-btn { justify-content:space-between; padding-inline:18px; } .sp-sep, .sp-date { display:none; } }
+
+/* Owner layout canvas editor */
+.lc-wrap{position:relative;width:100%;flex:1;display:flex;flex-direction:column;gap:.6rem;min-height:0}
+.lc-bar{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:flex-start}
+.lc-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:.6rem;background:var(--secondary);color:var(--secondary-foreground);border:1px solid var(--border);font-size:.85rem;touch-action:manipulation}
+.lc-btn svg{width:1rem;height:1rem}
+.lc-save{background:var(--primary);color:var(--primary-foreground)}
+.lc-del{background:var(--destructive);color:var(--destructive-foreground)}
+.lc-canvas{position:relative;width:100%;min-height:clamp(260px,52vh,640px);flex:1}
+.lc-editing{outline:2px dashed var(--border);outline-offset:4px;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:5% 10%}
+.lc-item{position:absolute;overflow:hidden;box-shadow:0 10px 30px -12px rgb(0 0 0/.6);color:var(--foreground)}
+.lc-text{box-shadow:none;background:none!important}
+.lc-editing .lc-item{cursor:move;touch-action:none;user-select:none}
+.lc-sel{outline:3px solid var(--primary);outline-offset:2px}
+.lc-fill{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;width:100%;height:100%;text-align:center;padding:.5rem;text-decoration:none;color:inherit}
+.lc-fill strong{font-size:clamp(1rem,2.4vw,2rem);font-weight:800;text-shadow:0 2px 8px rgb(0 0 0/.6)}
+.lc-fill span{font-size:clamp(.7rem,1.2vw,1rem);opacity:.85;letter-spacing:.1em}
+.lc-tile .lc-fill,.lc-banner .lc-fill{color:#fff}
+.lc-handle{position:absolute;right:0;bottom:0;width:26px;height:26px;background:var(--primary);border-top-left-radius:8px;cursor:nwse-resize;touch-action:none}
+.lc-panel{display:flex;flex-wrap:wrap;gap:.6rem;align-items:end;padding:.7rem;border-radius:.8rem;background:var(--card);border:1px solid var(--border)}
+.lc-panel label{display:flex;flex-direction:column;gap:.2rem;font-size:.75rem;color:var(--muted-foreground)}
+.lc-panel input:not([type=color]):not([type=range]){padding:.35rem .5rem;border-radius:.4rem;background:var(--input);color:var(--foreground);border:1px solid var(--border);min-width:9rem}
