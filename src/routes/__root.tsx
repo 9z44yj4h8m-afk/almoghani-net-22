@@ -170,12 +170,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const embeddedChat = useRouterState({ select: (state) => state.location.pathname === "/chat" || state.location.pathname === "/live-chat" || state.location.pathname === "/voice-chat" || state.location.pathname === "/22" || state.location.pathname === "/unlock" });
+  const pathname = useRouterState({ select: (state) => state.location.pathname }); const standaloneScreen = pathname === "/chat" || pathname === "/live-chat" || pathname === "/voice-chat" || pathname === "/22" || pathname === "/unlock" || pathname === "/tv";
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MemberProvider><SiteDesignStyle />{embeddedChat ? <Outlet /> : <><div className="iptv-site-layout"><IptvNavigation /><div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div></div><IosInstallBanner /></>}</MemberProvider>
+      <MemberProvider><SiteDesignStyle />{standaloneScreen ? <Outlet /> : <><div className="iptv-site-layout"><IptvNavigation /><div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div></div><IosInstallBanner /></>}</MemberProvider>
     </QueryClientProvider>
   );
 }
