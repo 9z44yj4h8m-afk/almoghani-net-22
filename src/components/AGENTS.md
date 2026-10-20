@@ -8,5 +8,6 @@
 - Normalize bot message vocalization through the shared chat-text helper on write and historical display; preserve visitor text and decorative names so cleanup does not alter identities.
 - Voice chat (/voice-chat) reuses LiveChat with voice mode; bot speech is generated server-side only for existing chat message IDs so the endpoint cannot be used as open TTS.
 - Keep player behaviour (volume, quality, auto-reconnect with backoff, settings in localStorage) in src/components/live-player.tsx so every page shares one player.
+- Group numbered beIN variants in IptvWorkspace; headers only expand and each child retains its original playback ID, favorite and access gate.
 
 - Film and series pages interleave public cards with paginated safe VOD metadata through unified-vod; only an authenticated selected-item resolver returns private playback, keeping one search/grid without exposing provider IDs, logos or URLs.

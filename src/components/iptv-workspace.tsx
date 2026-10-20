@@ -1,9 +1,9 @@
 import { useState, type ReactNode } from "react";
-import { LayoutGrid, Pencil, Search, Star, Tv, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronUp, LayoutGrid, Pencil, Search, Star, Tv, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BroadcastHero } from "@/components/broadcast-hero";
 import type { Channel, ChannelCategory } from "@/lib/channels";
-import { isSmartersChannel, matchesChannelSearch } from "@/lib/unified-channels";
+import { groupBeinChannels, isSmartersChannel, matchesChannelSearch } from "@/lib/unified-channels";
 
 type Section = { slug: string; title: string; category: ChannelCategory; icon: LucideIcon };
 export function IptvWorkspace({ channels, sections, selected, active, onWatch, onSelect, favorites, onFavorite, initialSection, onEditChannel, player }: {
@@ -15,9 +15,20 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
 }) {
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState<string[]>([]);
   const selectedSection = sections.find(s => s.slug === category);
   const uniqueChannels = channels.filter((c, index) => channels.findIndex(item => item.id === c.id) === index);
   const visible = uniqueChannels.filter(c => (category === "all" || (category === "favorites" ? favorites.includes(c.id) : c.category === selectedSection?.category)) && matchesChannelSearch(c.name, query));
+  const groups = groupBeinChannels(visible);
+  const renderChannel = (channel: Channel, index: number, branch = false) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""} ${branch ? "ms-4 border-s border-border [&_.iptv-channel-select]:!text-sm [&_.iptv-channel-select]:!font-medium" : ""}`}>
+    <Button variant="ghost" className="iptv-channel-select" aria-label={`شغّل ${channel.name}`} aria-pressed={selected.id === channel.id} onClick={() => onSelect(channel)}>
+      <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
+      {channel.thumbnail ? <img src={channel.thumbnail} alt="" loading="lazy" width={80} height={80} /> : <Tv />}
+      <span>{channel.name}</span>
+    </Button>
+    <Button size="icon" variant="ghost" className="iptv-favorite" aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة" onClick={() => onFavorite(channel.id)}><Star className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button>
+    {onEditChannel && !isSmartersChannel(channel) && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
+  </div>;
   return <section className="iptv-workspace" aria-label="البث المباشر">
     <nav className="iptv-categories" aria-label="تصنيفات القنوات">
       {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => setCategory(slug)}><Icon /><span>{title}</span></Button>)}
@@ -26,15 +37,20 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
       <label className="iptv-channel-search"><Search aria-hidden="true" /><input aria-label="بحث في قائمة القنوات" placeholder="بحث عن قناة…" value={query} onChange={e => setQuery(e.target.value)} /></label>
       <div className="iptv-channel-count"><Tv /> <span>{visible.length} قناة</span></div>
       <div className="iptv-channel-items">
-        {visible.map((channel, index) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""}`}>
-          <Button variant="ghost" className="iptv-channel-select" aria-label={`شغّل ${channel.name}`} aria-pressed={selected.id === channel.id} onClick={() => onSelect(channel)}>
-            <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
-            {channel.thumbnail ? <img src={channel.thumbnail} alt="" loading="lazy" width={80} height={80} /> : <Tv />}
-            <span>{channel.name}</span>
-          </Button>
-          <Button size="icon" variant="ghost" className="iptv-favorite" aria-label={`المفضلة: ${channel.name}`} aria-pressed={favorites.includes(channel.id)} title="المفضلة" onClick={() => onFavorite(channel.id)}><Star className={favorites.includes(channel.id) ? "fill-current" : ""} /></Button>
-          {onEditChannel && !isSmartersChannel(channel) && <Button size="icon" variant="outline" className="shrink-0" title={`تعديل ${channel.name}`} aria-label={`تعديل ${channel.name}`} onClick={() => onEditChannel(channel)}><Pencil /></Button>}
-        </div>)}
+        {groups.map((group, index) => {
+          const channel = group.channels[0];
+          if (!channel) return null;
+          if (!group.grouped) return renderChannel(channel, index);
+          const open = expanded.includes(group.id);
+          return <div key={group.id}>
+            <div className="iptv-channel-item"><Button variant="ghost" className="iptv-channel-select" aria-label={`فروع ${group.name}`} aria-expanded={open} aria-controls={group.id} onClick={() => setExpanded(current => open ? current.filter(id => id !== group.id) : [...current, group.id])}>
+              <span className="iptv-channel-number">{String(index + 1).padStart(2, "0")}</span>
+              {channel.thumbnail ? <img src={channel.thumbnail} alt="" width={80} height={80} /> : <Tv />}
+              <span>{group.name}</span>{open ? <ChevronUp /> : <ChevronDown />}
+            </Button></div>
+            {open && <div id={group.id} role="group" aria-label={`نسخ ${group.name}`}>{group.channels.map((item, childIndex) => renderChannel(item, childIndex, true))}</div>}
+          </div>;
+        })}
         {!visible.length && <p className="iptv-empty">{category === "favorites" ? "لا توجد قنوات في المفضلة بعد." : "لا توجد قنوات مطابقة."}</p>}
       </div>
     </div>
