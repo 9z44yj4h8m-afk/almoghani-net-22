@@ -74,7 +74,7 @@ function MoviesPage() {
     .filter((m) => !q.trim() || m.title.toLowerCase().includes(q.trim().toLowerCase()));
 
   return (
-    <div dir="rtl" className="min-h-screen bg-background pb-28 text-foreground">
+    <div dir="rtl" className="chrome-page min-h-screen bg-background pb-28 text-foreground">
       <main className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
         {playing && <section id="movie-player" aria-label="شاشة الأفلام" className="mb-6 scroll-mt-24">
           <div className="broadcast-screen design-gleam aspect-video"><iframe key={`${playing.youtubeId}-${muted}`} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&mute=${muted ? 1 : 0}&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
