@@ -50,7 +50,10 @@ import b17 from "@/assets/channel-art2/saudi-tv.jpg.asset.json";
 import b18 from "@/assets/channel-art2/sbc-tv.jpg.asset.json";
 import b19 from "@/assets/channel-art2/yt-hart-29y2iq.jpg.asset.json";
 
+import officialLogos from "@/lib/official-logos.json";
+
 export const channelArt: Record<string, string> = {
+  ...(officialLogos as Record<string, string>),
   "alarabiya": a0.url,
   "alhadath": a1.url,
   "aljazeera": a2.url,
