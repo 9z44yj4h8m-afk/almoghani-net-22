@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowRight, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
+import { Activity, ArrowRight, Eye, EyeOff, Image, Link2, Pencil, Pin, PinOff, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
@@ -110,9 +110,18 @@ function ChannelsTab() {
   ], [data]);
   const list = all.filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase())).slice(0, 80);
 
-  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null }) {
+  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null; logo?: string | null; stream_url?: string | null; sort_order?: number | null }) {
     const cur = overrides.get(id);
-    await supabase.from("channel_overrides").upsert({ channel_id: id, hidden: patch.hidden ?? cur?.hidden ?? false, category: patch.category !== undefined ? patch.category : cur?.category ?? null, name: patch.name !== undefined ? patch.name : cur?.name ?? null, updated_at: new Date().toISOString() });
+    await supabase.from("channel_overrides").upsert({
+      channel_id: id,
+      hidden: patch.hidden ?? cur?.hidden ?? false,
+      category: patch.category !== undefined ? patch.category : cur?.category ?? null,
+      name: patch.name !== undefined ? patch.name : cur?.name ?? null,
+      logo: patch.logo !== undefined ? patch.logo : cur?.logo ?? null,
+      stream_url: patch.stream_url !== undefined ? patch.stream_url : cur?.stream_url ?? null,
+      sort_order: patch.sort_order !== undefined ? patch.sort_order : cur?.sort_order ?? null,
+      updated_at: new Date().toISOString(),
+    });
     void refresh();
   }
   async function setCategory(c: { id: string; custom: boolean }, category: string) {
@@ -153,10 +162,39 @@ function ChannelsTab() {
           const o = overrides.get(c.id); const hidden = !!o?.hidden;
           const category = c.custom ? c.category : o?.category ?? c.category;
           const name = c.custom ? c.name : o?.name || c.name;
+          const pinned = typeof o?.sort_order === "number" && o.sort_order < 0;
+          const editUrl = async () => {
+            const v = window.prompt("رابط البث الجديد (m3u8 أو يوتيوب)", o?.stream_url || (c.custom ? all.find((x) => x.id === c.id)?.name && "" : ""))?.trim();
+            if (!v) return;
+            setBusy(true); setMsg("");
+            const r = await check({ data: { url: v } });
+            setBusy(false);
+            if (!r.ok) return setMsg(r.reason);
+            if (c.custom) { await supabase.from("custom_channels").update({ stream_url: v }).eq("id", c.id); void refresh(); }
+            else void setOverride(c.id, { stream_url: v });
+            setMsg("تم تحديث رابط البث ✓");
+          };
+          const editLogo = async () => {
+            const v = window.prompt("رابط شعار القناة (https)", o?.logo || "")?.trim();
+            if (v === null) return;
+            if (c.custom) { await supabase.from("custom_channels").update({ logo: v.startsWith("https://") ? v : "" }).eq("id", c.id); void refresh(); }
+            else void setOverride(c.id, { logo: v.startsWith("https://") ? v : null });
+          };
+          const test = async () => {
+            const url = c.custom ? (await supabase.from("custom_channels").select("stream_url").eq("id", c.id).maybeSingle()).data?.stream_url : o?.stream_url || baseChannels.find((x) => x.id === c.id)?.streamUrl;
+            if (!url) return setMsg("لا يوجد رابط بث لهذه القناة.");
+            setBusy(true); setMsg(`جارٍ فحص ${name}…`);
+            const r = await check({ data: { url } });
+            setBusy(false); setMsg(r.ok ? `${name}: البث يعمل ✓` : `${name}: ${r.reason}`);
+          };
           return <li key={c.id} className={`flex flex-wrap items-center gap-2 py-3 ${hidden ? "opacity-50" : ""}`}>
             <span className="min-w-0 flex-1 font-bold">{name}{c.custom && <span className="ms-2 text-xs text-accent">مضافة</span>}</span>
             <select className="h-9 rounded-lg border border-border bg-card px-2 text-sm" value={category} onChange={(e) => setCategory(c, e.target.value)}>{channelCategories.map((x) => <option key={x}>{x}</option>)}</select>
             <Button size="icon" variant="ghost" aria-label="تعديل الاسم" onClick={() => rename({ ...c, name })}><Pencil className="h-4 w-4" /></Button>
+            <Button size="icon" variant="ghost" aria-label="تعديل رابط البث" disabled={busy} onClick={() => void editUrl()}><Link2 className="h-4 w-4" /></Button>
+            <Button size="icon" variant="ghost" aria-label="تعديل الشعار" onClick={() => void editLogo()}><Image className="h-4 w-4" /></Button>
+            <Button size="icon" variant="ghost" aria-label="فحص البث" disabled={busy} onClick={() => void test()}><Activity className="h-4 w-4" /></Button>
+            <Button size="icon" variant="ghost" aria-label={pinned ? "إلغاء التثبيت" : "تثبيت أعلى القائمة"} onClick={() => void setOverride(c.id, { sort_order: pinned ? null : -1 })}>{pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}</Button>
             <Button size="icon" variant="ghost" aria-label={hidden ? "إظهار" : "إخفاء"} onClick={() => setOverride(c.id, { hidden: !hidden })}>{hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
             {c.custom && <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("custom_channels").delete().eq("id", c.id); void refresh(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
           </li>;

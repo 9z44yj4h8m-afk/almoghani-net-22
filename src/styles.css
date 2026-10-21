@@ -1543,47 +1543,50 @@ button:active, a:active, [role="button"]:active { transform: scale(.97); transit
 .vs-canvas{flex:0 0 auto;max-height:45vh;overflow:auto;padding:.5rem}
 .vs-canvas .lc-canvas{min-height:clamp(140px,26vh,320px)}
 
-/* Cloudtve-style light theme approved by owner 21 Oct 2026 — overrides earlier palettes */
+/* Dark navy + golden theme approved by owner 21 Oct 2026 — replaces the light palette; layout and content unchanged */
 :root, .iptv-site-layout, .dark {
-  --background: oklch(0.975 0.012 150);
-  --surface-deep: oklch(0.995 0.004 150);
-  --surface: oklch(1 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.02 150);
-  --foreground: oklch(0.25 0.02 150);
-  --primary: oklch(0.62 0.17 150);
-  --primary-foreground: oklch(1 0 0);
-  --accent: oklch(0.62 0.17 150);
-  --accent-foreground: oklch(1 0 0);
-  --sky: oklch(0.62 0.17 150);
-  --ring: oklch(0.62 0.17 150);
-  --secondary: oklch(0.95 0.02 150);
-  --secondary-foreground: oklch(0.3 0.03 150);
-  --muted: oklch(0.95 0.015 150);
-  --muted-foreground: oklch(0.5 0.02 150);
-  --border: oklch(0.88 0.02 150);
-  --input: oklch(0.88 0.02 150);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.02 150);
+  --background: oklch(0.13 0.02 260);
+  --surface-deep: oklch(0.1 0.018 260);
+  --surface: oklch(0.17 0.022 260);
+  --card: oklch(0.16 0.022 260);
+  --card-foreground: oklch(0.97 0.012 85);
+  --foreground: oklch(0.97 0.012 85);
+  --primary: oklch(0.8 0.13 85);
+  --primary-foreground: oklch(0.18 0.03 85);
+  --accent: oklch(0.8 0.13 85);
+  --accent-foreground: oklch(0.18 0.03 85);
+  --sky: oklch(0.85 0.09 85);
+  --ring: oklch(0.8 0.13 85);
+  --secondary: oklch(0.21 0.03 260);
+  --secondary-foreground: oklch(0.93 0.03 85);
+  --muted: oklch(0.2 0.025 260);
+  --muted-foreground: oklch(0.8 0.06 85);
+  --border: oklch(0.62 0.1 85 / 60%);
+  --input: oklch(0.62 0.1 85 / 45%);
+  --popover: oklch(0.16 0.022 260);
+  --popover-foreground: oklch(0.97 0.012 85);
 }
-body { background: linear-gradient(180deg, oklch(0.96 0.04 150), var(--background) 220px); color: var(--foreground); }
-:root, .iptv-site-layout { --chrome: oklch(1 0 0); --broadcast-gradient: linear-gradient(180deg, oklch(0.97 0.03 150), oklch(1 0 0)); --broadcast-shadow: 0 2px 10px oklch(0.4 0.05 150 / 12%); --iptv-gold-light: oklch(0.62 0.17 150); --iptv-gold-dark: oklch(0.5 0.15 150); }
-.iptv-categories, .iptv-channel-column, .iptv-program-guide, .iptv-player-screen, .iptv-navigation, .broadcast-site-header, .iptv-ref-head { border: 1px solid var(--border) !important; box-shadow: var(--broadcast-shadow) !important; border-radius: 8px !important; }
-.iptv-ref-head { background: linear-gradient(90deg, oklch(0.95 0.05 150), oklch(1 0 0)) !important; color: var(--foreground) !important; }
-.iptv-ref-head h2, .iptv-channel-item .iptv-channel-select > span:last-child { color: var(--primary) !important; }
-.iptv-channel-item { background: var(--card) !important; color: var(--foreground) !important; border: 1px solid var(--border) !important; border-radius: 8px !important; }
-.iptv-channel-item svg, .iptv-channel-item .iptv-channel-number, .iptv-channel-item .iptv-favorite { color: var(--muted-foreground) !important; }
-.iptv-channel-selected { background: oklch(0.95 0.05 150) !important; border: 2px solid var(--primary) !important; }
-.iptv-channel-select img { background: oklch(1 0 0) !important; border: 2px solid var(--border) !important; border-radius: 8px !important; }
-.iptv-category, .iptv-categories .iptv-category { background: oklch(0.97 0.01 150) !important; color: var(--foreground) !important; border: 1px solid var(--border) !important; border-radius: 4px !important; font-size: 14px; min-height: 36px !important; }
+body { background: radial-gradient(ellipse at top, oklch(0.22 0.05 85 / 35%), transparent 55%), var(--background); color: var(--foreground); }
+:root, .iptv-site-layout { --chrome: linear-gradient(180deg, oklch(0.82 0.13 85), oklch(0.6 0.11 85)); --broadcast-gradient: linear-gradient(180deg, oklch(0.82 0.13 85), oklch(0.6 0.11 85)); --broadcast-shadow: 0 0 18px oklch(0.75 0.12 85 / 30%); --iptv-gold-light: oklch(0.87 0.1 85); --iptv-gold-dark: oklch(0.62 0.11 85); }
+.iptv-categories, .iptv-channel-column, .iptv-program-guide, .iptv-player-screen, .iptv-navigation, .broadcast-site-header, .iptv-ref-head { border: 1px solid var(--border) !important; box-shadow: var(--broadcast-shadow) !important; border-radius: 10px !important; }
+.iptv-ref-head { background: linear-gradient(90deg, oklch(0.18 0.03 260), oklch(0.13 0.02 260)) !important; color: var(--foreground) !important; }
+.iptv-ref-head h2, .iptv-channel-item .iptv-channel-select > span:last-child { color: oklch(0.98 0.005 85) !important; }
+.iptv-ref-head time, .iptv-ref-head .iptv-ref-meta { color: var(--iptv-gold-light) !important; }
+.iptv-channel-item { background: var(--card) !important; color: var(--foreground) !important; border: 1px solid var(--border) !important; border-radius: 10px !important; }
+.iptv-channel-item svg, .iptv-channel-item .iptv-channel-number, .iptv-channel-item .iptv-favorite { color: var(--iptv-gold-light) !important; }
+.iptv-channel-selected { background: oklch(0.22 0.04 85) !important; border: 2px solid var(--primary) !important; }
+.iptv-channel-select img { background: oklch(0.13 0.02 260) !important; border: 2px solid var(--border) !important; border-radius: 10px !important; }
+.iptv-category, .iptv-categories .iptv-category { background: var(--card) !important; color: var(--foreground) !important; border: 1px solid var(--border) !important; border-radius: 8px !important; font-size: 14px; min-height: 36px !important; }
 .iptv-category[aria-pressed=true] { background: var(--primary) !important; color: var(--primary-foreground) !important; box-shadow: none !important; }
-.iptv-categories { background: var(--card) !important; }
-.iptv-channel-search { background: oklch(1 0 0) !important; color: var(--foreground) !important; border: 1px solid var(--border); border-radius: 4px !important; }
+.iptv-categories { background: var(--surface-deep) !important; }
+.iptv-channel-search { background: oklch(0.19 0.025 260) !important; color: var(--foreground) !important; border: 1px solid var(--border); border-radius: 8px !important; }
+.iptv-channel-search input { color: oklch(0.98 0.005 85) !important; }
+.iptv-channel-search input::placeholder { color: oklch(0.75 0.06 85) !important; }
 .iptv-channel-search svg { color: var(--primary) !important; }
-.iptv-player-screen { background: oklch(0.15 0.01 150) !important; color: oklch(1 0 0); }
-.chrome-page main > div > button, .chrome-page main > div > a { background: oklch(0.97 0.01 150) !important; color: var(--foreground) !important; border-color: var(--border) !important; }
+.iptv-player-screen { background: oklch(0.11 0.02 260) !important; color: oklch(0.98 0.005 85); }
+.chrome-page main > div > button, .chrome-page main > div > a { background: var(--card) !important; color: var(--foreground) !important; border-color: var(--border) !important; }
 .chrome-page main > div > button.bg-primary { background: var(--primary) !important; color: var(--primary-foreground) !important; }
-.chrome-page main .grid > *, .chrome-series .grid > * { border: 1px solid var(--border) !important; border-radius: 8px !important; box-shadow: var(--broadcast-shadow) !important; background: var(--card); }
-.chrome-page h1, .chrome-series h1 { background: linear-gradient(90deg, oklch(0.95 0.05 150), oklch(1 0 0)) !important; color: var(--primary) !important; }
+.chrome-page main .grid > *, .chrome-series .grid > * { border: 1px solid var(--border) !important; border-radius: 10px !important; box-shadow: var(--broadcast-shadow) !important; background: var(--card); }
+.chrome-page h1, .chrome-series h1 { background: linear-gradient(90deg, oklch(0.22 0.05 85), oklch(0.15 0.03 260)) !important; color: oklch(0.98 0.005 85) !important; }
 .tv-hub-tile, .tv-hub-settings, .tv-hub-bar { border: 1px solid var(--border) !important; color: var(--foreground) !important; }
-:root, .iptv-site-layout { --broadcast-gradient: linear-gradient(180deg, oklch(0.66 0.17 150), oklch(0.56 0.16 150)); }
+:root, .iptv-site-layout { --broadcast-gradient: linear-gradient(180deg, oklch(0.82 0.13 85), oklch(0.6 0.11 85)); }
