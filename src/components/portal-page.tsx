@@ -79,8 +79,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   const texts = siteConfig?.texts ?? defaultTexts;
   const configuredSections = sections.map((s) => ({ ...s, title: siteConfig?.sectionContent.titles[s.slug] || s.title }));
   const visibleSections = section ? configuredSections.filter((s) => s.slug === section) : configuredSections;
+  // Owner request (21 Oct 2026): the display screen opens on MBC 1 instead of beIN.
   const [selected, setSelected] = useState(
-    channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
+    channels.find((c) => c.id === "mbc-1") ?? channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
   const [playerActive, setPlayerActive] = useState(!homepage);
   const [searchOpen, setSearchOpen] = useState(false);
