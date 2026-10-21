@@ -127,6 +127,13 @@
       "when": 1792513220041,
       "tag": "0017_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792541196503,
+      "tag": "0018_add_stream_url_override_column_to_channel_overrides",
+      "breakpoints": true
     }
   ]
 }

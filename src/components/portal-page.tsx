@@ -79,8 +79,9 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   const texts = siteConfig?.texts ?? defaultTexts;
   const configuredSections = sections.map((s) => ({ ...s, title: siteConfig?.sectionContent.titles[s.slug] || s.title }));
   const visibleSections = section ? configuredSections.filter((s) => s.slug === section) : configuredSections;
+  // Owner request (21 Oct 2026): the display screen opens on MBC 1 instead of beIN.
   const [selected, setSelected] = useState(
-    channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
+    channels.find((c) => c.id === "mbc-1") ?? channels.find((c) => c.category === visibleSections[0]?.category) ?? channels[0],
   );
   const [playerActive, setPlayerActive] = useState(!homepage);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -96,13 +97,11 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
     const found = id && channels.find((c) => c.id === id);
     if (found) { setPlayerActive(true); setSelected(found); document.getElementById("player")?.scrollIntoView({ behavior: "smooth" }); }
   }, [catalog.data]);
-  // Owner request (20 Oct 2026): members landing on the homepage start on beIN SPORTS 1 immediately.
-  const [autoBein, setAutoBein] = useState(false);
+  // Owner request (21 Oct 2026): the homepage display opens on MBC 1 immediately; beIN is never auto-shown.
   useEffect(() => {
-    if (!homepage || autoBein || !memberChannels.length || new URLSearchParams(window.location.search).get("channel")) return;
-    const bein = memberChannels.find((c) => c.name.trim().toUpperCase() === "BEIN SPORTS 1");
-    setAutoBein(true);
-    if (bein) { setSelected(bein); setPlayerActive(true); }
+    if (!homepage || !memberChannels.length || new URLSearchParams(window.location.search).get("channel")) return;
+    const mbc = channels.find((c) => c.id === "mbc-1");
+    if (mbc) { setSelected(mbc); setPlayerActive(true); }
   }, [catalog.data]);
   // Auto-fallback: when a channel fails, switch to a similar one from the same section.
   const [fallbackNote, setFallbackNote] = useState("");
