@@ -50,7 +50,7 @@ export type SiteConfig = {
   botNameAliases: Record<string, string>;
   sectionContent: SectionContent;
   customChannels: { id: string; name: string; category: string; stream_url: string; logo: string; description: string }[];
-  overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null; logo?: string | null; sort_order?: number | null }[];
+  overrides: { channel_id: string; hidden: boolean; category: string | null; name: string | null; logo?: string | null; stream_url?: string | null; sort_order?: number | null }[];
   customMovies: { id: string; youtube_id: string; title: string; description: string }[];
   hiddenMovies: string[];
 };
@@ -59,7 +59,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
   const [settings, custom, overrides, movies, hidden] = await Promise.all([
     supabase.from("site_settings").select("key,value"),
     supabase.from("custom_channels").select("id,name,category,stream_url,logo,description").order("created_at"),
-    supabase.from("channel_overrides").select("channel_id,hidden,category,name,logo,sort_order"),
+    supabase.from("channel_overrides").select("channel_id,hidden,category,name,logo,stream_url,sort_order"),
     supabase.from("custom_movies").select("id,youtube_id,title,description").order("created_at", { ascending: false }),
     supabase.from("hidden_movies").select("movie_id"),
   ]);
