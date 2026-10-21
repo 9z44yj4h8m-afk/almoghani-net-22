@@ -108,13 +108,18 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
       const cat = o?.category;
       const renamed = o?.name ? { ...c, name: o.name } : c;
       const named = typeof o?.logo === "string" ? { ...renamed, thumbnail: o.logo } : renamed;
-      return cat && channelCategories.includes(cat as ChannelCategory) ? { ...named, category: cat as ChannelCategory } : named;
+      // An owner stream-url override replaces the built-in stream so a dead link can be fixed without code.
+      const streamed = typeof o?.stream_url === "string" && o.stream_url
+        ? { ...named, streamUrl: o.stream_url, youtubeId: undefined }
+        : named;
+      return cat && channelCategories.includes(cat as ChannelCategory) ? { ...streamed, category: cat as ChannelCategory } : streamed;
     });
   const extra: Channel[] = config.customChannels
     .filter((c) => !ov.get(c.id)?.hidden)
     .map((c) => {
-      const yt = youtubeIdFrom(c.stream_url);
       const o = ov.get(c.id);
+      const url = typeof o?.stream_url === "string" && o.stream_url ? o.stream_url : c.stream_url;
+      const yt = youtubeIdFrom(url);
       const category = o?.category ?? c.category;
       return {
         id: c.id,

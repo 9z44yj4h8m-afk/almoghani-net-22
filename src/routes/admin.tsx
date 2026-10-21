@@ -110,9 +110,18 @@ function ChannelsTab() {
   ], [data]);
   const list = all.filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase())).slice(0, 80);
 
-  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null }) {
+  async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null; logo?: string | null; stream_url?: string | null; sort_order?: number | null }) {
     const cur = overrides.get(id);
-    await supabase.from("channel_overrides").upsert({ channel_id: id, hidden: patch.hidden ?? cur?.hidden ?? false, category: patch.category !== undefined ? patch.category : cur?.category ?? null, name: patch.name !== undefined ? patch.name : cur?.name ?? null, updated_at: new Date().toISOString() });
+    await supabase.from("channel_overrides").upsert({
+      channel_id: id,
+      hidden: patch.hidden ?? cur?.hidden ?? false,
+      category: patch.category !== undefined ? patch.category : cur?.category ?? null,
+      name: patch.name !== undefined ? patch.name : cur?.name ?? null,
+      logo: patch.logo !== undefined ? patch.logo : cur?.logo ?? null,
+      stream_url: patch.stream_url !== undefined ? patch.stream_url : cur?.stream_url ?? null,
+      sort_order: patch.sort_order !== undefined ? patch.sort_order : cur?.sort_order ?? null,
+      updated_at: new Date().toISOString(),
+    });
     void refresh();
   }
   async function setCategory(c: { id: string; custom: boolean }, category: string) {
