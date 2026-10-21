@@ -1,0 +1,1 @@
+ALTER TABLE public.channel_overrides ADD COLUMN stream_url text;

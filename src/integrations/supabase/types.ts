@@ -22,6 +22,7 @@ export type Database = {
           logo: string | null
           name: string | null
           sort_order: number | null
+          stream_url: string | null
           updated_at: string
         }
         Insert: {
@@ -31,6 +32,7 @@ export type Database = {
           logo?: string | null
           name?: string | null
           sort_order?: number | null
+          stream_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -40,6 +42,7 @@ export type Database = {
           logo?: string | null
           name?: string | null
           sort_order?: number | null
+          stream_url?: string | null
           updated_at?: string
         }
         Relationships: []
