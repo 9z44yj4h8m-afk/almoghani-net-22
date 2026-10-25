@@ -396,15 +396,15 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const selected = sayVoice || cfg.botVoices[name];
     const customVoice = panel.custom.find((c) => c.id === selected);
     const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
-    const cacheKey = JSON.stringify([text, voiceId, customVoice?.delivery, sing, melody, rhythm, echo, bed]);
+    const cacheKey = JSON.stringify([text, voiceId, customVoice?.delivery, echo]);
     try {
       let file = previewCacheRef.current.get(cacheKey);
       if (!file) {
-        const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined }, signal: request.signal });
+        const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, delivery: customVoice?.delivery || undefined }, signal: request.signal });
         if (!active()) return;
         let bytes: Uint8Array<ArrayBuffer> = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
-        if (echo !== "none" || bed !== "none") {
-          try { bytes = await applyVoiceFx(bytes, echo, bed); } catch { /* keep the clean voice */ }
+        if (echo !== "none") {
+          try { bytes = await applyVoiceFx(bytes, echo); } catch { /* keep the clean voice */ }
         }
         if (!active()) return;
         const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
