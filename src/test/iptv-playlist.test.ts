@@ -15,6 +15,10 @@ describe("IPTV-compatible public export", () => {
     expect(compatible.charCodeAt(0)).toBe(35);
   });
 
+  it("keeps the short link c.m3u identical to channels.m3u", () => {
+    expect(readFileSync("public/c.m3u", "utf8")).toBe(readFileSync("public/channels.m3u", "utf8"));
+  });
+
   it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
     for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u"]) {
       const lines = readFileSync(filename, "utf8").split(/\r?\n/);
