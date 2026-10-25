@@ -970,9 +970,8 @@ body { background: var(--surface-deep); }
   .voice-studio-heading { font-size: 23px; gap: 12px; }
   .voice-studio-heading svg { width: 32px; }
   .voice-studio-form { padding: 16px 12px; gap: 16px; }
-  .voice-studio-field, .voice-studio-sing { font-size: 16px; }
+  .voice-studio-field { font-size: 16px; }
   .voice-studio-select select { font-size: 16px; }
-  .voice-studio-sing { padding: 12px 10px; gap: 8px; }
   .voice-studio-preview { padding: 12px; gap: 10px; }
   .voice-studio-play { width: 44px; height: 44px; }
   .voice-studio-replay, .voice-studio-stop { width: 36px; height: 36px; }
