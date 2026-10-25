@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronDown, MessageCircle, Music2, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight, RotateCcw } from "lucide-react";
+import { ChevronDown, MessageCircle, Play, Plus, Save, Send, Trash2, Upload, UserRound, AudioLines, Mic, Radio, Settings2, Home, ListMusic, Square, SquareStop, ArrowRight, RotateCcw } from "lucide-react";
+
 import { supabase } from "@/integrations/supabase/client";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, MELODIES, RHYTHMS, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
+import { FEMALE_VOICE_PROFILES, FEMALE_VOICE_CATEGORIES, VOICE_LIST, defaultVoiceChat, normalizeVoiceChat, voiceCategory, type VoiceChatConfig } from "@/lib/voice-config";
 import { defaultChatBots, type ChatBotsConfig } from "@/lib/chat-bots.functions";
 import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
-import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode } from "@/lib/voice-fx";
+import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, type EchoMode } from "@/lib/voice-fx";
 
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
@@ -111,12 +111,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("Leda");
-  const [sing, setSing] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
 
-  const [melody, setMelody] = useState("najdi");
-  const [rhythm, setRhythm] = useState("slow");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
   const previewVoiceFn = useServerFn(previewVoice);
@@ -160,7 +157,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
   }, []);
   const [echo, setEcho] = useState<EchoMode>("none");
-  const [bed, setBed] = useState<BedMode>("none");
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
@@ -176,20 +172,15 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   // Remember the owner's panel choices on this device so it reopens the same way.
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(PANEL_STORE) ?? "{}") as { bot?: string; voice?: string; sing?: boolean; melody?: string; rhythm?: string };
+      const saved = JSON.parse(localStorage.getItem(PANEL_STORE) ?? "{}") as { bot?: string; voice?: string };
       if (saved.voice && VOICE_LIST.some((v) => v.id === saved.voice)) setSayVoice(saved.voice);
       if (saved.bot) setSayBot(saved.bot);
-      if (saved.sing === true) {
-        setSing(true);
-        if (saved.melody && MELODIES.some((m) => m.id === saved.melody)) setMelody(saved.melody);
-        if (saved.rhythm && RHYTHMS.some((r) => r.id === saved.rhythm)) setRhythm(saved.rhythm);
-      }
     } catch { /* first visit or blocked storage */ }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    try { localStorage.setItem(PANEL_STORE, JSON.stringify({ bot: sayBot, voice: sayVoice, sing, melody, rhythm })); } catch { /* storage unavailable */ }
-  }, [sayBot, sayVoice, sing, melody, rhythm]);
+    try { localStorage.setItem(PANEL_STORE, JSON.stringify({ bot: sayBot, voice: sayVoice })); } catch { /* storage unavailable */ }
+  }, [sayBot, sayVoice]);
   function micError(e: unknown) {
     const n = (e as { name?: string })?.name;
     if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/22 مباشرة في سفاري أو كروم";
@@ -405,15 +396,15 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     const selected = sayVoice || cfg.botVoices[name];
     const customVoice = panel.custom.find((c) => c.id === selected);
     const voiceId = customVoice?.providerId ?? VOICE_LIST.find((v) => v.id === selected && v.female)?.id ?? "Leda";
-    const cacheKey = JSON.stringify([text, voiceId, customVoice?.delivery, sing, melody, rhythm, echo, bed]);
+    const cacheKey = JSON.stringify([text, voiceId, customVoice?.delivery, echo]);
     try {
       let file = previewCacheRef.current.get(cacheKey);
       if (!file) {
-        const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, sing, melody, rhythm, delivery: customVoice?.delivery || undefined }, signal: request.signal });
+        const { audio } = await previewVoiceFn({ data: { text, voice: voiceId, delivery: customVoice?.delivery || undefined }, signal: request.signal });
         if (!active()) return;
         let bytes: Uint8Array<ArrayBuffer> = Uint8Array.from(atob(audio), (char) => char.charCodeAt(0));
-        if (echo !== "none" || bed !== "none") {
-          try { bytes = await applyVoiceFx(bytes, echo, bed); } catch { /* keep the clean voice */ }
+        if (echo !== "none") {
+          try { bytes = await applyVoiceFx(bytes, echo); } catch { /* keep the clean voice */ }
         }
         if (!active()) return;
         const voiceName = (customVoice?.name || VOICE_LIST.find((v) => v.id === selected)?.name || "صوت المغني").replace(/[\\/:*?"<>|]/g, "").trim() || "صوت المغني";
@@ -485,7 +476,7 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       </DialogContent>
     </Dialog>
 
-    {pc.enabled && <style>{`.voice-studio-page{background:${pc.bg}!important}.voice-studio-panel,.voice-studio-panel label,.voice-studio-panel span{color:${pc.text}}.voice-studio-panel .voice-studio-select,.voice-studio-panel textarea,.voice-studio-preview,.voice-studio-sing,.voice-studio-actions button{border-color:${pc.accent}!important}.voice-studio-panel .voice-studio-save{background:${pc.gold}!important;border-color:${pc.gold}!important}`}</style>}
+    {pc.enabled && <style>{`.voice-studio-page{background:${pc.bg}!important}.voice-studio-panel,.voice-studio-panel label,.voice-studio-panel span{color:${pc.text}}.voice-studio-panel .voice-studio-select,.voice-studio-panel textarea,.voice-studio-preview,.voice-studio-actions button{border-color:${pc.accent}!important}.voice-studio-panel .voice-studio-save{background:${pc.gold}!important;border-color:${pc.gold}!important}`}</style>}
     {!panel.showHeader && <h2 className="font-display text-2xl font-black text-center">ALMOGHANI VOICE</h2>}
     {panel.showHeader && <div className="voice-neon-hero" id="voice-home">
       <img src={voiceNeonHeader.url} alt="ALMOGHANI VOICE — غير صوتك، سجل صوتك وغيره باحتراف" />
@@ -513,15 +504,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
         {panel.custom.length > 0 && <optgroup label="أصواتي المضافة">{panel.custom.map((v) => <option key={v.id} value={v.id}>{v.name}{v.label ? ` · ${v.label}` : ""}</option>)}</optgroup>}
       </select><ChevronDown aria-hidden="true" /></div></label>
       {sayVoice === "" && bots.length > 0 && <label className="voice-studio-field"><span><UserRound />اختر البوت</span><div className="voice-studio-select"><UserRound /><select id="voice-bot-select" aria-label="اختيار البوت" value={sayBot || bots[0] || ""} disabled={testing} onChange={(e) => { setSayBot(e.target.value); setAudioFile(null); }}>{bots.map((b) => <option key={b} value={b}>{b}</option>)}</select><ChevronDown aria-hidden="true" /></div></label>}
-      <label className="voice-studio-sing"><Music2 aria-hidden="true" /><span>{panel.texts.singLabel}</span><Switch dir="ltr" checked={sing} onCheckedChange={(value) => { setSing(value); setAudioFile(null); }} aria-label="خلّها تغني الكلام بدل ما تقوله" /></label>
       </div>
-      {sing && <div className="voice-neon-melody grid gap-2 sm:grid-cols-2">
-        <select className={field} aria-label="اللحن" value={melody} onChange={(e) => { setMelody(e.target.value); setAudioFile(null); }}>{MELODIES.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
-        <select className={field} aria-label="الإيقاع والرقصة" value={rhythm} onChange={(e) => { setRhythm(e.target.value); setAudioFile(null); }}>{RHYTHMS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}</select>
-      </div>}
-      <div className="voice-neon-fx grid grid-cols-2 gap-2">
+      <div className="voice-neon-fx">
         <select className={field} aria-label="مؤثر الصدى" value={echo} onChange={(e) => { setEcho(e.target.value as EchoMode); setAudioFile(null); }}>{ECHO_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
-        <select className={field} aria-label="لحن الخلفية" value={bed} onChange={(e) => { setBed(e.target.value as BedMode); setAudioFile(null); }}>{BED_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</select>
       </div>
       <div className="voice-studio-preview" id="voice-recordings">{audioUrl ? <audio ref={audioRef} controls src={audioUrl} onPlay={() => { clipRef.current?.pause(); setPlaying(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} aria-label="معاينة الصوت المولد" /> : <><Button size="icon" variant="outline" aria-label="تشغيل تجربة الصوت" disabled={testing} onClick={() => void testVoice()} className="voice-studio-play"><Play /></Button><span className="voice-studio-status" role="status">{testing ? "جارٍ التجريب…" : playing ? "الصوت شغّال…" : clipSrc ? "انتهى الصوت — اضغط إعادة" : "جاهز للتجربة"}</span><div className="voice-studio-wave" aria-hidden="true">{Array.from({ length: 43 }, (_, i) => <i key={i} />)}</div></>}<Button size="icon" variant="outline" aria-label="إعادة الصوت" title="إعادة الصوت" disabled={testing || (!clipSrc && !audioUrl)} onClick={replayClip} className="voice-studio-replay"><RotateCcw /></Button><Button size="icon" variant="outline" aria-label="إيقاف الصوت" title="إيقاف الصوت" disabled={!testing && !playing && !audioUrl} onClick={stopAll} className="voice-studio-stop"><SquareStop /></Button></div>
       <div className="voice-studio-actions">

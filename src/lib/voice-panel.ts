@@ -5,7 +5,6 @@ export const PANEL_TEXT_FIELDS = [
   { key: "textLabel", label: "عنوان مربع النص", fallback: "اكتب النص الذي يقوله البوت" },
   { key: "placeholder", label: "النص داخل المربع", fallback: "اكتب النص هنا..." },
   { key: "voiceLabel", label: "عنوان اختيار الصوت", fallback: "اختيار صوت بنت" },
-  { key: "singLabel", label: "عبارة الغناء", fallback: "خلّها تغني الكلام بدل ما تقوله" },
   { key: "testBtn", label: "زر التجربة", fallback: "تجريب الصوت" },
   { key: "sendBtn", label: "زر الإرسال", fallback: "إرسال الصوت" },
 
