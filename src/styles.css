@@ -1113,9 +1113,6 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-select { height: 100%; min-height: 0; border-color: var(--voice-gold-light); padding: 0 10px; background: var(--voice-night); border-radius: 10px; }
 .voice-studio-form .voice-studio-select > svg:first-child { display: none; }
 .voice-studio-select select { height: 100%; font-size: 16px; }
-.voice-studio-sing { min-height: 0; padding: 4px 8px; gap: 6px; margin: 0; border-color: var(--voice-edge); font-size: 13px; background: var(--voice-night); }
-.voice-studio-sing > svg { width: 22px; height: 22px; }
-.voice-studio-preview { min-height: 0; padding: 6px 8px; gap: 8px; background: var(--voice-neon-fill); border: 2px solid var(--voice-purple); border-radius: 16px; box-shadow: var(--voice-neon-glow); }
 .voice-studio-play { width: 40px; height: 40px; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
 .voice-studio-stop { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-stop); background: var(--voice-night); border: 2px solid var(--voice-stop); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-stop) 45%,transparent); }
 .voice-studio-stop svg { width: 22px; height: 22px; }
