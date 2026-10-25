@@ -6,6 +6,10 @@ export function normalizeChannelSearch(value: string): string {
 export function matchesChannelSearch(name: string, query: string): boolean {
   return normalizeChannelSearch(name).includes(normalizeChannelSearch(query));
 }
+// Only select a configured member entry; XTRA and public lookalikes are not match substitutes.
+export function findHomepageBeinChannel(channels: Channel[]): Channel | undefined {
+  return channels.find(channel => isSmartersChannel(channel) && channel.category === "رياضية" && /^bein[^\d]*1(?!\d)/.test(normalizeChannelSearch(channel.name).replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))) && !/english|french|france|turk|spanish|إنجليزي|انجليزي|فرنسي/i.test(`${channel.name} ${channel.description}`));
+}
 export function groupBeinChannels(channels: Channel[]): { id: string; name: string; channels: Channel[]; grouped: boolean }[] {
   const groups: { id: string; name: string; channels: Channel[]; grouped: boolean }[] = [];
   const byNumber = new Map<string, typeof groups[number]>();
