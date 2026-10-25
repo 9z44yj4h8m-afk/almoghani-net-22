@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import template from "@/lib/voice-store.html?raw";
 import { LayoutCanvas, type CanvasItem } from "@/components/layout-canvas";
+import { OwnerNav } from "@/components/owner-nav";
 
 const storeCanvas: CanvasItem[] = [
   { id: "vs-banner", type: "banner", x: 2, y: 8, w: 96, h: 80, label: "ALMOGHANI VOICE", sub: "اشتراكات الأصوات — اطلب الآن", color: "#7c1fa8", radius: 18 },

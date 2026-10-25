@@ -13,6 +13,7 @@ import { ChannelImagesManager } from "@/components/admin/channel-images-manager"
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { SmartersManager } from "@/components/admin/smarters-manager";
+import { OwnerNav } from "@/components/owner-nav";
 
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
@@ -75,6 +76,7 @@ function AdminPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
+      <OwnerNav />
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
         <Button asChild className="mt-4"><Link to="/admin-chat">لوحة الشات (المستخدمين والأصوات)</Link></Button>

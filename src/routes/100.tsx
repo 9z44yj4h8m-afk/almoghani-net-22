@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { FEMALE_VOICE_CATEGORIES, FEMALE_VOICE_PROFILES, voiceCategory } from "@/lib/voice-config";
 import { FEMALE_PROVIDERS, PANEL_COLOR_FIELDS, PANEL_TEXT_FIELDS, defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
+import { OwnerNav } from "@/components/owner-nav";
 
 export const Route = createFileRoute("/100")({
   ssr: false,

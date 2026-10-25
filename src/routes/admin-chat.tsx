@@ -6,6 +6,7 @@ import { useMember } from "@/components/member-provider";
 import { Button } from "@/components/ui/button";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { CHAT_ADMIN_SECTIONS } from "@/components/admin/chat-tab";
+import { OwnerNav } from "@/components/owner-nav";
 
 export const Route = createFileRoute("/admin-chat")({
   ssr: false,
