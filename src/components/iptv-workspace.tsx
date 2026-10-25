@@ -22,8 +22,14 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
   const [category, setCategory] = useState(initialSection ?? "all");
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState<string[]>([]);
+  const [shown, setShown] = useState(100);
   const selectedSection = sections.find(s => s.slug === category);
-  const uniqueChannels = channels.filter((c, index) => channels.findIndex(item => item.id === c.id) === index);
+  const seen = new Set<string>();
+  const uniqueChannels = channels.filter(c => {
+    if (seen.has(c.id)) return false;
+    seen.add(c.id);
+    return true;
+  });
   const visible = uniqueChannels.filter(c => (category === "all" || (category === "favorites" ? favorites.includes(c.id) : c.category === selectedSection?.category)) && matchesChannelSearch(c.name, query));
   const groups = groupBeinChannels(visible);
   const renderChannel = (channel: Channel, index: number, branch = false) => <div key={channel.id} className={`iptv-channel-item ${selected.id === channel.id ? "iptv-channel-selected" : ""} ${branch ? "ms-4 border-s border-border [&_.iptv-channel-select>span:last-child]:!text-sm [&_.iptv-channel-select>span:last-child]:!font-medium" : ""}`}>
@@ -38,13 +44,13 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
   return <section className="iptv-workspace" aria-label="البث المباشر">
     <header className="iptv-ref-head"><h2>{liveTitle ?? "البث المباشر"}</h2><div className="iptv-ref-meta"><span>VIP Premium</span><Clock /></div></header>
     <nav className="iptv-categories" aria-label="تصنيفات القنوات">
-      {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => setCategory(slug)}><Icon /><span>{title}</span></Button>)}
+      {[{ slug: "all", title: "جميع القنوات", icon: LayoutGrid }, { slug: "favorites", title: "المفضلة", icon: Star }, ...sections].map(({ slug, title, icon: Icon }) => <Button key={slug} variant="ghost" className="iptv-category" aria-pressed={category === slug} onClick={() => { setCategory(slug); setShown(100); }}><Icon /><span>{title}</span></Button>)}
     </nav>
     <div className="iptv-channel-column">
-      <label className="iptv-channel-search"><Search aria-hidden="true" /><input aria-label="بحث في قائمة القنوات" placeholder="بحث عن قناة…" value={query} onChange={e => setQuery(e.target.value)} /></label>
+      <label className="iptv-channel-search"><Search aria-hidden="true" /><input aria-label="بحث في قائمة القنوات" placeholder="بحث عن قناة…" value={query} onChange={e => { setQuery(e.target.value); setShown(100); }} /></label>
       <div className="iptv-channel-count"><Tv /> <span>{visible.length} قناة</span></div>
       <div className="iptv-channel-items">
-        {groups.map((group, index) => {
+        {groups.slice(0, shown).map((group, index) => {
           const channel = group.channels[0];
           if (!channel) return null;
           if (!group.grouped) return renderChannel(channel, index);
@@ -58,6 +64,7 @@ export function IptvWorkspace({ channels, sections, selected, active, onWatch, o
             {open && <div id={group.id} role="group" aria-label={`نسخ ${group.name}`}>{group.channels.map((item, childIndex) => renderChannel(item, childIndex, true))}</div>}
           </div>;
         })}
+        {groups.length > shown && <Button variant="outline" className="my-3 w-full" onClick={() => setShown(current => current + 100)}><ChevronDown />عرض المزيد</Button>}
         {!visible.length && <p className="iptv-empty">{category === "favorites" ? "لا توجد قنوات في المفضلة بعد." : "لا توجد قنوات مطابقة."}</p>}
       </div>
     </div>
