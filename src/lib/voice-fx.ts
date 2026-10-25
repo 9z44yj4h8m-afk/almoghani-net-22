@@ -18,29 +18,6 @@ function impulse(ctx: BaseAudioContext, seconds: number, decay: number) {
   return buf;
 }
 
-// Hijaz-flavoured scale for the oud, plain major chords for the piano.
-const OUD_NOTES = [146.83, 155.56, 185.0, 196.0, 220.0, 233.08, 261.63, 293.66];
-const PIANO_CHORDS = [[261.63, 329.63, 392.0], [220.0, 261.63, 329.63], [174.61, 220.0, 261.63], [196.0, 246.94, 293.66]];
-
-function scheduleBed(ctx: OfflineAudioContext, mode: BedMode, duration: number, out: AudioNode) {
-  const note = (freq: number, t: number, len: number, type: OscillatorType, vol: number) => {
-    const o = ctx.createOscillator(); const g = ctx.createGain();
-    o.type = type; o.frequency.value = freq;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + (mode === "calm" ? 0.8 : 0.01));
-    g.gain.exponentialRampToValueAtTime(0.0001, t + len);
-    o.connect(g).connect(out); o.start(t); o.stop(t + len + 0.05);
-  };
-  if (mode === "oud") {
-    for (let t = 0, i = 0; t < duration; t += 0.45, i++) {
-      const f = OUD_NOTES[(i * 3 + (i % 4)) % OUD_NOTES.length] ?? 220;
-      note(f, t, 0.9, "triangle", 0.18); note(f * 2, t, 0.4, "sawtooth", 0.025);
-    }
-  } else if (mode === "piano") {
-    for (let t = 0, i = 0; t < duration; t += 2, i++) PIANO_CHORDS[i % 4]!.forEach((f, k) => note(f, t + k * 0.12, 2.4, "sine", 0.12));
-  } else if (mode === "calm") {
-    for (let t = 0, i = 0; t < duration; t += 3, i++) PIANO_CHORDS[i % 4]!.forEach((f) => { note(f / 2, t, 3.6, "sine", 0.08); note(f, t, 3.6, "triangle", 0.03); });
-  }
-}
 
 function toWav(buf: AudioBuffer) {
   const ch = buf.numberOfChannels, len = buf.length, rate = buf.sampleRate;
