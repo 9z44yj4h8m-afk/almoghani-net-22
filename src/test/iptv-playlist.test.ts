@@ -2,6 +2,15 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 describe("IPTV-compatible public export", () => {
+  it("excludes the foreign bulk expansion while retaining the previous playlist and Arabic additions", () => {
+    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u", "public/c.m3u"]) {
+      const content = readFileSync(filename, "utf8");
+      expect(content).not.toContain('group-title="الأجنبية —');
+      expect(content).toContain('group-title="العربية —');
+      expect(content).toContain("روتانا سينما السعودية");
+    }
+  });
+
   it("exports every direct HLS entry in source order without YouTube pages", () => {
     const source = readFileSync("public/channels.m3u", "utf8").replace(/^\uFEFF/, "").split(/\r?\n/);
     const expected = source.filter((line) => line.startsWith("https://") && new URL(line).pathname.endsWith(".m3u8"));
