@@ -14,4 +14,17 @@ describe("IPTV-compatible public export", () => {
     expect(compatible).not.toContain("youtube.com");
     expect(compatible.charCodeAt(0)).toBe(35);
   });
+
+  it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
+    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u"]) {
+      const lines = readFileSync(filename, "utf8").split(/\r?\n/);
+      const indexes = lines.flatMap((line, index) => line.startsWith("https://rotana.hibridcdn.net/") ? [index] : []);
+      expect(indexes.length).toBeGreaterThan(0);
+      for (const index of indexes) {
+        expect(lines[index - 3]).toBe("#EXTVLCOPT:http-referrer=https://rotana.net/");
+        expect(lines[index - 2]).toBe("#EXTVLCOPT:http-origin=https://rotana.net");
+        expect(lines[index - 1]).toBe("#EXTVLCOPT:http-user-agent=Mozilla/5.0");
+      }
+    }
+  });
 });

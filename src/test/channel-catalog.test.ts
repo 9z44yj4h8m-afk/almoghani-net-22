@@ -3,6 +3,15 @@ import { describe, expect, it } from "vitest";
 import { channels } from "@/lib/channels";
 
 describe("Public channel catalog", () => {
+  it("uses the verified NHK source in the site and both public playlists", () => {
+    const url = "https://masterpl.hls.nhkworld.jp/hls/w/live/smarttv.m3u8";
+    expect(channels.find((channel) => channel.id === "w-nhk-world-japan-hd")?.streamUrl).toBe(url);
+    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u"]) {
+      const playlist = readFileSync(filename, "utf8");
+      expect(playlist.split(/\r?\n/)).toContain(url);
+      expect(playlist).not.toContain("https://freem3u.xyz/api/live/play.m3u8?vid=106");
+    }
+  });
   it("includes each verified addition once in the catalog and export", () => {
     const playlist = readFileSync("public/channels.m3u", "utf8");
     for (const id of ["extra-karbala-documentary", "extra-mta-arabia", "extra-zagros", "extra-iraq-quran", "extra-elsharq-tv", "extra-hala-tv", "extra-makan33", "extra-mekameleen"]) {

@@ -1,4 +1,4 @@
-#EXTM3U
+﻿#EXTM3U
 #EXTINF:-1 tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="التراث والجنوب",الوسام الفضائية — نبض الجنوب
 https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="السعودية",الإخبارية السعودية
@@ -132,18 +132,36 @@ https://cdn1.logichost.in/ajmantv/live/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj" group-title="العامة",الأردن دراما — التلفزيون الأردني
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/pGgp38I.png" group-title="العامة",روتانا سينما السعودية
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/cinema_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/dGlKoLW.png" group-title="العامة",روتانا سينما مصر
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/cinemamasr_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/btnhPjZ.png" group-title="العامة",روتانا دراما
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/drama_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/pMMUvkt.png" group-title="العامة",روتانا كلاسيك
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/classical_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/IlT8U6S.png" group-title="العامة",روتانا كوميدي
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/comedy_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/haRt_29y2iQ/hqdefault.jpg" group-title="العامة",روتانا ستيشن
 https://www.youtube.com/watch?v=haRt_29y2iQ
 #EXTINF:-1 group-title="العامة",روتانا كليب
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/clip_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://prime1tv.com/wp-content/uploads/2025/12/7-1.png" group-title="العامة",بريم سوريا الرياضية
 https://cdn.bestream.io/prime/prime.m3u8
@@ -580,10 +598,19 @@ https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",ذكريات
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thikrayat/8cfa8fe0c96275735745b89c683b27e3/index.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",روتانا كليب
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/clip_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",روتانا خليجية
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/khaleejiya_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",روتانا موسيقى
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/music_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",العراقية
 https://imn-live.esite-lab.com/hls/iraqia-general.m3u8
@@ -594,6 +621,9 @@ https://video.yementdy.tv/hls/yementoday.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",قناة الاتحاد
 https://live.alittihad.tv:444/ittihad/index.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",الرسالة
+#EXTVLCOPT:http-referrer=https://rotana.net/
+#EXTVLCOPT:http-origin=https://rotana.net
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/risala_net-7Y83PP5adWixDF93/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="عامة",قناة طه
 https://stream.starmenajo.com/hls/app/live/ts:fhd.m3u8
@@ -858,7 +888,7 @@ https://dash4.antik.sk/live/test_euronews/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/TRT_World.svg/960px-TRT_World.svg.png" group-title="القنوات الأجنبية",TRT World HD
 https://dash2.antik.sk/live/test_trt_world_atktv/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/NHK_World_Japan.png" group-title="القنوات الأجنبية",NHK World-Japan HD
-https://freem3u.xyz/api/live/play.m3u8?vid=106
+https://masterpl.hls.nhkworld.jp/hls/w/live/smarttv.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Asu5pE9.png" group-title="القنوات الأجنبية",Arirang TV HD
 https://freem3u.xyz/api/live/play.m3u8?vid=111
 #EXTINF:-1 tvg-logo="https://i.imgur.com/5UxU4zc.png" group-title="القنوات الأجنبية",Africanews English
