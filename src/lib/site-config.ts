@@ -109,8 +109,9 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
       const renamed = o?.name ? { ...c, name: o.name } : c;
       const named = typeof o?.logo === "string" ? { ...renamed, thumbnail: o.logo } : renamed;
       // An owner stream-url override replaces the built-in stream so a dead link can be fixed without code.
+      const { youtubeId: _droppedYoutubeId, ...withoutYoutubeId } = named;
       const streamed = typeof o?.stream_url === "string" && o.stream_url
-        ? { ...named, streamUrl: o.stream_url, youtubeId: undefined }
+        ? { ...withoutYoutubeId, streamUrl: o.stream_url }
         : named;
       return cat && channelCategories.includes(cat as ChannelCategory) ? { ...streamed, category: cat as ChannelCategory } : streamed;
     });
