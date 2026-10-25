@@ -32,8 +32,8 @@ function toWav(buf: AudioBuffer) {
   return new Uint8Array(out.buffer);
 }
 
-export async function applyVoiceFx(wav: Uint8Array<ArrayBuffer>, echo: EchoMode, bed: BedMode): Promise<Uint8Array<ArrayBuffer>> {
-  if (echo === "none" && bed === "none") return wav.slice();
+export async function applyVoiceFx(wav: Uint8Array<ArrayBuffer>, echo: EchoMode): Promise<Uint8Array<ArrayBuffer>> {
+  if (echo === "none") return wav.slice();
   const probe = new AudioContext();
   const src = await probe.decodeAudioData(wav.slice().buffer as ArrayBuffer);
   void probe.close();
@@ -52,12 +52,6 @@ export async function applyVoiceFx(wav: Uint8Array<ArrayBuffer>, echo: EchoMode,
       const fb = ctx.createGain(); fb.gain.value = 0.3;
       voice.connect(delay); delay.connect(fb).connect(delay); delay.connect(wet);
     }
-  }
-  if (bed !== "none") {
-    const bus = ctx.createGain(); bus.gain.value = 0.55;
-    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2400;
-    bus.connect(lp).connect(master);
-    scheduleBed(ctx, bed, src.duration + tail, bus);
   }
   voice.start(0);
   return toWav(await ctx.startRendering());
