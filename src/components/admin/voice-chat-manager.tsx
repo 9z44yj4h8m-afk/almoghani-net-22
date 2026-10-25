@@ -172,20 +172,15 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   // Remember the owner's panel choices on this device so it reopens the same way.
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(PANEL_STORE) ?? "{}") as { bot?: string; voice?: string; sing?: boolean; melody?: string; rhythm?: string };
+      const saved = JSON.parse(localStorage.getItem(PANEL_STORE) ?? "{}") as { bot?: string; voice?: string };
       if (saved.voice && VOICE_LIST.some((v) => v.id === saved.voice)) setSayVoice(saved.voice);
       if (saved.bot) setSayBot(saved.bot);
-      if (saved.sing === true) {
-        setSing(true);
-        if (saved.melody && MELODIES.some((m) => m.id === saved.melody)) setMelody(saved.melody);
-        if (saved.rhythm && RHYTHMS.some((r) => r.id === saved.rhythm)) setRhythm(saved.rhythm);
-      }
     } catch { /* first visit or blocked storage */ }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    try { localStorage.setItem(PANEL_STORE, JSON.stringify({ bot: sayBot, voice: sayVoice, sing, melody, rhythm })); } catch { /* storage unavailable */ }
-  }, [sayBot, sayVoice, sing, melody, rhythm]);
+    try { localStorage.setItem(PANEL_STORE, JSON.stringify({ bot: sayBot, voice: sayVoice })); } catch { /* storage unavailable */ }
+  }, [sayBot, sayVoice]);
   function micError(e: unknown) {
     const n = (e as { name?: string })?.name;
     if (typeof window !== "undefined" && window.self !== window.top) return "المايك ما يشتغل داخل المعاينة؛ افتح almoghani.net/22 مباشرة في سفاري أو كروم";
