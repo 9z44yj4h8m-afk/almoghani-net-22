@@ -157,7 +157,6 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
     if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
   }, []);
   const [echo, setEcho] = useState<EchoMode>("none");
-  const [bed, setBed] = useState<BedMode>("none");
   // Native player for a saved/recorded clip, so the stop button can silence it too.
   const audioRef = useRef<HTMLAudioElement | null>(null);
   function stopAll() {
