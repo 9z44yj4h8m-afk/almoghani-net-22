@@ -1,5 +1,6 @@
 import karbalaArtwork from "@/assets/extra-karbala-documentary.png.asset.json";
 import channelArtwork from "@/assets/satellite-world.jpg";
+import { bulkChannels } from "./bulk-channels";
 
 export type ChannelCategory = "إخبارية" | "رياضية" | "إسلامية" | "مسلسلات وأفلام" | "أفلام كاملة" | "أطفال ووثائقي" | "عامة";
 
@@ -1490,6 +1491,7 @@ export const channels: Channel[] = [
   {"id": "w-muslim-network-tv", "name": "Muslim Network", "category": "إسلامية", "streamUrl": "https://afghantv.app/hls2/muslimnetwork/index.m3u8", "description": "قناة عربية — بث مفتوح", "thumbnail": channelArtwork},
   {"id": "w-asil-tv", "name": "أصيل", "category": "عامة", "streamUrl": "https://live.asil.tv/asiltv/index.m3u8", "description": "قناة عربية — بث مفتوح", "thumbnail": "https://i.imgur.com/gROQqFD.png"},
   {"id": "w-takbeer-tv", "name": "تكبير", "category": "إسلامية", "streamUrl": "https://cd198.anystream.uk:9092/iqapp/t5kb86tv/playlist.m3u8", "description": "قناة عربية — بث مفتوح", "thumbnail": "https://i.imgur.com/Cvnps2J.jpg"},
+  ...bulkChannels.filter(channel => channel.description.startsWith("قناة عربية")),
   {"id": "w-cnn", "name": "CNN", "category": "إخبارية", "streamUrl": "https://tvsen6.aynaott.com/cnn/index.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://jiotvimages.cdn.jio.com/dare_images/images/CNN.png"},
   {"id": "w-abc-news-live-1", "name": "ABC News Live 1", "category": "إخبارية", "streamUrl": "https://abcnews-streams.akamaized.net/hls/live/2023560/abcnewshudson1/master.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/ABC_News_Live_logo_2021.svg/960px-ABC_News_Live_logo_2021.svg.png"},
   {"id": "w-cbs-news-new-york", "name": "CBS News New York", "category": "إخبارية", "streamUrl": "https://cbsn-ny.cbsnstream.cbsnews.com/out/v1/ec3897d58a9b45129a77d67aa247d136/master.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://i.imgur.com/bpc4v0u.png"},
@@ -1526,4 +1528,5 @@ export const channels: Channel[] = [
   {"id": "w-tastemade", "name": "Tastemade", "category": "عامة", "streamUrl": "https://rakutenaa-tm-intl-aus-rakuten-eu-n1gtg.amagi.tv/playlist/rakutenAA-tm-intl-aus-rakuten-eu/playlist.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://i.imgur.com/xP7Ehn8.png"},
   {"id": "w-fashiontv-paris-l-original", "name": "FashionTV Paris L'Original", "category": "عامة", "streamUrl": "https://edge-fast3.evrideo.tv/bfdbb576-83f7-11f0-9f89-0200170e3e04_1000028043_HLS/manifest.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://i.imgur.com/GFTAN5Q.png"},
   {"id": "w-outside-tv", "name": "Outside TV", "category": "عامة", "streamUrl": "https://outsidetv-firetv.amagi.tv/playlist.m3u8", "description": "قناة أجنبية — بث مفتوح", "thumbnail": "https://www.cynopsis.com/wp-content/uploads/2018/02/outside-tv.png"},
+  ...bulkChannels.filter(channel => channel.description.startsWith("قناة أجنبية")),
 ];
