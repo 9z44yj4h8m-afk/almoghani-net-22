@@ -10,7 +10,7 @@ import { previewVoice } from "@/lib/voice-preview.functions";
 import { WHATSAPP_URL } from "@/lib/subscription";
 import { defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
 import { canMakeVoiceNote, toOggOpus } from "@/lib/ogg-opus";
-import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, BED_OPTIONS, type EchoMode, type BedMode } from "@/lib/voice-fx";
+import { applyVoiceFx, bytesToBase64, ECHO_OPTIONS, type EchoMode } from "@/lib/voice-fx";
 
 
 import voiceNeonHeader from "@/assets/voice-reference/header.jpg.asset.json";
