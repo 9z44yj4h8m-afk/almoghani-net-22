@@ -1,18 +1,12 @@
-// Browser-only voice effects: studio echo and a soft synthesized oud/piano bed, rendered offline into one WAV.
+// Browser-only voice effect: studio echo rendered offline into one WAV.
 export type EchoMode = "none" | "light" | "grand";
-export type BedMode = "none" | "oud" | "piano" | "calm";
 
 export const ECHO_OPTIONS: { id: EchoMode; label: string }[] = [
   { id: "none", label: "بدون صدى" },
   { id: "light", label: "صدى استوديو خفيف" },
   { id: "grand", label: "صدى فخم" },
 ];
-export const BED_OPTIONS: { id: BedMode; label: string }[] = [
-  { id: "none", label: "بدون لحن" },
-  { id: "oud", label: "عود خليجي هادئ" },
-  { id: "piano", label: "بيانو كلاسيكي" },
-  { id: "calm", label: "نغمة هادئة" },
-];
+
 
 function impulse(ctx: BaseAudioContext, seconds: number, decay: number) {
   const len = Math.floor(ctx.sampleRate * seconds);
