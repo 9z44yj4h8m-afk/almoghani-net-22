@@ -85,6 +85,7 @@ function VoiceStore() {
       : <input maxLength={80} value={cfg[k]} onChange={(e) => setCfg({ ...cfg, [k]: e.target.value })} />}</label>;
 
   return <div className="vs-root" dir="rtl">
+    {admin && <OwnerNav />}
     {admin && <div className="vs-bar">
       <Link to="/" className="vs-btn"><Globe />الموقع</Link>
       {!edit ? <button className="vs-btn" onClick={() => setEdit(true)}><Pencil />تعديل المتجر</button> : <>
