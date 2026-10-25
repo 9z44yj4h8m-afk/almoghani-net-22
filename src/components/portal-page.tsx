@@ -4,7 +4,7 @@ import { IptvWorkspace } from "@/components/iptv-workspace";
 import { UnifiedMemberPlayer } from "@/components/unified-member-player";
 import { useQuery } from "@tanstack/react-query";
 import { getUnifiedLiveCatalog } from "@/lib/iptv/library.functions";
-import { isSmartersChannel, mergeLiveChannels, smartersCategory } from "@/lib/unified-channels";
+import { findHomepageBeinChannel, isSmartersChannel, mergeLiveChannels, smartersCategory } from "@/lib/unified-channels";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
@@ -70,6 +70,7 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
   const catalog = useQuery({ queryKey: ["unified-live-catalog"], queryFn: () => fetchLiveCatalog(), staleTime: 3_000, retry: false });
   const memberChannels: Channel[] = (catalog.data ?? []).map(item => ({ id: item.id, name: item.name, category: smartersCategory(item.group), thumbnail: publicChannels.find(channel => channel.name.toLowerCase() === item.name.toLowerCase())?.thumbnail ?? "", description: item.group }));
   const channels = mergeLiveChannels(publicChannels, memberChannels);
+  const homepageBein = findHomepageBeinChannel(channels);
   useEffect(() => {
     const refresh = () => { void catalog.refetch(); };
     window.addEventListener("smarters-config-saved", refresh);
@@ -283,6 +284,10 @@ export function PortalPage({ section, homepage = false }: { section?: string; ho
       </header>
 
       <main className="pb-6 md:pb-10">
+        {homepage && <div className="mx-3 flex flex-wrap items-center justify-between gap-3 border-b border-border py-3 sm:mx-6" aria-label="برشلونة وريال مدريد">
+          <div><h2 className="text-lg font-bold">برشلونة × ريال مدريد</h2><p className="text-sm text-muted-foreground">مشاهدة بي إن للأعضاء باشتراك صالح</p></div>
+          <Button variant="broadcast" disabled={!homepageBein} onClick={() => { if (homepageBein) playChannel(homepageBein); }}><Play />{homepageBein ? "عرض بي إن سبورت 1" : "بي إن غير متاحة حاليًا"}</Button>
+        </div>}
         <OwnerEditablePage>{(editChannel) => <>
         {fallbackNote && <div role="status" className="mx-auto max-w-7xl px-4 pt-3 text-center text-sm font-bold text-signal">{fallbackNote}</div>}
         <IptvWorkspace channels={channels} sections={configuredSections} selected={selected} active={playerActive} onWatch={() => setPlayerActive(true)} onSelect={playChannel} favorites={favorites} onFavorite={toggleFavorite} initialSection={section} onEditChannel={editChannel} liveTitle={pathname === "/live" ? undefined : <Link to="/live" preload="intent" className="iptv-ref-title"><Play className="iptv-ref-title-icon" />البث المباشر</Link>} player={isSmartersChannel(selected) ? <UnifiedMemberPlayer key={selected.id} channelId={selected.id} /> : undefined} />

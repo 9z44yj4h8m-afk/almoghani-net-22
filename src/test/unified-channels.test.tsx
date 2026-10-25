@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, render, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Channel } from "@/lib/channels";
-import { mergeLiveChannels, smartersCategory, matchesChannelSearch } from "@/lib/unified-channels";
+import { findHomepageBeinChannel, mergeLiveChannels, smartersCategory, matchesChannelSearch } from "@/lib/unified-channels";
 
 const mocks = vi.hoisted(() => ({ user: null as { id: string } | null, access: vi.fn(), resolve: vi.fn(), play: vi.fn() }));
 vi.mock("@/components/member-provider", () => ({ useMember: () => ({ user: mocks.user, ready: true }) }));
@@ -16,6 +16,12 @@ import { UnifiedMemberPlayer } from "@/components/unified-member-player";
 function mount() { return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><UnifiedMemberPlayer channelId="smarters:test" /></QueryClientProvider>); }
 afterEach(() => { cleanup(); vi.clearAllMocks(); mocks.user = null; });
 describe("Unified live channels", () => {
+  it("homepage beIN selects configured member sports 1 without substituting public XTRA or sports 10", () => {
+    const channel = (id: string, name: string): Channel => ({ id, name, category: "رياضية", thumbnail: "", description: "" });
+    const entries = [channel("bein-xtra", "beIN SPORTS XTRA"), channel("public-1", "beIN SPORTS 1"), channel("smarters:10", "beIN SPORTS 10"), channel("smarters:en", "beIN SPORTS 1 ENGLISH"), channel("smarters:ar", "بي إن سبورت ١")];
+    expect(findHomepageBeinChannel(entries)?.id).toBe("smarters:ar");
+    expect(findHomepageBeinChannel(entries.slice(0, 4))).toBeUndefined();
+  });
   it.each(["بي ان", "بي إن", "بين", "beIN", "بي ان سبورت"])("finds beIN with %s", (query) => {
     expect(matchesChannelSearch("BEIN SPORT TOD 1", query)).toBe(true);
     expect(matchesChannelSearch("AL JAZEERA", query)).toBe(false);
