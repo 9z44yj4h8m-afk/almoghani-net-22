@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMember } from "@/components/member-provider";
 import { SayNowForm } from "@/components/admin/voice-chat-manager";
+import { OwnerNav } from "@/components/owner-nav";
 
 export const Route = createFileRoute("/22")({
   ssr: false,
@@ -36,6 +37,7 @@ function AdminVoicesPage() {
   if (!ready) return null;
   const locked = admin !== true;
   return <div dir="rtl" className="voice-studio-page voice-studio-full">
+    <OwnerNav />
     <main className="voice-studio-main">
       <SayNowForm locked={locked} />
     </main>

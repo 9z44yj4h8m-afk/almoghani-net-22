@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { FEMALE_VOICE_CATEGORIES, FEMALE_VOICE_PROFILES, voiceCategory } from "@/lib/voice-config";
 import { FEMALE_PROVIDERS, PANEL_COLOR_FIELDS, PANEL_TEXT_FIELDS, defaultVoicePanel, normalizeVoicePanel, orderVoices, type VoicePanelConfig } from "@/lib/voice-panel";
+import { OwnerNav } from "@/components/owner-nav";
 
 export const Route = createFileRoute("/100")({
   ssr: false,
@@ -64,6 +65,7 @@ function Editor() {
   }
 
   return <main dir="rtl" className="mx-auto max-w-3xl space-y-4 p-4 pb-28">
+    <OwnerNav />
     <header className="flex items-center justify-between gap-2">
       <h1 className="font-display text-2xl font-black text-primary">لوحة خصائص الأصوات</h1>
       <Button asChild variant="outline"><a href="/22">فتح لوحة الأصوات</a></Button>

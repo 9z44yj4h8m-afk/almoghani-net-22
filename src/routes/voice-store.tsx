@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import template from "@/lib/voice-store.html?raw";
 import { LayoutCanvas, type CanvasItem } from "@/components/layout-canvas";
+import { OwnerNav } from "@/components/owner-nav";
 
 const storeCanvas: CanvasItem[] = [
   { id: "vs-banner", type: "banner", x: 2, y: 8, w: 96, h: 80, label: "ALMOGHANI VOICE", sub: "اشتراكات الأصوات — اطلب الآن", color: "#7c1fa8", radius: 18 },
@@ -85,6 +86,7 @@ function VoiceStore() {
       : <input maxLength={80} value={cfg[k]} onChange={(e) => setCfg({ ...cfg, [k]: e.target.value })} />}</label>;
 
   return <div className="vs-root" dir="rtl">
+    {admin && <OwnerNav />}
     {admin && <div className="vs-bar">
       <Link to="/" className="vs-btn"><Globe />الموقع</Link>
       {!edit ? <button className="vs-btn" onClick={() => setEdit(true)}><Pencil />تعديل المتجر</button> : <>
