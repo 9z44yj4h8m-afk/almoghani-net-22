@@ -111,12 +111,9 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
   const [sayBot, setSayBot] = useState("");
   const [sayText, setSayText] = useState("");
   const [sayVoice, setSayVoice] = useState("Leda");
-  const [sing, setSing] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
 
-  const [melody, setMelody] = useState("najdi");
-  const [rhythm, setRhythm] = useState("slow");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
   const previewVoiceFn = useServerFn(previewVoice);
