@@ -1028,7 +1028,6 @@ body { background: var(--surface-deep); }
 .voice-studio-field textarea { min-height: 110px; border-radius: 10px; }
 .voice-studio-select { height: 54px; border-radius: 10px; background: var(--voice-metal); }
 .voice-studio-select select { font-size: 16px; }
-.voice-studio-sing { font-size: 15px; border-radius: 10px; }
 .voice-studio-preview { min-height: 78px; background: var(--voice-metal); border-color: var(--voice-gold-dark); border-radius: 14px; }
 .voice-studio-play { background: var(--voice-gold-fill); color: var(--voice-night); border-color: var(--voice-gold-light); }
 .voice-studio-wave i { background: var(--voice-gold); box-shadow: var(--voice-glow); }
