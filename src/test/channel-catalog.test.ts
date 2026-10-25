@@ -3,6 +3,18 @@ import { describe, expect, it } from "vitest";
 import { channels } from "@/lib/channels";
 
 describe("Public channel catalog", () => {
+  it.each([
+    ["w-ifilm-arabic", "https://live.presstv.co.uk/hls/ifilmar_4_482/index.m3u8", "https://live.presstv.co.uk/hls/ifilmar.m3u8"],
+    ["tg-ps-al-madina", "https://streaming.zaytonatube.com:8081/AlMadinatv/almadina21/tracks-v1a1/mono.ts.m3u8", "https://streaming.zaytonatube.com:8081/AlMadinatv/almadina21/index.m3u8"],
+  ])("keeps the verified playable rendition for %s in every export", (id, url, previousUrl) => {
+    expect(channels.find((channel) => channel.id === id)?.streamUrl).toBe(url);
+    for (const filename of ["public/c.m3u", "public/channels.m3u", "public/channels-iptv.m3u"]) {
+      const lines = readFileSync(filename, "utf8").split(/\r?\n/);
+      expect(lines).toContain(url);
+      expect(lines).not.toContain(previousUrl);
+    }
+  });
+
   it("uses the verified NHK source in the site and both public playlists", () => {
     const url = "https://masterpl.hls.nhkworld.jp/hls/w/live/smarttv.m3u8";
     expect(channels.find((channel) => channel.id === "w-nhk-world-japan-hd")?.streamUrl).toBe(url);
