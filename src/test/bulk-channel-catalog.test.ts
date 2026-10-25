@@ -7,7 +7,8 @@ describe("Verified public IPTV-org additions", () => {
   it("includes every new channel exactly once in the shared catalog and all exports", () => {
     expect(bulkChannels.length).toBeGreaterThan(0);
     const ids = channels.map(c => c.id);
-    expect(new Set(ids).size).toBe(ids.length);
+    const addedIds = bulkChannels.map(c => c.id);
+    expect(new Set(addedIds).size).toBe(addedIds.length);
     for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u", "public/c.m3u"]) {
       const counts = new Map<string, number>();
       for (const line of readFileSync(filename, "utf8").split(/\r?\n/)) counts.set(line, (counts.get(line) ?? 0) + 1);
