@@ -68,7 +68,7 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-style-recorded", female: true, name: "الرسالة المسجلة", label: "صوت مسجّل آلي", providerId: "Kore", delivery: "أداء امرأة بالغة كأنها رسالة مسجلة مسبقا في الهاتف أو المطار، نبرة رسمية مهذبة ثابتة جدا، نطق فصيح واضح ووقفات منتظمة بين الجمل" },
   { id: "female-style-recorded2", female: true, name: "المجيب الآلي", label: "تسجيل خدمة عملاء", providerId: "Erinome", delivery: "أداء امرأة بالغة كمجيب آلي لخدمة العملاء، ترحيب مهذب مبتسم وإيقاع متزن ثابت، نطق واضح كأنه تسجيل مسبق" },
   { id: "female-style-3amiya", female: true, name: "نوير", label: "عامية سعودية يومية", providerId: "Laomedeia", delivery: "أداء امرأة بالغة تسولف بالعامية السعودية اليومية بعفوية تامة، كلمات دارجة وإيقاع طبيعي سريع كأنها تكلم صديقتها، دون فصحى" },
-  { id: "female-style-3amiya2", female: true, name: "هيا", label: "عامية خليجية عفوية", providerId: "Leda", delivery: "أداء امرأة بالغة تتكلم بالعامية الخليجية الدارجة بعفوية وحنان، مثل رسالة صوتية بين صديقات، إيقاع مريح دون فصحى" },
+  { id: "female-style-3amiya2", female: true, name: "ودّة", label: "عامية خليجية عفوية", providerId: "Leda", delivery: "أداء امرأة بالغة تتكلم بالعامية الخليجية الدارجة بعفوية وحنان، مثل رسالة صوتية بين صديقات، إيقاع مريح دون فصحى" },
 ];
 
 // Panel categories: ordered groups shown as card sections in the voice studio.
