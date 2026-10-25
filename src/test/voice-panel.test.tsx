@@ -96,7 +96,7 @@ describe("female voice panel", () => {
     expect(screen.queryByRole("button", { name: "إرسال الصوت" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("صوت هذه الجملة"), { target: { value: "female-hessa" } });
     await makeClip();
-    await waitFor(() => expect(preview).toHaveBeenCalledWith(expect.objectContaining({ data: { text: "هلا يا نورة", voice: "female-hessa", sing: false, melody: "najdi", rhythm: "slow", delivery: undefined }, signal: expect.any(AbortSignal) })));
+    await waitFor(() => expect(preview).toHaveBeenCalledWith(expect.objectContaining({ data: { text: "هلا يا نورة", voice: "female-hessa", delivery: undefined }, signal: expect.any(AbortSignal) })));
 
   });
   it("opens one send menu with the chat apps once a clip exists", async () => {
