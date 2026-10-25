@@ -175,8 +175,9 @@ function ChannelsTab() {
             setMsg("تم تحديث رابط البث ✓");
           };
           const editLogo = async () => {
-            const v = window.prompt("رابط شعار القناة (https)", o?.logo || "")?.trim();
-            if (v === null) return;
+            const raw = window.prompt("رابط شعار القناة (https)", o?.logo || "");
+            if (raw === null) return;
+            const v = raw.trim();
             if (c.custom) { await supabase.from("custom_channels").update({ logo: v.startsWith("https://") ? v : "" }).eq("id", c.id); void refresh(); }
             else void setOverride(c.id, { logo: v.startsWith("https://") ? v : null });
           };
