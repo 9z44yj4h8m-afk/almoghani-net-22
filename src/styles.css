@@ -1115,7 +1115,6 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-studio-select select { height: 100%; font-size: 16px; }
 .voice-studio-sing { min-height: 0; padding: 4px 8px; gap: 6px; margin: 0; border-color: var(--voice-edge); font-size: 13px; background: var(--voice-night); }
 .voice-studio-sing > svg { width: 22px; height: 22px; }
-.voice-studio-sing > button { flex-shrink: 0; }
 .voice-studio-preview { min-height: 0; padding: 6px 8px; gap: 8px; background: var(--voice-neon-fill); border: 2px solid var(--voice-purple); border-radius: 16px; box-shadow: var(--voice-neon-glow); }
 .voice-studio-play { width: 40px; height: 40px; color: var(--voice-cyan); background: var(--voice-night); border: 2px solid var(--voice-cyan); box-shadow: 0 0 12px color-mix(in oklab,var(--voice-cyan) 40%,transparent); }
 .voice-studio-stop { width: 40px; height: 40px; flex-shrink: 0; color: var(--voice-stop); background: var(--voice-night); border: 2px solid var(--voice-stop); border-radius: 50%; box-shadow: 0 0 12px color-mix(in oklab,var(--voice-stop) 45%,transparent); }
@@ -1150,13 +1149,11 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-neon-note { position: fixed; bottom: max(10px,env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(90%,480px); z-index: 60; padding: 10px; border: 1px solid var(--voice-cyan); border-radius: 8px; background: var(--voice-night); color: var(--voice-ink); font-size: 13px; text-align: center; box-shadow: var(--voice-neon-glow); pointer-events: none; }
 .voice-neon-dialog { width: calc(100% - 24px); max-height: 85dvh; overflow-y: auto; border-color: var(--voice-purple); border-radius: 12px; }
 .voice-neon-dialog .voice-studio-select { height: 44px; }
-.voice-neon-melody { position: absolute; inset-inline: 10px; top: 40%; z-index: 5; padding: 8px; border: 1px solid var(--voice-purple); border-radius: 8px; background: var(--voice-night); }
 @media(max-height:700px) {
  .voice-studio-panel { grid-template-rows: minmax(0,31fr) minmax(0,17fr) minmax(0,52fr); gap: 5px; padding-bottom: 6px; }
  .voice-studio-form { gap: 5px; padding: 0; }
  .voice-neon-text > span { font-size: 15px; }
  .voice-studio-form > .voice-studio-actions > button { font-size: 11px; }
- .voice-studio-sing { font-size: 11px; }
  .voice-studio-save { font-size: 17px; }
  .voice-studio-contact { font-size: 17px; }
 }
@@ -1184,7 +1181,6 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-reference-panel .voice-studio-preview { border-color:var(--voice-edge); }
 .voice-reference-panel .voice-studio-wave i { flex:1; width:auto; max-width:5px; }
 .voice-reference-panel .voice-studio-history { max-height:140px; overflow:auto; position:absolute; bottom:100%; inset-inline:0; z-index:10; background:var(--voice-night); }
-.voice-reference-panel .voice-neon-melody { top:0; }
 @media(max-height:700px) {
  .voice-reference-panel { grid-template-rows:minmax(0,23fr) minmax(0,22fr) minmax(0,14fr) minmax(0,41fr); gap:5px; padding-inline:12px; padding-bottom:8px; }
  .voice-reference-panel .voice-neon-hero { margin-inline:-12px; }
