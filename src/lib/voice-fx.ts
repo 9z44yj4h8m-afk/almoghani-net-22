@@ -43,7 +43,7 @@ export async function applyVoiceFx(wav: Uint8Array<ArrayBuffer>, echo: EchoMode)
   const master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination);
   const voice = ctx.createBufferSource(); voice.buffer = src;
   voice.connect(master);
-  if (echo !== "none") {
+  {
     const verb = ctx.createConvolver(); verb.buffer = impulse(ctx, echo === "grand" ? 2.8 : 1.2, echo === "grand" ? 2 : 3.5);
     const wet = ctx.createGain(); wet.gain.value = echo === "grand" ? 0.45 : 0.25;
     voice.connect(verb).connect(wet).connect(master);
