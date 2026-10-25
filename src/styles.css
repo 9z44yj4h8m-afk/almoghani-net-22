@@ -1107,7 +1107,6 @@ body:has(.voice-studio-page) { overflow: hidden; }
 .voice-choice-avatar { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--voice-purple); object-fit: cover; object-position: center; box-shadow: var(--voice-neon-glow); }
 .voice-neon-choice .voice-studio-select { flex-direction: row-reverse; border-color: var(--voice-purple); background: var(--voice-neon-action); }
 .voice-neon-choice .voice-studio-select select { width: 100%; min-width: 0; font-weight: 800; }
-.voice-neon-choice .voice-studio-sing { border: 0; background: transparent; padding: 0; }
 .voice-studio-form > .voice-studio-field { min-height: 0; display: grid; grid-template-rows: 24px minmax(0,1fr); gap: 4px; }
 .voice-studio-form > .voice-studio-field > span { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 17px; font-weight: 900; }
 .voice-studio-field > span > svg { color: var(--voice-purple); width: 22px; height: 22px; }
