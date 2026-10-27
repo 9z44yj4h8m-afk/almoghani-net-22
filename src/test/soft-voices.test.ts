@@ -6,7 +6,8 @@ describe("soft female voice presets", () => {
     const added = FEMALE_VOICE_PROFILES.filter((v) => ["أصوات سعودية", "لهجات عربية"].includes(voiceCategory(v.id)));
     expect(added).toHaveLength(14);
     expect(added.filter((v) => voiceCategory(v.id) === "أصوات سعودية")).toHaveLength(8);
-    expect(FEMALE_VOICE_CATEGORIES[0]).toBe("أصوات سعودية");
+    expect(FEMALE_VOICE_CATEGORIES.slice(0, 2)).toEqual(["أصوات بشرية واقعية", "أصوات سعودية"]);
+    expect(FEMALE_VOICE_PROFILES.filter((v) => voiceCategory(v.id) === "أصوات بشرية واقعية")).toHaveLength(8);
     expect(new Set(added.map((v) => providerVoiceId(v.id))).size).toBe(14);
     for (const v of added) {
       expect(v.delivery).toContain("امرأة بالغة");
