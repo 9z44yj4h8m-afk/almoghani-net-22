@@ -5,13 +5,14 @@ import { channels as baseChannels, type Channel, type ChannelCategory } from "./
 import type { Movie } from "./movies";
 import { defaultSectionContent, type SectionContent } from "./section-content";
 import { defaultChatAppearance, normalizeChatAppearance, type ChatAppearance } from "./chat-appearance";
+import type { SiteLayout } from "./site-layout";
 
 export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel: string; siteName?: string; libraryLink?: string; chatImage?: string };
 /** Only same-site paths are allowed for the library button so the owner setting can never send visitors off-site. */
 export const safeLibraryLink = (v?: string) => (v && /^\/(?!\/)[\w\-/?=&%.]*$/.test(v) ? v : "/vip");
 export const safeHttpsImage = (v?: string) => (v && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : "");
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
-export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number; colors?: Record<string, string>; radius?: number };
+export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number; colors?: Record<string, string>; radius?: number; layout?: SiteLayout };
 export const designColorFields = [
   { key: "background", label: "لون الخلفية", def: "#0b1424", vars: ["--background", "--surface-deep"] },
   { key: "card", label: "لون البطاقات", def: "#111c2e", vars: ["--card", "--surface"] },
