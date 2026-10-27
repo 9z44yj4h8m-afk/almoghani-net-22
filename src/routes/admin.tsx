@@ -395,9 +395,10 @@ function DesignTab() {
   const [future, setFuture] = useState<SiteDesign[]>([]);
   const [previous, setPrevious] = useState<SiteDesign | null>(null);
   const [saving, setSaving] = useState(false);
-  useEffect(() => { if (data) setDesign(data.design); }, [data]);
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => { if (data && !dirty) setDesign(data.design); }, [data, dirty]);
   useEffect(() => { void supabase.from("site_settings").select("value").eq("key", "design-previous").maybeSingle().then(({ data: row }) => { if (row?.value) setPrevious(row.value as SiteDesign); }); }, []);
-  const change = (next: SiteDesign) => { setPast((items) => [...items.slice(-29), design]); setFuture([]); setDesign(next); };
+  const change = (next: SiteDesign) => { setDirty(true); setPast((items) => [...items.slice(-29), design]); setFuture([]); setDesign(next); };
   const undo = () => { const last = past.at(-1); if (!last) return; setFuture((items) => [design, ...items]); setPast((items) => items.slice(0, -1)); setDesign(last); };
   const redo = () => { const next = future[0]; if (!next) return; setPast((items) => [...items, design]); setFuture((items) => items.slice(1)); setDesign(next); };
   const save = async (d: SiteDesign) => {
@@ -409,7 +410,7 @@ function DesignTab() {
         { key: "design", value: JSON.parse(JSON.stringify(d)), updated_at: new Date().toISOString() },
       ]);
       if (error) throw error;
-      setPrevious(before); setPast([]); setFuture([]); await refresh(); setMsg("تم الحفظ ✓");
+      setPrevious(before); setPast([]); setFuture([]); await refresh(); setDirty(false); setMsg("تم الحفظ ✓");
     } catch { setMsg("تعذّر الحفظ؛ بقيت تعديلاتك في المعاينة."); }
     finally { setSaving(false); }
   };
