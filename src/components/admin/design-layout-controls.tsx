@@ -49,7 +49,7 @@ export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, ca
         <Button key={mode.width} type="button" variant={width === mode.width ? "secondary" : "outline"} aria-pressed={width === mode.width} onClick={() => setWidth(mode.width)}><mode.Icon />{mode.label}</Button>)}
     </div>
     <div ref={host} className="design-preview-host" style={{ height: 800 * scale }}>
-      <iframe ref={frame} title="معاينة التصميم" src="/?designPreview=1" onLoad={send}
+      <iframe ref={frame} title="معاينة التصميم" src="/design-preview?designPreview=1" onLoad={send}
         style={{ width, height: 800, transform: `scale(${scale})` }} className="design-preview-frame" />
     </div>
     <div className="flex flex-wrap gap-2">
