@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PortalPage } from "@/components/portal-page";
 import { GoldHome } from "@/components/gold-home";
 
 export const Route = createFileRoute("/")({
