@@ -74,8 +74,8 @@ function MoviesPage() {
     .filter((m) => !q.trim() || m.title.toLowerCase().includes(q.trim().toLowerCase()));
 
   return (
-    <div dir="rtl" className="chrome-page min-h-screen bg-background pb-28 text-foreground">
-      <main className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
+    <div dir="rtl" className="chrome-page media-movies min-h-screen bg-background pb-8 text-foreground">
+      <main className="media-catalog-page">
         {playing && <section id="movie-player" aria-label="شاشة الأفلام" className="mb-6 scroll-mt-24">
           <div className="broadcast-screen design-gleam aspect-video"><iframe key={`${playing.youtubeId}-${muted}`} src={`https://www.youtube.com/embed/${playing.youtubeId}?autoplay=1&mute=${muted ? 1 : 0}&playsinline=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen className="h-full w-full" /></div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><div className="min-w-0"><h2 className="font-bold">{playing.title}</h2><p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock className="h-3.5 w-3.5" />{playing.duration} · {playing.source}</p></div><Button variant="outline" size="sm" onClick={() => { const candidates = all.filter((m) => (!lang || m.lang === lang) && m.id !== playing.id); const next = candidates[Math.floor(Math.random() * candidates.length)]; if (next) { setPlaying(next); setMuted(true); } }}><Shuffle className="h-4 w-4" />فيلم عشوائي</Button></div>
@@ -88,10 +88,10 @@ function MoviesPage() {
           </label>
         </div>
 
-        <div className="mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-sky/40 p-2">
+        <div className="media-filter-rail">
           {(["الكل", "عربي", "عالمي", "المفضلة"] as const).map((f) => (
-            <button key={f} type="button" onClick={() => setFilter(f)}
-              className={`shrink-0 rounded-xl border px-5 py-2 text-sm font-black ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-sky/40 text-foreground"}`}>{f}</button>
+            <Button variant="ghost" key={f} type="button" onClick={() => setFilter(f)}
+              className={`shrink-0 rounded-xl border px-5 py-2 text-sm font-black ${filter === f ? "border-primary bg-primary text-primary-foreground" : "border-sky/40 text-foreground"}`}>{f}</Button>
           ))}
           <Button asChild variant="outline" className="shrink-0"><Link to="/bedouin-drama"><Clapperboard className="h-4 w-4" />المسلسلات</Link></Button>
           <Link to="/vip" search={{ kind: "movie" }} className="flex shrink-0 items-center gap-1.5 rounded-xl border border-sky/40 px-5 py-2 text-sm font-black"><Lock className="h-3.5 w-3.5" /> خاص</Link>
@@ -102,11 +102,11 @@ function MoviesPage() {
           <span className="ms-auto text-xs font-bold text-muted-foreground">{list.length + (filter === "المفضلة" ? 0 : vod.data?.total ?? 0)} فيلم</span>
         </h1>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-3">
+        <div className="media-vod-grid">
           {list.flatMap((m, i) => {
             const privateItem = privateItems[i];
             return [ (
-            <div key={m.id} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-sky/50 bg-surface-deep shadow-lg">
+            <div key={m.id} className="media-film-card relative overflow-hidden rounded-lg border border-border bg-surface-deep">
               <Cover id={m.youtubeId} alt={m.title} eager={i < 4} />
               <span className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--background)_92%,transparent)_0%,color-mix(in_oklab,var(--background)_55%,transparent)_45%,transparent_75%)]" />
               <div className="absolute inset-0 flex flex-col items-start p-3">
@@ -115,9 +115,9 @@ function MoviesPage() {
                     <span className="line-clamp-2 block text-sm font-black leading-tight sm:text-lg">{m.title}</span>
                     <span className="mt-1 block text-[11px] font-bold text-foreground/75 sm:text-sm">{m.lang} · {m.duration}</span>
                   </span>
-                  <button type="button" aria-label="المفضلة" onClick={() => toggleFav(m.id)} className="shrink-0">
+                  <Button variant="ghost" size="icon" type="button" aria-label="المفضلة" onClick={() => toggleFav(m.id)} className="shrink-0">
                     <Heart className={`h-5 w-5 ${favs.includes(m.id) ? "fill-primary text-primary" : "text-foreground"}`} />
-                  </button>
+                  </Button>
                 </div>
                 <Button type="button" onClick={() => watch(m)} className="mt-auto h-auto px-3 py-1.5 text-xs font-black shadow-live sm:px-5 sm:py-2 sm:text-base">شاهد الآن</Button>
               </div>

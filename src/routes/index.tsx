@@ -5,12 +5,12 @@ import { GoldHome } from "@/components/gold-home";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "المغني لايف — بث مباشر" },
+      { title: "ALMOGHANI LIVE — القنوات والأفلام والمسلسلات" },
       {
         name: "description",
         content: "شاهد القنوات المباشرة داخل المغني لايف بواجهة عربية سريعة وواضحة.",
       },
-      { property: "og:title", content: "المغني لايف — بث مباشر" },
+      { property: "og:title", content: "ALMOGHANI LIVE — القنوات والأفلام والمسلسلات" },
       {
         property: "og:description",
         content: "مشاهدة القنوات المباشرة من مشغّل واحد داخل الموقع.",
