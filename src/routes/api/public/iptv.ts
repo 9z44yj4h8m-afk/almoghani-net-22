@@ -1,24 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createHmac, timingSafeEqual } from "crypto";
+import { timingSafeEqual } from "crypto";
+import { signRelay as sign, relayUrl as proxied, fetchableUrl } from "@/lib/iptv/relay-sign.server";
 
 // Relays the private IPTV provider over HTTPS so the in-site player works (provider is HTTP-only).
-// Entry URLs must be on the provider host; nested URLs (after redirects) must carry a server signature,
+// Entry URLs must be on the provider host; other URLs must carry a server signature,
 // so this can never act as an open proxy.
 const PROVIDER_HOST = "ebh48.top";
-const KEY = "almoghani-iptv-relay-313285624258";
 
 const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods": "GET, OPTIONS" };
-
-const sign = (u: string) => createHmac("sha256", KEY).update(u).digest("hex").slice(0, 32);
-const proxied = (u: string) => `/api/public/iptv?u=${encodeURIComponent(u)}&s=${sign(u)}`;
-
-/** Bare IPv4 hosts are rewritten to <ip>.sslip.io (resolves to the same IP) so the edge runtime can fetch them. */
-function fetchableUrl(u: URL): string {
-  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname)) return u.toString();
-  const copy = new URL(u.toString());
-  copy.hostname = `${u.hostname}.sslip.io`;
-  return copy.toString();
-}
 
 function allowed(target: URL, s: string | null) {
   if (target.protocol !== "http:" && target.protocol !== "https:") return false;
