@@ -18,7 +18,7 @@ const shortcuts = [{ href:"/channels/sports", title:"الرياضة", Icon:Troph
 export function GoldHome({ application = false }: { application?: boolean }) {
  const [q,setQ]=useState(""); const [menu,setMenu]=useState(false); const channels=useCatalog(); const {data:config}=useSiteConfig();
  const featured=["mbc-1","sbc-tv","saudi-tv","aljazeera","ar-rotana-cinema","alarabiya"].flatMap(id=>{const c=channels.find(c=>c.id===id);return c?[c]:[];});
- const films=applyMovieConfig(movies,config).slice(0,8);
+ const films=applyMovieConfig(movies,config).filter(m=>movies.slice(0,8).some(original=>original.id===m.id)).slice(0,8);
  return <div className="media-home" dir="rtl">
   <header className="media-topbar">
    <a href="/" className="media-wordmark" aria-label="ALMOGHANI LIVE"><BroadcastWordmark /></a>

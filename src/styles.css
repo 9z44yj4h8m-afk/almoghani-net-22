@@ -1544,3 +1544,5 @@ body { background: var(--background); }
 .media-series-page > #bedouin-player { max-width:860px; margin-inline:auto; }
 .media-series-page .broadcast-screen { border:0; box-shadow:none; }
 @media(max-width:767px) { .iptv-categories { overflow-x:auto; } }
+
+.media-catalog-page > #movie-player { width:100%; max-width:860px; margin-inline:auto; }
