@@ -53,18 +53,18 @@ export function GoldHome() {
           e.preventDefault();
           go(`/live${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
         }}
-        className="flex items-center gap-2 rounded-full border border-primary/50 bg-card/70 px-4 py-3"
+        className="flex items-center gap-2 rounded-full border border-primary/50 bg-card/70 px-4 py-3 lg:px-6 lg:py-4"
       >
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن قناة" className="flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground" />
-        <button type="submit" aria-label="بحث"><Search className="h-5 w-5 text-foreground" /></button>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن قناة" className="flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground lg:text-xl" />
+        <button type="submit" aria-label="بحث"><Search className="h-5 w-5 text-foreground lg:h-6 lg:w-6" /></button>
       </form>
 
       <a href="/live" className={frame} aria-label="البث المباشر — شاهد الآن">
         <img src={hero.url} alt="البث المباشر" className="w-full" />
       </a>
 
-      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground">اكتشف الأقسام</h2>
-      <div className="grid grid-cols-2 gap-3">
+      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground lg:text-2xl">اكتشف الأقسام</h2>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-5">
         {sections.map((s) => (
           <a key={s.label} href={s.href} className={frame} aria-label={s.label}>
             <img src={s.img} alt={s.label} className="w-full" />
@@ -72,8 +72,8 @@ export function GoldHome() {
         ))}
       </div>
 
-      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground">قنواتك المفضلة</h2>
-      <div className="grid grid-cols-3 gap-2">
+      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground lg:text-2xl">قنواتك المفضلة</h2>
+      <div className="grid grid-cols-3 gap-2 lg:gap-5">
         {favs.map((f) => (
           <a key={f.label} href={f.href} className={frame} aria-label={f.label}>
             <img src={f.img} alt={f.label} className="w-full" />
