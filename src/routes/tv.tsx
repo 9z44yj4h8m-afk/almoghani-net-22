@@ -1,8 +1,6 @@
 import { GoldHome } from "@/components/gold-home";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { LayoutCanvas, type CanvasItem } from "@/components/layout-canvas";
-import { useEffect, useState } from "react";
-import { Settings, Tv, Film, Clapperboard, ChevronRight, RefreshCw, User, LogOut, CalendarDays, MonitorPlay, Globe } from "lucide-react";
 
 export const Route = createFileRoute("/tv")({
   head: () => ({
