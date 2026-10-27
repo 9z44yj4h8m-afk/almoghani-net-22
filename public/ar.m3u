@@ -1,538 +1,538 @@
 #EXTM3U
-#EXTINF:-1 tvg-chno="1" tvg-name="الأردن دراما — التلفزيون الأردني" tvg-logo="https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj" group-title="الأولى",1. الأردن دراما — التلفزيون الأردني
+#EXTINF:-1 tvg-chno="1" tvg-name="الأردن دراما — التلفزيون الأردني" tvg-logo="https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj" group-title="القنوات",1. الأردن دراما — التلفزيون الأردني
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8
-#EXTINF:-1 tvg-chno="2" tvg-name="الوسام الفضائية — نبض الجنوب" tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="السعودية",2. الوسام الفضائية — نبض الجنوب
+#EXTINF:-1 tvg-chno="2" tvg-name="الوسام الفضائية — نبض الجنوب" tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="القنوات",2. الوسام الفضائية — نبض الجنوب
 https://stream.addresses-sat.com/Alwesam/index.m3u8
-#EXTINF:-1 tvg-chno="3" tvg-name="الإخبارية السعودية" tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="السعودية",3. الإخبارية السعودية
+#EXTINF:-1 tvg-chno="3" tvg-name="الإخبارية السعودية" tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="القنوات",3. الإخبارية السعودية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-ekhbaria/297b3ef1cd0633ad9cfba7473a686a06/index.m3u8
-#EXTINF:-1 tvg-chno="4" tvg-name="قناة القرآن الكريم" tvg-logo="https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg" group-title="السعودية",4. قناة القرآن الكريم
+#EXTINF:-1 tvg-chno="4" tvg-name="قناة القرآن الكريم" tvg-logo="https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg" group-title="القنوات",4. قناة القرآن الكريم
 https://www.youtube.com/watch?v=eC4LfEVxvKg
-#EXTINF:-1 tvg-chno="5" tvg-name="قناة الإخبارية" tvg-logo="https://i.ytimg.com/vi/iw0YDBYgaUU/hqdefault.jpg" group-title="السعودية",5. قناة الإخبارية
+#EXTINF:-1 tvg-chno="5" tvg-name="قناة الإخبارية" tvg-logo="https://i.ytimg.com/vi/iw0YDBYgaUU/hqdefault.jpg" group-title="القنوات",5. قناة الإخبارية
 https://www.youtube.com/watch?v=iw0YDBYgaUU
-#EXTINF:-1 tvg-chno="6" tvg-name="القناة الرياضية السعودية" tvg-logo="https://i.ytimg.com/vi/lxpmm36-1Ww/hqdefault.jpg" group-title="السعودية",6. القناة الرياضية السعودية
+#EXTINF:-1 tvg-chno="6" tvg-name="القناة الرياضية السعودية" tvg-logo="https://i.ytimg.com/vi/lxpmm36-1Ww/hqdefault.jpg" group-title="القنوات",6. القناة الرياضية السعودية
 https://www.youtube.com/watch?v=lxpmm36-1Ww
-#EXTINF:-1 tvg-chno="7" tvg-name="قناة السنة النبوية" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_mQEOSPf6okcuPezKOKSfhc6kKQxF1q57i2SsTOazhCg2s=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",7. قناة السنة النبوية
+#EXTINF:-1 tvg-chno="7" tvg-name="قناة السنة النبوية" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_mQEOSPf6okcuPezKOKSfhc6kKQxF1q57i2SsTOazhCg2s=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",7. قناة السنة النبوية
 https://www.youtube.com/watch?v=Rs7St51oDDc
-#EXTINF:-1 tvg-chno="8" tvg-name="السعودية" tvg-logo="https://i.imgur.com/GRQTndk.png" group-title="السعودية",8. السعودية
+#EXTINF:-1 tvg-chno="8" tvg-name="السعودية" tvg-logo="https://i.imgur.com/GRQTndk.png" group-title="القنوات",8. السعودية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8
-#EXTINF:-1 tvg-chno="9" tvg-name="السعودية الآن" tvg-logo="https://i.imgur.com/sEOjApe.png" group-title="السعودية",9. السعودية الآن
+#EXTINF:-1 tvg-chno="9" tvg-name="السعودية الآن" tvg-logo="https://i.imgur.com/sEOjApe.png" group-title="القنوات",9. السعودية الآن
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-ksa-now/71ed3aa814c643306c0a8bc4fcc7d17f/index.m3u8
-#EXTINF:-1 tvg-chno="10" tvg-name="إس بي سي" tvg-logo="https://i.imgur.com/9JSQglj.png" group-title="السعودية",10. إس بي سي
+#EXTINF:-1 tvg-chno="10" tvg-name="إس بي سي" tvg-logo="https://i.imgur.com/9JSQglj.png" group-title="القنوات",10. إس بي سي
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-sbc/90e09c0c28db26435799b4a14892a167/index.m3u8
-#EXTINF:-1 tvg-chno="11" tvg-name="الثقافية" tvg-logo="https://shahid.mbc.net/mediaObject/55f69983-5b4b-47c7-9c25-06ed5ad860a4?height=auto&width=512&croppingPoint=&version=1&type=jpeg" group-title="السعودية",11. الثقافية
+#EXTINF:-1 tvg-chno="11" tvg-name="الثقافية" tvg-logo="https://shahid.mbc.net/mediaObject/55f69983-5b4b-47c7-9c25-06ed5ad860a4?height=auto&width=512&croppingPoint=&version=1&type=jpeg" group-title="القنوات",11. الثقافية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thaqafeyyah/28c0d2a20dbf1dc049ce15d3973f494b/index.m3u8
-#EXTINF:-1 tvg-chno="12" tvg-name="القنوات الرياضية السعودية" tvg-logo="https://i.ytimg.com/vi/V45NoYljnZQ/hqdefault.jpg" group-title="السعودية",12. القنوات الرياضية السعودية
+#EXTINF:-1 tvg-chno="12" tvg-name="القنوات الرياضية السعودية" tvg-logo="https://i.ytimg.com/vi/V45NoYljnZQ/hqdefault.jpg" group-title="القنوات",12. القنوات الرياضية السعودية
 https://www.youtube.com/watch?v=V45NoYljnZQ
-#EXTINF:-1 tvg-chno="13" tvg-name="إذاعة السعودية" tvg-logo="" group-title="السعودية",13. إذاعة السعودية
+#EXTINF:-1 tvg-chno="13" tvg-name="إذاعة السعودية" tvg-logo="" group-title="القنوات",13. إذاعة السعودية
 https://live.kwikmotion.com/sbrksasaudiaradiolive/srpksasaudiaradio/playlist.m3u8
-#EXTINF:-1 tvg-chno="14" tvg-name="ثمانية" tvg-logo="https://yt3.googleusercontent.com/Of52TD4mOCdcLf35VgQr9XuzyyZh9Oc5XE1R2o_rgNYsIpO94AcvZvCOumUSEps3oDK9Iumqeg=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",14. ثمانية
+#EXTINF:-1 tvg-chno="14" tvg-name="ثمانية" tvg-logo="https://yt3.googleusercontent.com/Of52TD4mOCdcLf35VgQr9XuzyyZh9Oc5XE1R2o_rgNYsIpO94AcvZvCOumUSEps3oDK9Iumqeg=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",14. ثمانية
 https://www.youtube.com/watch?v=OAAEbezyJnU
-#EXTINF:-1 tvg-chno="15" tvg-name="إذاعة ثمانية" tvg-logo="https://yt3.googleusercontent.com/_9wWam_L4MvicW3_o9kWduw12oHMzWiAUYiDmBYiwD1YXXytnNXaQ33IRPZk6GT_Cofw2SlWMA=s240-c-k-c0x00ffffff-no-rj" group-title="السعودية",15. إذاعة ثمانية
+#EXTINF:-1 tvg-chno="15" tvg-name="إذاعة ثمانية" tvg-logo="https://yt3.googleusercontent.com/_9wWam_L4MvicW3_o9kWduw12oHMzWiAUYiDmBYiwD1YXXytnNXaQ33IRPZk6GT_Cofw2SlWMA=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",15. إذاعة ثمانية
 https://www.youtube.com/watch?v=wPivX6XRlrc
-#EXTINF:-1 tvg-chno="16" tvg-name="الرياض راديو" tvg-logo="https://aloula.faulio.com/storage/mediagallery/37/1a/fullhd_399eddcc4305f34f41c7fab24c3518fab5d55d97.png" group-title="السعودية",16. الرياض راديو
+#EXTINF:-1 tvg-chno="16" tvg-name="الرياض راديو" tvg-logo="https://aloula.faulio.com/storage/mediagallery/37/1a/fullhd_399eddcc4305f34f41c7fab24c3518fab5d55d97.png" group-title="القنوات",16. الرياض راديو
 https://live.kwikmotion.com/sbrksariyadhradiolive/srpksariyadhradio/playlist.m3u8
-#EXTINF:-1 tvg-chno="17" tvg-name="الخزامى راديو" tvg-logo="https://shahid.mbc.net/mediaObject/61010cbc-91c5-4ce1-94a4-ed40adadb97b" group-title="السعودية",17. الخزامى راديو
+#EXTINF:-1 tvg-chno="17" tvg-name="الخزامى راديو" tvg-logo="https://shahid.mbc.net/mediaObject/61010cbc-91c5-4ce1-94a4-ed40adadb97b" group-title="القنوات",17. الخزامى راديو
 https://live.kwikmotion.com/sbrksakhuzamaradiolive/srpkhuzama/playlist.m3u8
-#EXTINF:-1 tvg-chno="18" tvg-name="مكة" tvg-logo="https://i.ibb.co/r2k71w5N/download.png" group-title="السعودية",18. مكة
+#EXTINF:-1 tvg-chno="18" tvg-name="مكة" tvg-logo="https://i.ibb.co/r2k71w5N/download.png" group-title="القنوات",18. مكة
 https://media2.streambrothers.com:1936/8122/8122/playlist.m3u8
-#EXTINF:-1 tvg-chno="19" tvg-name="إم بي سي لاود" tvg-logo="https://i.imgur.com/mptwwLs.png" group-title="MBC",19. إم بي سي لاود
+#EXTINF:-1 tvg-chno="19" tvg-name="العربية إنجليزي" tvg-logo="https://shahid.mbc.net/mediaObject/7cfc0baf-1201-477f-b722-d3099fafe17f?height=230&width=512&croppingPoint=&version=1&type=png" group-title="القنوات",19. العربية إنجليزي
+https://live.alarabiya.net/alarabiapublish/english/playlist_dvr.m3u8
+#EXTINF:-1 tvg-chno="20" tvg-name="العربية Business" tvg-logo="https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg" group-title="القنوات",20. العربية Business
+https://www.youtube.com/watch?v=27TJ45U-HJ8
+#EXTINF:-1 tvg-chno="21" tvg-name="العربية برامج" tvg-logo="https://i.imgur.com/Hoc3cfO.png" group-title="القنوات",21. العربية برامج
+https://live.alarabiya.net/alarabiapublish/aaprograms.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="22" tvg-name="العربية" tvg-logo="" group-title="القنوات",22. العربية
+https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="23" tvg-name="تلفزيون سوريا" tvg-logo="https://i.imgur.com/FjuVuXF.jpeg" group-title="القنوات",23. تلفزيون سوريا
+https://live.kwikmotion.com/syriatvlive/syriatv.smil/playlist_dvr.m3u8
+#EXTINF:-1 tvg-chno="24" tvg-name="ميدي 1 عربية" tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="القنوات",24. ميدي 1 عربية
+https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
+#EXTINF:-1 tvg-chno="25" tvg-name="آي 24 نيوز عربي" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/LOGO_i24NEWS.png/960px-LOGO_i24NEWS.png" group-title="القنوات",25. آي 24 نيوز عربي
+https://i24newsarabic-cdn.encoders.immergo.tv/master.m3u8
+#EXTINF:-1 tvg-chno="26" tvg-name="اليوم" tvg-logo="https://i.imgur.com/rBixF3P.png" group-title="القنوات",26. اليوم
+https://hlspackager.akamaized.net/live/DB/ALYAUM_TV/HLS/ALYAUM_TV.m3u8
+#EXTINF:-1 tvg-chno="27" tvg-name="صوت لبنان" tvg-logo="https://i.imgur.com/f8WcqRY.png" group-title="القنوات",27. صوت لبنان
+https://svs.itworkscdn.net/vdltvlive/vdltv.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="28" tvg-name="القاهرة الإخبارية" tvg-logo="https://yt3.googleusercontent.com/CyQT_pmSYzQKc5lfmmgmFgFDwpyPqPPT2pcuNAHTE1QY2jtPras9qsCC9Faa-ArQc3q1YEnCNw=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",28. القاهرة الإخبارية
+https://www.youtube.com/watch?v=zZ-EysS8Eq8
+#EXTINF:-1 tvg-chno="29" tvg-name="رؤيا الإخبارية" tvg-logo="https://yt3.googleusercontent.com/TPhHZ1aLMeUZCX7HNxjo3VwCQZcw14b4V-z5cS215HCsJdd_T3uUOeq7bJO8BSU778-5d_bFHw=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",29. رؤيا الإخبارية
+https://www.youtube.com/watch?v=A1cZxijueg4
+#EXTINF:-1 tvg-chno="30" tvg-name="قناة العربية" tvg-logo="https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg" group-title="القنوات",30. قناة العربية
+https://www.youtube.com/watch?v=n7eQejkXbnM
+#EXTINF:-1 tvg-chno="31" tvg-name="CGTN العربية" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_llZ-RZnLdQ8Ye7uHcb9T3w-fEGThSSv1ABt10FihmtQtk=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",31. CGTN العربية
+https://www.youtube.com/watch?v=O0ZppASlI6o
+#EXTINF:-1 tvg-chno="32" tvg-name="CNBC العربية" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/CNBC_Arabia_2025.svg/960px-CNBC_Arabia_2025.svg.png" group-title="القنوات",32. CNBC العربية
+https://cnbc-live.akamaized.net/cnbc/master.m3u8
+#EXTINF:-1 tvg-chno="33" tvg-name="قناة العربي أخبار" tvg-logo="https://yt3.googleusercontent.com/dz6b5iIsG9pzbuvlAfytZ4DNJFkPV7_7RjDfKKRG-kloyFsreQjtNMF8e3vDJxFZToB38--_BA=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",33. قناة العربي أخبار
+https://www.youtube.com/watch?v=U_JpgQHmJTY
+#EXTINF:-1 tvg-chno="34" tvg-name="العربي أخبار" tvg-logo="https://i.ytimg.com/vi/e2RgSa1Wt5o/hqdefault.jpg" group-title="القنوات",34. العربي أخبار
+https://www.youtube.com/watch?v=e2RgSa1Wt5o
+#EXTINF:-1 tvg-chno="35" tvg-name="الشرقية نيوز" tvg-logo="https://i.ytimg.com/vi/CkL42Ykl1F4/hqdefault.jpg" group-title="القنوات",35. الشرقية نيوز
+https://www.youtube.com/watch?v=CkL42Ykl1F4
+#EXTINF:-1 tvg-chno="36" tvg-name="الشرقية من كلا" tvg-logo="https://i.imgur.com/m4qheI4.png" group-title="القنوات",36. الشرقية من كلا
+https://svs.itworkscdn.net/kablatvlive/kabtv1.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="37" tvg-name="العربي 2" tvg-logo="https://i.imgur.com/Gp5mNea.png" group-title="القنوات",37. العربي 2
+https://live.kwikmotion.com/alaraby2live/alaraby2.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="38" tvg-name="ميدي 1 المغرب العربي" tvg-logo="https://i.imgur.com/F5OFQsp.jpeg" group-title="القنوات",38. ميدي 1 المغرب العربي
+https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8
+#EXTINF:-1 tvg-chno="39" tvg-name="الشرقية" tvg-logo="" group-title="القنوات",39. الشرقية
+https://indexforce.com/tvhighres/mystream/playlist.m3u8
+#EXTINF:-1 tvg-chno="40" tvg-name="الغد" tvg-logo="https://i.imgur.com/ga6NXb9.png" group-title="القنوات",40. الغد
+https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8
+#EXTINF:-1 tvg-chno="41" tvg-name="فرانس 24 عربي" tvg-logo="https://i.ytimg.com/vi/93g513Uth98/hqdefault.jpg" group-title="القنوات",41. فرانس 24 عربي
+https://www.youtube.com/watch?v=93g513Uth98
+#EXTINF:-1 tvg-chno="42" tvg-name="تلفزيون الشرق بلومبرغ" tvg-logo="https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg" group-title="القنوات",42. تلفزيون الشرق بلومبرغ
+https://www.youtube.com/watch?v=f6VpkfV7m4Y
+#EXTINF:-1 tvg-chno="43" tvg-name="سكاي نيوز عربية" tvg-logo="https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg" group-title="القنوات",43. سكاي نيوز عربية
+https://www.youtube.com/watch?v=ppgTP8xQQsM
+#EXTINF:-1 tvg-chno="44" tvg-name="TRT عربي" tvg-logo="https://yt3.googleusercontent.com/gYgMDstQrKquZlKMpynGak3fik58-0UdhvIFvRNk8Z1KAGDzn6Kuz8uULtWRwVM3bJcqBuWfxQ=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",44. TRT عربي
+https://www.youtube.com/watch?v=sat-YpJQ-fg
+#EXTINF:-1 tvg-chno="45" tvg-name="DW عربية" tvg-logo="https://yt3.googleusercontent.com/1diREnd5d5mj0zM8AmZYfuccwIppbzSBz0ERjzRl9kydXSPKREif3GyigSpYq2P_d8GH0RMKj5I=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",45. DW عربية
+https://www.youtube.com/watch?v=AGkp2AL8e7o
+#EXTINF:-1 tvg-chno="46" tvg-name="قناة الغد" tvg-logo="https://yt3.googleusercontent.com/APZoy6Df0krnDFUirRPohH62PwNOs8xU_hjlDHdYZvsYQqdpWZc9857mjUYkClHFH2MWXWwv=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",46. قناة الغد
+https://www.youtube.com/watch?v=mo_6IkfLstk
+#EXTINF:-1 tvg-chno="47" tvg-name="سكاي نيوز عربية" tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",47. سكاي نيوز عربية
+https://www.youtube.com/watch?v=xDWQ3LkccY8
+#EXTINF:-1 tvg-chno="48" tvg-name="الشرق ديسكفري" tvg-logo="https://i.imgur.com/Czxi7yk.png" group-title="القنوات",48. الشرق ديسكفري
+https://svs.itworkscdn.net/asharqdiscoverylive/asharqd.smil/playlist_dvr.m3u8
+#EXTINF:-1 tvg-chno="49" tvg-name="الشرق الوثائقية" tvg-logo="https://i.imgur.com/v6VsFEt.png" group-title="القنوات",49. الشرق الوثائقية
+https://svs.itworkscdn.net/asharqdocumentarylive/asharqdocumentary.smil/playlist_dvr.m3u8
+#EXTINF:-1 tvg-chno="50" tvg-name="CNBC عربية" tvg-logo="https://i.ytimg.com/vi/OLbqCS3OrPM/hqdefault.jpg" group-title="القنوات",50. CNBC عربية
+https://www.youtube.com/watch?v=OLbqCS3OrPM
+#EXTINF:-1 tvg-chno="51" tvg-name="قناة الغد" tvg-logo="https://i.ytimg.com/vi/y_28ovYA8aY/hqdefault.jpg" group-title="القنوات",51. قناة الغد
+https://www.youtube.com/watch?v=y_28ovYA8aY
+#EXTINF:-1 tvg-chno="52" tvg-name="الشرق ديسكفري مباشر" tvg-logo="https://i.ytimg.com/vi/FlzMedKfQOs/hqdefault.jpg" group-title="القنوات",52. الشرق ديسكفري مباشر
+https://www.youtube.com/watch?v=FlzMedKfQOs
+#EXTINF:-1 tvg-chno="53" tvg-name="الشرق للأخبار" tvg-logo="https://i.imgur.com/bqRC3sl.png" group-title="القنوات",53. الشرق للأخبار
+https://live-news.asharq.com/asharq.m3u8
+#EXTINF:-1 tvg-chno="54" tvg-name="آر تي عربي" tvg-logo="" group-title="القنوات",54. آر تي عربي
+https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
+#EXTINF:-1 tvg-chno="55" tvg-name="الشرقية نيوز" tvg-logo="https://i.ytimg.com/vi/CkL42Ykl1F4/hqdefault.jpg" group-title="القنوات",55. الشرقية نيوز
+https://indexforce.com/newshighres/mystream/playlist.m3u8
+#EXTINF:-1 tvg-chno="56" tvg-name="قناة العربي" tvg-logo="" group-title="القنوات",56. قناة العربي
+https://live.kwikmotion.com/alaraby1live/alaraby_abr/playlist.m3u8
+#EXTINF:-1 tvg-chno="57" tvg-name="AL24 نيوز" tvg-logo="" group-title="القنوات",57. AL24 نيوز
+https://cdn.live.easybroadcast.io/abr_corp/66_al24_u4yga6h/corp/66_al24_u4yga6h_240p/chunks.m3u8
+#EXTINF:-1 tvg-chno="58" tvg-name="العراقية نيوز" tvg-logo="" group-title="القنوات",58. العراقية نيوز
+https://imn-live.esite-lab.com/hls/iraqia-news.m3u8
+#EXTINF:-1 tvg-chno="59" tvg-name="المهرية" tvg-logo="" group-title="القنوات",59. المهرية
+https://starmenajo.com/hls/almahriah/index.m3u8
+#EXTINF:-1 tvg-chno="60" tvg-name="سكاي نيوز عربية — عمودي" tvg-logo="https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg" group-title="القنوات",60. سكاي نيوز عربية — عمودي
+https://live-stream.skynewsarabia.com/c-vertical-channel/vertical-stream/index.m3u8
+#EXTINF:-1 tvg-chno="61" tvg-name="مكان 33" tvg-logo="" group-title="القنوات",61. مكان 33
+https://kancdn.medonecdn.net/livehls/oil/kancdn-live/live/makan/live.livx/playlist.m3u8
+#EXTINF:-1 tvg-chno="62" tvg-name="مكملين" tvg-logo="" group-title="القنوات",62. مكملين
+https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8
+#EXTINF:-1 tvg-chno="63" tvg-name="دجلة" tvg-logo="" group-title="القنوات",63. دجلة
+https://ghaasiflu.online/Dijlah/index.m3u8
+#EXTINF:-1 tvg-chno="64" tvg-name="دي دبليو عربية" tvg-logo="" group-title="القنوات",64. دي دبليو عربية
+https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/master.m3u8
+#EXTINF:-1 tvg-chno="65" tvg-name="فلسطين اليوم" tvg-logo="" group-title="القنوات",65. فلسطين اليوم
+https://live.paltodaytv.com/paltv/live/playlist.m3u8
+#EXTINF:-1 tvg-chno="66" tvg-name="تي آر تي عربي" tvg-logo="" group-title="القنوات",66. تي آر تي عربي
+https://tv-trtarabi.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-chno="67" tvg-name="قناة الجزيرة" tvg-logo="https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg" group-title="القنوات",67. قناة الجزيرة
+https://live-hls-web-aja.getaj.net/AJA/index.m3u8
+#EXTINF:-1 tvg-chno="68" tvg-name="قناة الجزيرة مباشر" tvg-logo="https://yt3.googleusercontent.com/h0_bBdVgCAXIPJFnQ4hZtE87cDY_qO7rkDAue8qXdmOFxZ5NaO3AFD1uCUcst-EsBcGJ8zl8EQ=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",68. قناة الجزيرة مباشر
+https://www.youtube.com/watch?v=NNnZLWHRmd4
+#EXTINF:-1 tvg-chno="69" tvg-name="الجزيرة 2" tvg-logo="https://i.ytimg.com/vi/N8xxOD0nT1Y/hqdefault.jpg" group-title="القنوات",69. الجزيرة 2
+https://www.youtube.com/watch?v=N8xxOD0nT1Y
+#EXTINF:-1 tvg-chno="70" tvg-name="الجزيرة مباشر 24" tvg-logo="https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg" group-title="القنوات",70. الجزيرة مباشر 24
+https://www.youtube.com/watch?v=8D5QY5gw_Xk
+#EXTINF:-1 tvg-chno="71" tvg-name="الجزيرة مباشر 2" tvg-logo="https://i.imgur.com/nJmi6G6.png" group-title="القنوات",71. الجزيرة مباشر 2
+https://live-hls-apps-ajm2-fa.getaj.net/AJM2/index.m3u8
+#EXTINF:-1 tvg-chno="72" tvg-name="الجزيرة" tvg-logo="" group-title="القنوات",72. الجزيرة
+https://live-hls-apps-aja-fa.getaj.net/AJA/01.m3u8
+#EXTINF:-1 tvg-chno="73" tvg-name="الجزيرة مباشر" tvg-logo="" group-title="القنوات",73. الجزيرة مباشر
+https://live-hls-apps-ajm-fa.getaj.net/AJM/index.m3u8
+#EXTINF:-1 tvg-chno="74" tvg-name="الجزيرة مباشر 24" tvg-logo="https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg" group-title="القنوات",74. الجزيرة مباشر 24
+https://live-hls-apps-ajm24-fa.getaj.net/AJM24/index.m3u8
+#EXTINF:-1 tvg-chno="75" tvg-name="الحدث" tvg-logo="https://i.imgur.com/De4SEWE.png" group-title="القنوات",75. الحدث
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-hadath/2ff87ec4c2f3ede35295a20637d9f8fd/index.m3u8
+#EXTINF:-1 tvg-chno="76" tvg-name="قناة الحدث" tvg-logo="https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg" group-title="القنوات",76. قناة الحدث
+https://www.youtube.com/watch?v=au8t81S0tag
+#EXTINF:-1 tvg-chno="77" tvg-name="إم بي سي لاود" tvg-logo="https://i.imgur.com/mptwwLs.png" group-title="القنوات",77. إم بي سي لاود
 https://radio-loud-fm.mbc.net/radio-loud-fm_1.m3u8
-#EXTINF:-1 tvg-chno="20" tvg-name="MBC بوليوود" tvg-logo="https://i.imgur.com/TTAGFHG.png" group-title="MBC",20. MBC بوليوود
+#EXTINF:-1 tvg-chno="78" tvg-name="MBC بوليوود" tvg-logo="https://i.imgur.com/TTAGFHG.png" group-title="القنوات",78. MBC بوليوود
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-bollywood/546eb40d7dcf9a209255dd2496903764/index.m3u8
-#EXTINF:-1 tvg-chno="21" tvg-name="إم بي سي 1" tvg-logo="https://i.imgur.com/CiA3plN.png" group-title="MBC",21. إم بي سي 1
+#EXTINF:-1 tvg-chno="79" tvg-name="إم بي سي 1" tvg-logo="https://i.imgur.com/CiA3plN.png" group-title="القنوات",79. إم بي سي 1
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1/15cf99af5de54063fdabfefe66adc075/index.m3u8
-#EXTINF:-1 tvg-chno="22" tvg-name="إم بي سي 4" tvg-logo="https://i.imgur.com/BcXASJp.png" group-title="MBC",22. إم بي سي 4
+#EXTINF:-1 tvg-chno="80" tvg-name="إم بي سي 4" tvg-logo="https://i.imgur.com/BcXASJp.png" group-title="القنوات",80. إم بي سي 4
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-4/24f134f1cd63db9346439e96b86ca6ed/index.m3u8
-#EXTINF:-1 tvg-chno="23" tvg-name="إم بي سي 5" tvg-logo="https://i.imgur.com/fRWaDyF.png" group-title="MBC",23. إم بي سي 5
+#EXTINF:-1 tvg-chno="81" tvg-name="إم بي سي 5" tvg-logo="https://i.imgur.com/fRWaDyF.png" group-title="القنوات",81. إم بي سي 5
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-5/ee6b000cee0629411b666ab26cb13e9b/index.m3u8
-#EXTINF:-1 tvg-chno="24" tvg-name="إم بي سي دراما" tvg-logo="https://i.imgur.com/g5PWnqp.png" group-title="MBC",24. إم بي سي دراما
+#EXTINF:-1 tvg-chno="82" tvg-name="إم بي سي دراما" tvg-logo="https://i.imgur.com/g5PWnqp.png" group-title="القنوات",82. إم بي سي دراما
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-drama/2c28a458e2f3253e678b07ac7d13fe71/index.m3u8
-#EXTINF:-1 tvg-chno="25" tvg-name="إم بي سي بلس دراما" tvg-logo="https://i.imgur.com/lxWdjXG.png" group-title="MBC",25. إم بي سي بلس دراما
+#EXTINF:-1 tvg-chno="83" tvg-name="إم بي سي بلس دراما" tvg-logo="https://i.imgur.com/lxWdjXG.png" group-title="القنوات",83. إم بي سي بلس دراما
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-plus-drama/e37251ec2aac8f6c98f75cd0fa37cd28/index.m3u8
-#EXTINF:-1 tvg-chno="26" tvg-name="MBC مصر دراما" tvg-logo="https://media0070.elcinema.com/tvguide/1399_1.png" group-title="MBC",26. MBC مصر دراما
+#EXTINF:-1 tvg-chno="84" tvg-name="MBC مصر دراما" tvg-logo="https://media0070.elcinema.com/tvguide/1399_1.png" group-title="القنوات",84. MBC مصر دراما
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-drama/567b703c19ede6598222de81b0e4508b/index.m3u8
-#EXTINF:-1 tvg-chno="27" tvg-name="إم بي سي مود" tvg-logo="https://shahid.mbc.net/mediaObject/c2b6a882-458b-446e-b0fe-f97f7992149a?height=auto&width=144&croppingPoint=&version=1&type=png" group-title="MBC",27. إم بي سي مود
+#EXTINF:-1 tvg-chno="85" tvg-name="إم بي سي مود" tvg-logo="https://shahid.mbc.net/mediaObject/c2b6a882-458b-446e-b0fe-f97f7992149a?height=auto&width=144&croppingPoint=&version=1&type=png" group-title="القنوات",85. إم بي سي مود
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-mood/78367bf48ccdba501d0d014a10c21031/index.m3u8
-#EXTINF:-1 tvg-chno="28" tvg-name="MBC مصر" tvg-logo="https://i.imgur.com/o2elx0u.png" group-title="MBC",28. MBC مصر
+#EXTINF:-1 tvg-chno="86" tvg-name="MBC مصر" tvg-logo="https://i.imgur.com/o2elx0u.png" group-title="القنوات",86. MBC مصر
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr/956eac069c78a35d47245db6cdbb1575/index.m3u8
-#EXTINF:-1 tvg-chno="29" tvg-name="MBC مصر 2" tvg-logo="https://i.imgur.com/KHo7Gtn.png" group-title="MBC",29. MBC مصر 2
+#EXTINF:-1 tvg-chno="87" tvg-name="MBC مصر 2" tvg-logo="https://i.imgur.com/KHo7Gtn.png" group-title="القنوات",87. MBC مصر 2
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-2/754931856515075b0aabf0e583495c68/index.m3u8
-#EXTINF:-1 tvg-chno="30" tvg-name="MBC العراق" tvg-logo="https://i.imgur.com/D0LxiPE.png" group-title="MBC",30. MBC العراق
+#EXTINF:-1 tvg-chno="88" tvg-name="MBC العراق" tvg-logo="https://i.imgur.com/D0LxiPE.png" group-title="القنوات",88. MBC العراق
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-iraq/e38c44b1b43474e1c39cb5b90203691e/index.m3u8
-#EXTINF:-1 tvg-chno="31" tvg-name="MBC 1 مصر" tvg-logo="https://i.imgur.com/CiA3plN.png" group-title="MBC",31. MBC 1 مصر
+#EXTINF:-1 tvg-chno="89" tvg-name="MBC 1 مصر" tvg-logo="https://i.imgur.com/CiA3plN.png" group-title="القنوات",89. MBC 1 مصر
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1-na/eec141533c90dd34722c503a296dd0d8/index.m3u8
-#EXTINF:-1 tvg-chno="32" tvg-name="MBC دراما أمريكا" tvg-logo="https://i.imgur.com/g5PWnqp.png" group-title="MBC",32. MBC دراما أمريكا
+#EXTINF:-1 tvg-chno="90" tvg-name="MBC دراما أمريكا" tvg-logo="https://i.imgur.com/g5PWnqp.png" group-title="القنوات",90. MBC دراما أمريكا
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-drama-usa/ea2f5db904aff224b7066e59c7f585a2/index.m3u8
-#EXTINF:-1 tvg-chno="33" tvg-name="MBC مصر أمريكا" tvg-logo="" group-title="MBC",33. MBC مصر أمريكا
+#EXTINF:-1 tvg-chno="91" tvg-name="MBC مصر أمريكا" tvg-logo="" group-title="القنوات",91. MBC مصر أمريكا
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-usa/cd8d40acdab28aac0582faa3bd3983f1/index.m3u8
-#EXTINF:-1 tvg-chno="34" tvg-name="إم بي سي 1 أمريكا" tvg-logo="" group-title="MBC",34. إم بي سي 1 أمريكا
+#EXTINF:-1 tvg-chno="92" tvg-name="إم بي سي 1 أمريكا" tvg-logo="" group-title="القنوات",92. إم بي سي 1 أمريكا
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1-usa/fdac3a4fc0473f1f56e07ec1d63a4b7b/index.m3u8
-#EXTINF:-1 tvg-chno="35" tvg-name="إم بي سي 3 أمريكا" tvg-logo="" group-title="MBC",35. إم بي سي 3 أمريكا
+#EXTINF:-1 tvg-chno="93" tvg-name="إم بي سي 3 أمريكا" tvg-logo="" group-title="القنوات",93. إم بي سي 3 أمريكا
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-3-usa/5d58265a862a476dc7f97694addb5ded/index.m3u8
-#EXTINF:-1 tvg-chno="36" tvg-name="إم بي سي إف إم" tvg-logo="" group-title="MBC",36. إم بي سي إف إم
+#EXTINF:-1 tvg-chno="94" tvg-name="إم بي سي إف إم" tvg-logo="" group-title="القنوات",94. إم بي سي إف إم
 https://dbbv9umqcd7cs.cloudfront.net/out/v1/db15b75c3cc0400c91961468d6a232ac/index.m3u8
-#EXTINF:-1 tvg-chno="37" tvg-name="روتانا سينما السعودية" tvg-logo="https://i.imgur.com/pGgp38I.png" group-title="روتانا",37. روتانا سينما السعودية
+#EXTINF:-1 tvg-chno="95" tvg-name="روتانا سينما السعودية" tvg-logo="https://i.imgur.com/pGgp38I.png" group-title="القنوات",95. روتانا سينما السعودية
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/cinema_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="38" tvg-name="روتانا سينما مصر" tvg-logo="https://i.imgur.com/dGlKoLW.png" group-title="روتانا",38. روتانا سينما مصر
+#EXTINF:-1 tvg-chno="96" tvg-name="روتانا سينما مصر" tvg-logo="https://i.imgur.com/dGlKoLW.png" group-title="القنوات",96. روتانا سينما مصر
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/cinemamasr_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="39" tvg-name="روتانا دراما" tvg-logo="https://i.imgur.com/btnhPjZ.png" group-title="روتانا",39. روتانا دراما
+#EXTINF:-1 tvg-chno="97" tvg-name="روتانا دراما" tvg-logo="https://i.imgur.com/btnhPjZ.png" group-title="القنوات",97. روتانا دراما
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/drama_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="40" tvg-name="روتانا كلاسيك" tvg-logo="https://i.imgur.com/pMMUvkt.png" group-title="روتانا",40. روتانا كلاسيك
+#EXTINF:-1 tvg-chno="98" tvg-name="روتانا كلاسيك" tvg-logo="https://i.imgur.com/pMMUvkt.png" group-title="القنوات",98. روتانا كلاسيك
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/classical_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="41" tvg-name="روتانا كوميدي" tvg-logo="https://i.imgur.com/IlT8U6S.png" group-title="روتانا",41. روتانا كوميدي
+#EXTINF:-1 tvg-chno="99" tvg-name="روتانا كوميدي" tvg-logo="https://i.imgur.com/IlT8U6S.png" group-title="القنوات",99. روتانا كوميدي
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/comedy_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="42" tvg-name="روتانا ستيشن" tvg-logo="https://i.ytimg.com/vi/haRt_29y2iQ/hqdefault.jpg" group-title="روتانا",42. روتانا ستيشن
+#EXTINF:-1 tvg-chno="100" tvg-name="روتانا ستيشن" tvg-logo="https://i.ytimg.com/vi/haRt_29y2iQ/hqdefault.jpg" group-title="القنوات",100. روتانا ستيشن
 https://www.youtube.com/watch?v=haRt_29y2iQ
-#EXTINF:-1 tvg-chno="43" tvg-name="روتانا كليب" tvg-logo="" group-title="روتانا",43. روتانا كليب
+#EXTINF:-1 tvg-chno="101" tvg-name="روتانا كليب" tvg-logo="" group-title="القنوات",101. روتانا كليب
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/clip_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="44" tvg-name="روتانا خليجية" tvg-logo="" group-title="روتانا",44. روتانا خليجية
+#EXTINF:-1 tvg-chno="102" tvg-name="روتانا خليجية" tvg-logo="" group-title="القنوات",102. روتانا خليجية
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/khaleejiya_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="45" tvg-name="روتانا موسيقى" tvg-logo="" group-title="روتانا",45. روتانا موسيقى
+#EXTINF:-1 tvg-chno="103" tvg-name="روتانا موسيقى" tvg-logo="" group-title="القنوات",103. روتانا موسيقى
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/music_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="46" tvg-name="القرآن الكريم — قطر" tvg-logo="https://www.qmc.qa/img/LiveChannels/1ca67a44-9290-4b2a-8a16-d8c6e2260816.jpg" group-title="الخليجية",46. القرآن الكريم — قطر
+#EXTINF:-1 tvg-chno="104" tvg-name="القرآن الكريم — قطر" tvg-logo="https://www.qmc.qa/img/LiveChannels/1ca67a44-9290-4b2a-8a16-d8c6e2260816.jpg" group-title="القنوات",104. القرآن الكريم — قطر
 https://qatartv.akamaized.net/hls/live/20000612/qtvquran/master.m3u8
-#EXTINF:-1 tvg-chno="47" tvg-name="عمان الثقافية" tvg-logo="https://i.imgur.com/b38wNPK.png" group-title="الخليجية",47. عمان الثقافية
+#EXTINF:-1 tvg-chno="105" tvg-name="عمان الثقافية" tvg-logo="https://i.imgur.com/b38wNPK.png" group-title="القنوات",105. عمان الثقافية
 https://partwota.cdn.mgmlcdn.com/omcultural/smil:omcultural.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="48" tvg-name="البحرين — القرآن الكريم" tvg-logo="https://i.imgur.com/fBpLsbC.png" group-title="الخليجية",48. البحرين — القرآن الكريم
+#EXTINF:-1 tvg-chno="106" tvg-name="البحرين — القرآن الكريم" tvg-logo="https://i.imgur.com/fBpLsbC.png" group-title="القنوات",106. البحرين — القرآن الكريم
 https://5c7b683162943.streamlock.net/live/ngrp:bahrainquran_all/playlist.m3u8
-#EXTINF:-1 tvg-chno="49" tvg-name="تلفزيون عُمان" tvg-logo="https://i.imgur.com/rBftT9x.png" group-title="الخليجية",49. تلفزيون عُمان
+#EXTINF:-1 tvg-chno="107" tvg-name="تلفزيون عُمان" tvg-logo="https://i.imgur.com/rBftT9x.png" group-title="القنوات",107. تلفزيون عُمان
 https://partneta.cdn.mgmlcdn.com/omantv/smil:omantv.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="50" tvg-name="تلفزيون قطر" tvg-logo="https://i.imgur.com/N5RB4sp.png" group-title="الخليجية",50. تلفزيون قطر
+#EXTINF:-1 tvg-chno="108" tvg-name="تلفزيون قطر" tvg-logo="https://i.imgur.com/N5RB4sp.png" group-title="القنوات",108. تلفزيون قطر
 https://live.kwikmotion.com/qtv1live/qtv1.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="51" tvg-name="تلفزيون قطر" tvg-logo="https://i.ytimg.com/vi/d020NL_oFAY/hqdefault.jpg" group-title="الخليجية",51. تلفزيون قطر
+#EXTINF:-1 tvg-chno="109" tvg-name="تلفزيون قطر" tvg-logo="https://i.ytimg.com/vi/d020NL_oFAY/hqdefault.jpg" group-title="القنوات",109. تلفزيون قطر
 https://www.youtube.com/watch?v=d020NL_oFAY
-#EXTINF:-1 tvg-chno="52" tvg-name="عمان" tvg-logo="https://i.imgur.com/5l7kw0b.png" group-title="الخليجية",52. عمان
+#EXTINF:-1 tvg-chno="110" tvg-name="عمان" tvg-logo="https://i.imgur.com/5l7kw0b.png" group-title="القنوات",110. عمان
 https://ammantv-live.ercdn.net/ammantvhd/ammantvhd.m3u8
-#EXTINF:-1 tvg-chno="53" tvg-name="الكويت — الرياضية" tvg-logo="https://i.imgur.com/R1hGX1d.png" group-title="الخليجية",53. الكويت — الرياضية
+#EXTINF:-1 tvg-chno="111" tvg-name="الكويت — الرياضية" tvg-logo="https://i.imgur.com/R1hGX1d.png" group-title="القنوات",111. الكويت — الرياضية
 https://kwtspta.cdn.mangomolo.com/sp/smil:sp.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="54" tvg-name="الكويت — الرياضية 2" tvg-logo="https://i.imgur.com/l4oX0gf.png" group-title="الخليجية",54. الكويت — الرياضية 2
+#EXTINF:-1 tvg-chno="112" tvg-name="الكويت — الرياضية 2" tvg-logo="https://i.imgur.com/l4oX0gf.png" group-title="القنوات",112. الكويت — الرياضية 2
 https://kwtsplta.cdn.mangomolo.com/spl/smil:spl.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="55" tvg-name="عمان — الرياضية" tvg-logo="https://i.imgur.com/1omi7p8.png" group-title="الخليجية",55. عمان — الرياضية
+#EXTINF:-1 tvg-chno="113" tvg-name="عمان — الرياضية" tvg-logo="https://i.imgur.com/1omi7p8.png" group-title="القنوات",113. عمان — الرياضية
 https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="56" tvg-name="البحرين — الرياضية" tvg-logo="https://i.imgur.com/fBpLsbC.png" group-title="الخليجية",56. البحرين — الرياضية
+#EXTINF:-1 tvg-chno="114" tvg-name="البحرين — الرياضية" tvg-logo="https://i.imgur.com/fBpLsbC.png" group-title="القنوات",114. البحرين — الرياضية
 https://5c7b683162943.streamlock.net/live/ngrp:sportsone_all/playlist.m3u8
-#EXTINF:-1 tvg-chno="57" tvg-name="الوسطى" tvg-logo="https://i.imgur.com/zgMqQPQ.png" group-title="الخليجية",57. الوسطى
+#EXTINF:-1 tvg-chno="115" tvg-name="الوسطى" tvg-logo="https://i.imgur.com/zgMqQPQ.png" group-title="القنوات",115. الوسطى
 https://svs.itworkscdn.net/alwoustalive/alwoustatv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="58" tvg-name="الشارقة" tvg-logo="https://i.imgur.com/Oz2bPOt.png" group-title="الخليجية",58. الشارقة
+#EXTINF:-1 tvg-chno="116" tvg-name="الشارقة" tvg-logo="https://i.imgur.com/Oz2bPOt.png" group-title="القنوات",116. الشارقة
 https://live.kwikmotion.com/smc1live/smc1tv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="59" tvg-name="الشارقة 2" tvg-logo="https://i.imgur.com/Wd3Xvd1.png" group-title="الخليجية",59. الشارقة 2
+#EXTINF:-1 tvg-chno="117" tvg-name="الشارقة 2" tvg-logo="https://i.imgur.com/Wd3Xvd1.png" group-title="القنوات",117. الشارقة 2
 https://svs.itworkscdn.net/smc2live/smc2tv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="60" tvg-name="تلفزيون الكويت 1" tvg-logo="https://i.imgur.com/kG0d8Ay.png" group-title="الخليجية",60. تلفزيون الكويت 1
+#EXTINF:-1 tvg-chno="118" tvg-name="تلفزيون الكويت 1" tvg-logo="https://i.imgur.com/kG0d8Ay.png" group-title="القنوات",118. تلفزيون الكويت 1
 https://kwtktv1ta.cdn.mangomolo.com/ktv1/smil:ktv1.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="61" tvg-name="تلفزيون الكويت 2" tvg-logo="https://i.imgur.com/hB57mNh.png" group-title="الخليجية",61. تلفزيون الكويت 2
+#EXTINF:-1 tvg-chno="119" tvg-name="تلفزيون الكويت 2" tvg-logo="https://i.imgur.com/hB57mNh.png" group-title="القنوات",119. تلفزيون الكويت 2
 https://kwtktv2ta.cdn.mangomolo.com/ktv2/smil:ktv2.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="62" tvg-name="الكويت — القرين" tvg-logo="https://i.imgur.com/naVEZtj.png" group-title="الخليجية",62. الكويت — القرين
+#EXTINF:-1 tvg-chno="120" tvg-name="الكويت — القرين" tvg-logo="https://i.imgur.com/naVEZtj.png" group-title="القنوات",120. الكويت — القرين
 https://kwtktvaqta.cdn.mangomolo.com/ktvaq/smil:tktvaq.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="63" tvg-name="الكويت — العربي" tvg-logo="https://i.imgur.com/jg3VAxO.png" group-title="الخليجية",63. الكويت — العربي
+#EXTINF:-1 tvg-chno="121" tvg-name="الكويت — العربي" tvg-logo="https://i.imgur.com/jg3VAxO.png" group-title="القنوات",121. الكويت — العربي
 https://kwtktvata.cdn.mangomolo.com/ktva/smil:tktva.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="64" tvg-name="الكويت — إثراء" tvg-logo="https://i.imgur.com/hqEbc49.png" group-title="الخليجية",64. الكويت — إثراء
+#EXTINF:-1 tvg-chno="122" tvg-name="الكويت — إثراء" tvg-logo="https://i.imgur.com/hqEbc49.png" group-title="القنوات",122. الكويت — إثراء
 https://kwtethta.cdn.mangomolo.com/eth/smil:eth.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="65" tvg-name="الكويت — الأخبار" tvg-logo="https://i.imgur.com/erZ0Ol1.png" group-title="الخليجية",65. الكويت — الأخبار
+#EXTINF:-1 tvg-chno="123" tvg-name="الكويت — الأخبار" tvg-logo="https://i.imgur.com/erZ0Ol1.png" group-title="القنوات",123. الكويت — الأخبار
 https://kwtkbta.cdn.mangomolo.com/kb/smil:kb.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="66" tvg-name="الريان" tvg-logo="https://i.imgur.com/Ts3RjTV.png" group-title="الخليجية",66. الريان
+#EXTINF:-1 tvg-chno="124" tvg-name="الريان" tvg-logo="https://i.imgur.com/Ts3RjTV.png" group-title="القنوات",124. الريان
 https://alrayyancdn.vidgyor.com/pub-noalrayy3pwz0l/liveabr/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="67" tvg-name="الريان القديم" tvg-logo="https://i.imgur.com/4qB5iN0.png" group-title="الخليجية",67. الريان القديم
+#EXTINF:-1 tvg-chno="125" tvg-name="الريان القديم" tvg-logo="https://i.imgur.com/4qB5iN0.png" group-title="القنوات",125. الريان القديم
 https://alrayyancdn.vidgyor.com/pub-nooldraybinbdh/liveabr/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="68" tvg-name="تلفزيون قطر 2" tvg-logo="https://i.imgur.com/iWJxDUm.png" group-title="الخليجية",68. تلفزيون قطر 2
+#EXTINF:-1 tvg-chno="126" tvg-name="تلفزيون قطر 2" tvg-logo="https://i.imgur.com/iWJxDUm.png" group-title="القنوات",126. تلفزيون قطر 2
 https://live.kwikmotion.com/qtv2live/qtv2.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="69" tvg-name="عمان مباشر" tvg-logo="https://i.imgur.com/UkQTR5b.png" group-title="الخليجية",69. عمان مباشر
+#EXTINF:-1 tvg-chno="127" tvg-name="عمان مباشر" tvg-logo="https://i.imgur.com/UkQTR5b.png" group-title="القنوات",127. عمان مباشر
 https://partwota.cdn.mgmlcdn.com/omlive/smil:omlive.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-chno="70" tvg-name="تلفزيون البحرين" tvg-logo="" group-title="الخليجية",70. تلفزيون البحرين
+#EXTINF:-1 tvg-chno="128" tvg-name="تلفزيون البحرين" tvg-logo="" group-title="القنوات",128. تلفزيون البحرين
 https://5c7b683162943.streamlock.net/live/ngrp:bahraintvmain_all/playlist.m3u8
-#EXTINF:-1 tvg-chno="71" tvg-name="البحرين الدولية" tvg-logo="" group-title="الخليجية",71. البحرين الدولية
+#EXTINF:-1 tvg-chno="129" tvg-name="البحرين الدولية" tvg-logo="" group-title="القنوات",129. البحرين الدولية
 https://5c7b683162943.streamlock.net/live/ngrp:bahraininternational_all/playlist.m3u8
-#EXTINF:-1 tvg-chno="72" tvg-name="البحرين الرياضية 2" tvg-logo="" group-title="الخليجية",72. البحرين الرياضية 2
+#EXTINF:-1 tvg-chno="130" tvg-name="البحرين الرياضية 2" tvg-logo="" group-title="القنوات",130. البحرين الرياضية 2
 https://5c7b683162943.streamlock.net/live/ngrp:bahrainsportstwo_all/playlist.m3u8
-#EXTINF:-1 tvg-chno="73" tvg-name="QBC قطر للأعمال" tvg-logo="" group-title="الخليجية",73. QBC قطر للأعمال
+#EXTINF:-1 tvg-chno="131" tvg-name="QBC قطر للأعمال" tvg-logo="" group-title="القنوات",131. QBC قطر للأعمال
 https://live.kwikmotion.com/qbusinesslive/qbusiness.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="74" tvg-name="إذاعة الشارقة" tvg-logo="" group-title="الخليجية",74. إذاعة الشارقة
+#EXTINF:-1 tvg-chno="132" tvg-name="إذاعة الشارقة" tvg-logo="" group-title="القنوات",132. إذاعة الشارقة
 https://svs.itworkscdn.net/smcradiolive/smcradiolive/playlist.m3u8
-#EXTINF:-1 tvg-chno="75" tvg-name="إذاعة الشارقة للقرآن" tvg-logo="" group-title="الخليجية",75. إذاعة الشارقة للقرآن
+#EXTINF:-1 tvg-chno="133" tvg-name="إذاعة الشارقة للقرآن" tvg-logo="" group-title="القنوات",133. إذاعة الشارقة للقرآن
 https://live.kwikmotion.com/smcquranlive/quranradiolive/playlist.m3u8
-#EXTINF:-1 tvg-chno="76" tvg-name="عجمان" tvg-logo="https://i.imgur.com/hVNIwgE.png" group-title="الخليجية",76. عجمان
+#EXTINF:-1 tvg-chno="134" tvg-name="عجمان" tvg-logo="https://i.imgur.com/hVNIwgE.png" group-title="القنوات",134. عجمان
 https://cdn1.logichost.in/ajmantv/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="77" tvg-name="قطر 2" tvg-logo="" group-title="الخليجية",77. قطر 2
+#EXTINF:-1 tvg-chno="135" tvg-name="قطر 2" tvg-logo="" group-title="القنوات",135. قطر 2
 https://qatartv.akamaized.net/hls/live/20000611/qtv2/master.m3u8
-#EXTINF:-1 tvg-chno="78" tvg-name="تلفزيون سوريا" tvg-logo="https://i.imgur.com/FjuVuXF.jpeg" group-title="العربية — إخبارية",78. تلفزيون سوريا
-https://live.kwikmotion.com/syriatvlive/syriatv.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="79" tvg-name="ميدي 1 عربية" tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="العربية — إخبارية",79. ميدي 1 عربية
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
-#EXTINF:-1 tvg-chno="80" tvg-name="آي 24 نيوز عربي" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/LOGO_i24NEWS.png/960px-LOGO_i24NEWS.png" group-title="العربية — إخبارية",80. آي 24 نيوز عربي
-https://i24newsarabic-cdn.encoders.immergo.tv/master.m3u8
-#EXTINF:-1 tvg-chno="81" tvg-name="اليوم" tvg-logo="https://i.imgur.com/rBixF3P.png" group-title="العربية — إخبارية",81. اليوم
-https://hlspackager.akamaized.net/live/DB/ALYAUM_TV/HLS/ALYAUM_TV.m3u8
-#EXTINF:-1 tvg-chno="82" tvg-name="صوت لبنان" tvg-logo="https://i.imgur.com/f8WcqRY.png" group-title="العربية — إخبارية",82. صوت لبنان
-https://svs.itworkscdn.net/vdltvlive/vdltv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="83" tvg-name="القاهرة الإخبارية" tvg-logo="https://yt3.googleusercontent.com/CyQT_pmSYzQKc5lfmmgmFgFDwpyPqPPT2pcuNAHTE1QY2jtPras9qsCC9Faa-ArQc3q1YEnCNw=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",83. القاهرة الإخبارية
-https://www.youtube.com/watch?v=zZ-EysS8Eq8
-#EXTINF:-1 tvg-chno="84" tvg-name="رؤيا الإخبارية" tvg-logo="https://yt3.googleusercontent.com/TPhHZ1aLMeUZCX7HNxjo3VwCQZcw14b4V-z5cS215HCsJdd_T3uUOeq7bJO8BSU778-5d_bFHw=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",84. رؤيا الإخبارية
-https://www.youtube.com/watch?v=A1cZxijueg4
-#EXTINF:-1 tvg-chno="85" tvg-name="الحدث" tvg-logo="https://i.imgur.com/De4SEWE.png" group-title="العربية — إخبارية",85. الحدث
-https://shd-gcp-live.edgenextcdn.net/live/bitmovin-hadath/2ff87ec4c2f3ede35295a20637d9f8fd/index.m3u8
-#EXTINF:-1 tvg-chno="86" tvg-name="قناة العربية" tvg-logo="https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg" group-title="العربية — إخبارية",86. قناة العربية
-https://www.youtube.com/watch?v=n7eQejkXbnM
-#EXTINF:-1 tvg-chno="87" tvg-name="قناة الحدث" tvg-logo="https://i.ytimg.com/vi/au8t81S0tag/hqdefault.jpg" group-title="العربية — إخبارية",87. قناة الحدث
-https://www.youtube.com/watch?v=au8t81S0tag
-#EXTINF:-1 tvg-chno="88" tvg-name="CGTN العربية" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_llZ-RZnLdQ8Ye7uHcb9T3w-fEGThSSv1ABt10FihmtQtk=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",88. CGTN العربية
-https://www.youtube.com/watch?v=O0ZppASlI6o
-#EXTINF:-1 tvg-chno="89" tvg-name="CNBC العربية" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/CNBC_Arabia_2025.svg/960px-CNBC_Arabia_2025.svg.png" group-title="العربية — إخبارية",89. CNBC العربية
-https://cnbc-live.akamaized.net/cnbc/master.m3u8
-#EXTINF:-1 tvg-chno="90" tvg-name="العربية إنجليزي" tvg-logo="https://shahid.mbc.net/mediaObject/7cfc0baf-1201-477f-b722-d3099fafe17f?height=230&width=512&croppingPoint=&version=1&type=png" group-title="العربية — إخبارية",90. العربية إنجليزي
-https://live.alarabiya.net/alarabiapublish/english/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="91" tvg-name="العربية Business" tvg-logo="https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg" group-title="العربية — إخبارية",91. العربية Business
-https://www.youtube.com/watch?v=27TJ45U-HJ8
-#EXTINF:-1 tvg-chno="92" tvg-name="العربية برامج" tvg-logo="https://i.imgur.com/Hoc3cfO.png" group-title="العربية — إخبارية",92. العربية برامج
-https://live.alarabiya.net/alarabiapublish/aaprograms.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="93" tvg-name="قناة العربي أخبار" tvg-logo="https://yt3.googleusercontent.com/dz6b5iIsG9pzbuvlAfytZ4DNJFkPV7_7RjDfKKRG-kloyFsreQjtNMF8e3vDJxFZToB38--_BA=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",93. قناة العربي أخبار
-https://www.youtube.com/watch?v=U_JpgQHmJTY
-#EXTINF:-1 tvg-chno="94" tvg-name="العربي أخبار" tvg-logo="https://i.ytimg.com/vi/e2RgSa1Wt5o/hqdefault.jpg" group-title="العربية — إخبارية",94. العربي أخبار
-https://www.youtube.com/watch?v=e2RgSa1Wt5o
-#EXTINF:-1 tvg-chno="95" tvg-name="الشرقية نيوز" tvg-logo="https://i.ytimg.com/vi/CkL42Ykl1F4/hqdefault.jpg" group-title="العربية — إخبارية",95. الشرقية نيوز
-https://www.youtube.com/watch?v=CkL42Ykl1F4
-#EXTINF:-1 tvg-chno="96" tvg-name="الشرقية من كلا" tvg-logo="https://i.imgur.com/m4qheI4.png" group-title="العربية — إخبارية",96. الشرقية من كلا
-https://svs.itworkscdn.net/kablatvlive/kabtv1.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="97" tvg-name="العربي 2" tvg-logo="https://i.imgur.com/Gp5mNea.png" group-title="العربية — إخبارية",97. العربي 2
-https://live.kwikmotion.com/alaraby2live/alaraby2.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="98" tvg-name="ميدي 1 المغرب العربي" tvg-logo="https://i.imgur.com/F5OFQsp.jpeg" group-title="العربية — إخبارية",98. ميدي 1 المغرب العربي
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8
-#EXTINF:-1 tvg-chno="99" tvg-name="الشرقية" tvg-logo="" group-title="العربية — إخبارية",99. الشرقية
-https://indexforce.com/tvhighres/mystream/playlist.m3u8
-#EXTINF:-1 tvg-chno="100" tvg-name="الغد" tvg-logo="https://i.imgur.com/ga6NXb9.png" group-title="العربية — إخبارية",100. الغد
-https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8
-#EXTINF:-1 tvg-chno="101" tvg-name="قناة الجزيرة" tvg-logo="https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg" group-title="العربية — إخبارية",101. قناة الجزيرة
-https://live-hls-web-aja.getaj.net/AJA/index.m3u8
-#EXTINF:-1 tvg-chno="102" tvg-name="فرانس 24 عربي" tvg-logo="https://i.ytimg.com/vi/93g513Uth98/hqdefault.jpg" group-title="العربية — إخبارية",102. فرانس 24 عربي
-https://www.youtube.com/watch?v=93g513Uth98
-#EXTINF:-1 tvg-chno="103" tvg-name="تلفزيون الشرق بلومبرغ" tvg-logo="https://i.ytimg.com/vi/f6VpkfV7m4Y/hqdefault.jpg" group-title="العربية — إخبارية",103. تلفزيون الشرق بلومبرغ
-https://www.youtube.com/watch?v=f6VpkfV7m4Y
-#EXTINF:-1 tvg-chno="104" tvg-name="سكاي نيوز عربية" tvg-logo="https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg" group-title="العربية — إخبارية",104. سكاي نيوز عربية
-https://www.youtube.com/watch?v=ppgTP8xQQsM
-#EXTINF:-1 tvg-chno="105" tvg-name="قناة الجزيرة مباشر" tvg-logo="https://yt3.googleusercontent.com/h0_bBdVgCAXIPJFnQ4hZtE87cDY_qO7rkDAue8qXdmOFxZ5NaO3AFD1uCUcst-EsBcGJ8zl8EQ=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",105. قناة الجزيرة مباشر
-https://www.youtube.com/watch?v=NNnZLWHRmd4
-#EXTINF:-1 tvg-chno="106" tvg-name="TRT عربي" tvg-logo="https://yt3.googleusercontent.com/gYgMDstQrKquZlKMpynGak3fik58-0UdhvIFvRNk8Z1KAGDzn6Kuz8uULtWRwVM3bJcqBuWfxQ=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",106. TRT عربي
-https://www.youtube.com/watch?v=sat-YpJQ-fg
-#EXTINF:-1 tvg-chno="107" tvg-name="DW عربية" tvg-logo="https://yt3.googleusercontent.com/1diREnd5d5mj0zM8AmZYfuccwIppbzSBz0ERjzRl9kydXSPKREif3GyigSpYq2P_d8GH0RMKj5I=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",107. DW عربية
-https://www.youtube.com/watch?v=AGkp2AL8e7o
-#EXTINF:-1 tvg-chno="108" tvg-name="قناة الغد" tvg-logo="https://yt3.googleusercontent.com/APZoy6Df0krnDFUirRPohH62PwNOs8xU_hjlDHdYZvsYQqdpWZc9857mjUYkClHFH2MWXWwv=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",108. قناة الغد
-https://www.youtube.com/watch?v=mo_6IkfLstk
-#EXTINF:-1 tvg-chno="109" tvg-name="الجزيرة 2" tvg-logo="https://i.ytimg.com/vi/N8xxOD0nT1Y/hqdefault.jpg" group-title="العربية — إخبارية",109. الجزيرة 2
-https://www.youtube.com/watch?v=N8xxOD0nT1Y
-#EXTINF:-1 tvg-chno="110" tvg-name="سكاي نيوز عربية" tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — إخبارية",110. سكاي نيوز عربية
-https://www.youtube.com/watch?v=xDWQ3LkccY8
-#EXTINF:-1 tvg-chno="111" tvg-name="الشرق ديسكفري" tvg-logo="https://i.imgur.com/Czxi7yk.png" group-title="العربية — إخبارية",111. الشرق ديسكفري
-https://svs.itworkscdn.net/asharqdiscoverylive/asharqd.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="112" tvg-name="الشرق الوثائقية" tvg-logo="https://i.imgur.com/v6VsFEt.png" group-title="العربية — إخبارية",112. الشرق الوثائقية
-https://svs.itworkscdn.net/asharqdocumentarylive/asharqdocumentary.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="113" tvg-name="CNBC عربية" tvg-logo="https://i.ytimg.com/vi/OLbqCS3OrPM/hqdefault.jpg" group-title="العربية — إخبارية",113. CNBC عربية
-https://www.youtube.com/watch?v=OLbqCS3OrPM
-#EXTINF:-1 tvg-chno="114" tvg-name="الجزيرة مباشر 24" tvg-logo="https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg" group-title="العربية — إخبارية",114. الجزيرة مباشر 24
-https://www.youtube.com/watch?v=8D5QY5gw_Xk
-#EXTINF:-1 tvg-chno="115" tvg-name="قناة الغد" tvg-logo="https://i.ytimg.com/vi/y_28ovYA8aY/hqdefault.jpg" group-title="العربية — إخبارية",115. قناة الغد
-https://www.youtube.com/watch?v=y_28ovYA8aY
-#EXTINF:-1 tvg-chno="116" tvg-name="الشرق ديسكفري مباشر" tvg-logo="https://i.ytimg.com/vi/FlzMedKfQOs/hqdefault.jpg" group-title="العربية — إخبارية",116. الشرق ديسكفري مباشر
-https://www.youtube.com/watch?v=FlzMedKfQOs
-#EXTINF:-1 tvg-chno="117" tvg-name="الشرق للأخبار" tvg-logo="https://i.imgur.com/bqRC3sl.png" group-title="العربية — إخبارية",117. الشرق للأخبار
-https://live-news.asharq.com/asharq.m3u8
-#EXTINF:-1 tvg-chno="118" tvg-name="آر تي عربي" tvg-logo="" group-title="العربية — إخبارية",118. آر تي عربي
-https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
-#EXTINF:-1 tvg-chno="119" tvg-name="الجزيرة مباشر 2" tvg-logo="https://i.imgur.com/nJmi6G6.png" group-title="العربية — إخبارية",119. الجزيرة مباشر 2
-https://live-hls-apps-ajm2-fa.getaj.net/AJM2/index.m3u8
-#EXTINF:-1 tvg-chno="120" tvg-name="الشرقية نيوز" tvg-logo="https://i.ytimg.com/vi/CkL42Ykl1F4/hqdefault.jpg" group-title="العربية — إخبارية",120. الشرقية نيوز
-https://indexforce.com/newshighres/mystream/playlist.m3u8
-#EXTINF:-1 tvg-chno="121" tvg-name="قناة العربي" tvg-logo="" group-title="العربية — إخبارية",121. قناة العربي
-https://live.kwikmotion.com/alaraby1live/alaraby_abr/playlist.m3u8
-#EXTINF:-1 tvg-chno="122" tvg-name="AL24 نيوز" tvg-logo="" group-title="العربية — إخبارية",122. AL24 نيوز
-https://cdn.live.easybroadcast.io/abr_corp/66_al24_u4yga6h/corp/66_al24_u4yga6h_240p/chunks.m3u8
-#EXTINF:-1 tvg-chno="123" tvg-name="العراقية نيوز" tvg-logo="" group-title="العربية — إخبارية",123. العراقية نيوز
-https://imn-live.esite-lab.com/hls/iraqia-news.m3u8
-#EXTINF:-1 tvg-chno="124" tvg-name="المهرية" tvg-logo="" group-title="العربية — إخبارية",124. المهرية
-https://starmenajo.com/hls/almahriah/index.m3u8
-#EXTINF:-1 tvg-chno="125" tvg-name="سكاي نيوز عربية — عمودي" tvg-logo="https://i.ytimg.com/vi/ppgTP8xQQsM/hqdefault.jpg" group-title="العربية — إخبارية",125. سكاي نيوز عربية — عمودي
-https://live-stream.skynewsarabia.com/c-vertical-channel/vertical-stream/index.m3u8
-#EXTINF:-1 tvg-chno="126" tvg-name="مكان 33" tvg-logo="" group-title="العربية — إخبارية",126. مكان 33
-https://kancdn.medonecdn.net/livehls/oil/kancdn-live/live/makan/live.livx/playlist.m3u8
-#EXTINF:-1 tvg-chno="127" tvg-name="مكملين" tvg-logo="" group-title="العربية — إخبارية",127. مكملين
-https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="128" tvg-name="الجزيرة" tvg-logo="" group-title="العربية — إخبارية",128. الجزيرة
-https://live-hls-apps-aja-fa.getaj.net/AJA/01.m3u8
-#EXTINF:-1 tvg-chno="129" tvg-name="الجزيرة مباشر" tvg-logo="" group-title="العربية — إخبارية",129. الجزيرة مباشر
-https://live-hls-apps-ajm-fa.getaj.net/AJM/index.m3u8
-#EXTINF:-1 tvg-chno="130" tvg-name="العربية" tvg-logo="" group-title="العربية — إخبارية",130. العربية
-https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="131" tvg-name="دجلة" tvg-logo="" group-title="العربية — إخبارية",131. دجلة
-https://ghaasiflu.online/Dijlah/index.m3u8
-#EXTINF:-1 tvg-chno="132" tvg-name="دي دبليو عربية" tvg-logo="" group-title="العربية — إخبارية",132. دي دبليو عربية
-https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/master.m3u8
-#EXTINF:-1 tvg-chno="133" tvg-name="فلسطين اليوم" tvg-logo="" group-title="العربية — إخبارية",133. فلسطين اليوم
-https://live.paltodaytv.com/paltv/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="134" tvg-name="تي آر تي عربي" tvg-logo="" group-title="العربية — إخبارية",134. تي آر تي عربي
-https://tv-trtarabi.medya.trt.com.tr/master.m3u8
-#EXTINF:-1 tvg-chno="135" tvg-name="اقرأ — القرآن" tvg-logo="https://i.imgur.com/HPVsIa4.png" group-title="العربية — إسلامية",135. اقرأ — القرآن
+#EXTINF:-1 tvg-chno="136" tvg-name="اقرأ — القرآن" tvg-logo="https://i.imgur.com/HPVsIa4.png" group-title="القنوات",136. اقرأ — القرآن
 https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv2/playlist.m3u8
-#EXTINF:-1 tvg-chno="136" tvg-name="إذاعة القرآن الكريم" tvg-logo="" group-title="العربية — إسلامية",136. إذاعة القرآن الكريم
+#EXTINF:-1 tvg-chno="137" tvg-name="إذاعة القرآن الكريم" tvg-logo="" group-title="القنوات",137. إذاعة القرآن الكريم
 https://live.kwikmotion.com/sbrksaquranradiolive/srpksaquranradio/playlist.m3u8
-#EXTINF:-1 tvg-chno="137" tvg-name="القرآن الكريم — العراق" tvg-logo="https://www.qmc.qa/img/LiveChannels/1ca67a44-9290-4b2a-8a16-d8c6e2260816.jpg" group-title="العربية — إسلامية",137. القرآن الكريم — العراق
+#EXTINF:-1 tvg-chno="138" tvg-name="القرآن الكريم — العراق" tvg-logo="https://www.qmc.qa/img/LiveChannels/1ca67a44-9290-4b2a-8a16-d8c6e2260816.jpg" group-title="القنوات",138. القرآن الكريم — العراق
 https://ktvlive.online/stream/hls/ch1.m3u8
-#EXTINF:-1 tvg-chno="138" tvg-name="هدى" tvg-logo="" group-title="العربية — إسلامية",138. هدى
+#EXTINF:-1 tvg-chno="139" tvg-name="هدى" tvg-logo="" group-title="القنوات",139. هدى
 https://cdn.bestream.io:19360/elfaro1/elfaro1.m3u8
-#EXTINF:-1 tvg-chno="139" tvg-name="اقرأ" tvg-logo="https://i.imgur.com/HPVsIa4.png" group-title="العربية — إسلامية",139. اقرأ
+#EXTINF:-1 tvg-chno="140" tvg-name="اقرأ" tvg-logo="https://i.imgur.com/HPVsIa4.png" group-title="القنوات",140. اقرأ
 https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8
-#EXTINF:-1 tvg-chno="140" tvg-name="بريم سوريا الرياضية" tvg-logo="https://prime1tv.com/wp-content/uploads/2025/12/7-1.png" group-title="العربية — عامة",140. بريم سوريا الرياضية
+#EXTINF:-1 tvg-chno="141" tvg-name="بريم سوريا الرياضية" tvg-logo="https://prime1tv.com/wp-content/uploads/2025/12/7-1.png" group-title="القنوات",141. بريم سوريا الرياضية
 https://cdn.bestream.io/prime/prime.m3u8
-#EXTINF:-1 tvg-chno="141" tvg-name="أغاني أغاني" tvg-logo="https://i.imgur.com/o6HSfNg.png" group-title="العربية — عامة",141. أغاني أغاني
+#EXTINF:-1 tvg-chno="142" tvg-name="أغاني أغاني" tvg-logo="https://i.imgur.com/o6HSfNg.png" group-title="القنوات",142. أغاني أغاني
 https://cdn.streamlane.tv/hls/aghanitv/index.m3u8
-#EXTINF:-1 tvg-chno="142" tvg-name="لنا" tvg-logo="https://i.imgur.com/xPoycVY.png" group-title="العربية — عامة",142. لنا
+#EXTINF:-1 tvg-chno="143" tvg-name="لنا" tvg-logo="https://i.imgur.com/xPoycVY.png" group-title="القنوات",143. لنا
 https://cdn.streamlane.tv/hls/ltv/master.m3u8
-#EXTINF:-1 tvg-chno="143" tvg-name="الوطنية التونسية 2" tvg-logo="https://i.imgur.com/kgkrD3V.png" group-title="العربية — عامة",143. الوطنية التونسية 2
+#EXTINF:-1 tvg-chno="144" tvg-name="الوطنية التونسية 2" tvg-logo="https://i.imgur.com/kgkrD3V.png" group-title="القنوات",144. الوطنية التونسية 2
 https://sw1.tanitweb.net/TunisiaTV/_definst_/watania2/playlist.m3u8?DVR
-#EXTINF:-1 tvg-chno="144" tvg-name="مسلسل البحر الأسود" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lSr-teEvgfITDdZvbN5CMFknHEsS8I791tl7T4uRa1ZvM=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",144. مسلسل البحر الأسود
+#EXTINF:-1 tvg-chno="145" tvg-name="مسلسل البحر الأسود" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lSr-teEvgfITDdZvbN5CMFknHEsS8I791tl7T4uRa1ZvM=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",145. مسلسل البحر الأسود
 https://www.youtube.com/watch?v=tW_78_pmCo4
-#EXTINF:-1 tvg-chno="145" tvg-name="أفلام عربي مباشر" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lZ1_LtuvwobOOPuGRHx03wyFaHEJZTDA_b4kHF06gYlw=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",145. أفلام عربي مباشر
+#EXTINF:-1 tvg-chno="146" tvg-name="أفلام عربي مباشر" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_lZ1_LtuvwobOOPuGRHx03wyFaHEJZTDA_b4kHF06gYlw=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",146. أفلام عربي مباشر
 https://www.youtube.com/watch?v=Va6QU9n3q18
-#EXTINF:-1 tvg-chno="146" tvg-name="NASA — محطة الفضاء الدولية" tvg-logo="https://yt3.googleusercontent.com/eIf5fNPcIcj9ig-wZBeq4stFy1lgjWTW1nLT5dYlFkHZprZ03QBiMcbpwNMB6XSBjrSFGtAGQg=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",146. NASA — محطة الفضاء الدولية
+#EXTINF:-1 tvg-chno="147" tvg-name="NASA — محطة الفضاء الدولية" tvg-logo="https://yt3.googleusercontent.com/eIf5fNPcIcj9ig-wZBeq4stFy1lgjWTW1nLT5dYlFkHZprZ03QBiMcbpwNMB6XSBjrSFGtAGQg=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",147. NASA — محطة الفضاء الدولية
 https://www.youtube.com/watch?v=M3HKLzjvKPc
-#EXTINF:-1 tvg-chno="147" tvg-name="قناة اقرأ" tvg-logo="https://yt3.googleusercontent.com/DkEVEAGFIr_mGAdt_Trv-NuEJeAPVd9KPcd2Oyf-t_BO8yYIBY6m7GvQg2MXpFUEZ6vSyZrPjQ=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",147. قناة اقرأ
+#EXTINF:-1 tvg-chno="148" tvg-name="قناة اقرأ" tvg-logo="https://yt3.googleusercontent.com/DkEVEAGFIr_mGAdt_Trv-NuEJeAPVd9KPcd2Oyf-t_BO8yYIBY6m7GvQg2MXpFUEZ6vSyZrPjQ=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",148. قناة اقرأ
 https://www.youtube.com/watch?v=3Uw_n19-g0E
-#EXTINF:-1 tvg-chno="148" tvg-name="التغيير" tvg-logo="https://i.imgur.com/YTyCBvB.png" group-title="العربية — عامة",148. التغيير
+#EXTINF:-1 tvg-chno="149" tvg-name="التغيير" tvg-logo="https://i.imgur.com/YTyCBvB.png" group-title="القنوات",149. التغيير
 https://jmc-live.ercdn.net/altaghier/altaghier.m3u8
-#EXTINF:-1 tvg-chno="149" tvg-name="الأردن" tvg-logo="https://i.imgur.com/0XozB5N.png" group-title="العربية — عامة",149. الأردن
+#EXTINF:-1 tvg-chno="150" tvg-name="الأردن" tvg-logo="https://i.imgur.com/0XozB5N.png" group-title="القنوات",150. الأردن
 https://jrtv-live.ercdn.net/jordanhd/jordanhd.m3u8
-#EXTINF:-1 tvg-chno="150" tvg-name="الأرشيف" tvg-logo="https://i.imgur.com/8UrCl4k.png" group-title="العربية — عامة",150. الأرشيف
+#EXTINF:-1 tvg-chno="151" tvg-name="الأرشيف" tvg-logo="https://i.imgur.com/8UrCl4k.png" group-title="القنوات",151. الأرشيف
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Archive/playlist.m3u8
-#EXTINF:-1 tvg-chno="151" tvg-name="اقرأ — عالمي" tvg-logo="https://i.imgur.com/nUlZvSe.png" group-title="العربية — عامة",151. اقرأ — عالمي
+#EXTINF:-1 tvg-chno="152" tvg-name="اقرأ — عالمي" tvg-logo="https://i.imgur.com/nUlZvSe.png" group-title="القنوات",152. اقرأ — عالمي
 https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv1/playlist.m3u8
-#EXTINF:-1 tvg-chno="152" tvg-name="الأردن — الرياضية" tvg-logo="https://i.imgur.com/2EmrZPQ.png" group-title="العربية — عامة",152. الأردن — الرياضية
+#EXTINF:-1 tvg-chno="153" tvg-name="الأردن — الرياضية" tvg-logo="https://i.imgur.com/2EmrZPQ.png" group-title="القنوات",153. الأردن — الرياضية
 https://jrtv-live.ercdn.net/jordansporthd/jordansporthd.m3u8
-#EXTINF:-1 tvg-chno="153" tvg-name="الهدّاف" tvg-logo="https://i.imgur.com/cDkIDIA.png" group-title="العربية — عامة",153. الهدّاف
+#EXTINF:-1 tvg-chno="154" tvg-name="الهدّاف" tvg-logo="https://i.imgur.com/cDkIDIA.png" group-title="القنوات",154. الهدّاف
 https://live.elheddaftv.com:8081/elheddaftv/index.m3u8
-#EXTINF:-1 tvg-chno="154" tvg-name="FIFA+ إسبانيا" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png" group-title="العربية — عامة",154. FIFA+ إسبانيا
+#EXTINF:-1 tvg-chno="155" tvg-name="FIFA+ إسبانيا" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png" group-title="القنوات",155. FIFA+ إسبانيا
 https://d63fabad.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWVzX0ZJRkFQbHVzU3BhbmlzaF9ITFM/playlist.m3u8
-#EXTINF:-1 tvg-chno="155" tvg-name="FIFA+ كرة السيدات" tvg-logo="https://i.imgur.com/xy9ZxVO.png" group-title="العربية — عامة",155. FIFA+ كرة السيدات
+#EXTINF:-1 tvg-chno="156" tvg-name="FIFA+ كرة السيدات" tvg-logo="https://i.imgur.com/xy9ZxVO.png" group-title="القنوات",156. FIFA+ كرة السيدات
 https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8
-#EXTINF:-1 tvg-chno="156" tvg-name="FITE قتال" tvg-logo="https://i.imgur.com/ESV6qgH.png" group-title="العربية — عامة",156. FITE قتال
+#EXTINF:-1 tvg-chno="157" tvg-name="FITE قتال" tvg-logo="https://i.imgur.com/ESV6qgH.png" group-title="القنوات",157. FITE قتال
 https://d3d85c7qkywguj.cloudfront.net/scheduler/scheduleMaster/263.m3u8
-#EXTINF:-1 tvg-chno="157" tvg-name="Glory كيك بوكسينغ" tvg-logo="https://i.imgur.com/tS7Ub7i.png" group-title="العربية — عامة",157. Glory كيك بوكسينغ
+#EXTINF:-1 tvg-chno="158" tvg-name="Glory كيك بوكسينغ" tvg-logo="https://i.imgur.com/tS7Ub7i.png" group-title="القنوات",158. Glory كيك بوكسينغ
 https://6f972d29.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0dsb3J5S2lja2JveGluZ19ITFM/playlist.m3u8
-#EXTINF:-1 tvg-chno="158" tvg-name="Kozoom بلياردو" tvg-logo="https://i.imgur.com/M1Ee79b.png" group-title="العربية — عامة",158. Kozoom بلياردو
+#EXTINF:-1 tvg-chno="159" tvg-name="Kozoom بلياردو" tvg-logo="https://i.imgur.com/M1Ee79b.png" group-title="القنوات",159. Kozoom بلياردو
 https://streams2.sofast.tv/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/fdd6f243-f971-4a1a-9510-97ac01d6b37f/manifest.m3u8
-#EXTINF:-1 tvg-chno="159" tvg-name="MUTV مانشستر يونايتد" tvg-logo="https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb1834.png" group-title="العربية — عامة",159. MUTV مانشستر يونايتد
+#EXTINF:-1 tvg-chno="160" tvg-name="MUTV مانشستر يونايتد" tvg-logo="https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb1834.png" group-title="القنوات",160. MUTV مانشستر يونايتد
 https://fastly.live.brightcove.com/6374054671112/eu-west-1/6058004203001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXplMnp5LmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiNjA1ODAwNDIwMzAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU4MDA0MjAzMDAxIl0sImp0aSI6IjYzNzQwNTQ2NzExMTIifQ.3FmuTna3DAmY7xlhK5fk6LMrosrtrR5VsU2QOgYO5y4/playlist-hls.m3u8
-#EXTINF:-1 tvg-chno="160" tvg-name="ريال مدريد TV" tvg-logo="https://i.imgur.com/5pMo7dL.png" group-title="العربية — عامة",160. ريال مدريد TV
+#EXTINF:-1 tvg-chno="161" tvg-name="ريال مدريد TV" tvg-logo="https://i.imgur.com/5pMo7dL.png" group-title="القنوات",161. ريال مدريد TV
 https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/master.m3u8
-#EXTINF:-1 tvg-chno="161" tvg-name="Willow كريكيت" tvg-logo="https://provider-static.plex.tv/epg/cms/production/acf3d1d8-c53e-49ca-86e9-0d9410b106b4/Willow_Sports_dark_Background_1500_1000_color.png" group-title="العربية — عامة",161. Willow كريكيت
+#EXTINF:-1 tvg-chno="162" tvg-name="Willow كريكيت" tvg-logo="https://provider-static.plex.tv/epg/cms/production/acf3d1d8-c53e-49ca-86e9-0d9410b106b4/Willow_Sports_dark_Background_1500_1000_color.png" group-title="القنوات",162. Willow كريكيت
 https://d36r8jifhgsk5j.cloudfront.net/Willow_TV.m3u8
-#EXTINF:-1 tvg-chno="162" tvg-name="أفلام" tvg-logo="https://i.imgur.com/cTLj7Yt.png" group-title="العربية — عامة",162. أفلام
+#EXTINF:-1 tvg-chno="163" tvg-name="أفلام" tvg-logo="https://i.imgur.com/cTLj7Yt.png" group-title="القنوات",163. أفلام
 https://shd-amg-fast.edgenextcdn.net/tx001/playlist.m3u8
-#EXTINF:-1 tvg-chno="163" tvg-name="أفلام أكشن" tvg-logo="https://i.imgur.com/NIVhISa.png" group-title="العربية — عامة",163. أفلام أكشن
+#EXTINF:-1 tvg-chno="164" tvg-name="أفلام أكشن" tvg-logo="https://i.imgur.com/NIVhISa.png" group-title="القنوات",164. أفلام أكشن
 https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8
-#EXTINF:-1 tvg-chno="164" tvg-name="أفلام إثارة" tvg-logo="https://i.imgur.com/JWihdcl.png" group-title="العربية — عامة",164. أفلام إثارة
+#EXTINF:-1 tvg-chno="165" tvg-name="أفلام إثارة" tvg-logo="https://i.imgur.com/JWihdcl.png" group-title="القنوات",165. أفلام إثارة
 https://shd-amg-fast.edgenextcdn.net/tx012/playlist.m3u8
-#EXTINF:-1 tvg-chno="165" tvg-name="شلالات بروكس — ألاسكا" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_njJhFIyFuOAL-5sOx1CRsBjTDVLm1nGPOxO6J5ADU-fSc=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",165. شلالات بروكس — ألاسكا
+#EXTINF:-1 tvg-chno="166" tvg-name="شلالات بروكس — ألاسكا" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_njJhFIyFuOAL-5sOx1CRsBjTDVLm1nGPOxO6J5ADU-fSc=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",166. شلالات بروكس — ألاسكا
 https://www.youtube.com/watch?v=J7ZrIDvqlic
-#EXTINF:-1 tvg-chno="166" tvg-name="أطفال ومواهب" tvg-logo="https://i.imgur.com/Y2BqP9m.png" group-title="العربية — عامة",166. أطفال ومواهب
+#EXTINF:-1 tvg-chno="167" tvg-name="أطفال ومواهب" tvg-logo="https://i.imgur.com/Y2BqP9m.png" group-title="القنوات",167. أطفال ومواهب
 https://5aafcc5de91f1.streamlock.net/atfal1.com/atfal2/playlist.m3u8
-#EXTINF:-1 tvg-chno="167" tvg-name="باب الحارة" tvg-logo="https://i.imgur.com/QtlnZbq.png" group-title="العربية — عامة",167. باب الحارة
+#EXTINF:-1 tvg-chno="168" tvg-name="باب الحارة" tvg-logo="https://i.imgur.com/QtlnZbq.png" group-title="القنوات",168. باب الحارة
 https://shd-amg-fast.edgenextcdn.net/tx010/playlist.m3u8
-#EXTINF:-1 tvg-chno="168" tvg-name="مرايا" tvg-logo="https://shahid.mbc.net/mediaObject/d089a559-4f41-4def-a786-f98fcfbf0464?height=auto&width=288&croppingPoint=&version=1&type=png" group-title="العربية — عامة",168. مرايا
+#EXTINF:-1 tvg-chno="169" tvg-name="مرايا" tvg-logo="https://shahid.mbc.net/mediaObject/d089a559-4f41-4def-a786-f98fcfbf0464?height=auto&width=288&croppingPoint=&version=1&type=png" group-title="القنوات",169. مرايا
 https://shd-amg-fast.edgenextcdn.net/tx008/playlist.m3u8
-#EXTINF:-1 tvg-chno="169" tvg-name="بيغ تايم بلس" tvg-logo="https://shahid.mbc.net/mediaObject/4e042cb6-500b-4e4c-a8ca-21a5a7a7a71b" group-title="العربية — عامة",169. بيغ تايم بلس
+#EXTINF:-1 tvg-chno="170" tvg-name="بيغ تايم بلس" tvg-logo="https://shahid.mbc.net/mediaObject/4e042cb6-500b-4e4c-a8ca-21a5a7a7a71b" group-title="القنوات",170. بيغ تايم بلس
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-big-time-plus/924283f994779a311c1389698ff7e736/index.m3u8
-#EXTINF:-1 tvg-chno="170" tvg-name="الشلال" tvg-logo="https://i.imgur.com/otAHLRo.png" group-title="العربية — عامة",170. الشلال
+#EXTINF:-1 tvg-chno="171" tvg-name="الشلال" tvg-logo="https://i.imgur.com/otAHLRo.png" group-title="القنوات",171. الشلال
 https://amg01480-alshallalfze-alshallal-ono-q0hfg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-chno="171" tvg-name="نور" tvg-logo="https://upload.wikimedia.org/wikipedia/en/8/8c/Nourtv_logo.jpg" group-title="العربية — عامة",171. نور
+#EXTINF:-1 tvg-chno="172" tvg-name="نور" tvg-logo="https://upload.wikimedia.org/wikipedia/en/8/8c/Nourtv_logo.jpg" group-title="القنوات",172. نور
 https://cdn.bestream.io:19360/elfaro4/elfaro4.m3u8
-#EXTINF:-1 tvg-chno="172" tvg-name="كوجي للأطفال" tvg-logo="https://i.imgur.com/zojMTP9.png" group-title="العربية — عامة",172. كوجي للأطفال
+#EXTINF:-1 tvg-chno="173" tvg-name="كوجي للأطفال" tvg-logo="https://i.imgur.com/zojMTP9.png" group-title="القنوات",173. كوجي للأطفال
 https://5d658d7e9f562.streamlock.net/koogi.tv/koogi.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="173" tvg-name="وطن" tvg-logo="https://i.imgur.com/pZyKaUH.png" group-title="العربية — عامة",173. وطن
+#EXTINF:-1 tvg-chno="174" tvg-name="وطن" tvg-logo="https://i.imgur.com/pZyKaUH.png" group-title="القنوات",174. وطن
 https://rp.tactivemedia.com/watantv_source/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="174" tvg-name="الأردن كوميدي" tvg-logo="https://i.imgur.com/DuwwoO2.png" group-title="العربية — عامة",174. الأردن كوميدي
+#EXTINF:-1 tvg-chno="175" tvg-name="الأردن كوميدي" tvg-logo="https://i.imgur.com/DuwwoO2.png" group-title="القنوات",175. الأردن كوميدي
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Comedy/playlist.m3u8
-#EXTINF:-1 tvg-chno="175" tvg-name="الأردن مطبخ" tvg-logo="https://i.imgur.com/B45qcQX.png" group-title="العربية — عامة",175. الأردن مطبخ
+#EXTINF:-1 tvg-chno="176" tvg-name="الأردن مطبخ" tvg-logo="https://i.imgur.com/B45qcQX.png" group-title="القنوات",176. الأردن مطبخ
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/cooking/playlist.m3u8
-#EXTINF:-1 tvg-chno="176" tvg-name="الأردن سياحة" tvg-logo="https://i.imgur.com/gpeIoU9.png" group-title="العربية — عامة",176. الأردن سياحة
+#EXTINF:-1 tvg-chno="177" tvg-name="الأردن سياحة" tvg-logo="https://i.imgur.com/gpeIoU9.png" group-title="القنوات",177. الأردن سياحة
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Tourism/playlist.m3u8
-#EXTINF:-1 tvg-chno="177" tvg-name="رؤيا" tvg-logo="https://i.imgur.com/WX80rty.png" group-title="العربية — عامة",177. رؤيا
+#EXTINF:-1 tvg-chno="178" tvg-name="رؤيا" tvg-logo="https://i.imgur.com/WX80rty.png" group-title="القنوات",178. رؤيا
 https://live.kwikmotion.com/royatvpublic/royatv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="178" tvg-name="طيور الجنة" tvg-logo="https://i.ytimg.com/vi/b9iZR_yTyGc/hqdefault.jpg" group-title="العربية — عامة",178. طيور الجنة
+#EXTINF:-1 tvg-chno="179" tvg-name="طيور الجنة" tvg-logo="https://i.ytimg.com/vi/b9iZR_yTyGc/hqdefault.jpg" group-title="القنوات",179. طيور الجنة
 https://www.youtube.com/watch?v=b9iZR_yTyGc
-#EXTINF:-1 tvg-chno="179" tvg-name="الوطنية التونسية Replay" tvg-logo="https://i.ytimg.com/vi/JwB8RmsHOm8/hqdefault.jpg" group-title="العربية — عامة",179. الوطنية التونسية Replay
+#EXTINF:-1 tvg-chno="180" tvg-name="الوطنية التونسية Replay" tvg-logo="https://i.ytimg.com/vi/JwB8RmsHOm8/hqdefault.jpg" group-title="القنوات",180. الوطنية التونسية Replay
 https://www.youtube.com/watch?v=JwB8RmsHOm8
-#EXTINF:-1 tvg-chno="180" tvg-name="قناة الحوار" tvg-logo="https://i.ytimg.com/vi/saUXXC-hXgI/hqdefault.jpg" group-title="العربية — عامة",180. قناة الحوار
+#EXTINF:-1 tvg-chno="181" tvg-name="قناة الحوار" tvg-logo="https://i.ytimg.com/vi/saUXXC-hXgI/hqdefault.jpg" group-title="القنوات",181. قناة الحوار
 https://www.youtube.com/watch?v=saUXXC-hXgI
-#EXTINF:-1 tvg-chno="181" tvg-name="مغامرات منصور" tvg-logo="https://i.ytimg.com/vi/-Ye42cCA4Pg/hqdefault.jpg" group-title="العربية — عامة",181. مغامرات منصور
+#EXTINF:-1 tvg-chno="182" tvg-name="مغامرات منصور" tvg-logo="https://i.ytimg.com/vi/-Ye42cCA4Pg/hqdefault.jpg" group-title="القنوات",182. مغامرات منصور
 https://www.youtube.com/watch?v=-Ye42cCA4Pg
-#EXTINF:-1 tvg-chno="182" tvg-name="قناة أسرتنا" tvg-logo="https://i.ytimg.com/vi/mAWe88KE_aI/hqdefault.jpg" group-title="العربية — عامة",182. قناة أسرتنا
+#EXTINF:-1 tvg-chno="183" tvg-name="قناة أسرتنا" tvg-logo="https://i.ytimg.com/vi/mAWe88KE_aI/hqdefault.jpg" group-title="القنوات",183. قناة أسرتنا
 https://www.youtube.com/watch?v=mAWe88KE_aI
-#EXTINF:-1 tvg-chno="183" tvg-name="ماشا والدب" tvg-logo="https://i.ytimg.com/vi/S_6wjcgw1mk/hqdefault.jpg" group-title="العربية — عامة",183. ماشا والدب
+#EXTINF:-1 tvg-chno="184" tvg-name="ماشا والدب" tvg-logo="https://i.ytimg.com/vi/S_6wjcgw1mk/hqdefault.jpg" group-title="القنوات",184. ماشا والدب
 https://www.youtube.com/watch?v=S_6wjcgw1mk
-#EXTINF:-1 tvg-chno="184" tvg-name="عزوز وجود" tvg-logo="https://i.ytimg.com/vi/0NCEPjBqT_E/hqdefault.jpg" group-title="العربية — عامة",184. عزوز وجود
+#EXTINF:-1 tvg-chno="185" tvg-name="عزوز وجود" tvg-logo="https://i.ytimg.com/vi/0NCEPjBqT_E/hqdefault.jpg" group-title="القنوات",185. عزوز وجود
 https://www.youtube.com/watch?v=0NCEPjBqT_E
-#EXTINF:-1 tvg-chno="185" tvg-name="قناة طم طم" tvg-logo="https://i.ytimg.com/vi/c279_zPPG0w/hqdefault.jpg" group-title="العربية — عامة",185. قناة طم طم
+#EXTINF:-1 tvg-chno="186" tvg-name="قناة طم طم" tvg-logo="https://i.ytimg.com/vi/c279_zPPG0w/hqdefault.jpg" group-title="القنوات",186. قناة طم طم
 https://www.youtube.com/watch?v=c279_zPPG0w
-#EXTINF:-1 tvg-chno="186" tvg-name="الهداف TV" tvg-logo="https://i.ytimg.com/vi/Tqe05NQ9_6o/hqdefault.jpg" group-title="العربية — عامة",186. الهداف TV
+#EXTINF:-1 tvg-chno="187" tvg-name="الهداف TV" tvg-logo="https://i.ytimg.com/vi/Tqe05NQ9_6o/hqdefault.jpg" group-title="القنوات",187. الهداف TV
 https://www.youtube.com/watch?v=Tqe05NQ9_6o
-#EXTINF:-1 tvg-chno="187" tvg-name="طرب" tvg-logo="https://assets.mbcmood.com/channels/1738059679TARAB_Logo.png" group-title="العربية — عامة",187. طرب
+#EXTINF:-1 tvg-chno="188" tvg-name="طرب" tvg-logo="https://assets.mbcmood.com/channels/1738059679TARAB_Logo.png" group-title="القنوات",188. طرب
 https://shd-amg-fast.edgenextcdn.net/tx002/playlist.m3u8
-#EXTINF:-1 tvg-chno="188" tvg-name="محمد عبده" tvg-logo="https://assets.mbcmood.com/channels/1720184012Mohammed%20Abdo%20banner.png" group-title="العربية — عامة",188. محمد عبده
+#EXTINF:-1 tvg-chno="189" tvg-name="محمد عبده" tvg-logo="https://assets.mbcmood.com/channels/1720184012Mohammed%20Abdo%20banner.png" group-title="القنوات",189. محمد عبده
 https://d2ow8h651gs7dx.cloudfront.net/out/v1/371fb663da604e659a2fb99bf89d92d4/index.m3u8
-#EXTINF:-1 tvg-chno="189" tvg-name="عبدالمجيد عبدالله" tvg-logo="https://assets.mbcmood.com/channels/1720184087Abdullah%20Majeed%20Abdullah%20banner.png" group-title="العربية — عامة",189. عبدالمجيد عبدالله
+#EXTINF:-1 tvg-chno="190" tvg-name="عبدالمجيد عبدالله" tvg-logo="https://assets.mbcmood.com/channels/1720184087Abdullah%20Majeed%20Abdullah%20banner.png" group-title="القنوات",190. عبدالمجيد عبدالله
 https://d2hng5r56zpsbw.cloudfront.net/out/v1/9c4c990f44bb4767bb46271f326dd574/index.m3u8
-#EXTINF:-1 tvg-chno="190" tvg-name="راشد الماجد" tvg-logo="https://assets.mbcmood.com/channels/1720177618Rashid%20AlMajed.webp" group-title="العربية — عامة",190. راشد الماجد
+#EXTINF:-1 tvg-chno="191" tvg-name="راشد الماجد" tvg-logo="https://assets.mbcmood.com/channels/1720177618Rashid%20AlMajed.webp" group-title="القنوات",191. راشد الماجد
 https://dphwv2ufgnfsq.cloudfront.net/out/v1/59cd80dfe93a479eb8b4d79bc6f225ca/index.m3u8
-#EXTINF:-1 tvg-chno="191" tvg-name="ماجد المهندس" tvg-logo="" group-title="العربية — عامة",191. ماجد المهندس
+#EXTINF:-1 tvg-chno="192" tvg-name="ماجد المهندس" tvg-logo="" group-title="القنوات",192. ماجد المهندس
 https://shd-amg-fast.edgenextcdn.net/tx019/playlist.m3u8
-#EXTINF:-1 tvg-chno="192" tvg-name="رابح صقر" tvg-logo="https://shahid.mbc.net/mediaObject/b98b0635-c8ed-4a7c-9efa-5856e278f54b?type=png" group-title="العربية — عامة",192. رابح صقر
+#EXTINF:-1 tvg-chno="193" tvg-name="رابح صقر" tvg-logo="https://shahid.mbc.net/mediaObject/b98b0635-c8ed-4a7c-9efa-5856e278f54b?type=png" group-title="القنوات",193. رابح صقر
 https://shd-amg-fast.edgenextcdn.net/tx004/playlist.m3u8
-#EXTINF:-1 tvg-chno="193" tvg-name="فيروز" tvg-logo="https://shahid.mbc.net/mediaObject/f809d51c-e83d-43c9-8236-78731c2216ad?type=png" group-title="العربية — عامة",193. فيروز
+#EXTINF:-1 tvg-chno="194" tvg-name="فيروز" tvg-logo="https://shahid.mbc.net/mediaObject/f809d51c-e83d-43c9-8236-78731c2216ad?type=png" group-title="القنوات",194. فيروز
 https://shd-amg-fast.edgenextcdn.net/tx029/playlist.m3u8
-#EXTINF:-1 tvg-chno="194" tvg-name="أغاني أردنية" tvg-logo="https://i.imgur.com/1DE7Gmw.png" group-title="العربية — عامة",194. أغاني أردنية
+#EXTINF:-1 tvg-chno="195" tvg-name="أغاني أردنية" tvg-logo="https://i.imgur.com/1DE7Gmw.png" group-title="القنوات",195. أغاني أردنية
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Song/playlist.m3u8
-#EXTINF:-1 tvg-chno="195" tvg-name="قناة الاستقامة" tvg-logo="https://i.imgur.com/2FPtYZr.png" group-title="العربية — عامة",195. قناة الاستقامة
+#EXTINF:-1 tvg-chno="196" tvg-name="قناة الاستقامة" tvg-logo="https://i.imgur.com/2FPtYZr.png" group-title="القنوات",196. قناة الاستقامة
 https://jmc-live.ercdn.net/alistiqama/alistiqama.m3u8
-#EXTINF:-1 tvg-chno="196" tvg-name="العراق المستقبل" tvg-logo="https://i.imgur.com/Z7woTe5.png" group-title="العربية — عامة",196. العراق المستقبل
+#EXTINF:-1 tvg-chno="197" tvg-name="العراق المستقبل" tvg-logo="https://i.imgur.com/Z7woTe5.png" group-title="القنوات",197. العراق المستقبل
 https://viewmedia7219.bozztv.com/wmedia/viewmedia100/web_040/Stream/playlist.m3u8
-#EXTINF:-1 tvg-chno="197" tvg-name="الأولى" tvg-logo="https://i.imgur.com/3Kv0t3X.png" group-title="العربية — عامة",197. الأولى
+#EXTINF:-1 tvg-chno="198" tvg-name="الأولى" tvg-logo="https://i.imgur.com/3Kv0t3X.png" group-title="القنوات",198. الأولى
 https://live.alawla.tv/hls/stream.m3u8
-#EXTINF:-1 tvg-chno="198" tvg-name="MTV لبنان" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/7/75/Murr_tv.png" group-title="العربية — عامة",198. MTV لبنان
+#EXTINF:-1 tvg-chno="199" tvg-name="MTV لبنان" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/7/75/Murr_tv.png" group-title="القنوات",199. MTV لبنان
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mtv-lebanon/b8ebb2a5affb812f1541712adde10e26/index.m3u8
-#EXTINF:-1 tvg-chno="199" tvg-name="تلفزيون المستقبل" tvg-logo="https://i.imgur.com/OaqEpwe.png" group-title="العربية — عامة",199. تلفزيون المستقبل
+#EXTINF:-1 tvg-chno="200" tvg-name="تلفزيون المستقبل" tvg-logo="https://i.imgur.com/OaqEpwe.png" group-title="القنوات",200. تلفزيون المستقبل
 https://live.kwikmotion.com/futurelive/ftv.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="200" tvg-name="هلا لندن" tvg-logo="https://i.imgur.com/bM4VZDH.png" group-title="العربية — عامة",200. هلا لندن
+#EXTINF:-1 tvg-chno="201" tvg-name="هلا لندن" tvg-logo="https://i.imgur.com/bM4VZDH.png" group-title="القنوات",201. هلا لندن
 https://halalondon-live.ercdn.net/halalondon/halalondon.m3u8
-#EXTINF:-1 tvg-chno="201" tvg-name="الوطنية التونسية 1" tvg-logo="https://i.imgur.com/gNr2V14.png" group-title="العربية — عامة",201. الوطنية التونسية 1
+#EXTINF:-1 tvg-chno="202" tvg-name="الوطنية التونسية 1" tvg-logo="https://i.imgur.com/gNr2V14.png" group-title="القنوات",202. الوطنية التونسية 1
 https://sw1.tanitweb.net/TunisiaTV/_definst_/watania1/chunklist.m3u8
-#EXTINF:-1 tvg-chno="202" tvg-name="أكاديمية الطهاة" tvg-logo="https://platform-iuoamc.uk/storage/tv/branding/mca-tv-official-logo.png" group-title="العربية — عامة",202. أكاديمية الطهاة
+#EXTINF:-1 tvg-chno="203" tvg-name="أكاديمية الطهاة" tvg-logo="https://platform-iuoamc.uk/storage/tv/branding/mca-tv-official-logo.png" group-title="القنوات",203. أكاديمية الطهاة
 https://platform-iuoamc.uk/iptv/mca-tv/index.m3u8
-#EXTINF:-1 tvg-chno="203" tvg-name="ليبيا الوطنية" tvg-logo="https://i.imgur.com/KSUny9D.jpeg" group-title="العربية — عامة",203. ليبيا الوطنية
+#EXTINF:-1 tvg-chno="204" tvg-name="ليبيا الوطنية" tvg-logo="https://i.imgur.com/KSUny9D.jpeg" group-title="القنوات",204. ليبيا الوطنية
 https://cdn-globecast.akamaized.net/live/eds/libya_al_watanya/hls_roku/index.m3u8
-#EXTINF:-1 tvg-chno="204" tvg-name="تلفزيون السودان" tvg-logo="https://i.imgur.com/XUPAYAA.png" group-title="العربية — عامة",204. تلفزيون السودان
+#EXTINF:-1 tvg-chno="205" tvg-name="تلفزيون السودان" tvg-logo="https://i.imgur.com/XUPAYAA.png" group-title="القنوات",205. تلفزيون السودان
 https://cdn-globecast.akamaized.net/live/eds/sudan_tv/hls_roku/index.m3u8
-#EXTINF:-1 tvg-chno="205" tvg-name="السورية الثانية" tvg-logo="" group-title="العربية — عامة",205. السورية الثانية
+#EXTINF:-1 tvg-chno="206" tvg-name="السورية الثانية" tvg-logo="" group-title="القنوات",206. السورية الثانية
 https://live.kwikmotion.com/syriatv02live/syriatv02.smil/playlist.m3u8
-#EXTINF:-1 tvg-chno="206" tvg-name="السورية" tvg-logo="https://i.imgur.com/8FILgXT.jpeg" group-title="العربية — عامة",206. السورية
+#EXTINF:-1 tvg-chno="207" tvg-name="السورية" tvg-logo="https://i.imgur.com/8FILgXT.jpeg" group-title="القنوات",207. السورية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-souriya-tv/e3150760fa5fd62776225433b8c3d406/index.m3u8
-#EXTINF:-1 tvg-chno="207" tvg-name="OTV لبنان" tvg-logo="https://i.imgur.com/toxFMeY.png" group-title="العربية — عامة",207. OTV لبنان
+#EXTINF:-1 tvg-chno="208" tvg-name="OTV لبنان" tvg-logo="https://i.imgur.com/toxFMeY.png" group-title="القنوات",208. OTV لبنان
 https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8
-#EXTINF:-1 tvg-chno="208" tvg-name="UTV العراق" tvg-logo="https://i.imgur.com/9qFHjnu.png" group-title="العربية — عامة",208. UTV العراق
+#EXTINF:-1 tvg-chno="209" tvg-name="UTV العراق" tvg-logo="https://i.imgur.com/9qFHjnu.png" group-title="القنوات",209. UTV العراق
 https://utviraqi-live.lg.mncdn.com/utviraqi-live/64c80359/index.m3u8
-#EXTINF:-1 tvg-chno="209" tvg-name="الوسط" tvg-logo="https://i.imgur.com/f9pL2NE.png" group-title="العربية — عامة",209. الوسط
+#EXTINF:-1 tvg-chno="210" tvg-name="الوسط" tvg-logo="https://i.imgur.com/f9pL2NE.png" group-title="القنوات",210. الوسط
 https://alwasattv.hibridcdn.net/alwasattv/alwasat_abr/playlist.m3u8
-#EXTINF:-1 tvg-chno="210" tvg-name="ستوري تشانل" tvg-logo="https://i.imgur.com/ZBV6xph.png" group-title="العربية — عامة",210. ستوري تشانل
+#EXTINF:-1 tvg-chno="211" tvg-name="ستوري تشانل" tvg-logo="https://i.imgur.com/ZBV6xph.png" group-title="القنوات",211. ستوري تشانل
 https://136044159.r.cdnsun.net/storychannel.m3u8
-#EXTINF:-1 tvg-chno="211" tvg-name="الرشيد" tvg-logo="" group-title="العربية — عامة",211. الرشيد
+#EXTINF:-1 tvg-chno="212" tvg-name="الرشيد" tvg-logo="" group-title="القنوات",212. الرشيد
 https://media1.livaat.com/static/AL-RASHEED-HD/playlist.m3u8
-#EXTINF:-1 tvg-chno="212" tvg-name="One TV لبنان" tvg-logo="" group-title="العربية — عامة",212. One TV لبنان
+#EXTINF:-1 tvg-chno="213" tvg-name="One TV لبنان" tvg-logo="" group-title="القنوات",213. One TV لبنان
 https://hms.pfs.gdn/v1/broadcast/one/playlist.m3u8
-#EXTINF:-1 tvg-chno="213" tvg-name="شدى تيفي" tvg-logo="" group-title="العربية — عامة",213. شدى تيفي
+#EXTINF:-1 tvg-chno="214" tvg-name="شدى تيفي" tvg-logo="" group-title="القنوات",214. شدى تيفي
 https://edge13.vedge.infomaniak.com/livecast/ik:chadatv/manifest.m3u8
-#EXTINF:-1 tvg-chno="214" tvg-name="نورسات" tvg-logo="" group-title="العربية — عامة",214. نورسات
+#EXTINF:-1 tvg-chno="215" tvg-name="نورسات" tvg-logo="" group-title="القنوات",215. نورسات
 https://svs.itworkscdn.net/nour4satlive/livestream/playlist.m3u8
-#EXTINF:-1 tvg-chno="215" tvg-name="المدينة" tvg-logo="" group-title="العربية — عامة",215. المدينة
+#EXTINF:-1 tvg-chno="216" tvg-name="المدينة" tvg-logo="" group-title="القنوات",216. المدينة
 https://streaming.zaytonatube.com:8081/AlMadinatv/almadina21/tracks-v1a1/mono.ts.m3u8
-#EXTINF:-1 tvg-chno="216" tvg-name="فلسطيني" tvg-logo="" group-title="العربية — عامة",216. فلسطيني
+#EXTINF:-1 tvg-chno="217" tvg-name="فلسطيني" tvg-logo="" group-title="القنوات",217. فلسطيني
 https://rp.tactivemedia.com/palestiniantv_source/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="217" tvg-name="المعارف" tvg-logo="" group-title="العربية — عامة",217. المعارف
+#EXTINF:-1 tvg-chno="218" tvg-name="المعارف" tvg-logo="" group-title="القنوات",218. المعارف
 https://bucharest.zeuscdn724.com/lb0/CH-AL-MA/index.m3u8
-#EXTINF:-1 tvg-chno="218" tvg-name="إذاعة جدة" tvg-logo="" group-title="العربية — عامة",218. إذاعة جدة
+#EXTINF:-1 tvg-chno="219" tvg-name="إذاعة جدة" tvg-logo="" group-title="القنوات",219. إذاعة جدة
 https://live.kwikmotion.com/sbrksajeddahradiolive/srpksajeddahradio/chunks.m3u8
-#EXTINF:-1 tvg-chno="219" tvg-name="قناة المملكة" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k2Q10aeHs5-DCmdpJghKWzPdB0iqLpM00pUcvt2KKijFc=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",219. قناة المملكة
+#EXTINF:-1 tvg-chno="220" tvg-name="قناة المملكة" tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k2Q10aeHs5-DCmdpJghKWzPdB0iqLpM00pUcvt2KKijFc=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",220. قناة المملكة
 https://www.youtube.com/watch?v=YAQQ1RLfQtY
-#EXTINF:-1 tvg-chno="220" tvg-name="بي بي سي نيوز عربي" tvg-logo="https://yt3.googleusercontent.com/lNnHQPUKQCFpFV2bIMEfexakkowja2RCVOsRRV8eOCFslwk_a4tRR5oNwg_S67J9zyYP_wAw=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",220. بي بي سي نيوز عربي
+#EXTINF:-1 tvg-chno="221" tvg-name="بي بي سي نيوز عربي" tvg-logo="https://yt3.googleusercontent.com/lNnHQPUKQCFpFV2bIMEfexakkowja2RCVOsRRV8eOCFslwk_a4tRR5oNwg_S67J9zyYP_wAw=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",221. بي بي سي نيوز عربي
 https://www.youtube.com/watch?v=O1pGmVtj2Y8
-#EXTINF:-1 tvg-chno="221" tvg-name="الميادين مباشر" tvg-logo="https://yt3.googleusercontent.com/v8xEx3kGQ31RB-_RzPBi_vVeFpwR_1gJUYHFp9APrmQ4QOZAr9NXwCNqLcDg4ZIgWD_9kSnr=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",221. الميادين مباشر
+#EXTINF:-1 tvg-chno="222" tvg-name="الميادين مباشر" tvg-logo="https://yt3.googleusercontent.com/v8xEx3kGQ31RB-_RzPBi_vVeFpwR_1gJUYHFp9APrmQ4QOZAr9NXwCNqLcDg4ZIgWD_9kSnr=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",222. الميادين مباشر
 https://www.youtube.com/watch?v=oIuWBQeglfs
-#EXTINF:-1 tvg-chno="222" tvg-name="المشهد" tvg-logo="https://i.ytimg.com/vi/fvYBSnXrdEA/hqdefault.jpg" group-title="العربية — عامة",222. المشهد
+#EXTINF:-1 tvg-chno="223" tvg-name="المشهد" tvg-logo="https://i.ytimg.com/vi/fvYBSnXrdEA/hqdefault.jpg" group-title="القنوات",223. المشهد
 https://www.youtube.com/watch?v=fvYBSnXrdEA
-#EXTINF:-1 tvg-chno="223" tvg-name="قناة شمال أفريقيا" tvg-logo="https://i.ytimg.com/vi/9shxDbKJnZw/hqdefault.jpg" group-title="العربية — عامة",223. قناة شمال أفريقيا
+#EXTINF:-1 tvg-chno="224" tvg-name="قناة شمال أفريقيا" tvg-logo="https://i.ytimg.com/vi/9shxDbKJnZw/hqdefault.jpg" group-title="القنوات",224. قناة شمال أفريقيا
 https://www.youtube.com/watch?v=9shxDbKJnZw
-#EXTINF:-1 tvg-chno="224" tvg-name="قناة دجلة" tvg-logo="https://yt3.googleusercontent.com/Jvz8eXWsTSUOrboHhpstfexresQqms9Yrw0YPLy34eu19xlA1zr_bMTahSTg0yaHmr26zgjbtA=s240-c-k-c0x00ffffff-no-rj" group-title="العربية — عامة",224. قناة دجلة
+#EXTINF:-1 tvg-chno="225" tvg-name="قناة دجلة" tvg-logo="https://yt3.googleusercontent.com/Jvz8eXWsTSUOrboHhpstfexresQqms9Yrw0YPLy34eu19xlA1zr_bMTahSTg0yaHmr26zgjbtA=s240-c-k-c0x00ffffff-no-rj" group-title="القنوات",225. قناة دجلة
 https://www.youtube.com/watch?v=0Qb-8ix4OeI
-#EXTINF:-1 tvg-chno="225" tvg-name="فلسطين الفضائية" tvg-logo="" group-title="العربية — عامة",225. فلسطين الفضائية
+#EXTINF:-1 tvg-chno="226" tvg-name="فلسطين الفضائية" tvg-logo="" group-title="القنوات",226. فلسطين الفضائية
 https://cdn-globecast.akamaized.net/live/eds/palestinian_satellite_channel/hls_roku/palestinian_satellite_channel.m3u8
-#EXTINF:-1 tvg-chno="226" tvg-name="وطن" tvg-logo="https://i.imgur.com/pZyKaUH.png" group-title="العربية — عامة",226. وطن
+#EXTINF:-1 tvg-chno="227" tvg-name="وطن" tvg-logo="https://i.imgur.com/pZyKaUH.png" group-title="القنوات",227. وطن
 https://htvmada.mada.ps:4443/wattan/index.m3u8
-#EXTINF:-1 tvg-chno="227" tvg-name="الجزيرة مباشر 24" tvg-logo="https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg" group-title="العربية — عامة",227. الجزيرة مباشر 24
-https://live-hls-apps-ajm24-fa.getaj.net/AJM24/index.m3u8
-#EXTINF:-1 tvg-chno="228" tvg-name="حلب اليوم" tvg-logo="" group-title="العربية — عامة",228. حلب اليوم
+#EXTINF:-1 tvg-chno="228" tvg-name="حلب اليوم" tvg-logo="" group-title="القنوات",228. حلب اليوم
 https://halabtoday-live.lg.mncdn.com/halabtoday/livestream/playlist.m3u8
-#EXTINF:-1 tvg-chno="229" tvg-name="الوطنية 1" tvg-logo="" group-title="العربية — عامة",229. الوطنية 1
+#EXTINF:-1 tvg-chno="229" tvg-name="الوطنية 1" tvg-logo="" group-title="القنوات",229. الوطنية 1
 https://sw1.tanitweb.net/TunisiaTV/_definst_/watania1/playlist.m3u8?DVR
-#EXTINF:-1 tvg-chno="230" tvg-name="موزاييك تونس" tvg-logo="" group-title="العربية — عامة",230. موزاييك تونس
+#EXTINF:-1 tvg-chno="230" tvg-name="موزاييك تونس" tvg-logo="" group-title="القنوات",230. موزاييك تونس
 https://webcam.mosaiquefm.net/mosatv/_definst_/studio/playlist.m3u8?DVR
-#EXTINF:-1 tvg-chno="231" tvg-name="BabyFirst للأطفال" tvg-logo="" group-title="العربية — عامة",231. BabyFirst للأطفال
+#EXTINF:-1 tvg-chno="231" tvg-name="BabyFirst للأطفال" tvg-logo="" group-title="القنوات",231. BabyFirst للأطفال
 https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8
-#EXTINF:-1 tvg-chno="232" tvg-name="ذكريات" tvg-logo="" group-title="العربية — عامة",232. ذكريات
+#EXTINF:-1 tvg-chno="232" tvg-name="ذكريات" tvg-logo="" group-title="القنوات",232. ذكريات
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thikrayat/8cfa8fe0c96275735745b89c683b27e3/index.m3u8
-#EXTINF:-1 tvg-chno="233" tvg-name="العراقية" tvg-logo="" group-title="العربية — عامة",233. العراقية
+#EXTINF:-1 tvg-chno="233" tvg-name="العراقية" tvg-logo="" group-title="القنوات",233. العراقية
 https://imn-live.esite-lab.com/hls/iraqia-general.m3u8
-#EXTINF:-1 tvg-chno="234" tvg-name="العراقية الرياضية" tvg-logo="" group-title="العربية — عامة",234. العراقية الرياضية
+#EXTINF:-1 tvg-chno="234" tvg-name="العراقية الرياضية" tvg-logo="" group-title="القنوات",234. العراقية الرياضية
 https://imn-live.esite-lab.com/hls/iraqia-sports-1.m3u8
-#EXTINF:-1 tvg-chno="235" tvg-name="اليمن اليوم" tvg-logo="" group-title="العربية — عامة",235. اليمن اليوم
+#EXTINF:-1 tvg-chno="235" tvg-name="اليمن اليوم" tvg-logo="" group-title="القنوات",235. اليمن اليوم
 https://video.yementdy.tv/hls/yementoday.m3u8
-#EXTINF:-1 tvg-chno="236" tvg-name="قناة الاتحاد" tvg-logo="" group-title="العربية — عامة",236. قناة الاتحاد
+#EXTINF:-1 tvg-chno="236" tvg-name="قناة الاتحاد" tvg-logo="" group-title="القنوات",236. قناة الاتحاد
 https://live.alittihad.tv:444/ittihad/index.m3u8
-#EXTINF:-1 tvg-chno="237" tvg-name="الرسالة" tvg-logo="" group-title="العربية — عامة",237. الرسالة
+#EXTINF:-1 tvg-chno="237" tvg-name="الرسالة" tvg-logo="" group-title="القنوات",237. الرسالة
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://rotana.hibridcdn.net/rotananet/risala_net-7Y83PP5adWixDF93/playlist.m3u8
-#EXTINF:-1 tvg-chno="238" tvg-name="قناة طه" tvg-logo="" group-title="العربية — عامة",238. قناة طه
+#EXTINF:-1 tvg-chno="238" tvg-name="قناة طه" tvg-logo="" group-title="القنوات",238. قناة طه
 https://stream.starmenajo.com/hls/app/live/ts:fhd.m3u8
-#EXTINF:-1 tvg-chno="239" tvg-name="مارينا تي في" tvg-logo="" group-title="العربية — عامة",239. مارينا تي في
+#EXTINF:-1 tvg-chno="239" tvg-name="مارينا تي في" tvg-logo="" group-title="القنوات",239. مارينا تي في
 https://ffs.gulfsat.com/Marina-TV-HD/index.m3u8
-#EXTINF:-1 tvg-chno="240" tvg-name="ريتمو تي في" tvg-logo="" group-title="العربية — عامة",240. ريتمو تي في
+#EXTINF:-1 tvg-chno="240" tvg-name="ريتمو تي في" tvg-logo="" group-title="القنوات",240. ريتمو تي في
 https://659605a54e9a6.streamlock.net:8443/live/livestream/playlist.m3u8
-#EXTINF:-1 tvg-chno="241" tvg-name="كربلاء الوثائقية" tvg-logo="" group-title="العربية — عامة",241. كربلاء الوثائقية
+#EXTINF:-1 tvg-chno="241" tvg-name="كربلاء الوثائقية" tvg-logo="" group-title="القنوات",241. كربلاء الوثائقية
 https://ktvlive.online/stream/hls/ch3.m3u8
-#EXTINF:-1 tvg-chno="242" tvg-name="MTA العربية" tvg-logo="" group-title="العربية — عامة",242. MTA العربية
+#EXTINF:-1 tvg-chno="242" tvg-name="MTA العربية" tvg-logo="" group-title="القنوات",242. MTA العربية
 https://chlivemta1.akamaized.net/hls/live/2010556/mta3alarabia/playlist.m3u8
-#EXTINF:-1 tvg-chno="243" tvg-name="زاغروس" tvg-logo="" group-title="العربية — عامة",243. زاغروس
+#EXTINF:-1 tvg-chno="243" tvg-name="زاغروس" tvg-logo="" group-title="القنوات",243. زاغروس
 https://hlspackager.akamaized.net/live/DB/ZAGROS_TV/HLS/ZAGROS_TV.m3u8
-#EXTINF:-1 tvg-chno="244" tvg-name="الشرق المصرية" tvg-logo="" group-title="العربية — عامة",244. الشرق المصرية
+#EXTINF:-1 tvg-chno="244" tvg-name="الشرق المصرية" tvg-logo="" group-title="القنوات",244. الشرق المصرية
 https://mn-nl.mncdn.com/elsharq_live/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="245" tvg-name="هلا تي في" tvg-logo="" group-title="العربية — عامة",245. هلا تي في
+#EXTINF:-1 tvg-chno="245" tvg-name="هلا تي في" tvg-logo="" group-title="القنوات",245. هلا تي في
 https://stream.panet.com/edge/halaTV/playlist.m3u8
-#EXTINF:-1 tvg-chno="246" tvg-name="آي فيلم العربية" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/IFILM.png" group-title="العربية — عامة",246. آي فيلم العربية
+#EXTINF:-1 tvg-chno="246" tvg-name="آي فيلم العربية" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/IFILM.png" group-title="القنوات",246. آي فيلم العربية
 https://live.presstv.co.uk/hls/ifilmar_4_482/index.m3u8
-#EXTINF:-1 tvg-chno="247" tvg-name="الولاية" tvg-logo="https://i.imgur.com/OI1HQv5.png" group-title="العربية — عامة",247. الولاية
+#EXTINF:-1 tvg-chno="247" tvg-name="الولاية" tvg-logo="https://i.imgur.com/OI1HQv5.png" group-title="القنوات",247. الولاية
 https://nl.livekadeh.com/hls2/alwilayah_tv.m3u8
-#EXTINF:-1 tvg-chno="248" tvg-name="كوردسات نيوز" tvg-logo="https://i.imgur.com/F3XRwkt.png" group-title="العربية — عامة",248. كوردسات نيوز
+#EXTINF:-1 tvg-chno="248" tvg-name="كوردسات نيوز" tvg-logo="https://i.imgur.com/F3XRwkt.png" group-title="القنوات",248. كوردسات نيوز
 https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8
-#EXTINF:-1 tvg-chno="249" tvg-name="أخبار العالم" tvg-logo="https://i.imgur.com/MfyRQCs.png" group-title="العربية — عامة",249. أخبار العالم
+#EXTINF:-1 tvg-chno="249" tvg-name="أخبار العالم" tvg-logo="https://i.imgur.com/MfyRQCs.png" group-title="القنوات",249. أخبار العالم
 https://live.nowtelly.com/now_arabic/live/playlist.m3u8
-#EXTINF:-1 tvg-chno="250" tvg-name="رصد" tvg-logo="https://i.imgur.com/9Pb8806.png" group-title="العربية — عامة",250. رصد
+#EXTINF:-1 tvg-chno="250" tvg-name="رصد" tvg-logo="https://i.imgur.com/9Pb8806.png" group-title="القنوات",250. رصد
 https://cloud.streamingconnect.tv/hls/rasdtv2/rasdtv.m3u8
-#EXTINF:-1 tvg-chno="251" tvg-name="سات 7 عربي" tvg-logo="https://i.imgur.com/BzDjQeQ.png" group-title="العربية — عامة",251. سات 7 عربي
+#EXTINF:-1 tvg-chno="251" tvg-name="سات 7 عربي" tvg-logo="https://i.imgur.com/BzDjQeQ.png" group-title="القنوات",251. سات 7 عربي
 https://svs.itworkscdn.net/sat7arabiclive/sat7arabic.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="252" tvg-name="سات 7 أطفال" tvg-logo="https://i.imgur.com/M0ik0i2.png" group-title="العربية — عامة",252. سات 7 أطفال
+#EXTINF:-1 tvg-chno="252" tvg-name="سات 7 أطفال" tvg-logo="https://i.imgur.com/M0ik0i2.png" group-title="القنوات",252. سات 7 أطفال
 https://svs.itworkscdn.net/sat7kidslive/sat7kids.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-chno="253" tvg-name="أصيل" tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="العربية — عامة",253. أصيل
+#EXTINF:-1 tvg-chno="253" tvg-name="أصيل" tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="القنوات",253. أصيل
 https://live.asil.tv/asiltv/index.m3u8
-#EXTINF:-1 tvg-chno="254" tvg-name="تكبير" tvg-logo="https://i.imgur.com/Cvnps2J.jpg" group-title="العربية — عامة",254. تكبير
+#EXTINF:-1 tvg-chno="254" tvg-name="تكبير" tvg-logo="https://i.imgur.com/Cvnps2J.jpg" group-title="القنوات",254. تكبير
 https://cd198.anystream.uk:9092/iqapp/t5kb86tv/playlist.m3u8
-#EXTINF:-1 tvg-chno="255" tvg-name="العربية Business" tvg-logo="https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg" group-title="العربية — عامة",255. العربية Business
+#EXTINF:-1 tvg-chno="255" tvg-name="العربية Business" tvg-logo="https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg" group-title="القنوات",255. العربية Business
 https://live.alarabiya.net/alarabiapublish/aswaaq.smil/playlist.m3u8
