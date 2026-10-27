@@ -23,6 +23,7 @@ import { Route as LiveRouteImport } from './routes/live'
 import { Route as LiveChatRouteImport } from './routes/live-chat'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as MyAccountRouteImport } from './routes/my-account'
+import { Route as MyIptvRouteImport } from './routes/my-iptv'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleAdminRouteImport } from './routes/schedule-admin'
@@ -113,6 +114,11 @@ const MoviesRoute = MoviesRouteImport.update({
 const MyAccountRoute = MyAccountRouteImport.update({
   id: '/my-account',
   path: '/my-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyIptvRoute = MyIptvRouteImport.update({
+  id: '/my-iptv',
+  path: '/my-iptv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuranRoute = QuranRouteImport.update({
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
   '/my-account': typeof MyAccountRoute
+  '/my-iptv': typeof MyIptvRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
   '/my-account': typeof MyAccountRoute
+  '/my-iptv': typeof MyIptvRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -312,6 +320,7 @@ export interface FileRoutesById {
   '/live-chat': typeof LiveChatRoute
   '/movies': typeof MoviesRoute
   '/my-account': typeof MyAccountRoute
+  '/my-iptv': typeof MyIptvRoute
   '/quran': typeof QuranRoute
   '/reset-password': typeof ResetPasswordRoute
   '/schedule-admin': typeof ScheduleAdminRoute
@@ -351,6 +360,7 @@ export interface FileRouteTypes {
     | '/live-chat'
     | '/movies'
     | '/my-account'
+    | '/my-iptv'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -388,6 +398,7 @@ export interface FileRouteTypes {
     | '/live-chat'
     | '/movies'
     | '/my-account'
+    | '/my-iptv'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -425,6 +436,7 @@ export interface FileRouteTypes {
     | '/live-chat'
     | '/movies'
     | '/my-account'
+    | '/my-iptv'
     | '/quran'
     | '/reset-password'
     | '/schedule-admin'
@@ -463,6 +475,7 @@ export interface RootRouteChildren {
   LiveChatRoute: typeof LiveChatRoute
   MoviesRoute: typeof MoviesRoute
   MyAccountRoute: typeof MyAccountRoute
+  MyIptvRoute: typeof MyIptvRoute
   QuranRoute: typeof QuranRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleAdminRoute: typeof ScheduleAdminRoute
@@ -584,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/my-account'
       fullPath: '/my-account'
       preLoaderRoute: typeof MyAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-iptv': {
+      id: '/my-iptv'
+      path: '/my-iptv'
+      fullPath: '/my-iptv'
+      preLoaderRoute: typeof MyIptvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quran': {
@@ -751,6 +771,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveChatRoute: LiveChatRoute,
   MoviesRoute: MoviesRoute,
   MyAccountRoute: MyAccountRoute,
+  MyIptvRoute: MyIptvRoute,
   QuranRoute: QuranRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ScheduleAdminRoute: ScheduleAdminRoute,
