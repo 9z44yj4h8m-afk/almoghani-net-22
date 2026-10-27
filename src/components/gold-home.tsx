@@ -37,14 +37,14 @@ export function GoldHome() {
     window.location.href = href;
   };
   return (
-    <div dir="rtl" className="mx-auto w-full max-w-xl space-y-5 px-3 py-4">
+    <div dir="rtl" className="mx-auto w-full max-w-xl space-y-5 px-3 py-4 lg:max-w-6xl lg:space-y-8 lg:px-8 lg:py-8">
       <header className="flex items-center justify-between">
-        <button aria-label="حسابي" onClick={() => navigate({ to: "/auth" })} className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground">
-          <User className="h-5 w-5" />
+        <button aria-label="حسابي" onClick={() => navigate({ to: "/auth" })} className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground lg:h-14 lg:w-14">
+          <User className="h-5 w-5 lg:h-6 lg:w-6" />
         </button>
-        <img src={logo.url} alt="ALMOGHANI LIVE PLAY" className="h-14 w-auto" />
-        <span className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground">
-          <Bell className="h-5 w-5" />
+        <img src={logo.url} alt="ALMOGHANI LIVE PLAY" className="h-14 w-auto lg:h-24" />
+        <span className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground lg:h-14 lg:w-14">
+          <Bell className="h-5 w-5 lg:h-6 lg:w-6" />
         </span>
       </header>
 
