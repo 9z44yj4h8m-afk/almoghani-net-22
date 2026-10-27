@@ -30,7 +30,7 @@
 - Keep featured subscription metadata separate from public streams and resolve library matches server-side; detail pages must never substitute unrelated channels or fabricate schedules.
 - Owner-editable site data (texts, contacts, design colors, extra/hidden channels and movies) lives in admin-only-write tables and is merged client-side via src/lib/site-config.ts on top of the static catalogs, so the code catalogs stay the fallback.
 
-- Share shell and wordmark through the sidebar rail only; the contact footer strip and the four-item bottom nav were removed at the owner's request (19 Oct 2026) and must not come back, so every destination stays reachable from the rail. Preserve guards. Keep artwork browser-safe, separate from streams; owner images win.
+- Share shell and wordmark through the sidebar rail on site pages, but the owner removed every top menu and the rail from the home and /tv screens (28 Oct 2026): those two open straight on the content rows and every destination stays reachable from the bottom access row. The contact footer strip and the four-item bottom nav stay removed. Preserve guards. Keep artwork browser-safe, separate from streams; owner images win.
 - Admin content manager uses existing admin-RLS tables for bulk channels and schedules; validate streams before insertion and invalidate schedule queries after saves.
 - Store default/custom cards, edits, placement, order and recoverable deletion in section-content; shared helpers merge them across home, sections and members, preserving destination gates and channel IDs.
 - Read subdirectories' AGENTS.md before editing there.
