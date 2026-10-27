@@ -37,14 +37,14 @@ export function GoldHome() {
     window.location.href = href;
   };
   return (
-    <div dir="rtl" className="mx-auto w-full max-w-xl space-y-5 px-3 py-4">
+    <div dir="rtl" className="mx-auto w-full max-w-xl space-y-5 px-3 py-4 lg:max-w-6xl lg:space-y-8 lg:px-8 lg:py-8">
       <header className="flex items-center justify-between">
-        <button aria-label="حسابي" onClick={() => navigate({ to: "/auth" })} className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground">
-          <User className="h-5 w-5" />
+        <button aria-label="حسابي" onClick={() => navigate({ to: "/auth" })} className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground lg:h-14 lg:w-14">
+          <User className="h-5 w-5 lg:h-6 lg:w-6" />
         </button>
-        <img src={logo.url} alt="ALMOGHANI LIVE PLAY" className="h-14 w-auto" />
-        <span className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground">
-          <Bell className="h-5 w-5" />
+        <img src={logo.url} alt="ALMOGHANI LIVE PLAY" className="h-14 w-auto lg:h-24" />
+        <span className="grid h-11 w-11 place-items-center rounded-full border border-primary/60 text-foreground lg:h-14 lg:w-14">
+          <Bell className="h-5 w-5 lg:h-6 lg:w-6" />
         </span>
       </header>
 
@@ -53,18 +53,18 @@ export function GoldHome() {
           e.preventDefault();
           go(`/live${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
         }}
-        className="flex items-center gap-2 rounded-full border border-primary/50 bg-card/70 px-4 py-3"
+        className="flex items-center gap-2 rounded-full border border-primary/50 bg-card/70 px-4 py-3 lg:px-6 lg:py-4"
       >
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن قناة" className="flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground" />
-        <button type="submit" aria-label="بحث"><Search className="h-5 w-5 text-foreground" /></button>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن قناة" className="flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground lg:text-xl" />
+        <button type="submit" aria-label="بحث"><Search className="h-5 w-5 text-foreground lg:h-6 lg:w-6" /></button>
       </form>
 
       <a href="/live" className={frame} aria-label="البث المباشر — شاهد الآن">
         <img src={hero.url} alt="البث المباشر" className="w-full" />
       </a>
 
-      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground">اكتشف الأقسام</h2>
-      <div className="grid grid-cols-2 gap-3">
+      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground lg:text-2xl">اكتشف الأقسام</h2>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-5">
         {sections.map((s) => (
           <a key={s.label} href={s.href} className={frame} aria-label={s.label}>
             <img src={s.img} alt={s.label} className="w-full" />
@@ -72,8 +72,8 @@ export function GoldHome() {
         ))}
       </div>
 
-      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground">قنواتك المفضلة</h2>
-      <div className="grid grid-cols-3 gap-2">
+      <h2 className="border-r-4 border-primary pr-2 text-lg font-bold text-foreground lg:text-2xl">قنواتك المفضلة</h2>
+      <div className="grid grid-cols-3 gap-2 lg:gap-5">
         {favs.map((f) => (
           <a key={f.label} href={f.href} className={frame} aria-label={f.label}>
             <img src={f.img} alt={f.label} className="w-full" />
