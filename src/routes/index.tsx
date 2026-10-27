@@ -18,11 +18,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <>
-      <GoldHome />
-      <PortalPage homepage />
-    </>
-  ),
+  component: () => <GoldHome />,
 });
 
