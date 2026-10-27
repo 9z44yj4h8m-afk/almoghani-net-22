@@ -1,7 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { GoldHome } from "@/components/gold-home";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: ({ url }) => {
+    // Channel deep links now play in the live workspace; the new homepage is display-only.
+    if (url && (url.pathname.includes("channel=") || new URLSearchParams(url.search).has("channel"))) {
+      throw redirect({ to: "/live", search: { channel: new URLSearchParams(url.search).get("channel") ?? "" } });
+    }
+  },
   head: () => ({
     meta: [
       { title: "المغني لايف — بث مباشر" },
