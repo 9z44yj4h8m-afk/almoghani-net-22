@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { PortalPage } from "@/components/portal-page";
 import { GoldHome } from "@/components/gold-home";
 
 export const Route = createFileRoute("/")({
@@ -19,11 +19,13 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <>
-      <GoldHome />
-      <PortalPage homepage />
-    </>
-  ),
+  component: () => {
+    // Channel deep links now play in the live workspace; the new homepage is display-only.
+    useEffect(() => {
+      const channel = new URLSearchParams(window.location.search).get("channel");
+      if (channel) window.location.replace(`/live?channel=${encodeURIComponent(channel)}`);
+    }, []);
+    return <GoldHome />;
+  },
 });
 
