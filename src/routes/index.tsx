@@ -4,9 +4,8 @@ import { GoldHome } from "@/components/gold-home";
 export const Route = createFileRoute("/")({
   beforeLoad: ({ url }) => {
     // Channel deep links now play in the live workspace; the new homepage is display-only.
-    if (url && (url.pathname.includes("channel=") || new URLSearchParams(url.search).has("channel"))) {
-      throw redirect({ to: "/live", search: { channel: new URLSearchParams(url.search).get("channel") ?? "" } });
-    }
+    const channel = url ? new URLSearchParams(url.search).get("channel") : null;
+    if (channel) throw redirect({ href: `/live?channel=${encodeURIComponent(channel)}` });
   },
   head: () => ({
     meta: [
