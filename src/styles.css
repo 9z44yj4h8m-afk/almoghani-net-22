@@ -1546,3 +1546,6 @@ body { background: var(--background); }
 @media(max-width:767px) { .iptv-categories { overflow-x:auto; } }
 
 .media-catalog-page > #movie-player { width:100%; max-width:860px; margin-inline:auto; }
+.media-access { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; padding-top:8px; }.media-access a { color:var(--muted-foreground); }
+.media-home-brand { display:flex; justify-content:center; padding:22px 0 6px; }.media-home-brand .broadcast-brand { font-size:18px; }.media-home-brand .broadcast-brand-logo { width:30px; height:30px; }
+@media(max-width:767px) { .media-access a,.media-shortcuts a { font-size:12px; }.media-home-brand { padding-top:16px; }.media-home-brand .broadcast-brand { font-size:15px; } }
