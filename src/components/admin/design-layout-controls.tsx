@@ -15,6 +15,13 @@ export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, ca
   const send = () => frame.current?.contentWindow?.postMessage({ type: "almoghani-design-preview", design }, window.location.origin);
   useEffect(() => { send(); }, [design, width]);
   useEffect(() => {
+    const receive = (event: MessageEvent) => {
+      if (event.origin === window.location.origin && event.source === frame.current?.contentWindow && event.data?.type === "almoghani-preview-ready") send();
+    };
+    window.addEventListener("message", receive);
+    return () => window.removeEventListener("message", receive);
+  }, [design]);
+  useEffect(() => {
     const element = host.current;
     if (!element) return;
     const observer = new ResizeObserver(([entry]) => { if (entry) setAvailable(entry.contentRect.width); });
@@ -35,7 +42,7 @@ export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, ca
       <Button type="button" variant="outline" size="icon" title="تراجع" aria-label="تراجع" disabled={!canUndo} onClick={undo}><Undo2 /></Button>
       <Button type="button" variant="outline" size="icon" title="إعادة" aria-label="إعادة" disabled={!canRedo} onClick={redo}><Redo2 /></Button>
       <Button type="button" variant="outline" disabled={!canRestore} onClick={restore}><RotateCcw />التصميم المحفوظ السابق</Button>
-      <Button type="button" variant="outline" onClick={() => onChange({ ...design, layout: undefined })}>المقاسات الأصلية</Button>
+      <Button type="button" variant="outline" onClick={() => { const { layout: _layout, ...rest } = design; onChange(rest); }}>المقاسات الأصلية</Button>
     </div>
     <div className="flex flex-wrap gap-2" aria-label="حجم المعاينة">
       {[{ width: 390, label: "جوال", Icon: Smartphone }, { width: 1280, label: "كمبيوتر", Icon: Monitor }, { width: 1920, label: "تلفزيون", Icon: Tv }].map((mode) =>

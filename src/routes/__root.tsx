@@ -193,6 +193,7 @@ function SiteDesignStyle() {
       if (candidate && typeof candidate.primary === "string" && typeof candidate.accent === "string") setPreview(candidate);
     };
     window.addEventListener("message", receive);
+    window.parent.postMessage({ type: "almoghani-preview-ready" }, window.location.origin);
     return () => window.removeEventListener("message", receive);
   }, []);
   const d = preview ?? data?.design;
