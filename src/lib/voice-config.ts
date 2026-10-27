@@ -69,10 +69,21 @@ export const FEMALE_VOICE_PROFILES: VoiceOption[] = [
   { id: "female-style-recorded2", female: true, name: "المجيب الآلي", label: "تسجيل خدمة عملاء", providerId: "Erinome", delivery: "أداء امرأة بالغة كمجيب آلي لخدمة العملاء، ترحيب مهذب مبتسم وإيقاع متزن ثابت، نطق واضح كأنه تسجيل مسبق" },
   { id: "female-style-3amiya", female: true, name: "نوير", label: "عامية سعودية يومية", providerId: "Laomedeia", delivery: "أداء امرأة بالغة تسولف بالعامية السعودية اليومية بعفوية تامة، كلمات دارجة وإيقاع طبيعي سريع كأنها تكلم صديقتها، دون فصحى" },
   { id: "female-style-3amiya2", female: true, name: "ودّة", label: "عامية خليجية عفوية", providerId: "Leda", delivery: "أداء امرأة بالغة تتكلم بالعامية الخليجية الدارجة بعفوية وحنان، مثل رسالة صوتية بين صديقات، إيقاع مريح دون فصحى" },
+  // Ultra-natural "real human" presets: conversational imperfections steer the TTS away from a robotic read.
+  ...([
+    ["real-ghala", "غلا", "واقعية · رسالة واتساب", "Despina", "كأنها بنت سعودية حقيقية تسجل رسالة واتساب لصديقتها من جوالها، كلام عفوي غير مقروء، تنفس طبيعي مسموع بين الجمل، تردد خفيف أحيانا مثل «اممم» و«يعني»، سرعة تتغير طبيعيا وابتسامة في الصوت، لهجة أهل الرياض"],
+    ["real-shoog", "شوق", "واقعية · سوالف هادئة", "Sulafat", "كأنها امرأة حقيقية جالسة تسولف بهدوء وقرب من المايك، صوت دافئ غير مصقول، وقفات تفكير طبيعية وأنفاس خفيفة، نهايات جمل تنخفض طبيعيا، دون أي نبرة إذاعية أو آلية، لهجة نجدية"],
+    ["real-rahaf", "رهف", "واقعية · ضحوكة عفوية", "Laomedeia", "كأنها بنت شابة حقيقية تحكي موقف صار لها وتضحك ضحكة قصيرة طبيعية وسط الكلام، حماس صادق، تسرع وتبطئ حسب الإحساس، تنفس مسموع، لهجة سعودية عامية"],
+    ["real-noura", "نورة", "واقعية · حنونة قريبة", "Vindemiatrix", "كأنها امرأة حقيقية تتكلم بحنان مع شخص تحبه، صوت قريب ناعم غير مصطنع، أنفاس هادئة ووقفات صادقة، تشديد عاطفي خفيف على بعض الكلمات، لهجة أهل القصيم"],
+    ["real-lamees", "لميس", "واقعية · واثقة طبيعية", "Pulcherrima", "كأنها امرأة سعودية حقيقية واثقة تشرح شيئا لصديقتها، نطق طبيعي غير متكلف، إيقاع محادثة حقيقي بتنويع نغمة واضح، أنفاس طبيعية، دون أسلوب إعلان، لهجة أهل الرياض"],
+    ["real-bayan", "بيان", "واقعية · حجازية عفوية", "Aoede", "كأنها بنت حقيقية من جدة تسولف بعفوية تامة، لحن الكلام الحجازي الطبيعي، ضحكة خفيفة وتنفس مسموع، تغير سرعة طبيعي، دون أي قراءة رسمية"],
+    ["real-dana", "دانة", "واقعية · نعسانة هادئة", "Achernar", "كأنها بنت حقيقية تتكلم آخر الليل بصوت هادئ ونعسان قليلا، قريب من المايك، أنفاس بطيئة طبيعية ووقفات قصيرة، كلام رقيق غير ممثل، لهجة نجدية"],
+    ["real-asma", "أسماء", "واقعية · ناضجة دافئة", "Gacrux", "كأنها امرأة ناضجة حقيقية تتكلم براحة وطمأنينة، صوت منخفض دافئ طبيعي فيه بحة خفيفة، أنفاس هادئة وإيقاع حديث يومي صادق، لهجة سعودية"],
+  ] as const).map(([id, name, label, providerId, d]) => ({ id, female: true, name, label, providerId, delivery: `${d}؛ يجب أن يبدو الصوت بشريا حقيقيا تماما وليس صوتا آليا، أداء مستقل لا يقلد شخصا معروفا` })),
 ];
 
 // Panel categories: ordered groups shown as card sections in the voice studio.
-export const FEMALE_VOICE_CATEGORIES = ["أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة", "أساليب جديدة"] as const;
+export const FEMALE_VOICE_CATEGORIES = ["أصوات بشرية واقعية", "أصوات سعودية", "لهجات عربية", "أصوات أساسية", "أداء مميز", "بنات صغار", "أصوات دلع", "أصوات ناعمة", "أساليب جديدة"] as const;
 const VOICE_CATEGORY: Record<string, string> = {
   "female-style-comedy": "أساليب جديدة", "female-style-comedy2": "أساليب جديدة", "female-style-recorded": "أساليب جديدة", "female-style-recorded2": "أساليب جديدة", "female-style-3amiya": "أساليب جديدة", "female-style-3amiya2": "أساليب جديدة", 
   "female-style-hakawatiya": "أساليب جديدة", "female-style-mudhee3a": "أساليب جديدة", "female-style-radio": "أساليب جديدة", "female-style-sha3era": "أساليب جديدة", "female-style-mu3alliqa": "أساليب جديدة", "female-style-khajoola": "أساليب جديدة", "female-style-jaddah": "أساليب جديدة", "female-style-mudarrisa": "أساليب جديدة", 
@@ -90,6 +101,7 @@ const VOICE_CATEGORY: Record<string, string> = {
   "female-taleen": "أصوات ناعمة", "female-haneena": "أصوات ناعمة", "female-sukkar": "أصوات ناعمة", "female-maha": "أصوات ناعمة",
 };
 export function voiceCategory(id: string) {
+  if (id.startsWith("real-")) return "أصوات بشرية واقعية";
   return VOICE_CATEGORY[id] ?? "أصوات أساسية";
 }
 export const VOICE_LIST: VoiceOption[] = [...[
