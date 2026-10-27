@@ -33,7 +33,7 @@ function BedouinDramaPage() {
     setPlaying(episode);
     requestAnimationFrame(() => document.getElementById("bedouin-player")?.scrollIntoView({ behavior: "auto", block: "start" }));
   }
-  return <main dir="rtl" className="chrome-series mx-auto min-h-[70vh] max-w-6xl px-3 pb-28 pt-6 sm:px-6">
+  return <main dir="rtl" className="chrome-series media-series-page mx-auto min-h-[70vh] px-4 pb-8 pt-6">
     <div className="mb-6 flex items-center gap-3">
       <Button variant="outline" size="icon" aria-label={opened ? "رجوع إلى المسلسلات" : "رجوع إلى الرئيسية"} asChild={!opened} onClick={opened ? () => { setOpened(null); setQuery(""); } : undefined}>
         {opened ? <ArrowRight className="h-5 w-5" /> : <Link to="/"><ArrowRight className="h-5 w-5" /></Link>}
@@ -45,7 +45,7 @@ function BedouinDramaPage() {
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><h2 className="min-w-0 text-lg font-bold">{series?.title ?? playing.title} · الحلقة {playing.number}</h2>{series && <div className="flex items-center gap-2"><Button variant="outline" size="icon" aria-label="الحلقة السابقة" disabled={index <= 0} onClick={() => { const e = episodes[index - 1]; if (e) watch(e); }}><ChevronRight /></Button><Button variant="outline" size="icon" aria-label="الحلقة التالية" disabled={index >= episodes.length - 1} onClick={() => { const e = episodes[index + 1]; if (e) watch(e); }}><ChevronLeft /></Button></div>}</div>
     </section>}
     <label className="mb-6 flex items-center gap-3 rounded-lg border border-border bg-surface-deep px-4 py-3"><Search className="h-5 w-5 shrink-0 text-sky" /><input value={query} onChange={(e) => setQuery(e.target.value)} aria-label={series ? "ابحث عن حلقة" : "ابحث عن مسلسل"} placeholder={series ? "ابحث عن حلقة…" : "ابحث عن مسلسل…"} className="min-w-0 flex-1 bg-transparent outline-none" /></label>
-    {!series && <section aria-label="المسلسلات البدوية" className="grid gap-4 md:grid-cols-2">
+    {!series && <section aria-label="المسلسلات البدوية" className="media-series-grid">
       {publicSeries.flatMap((s, i) => {
         const privateItem = privateItems[i];
         const cover = s.episodes.find((e) => e.number === 1) ?? s.episodes[0];

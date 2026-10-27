@@ -44,3 +44,5 @@
 - PortalPage and /vip share mergeLiveChannels ordering and one list/search/player; sports reorder without losing channels or moving non-sports. Opaque IDs and VOD remain member-gated.
 - Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.
 - Keep verified public bulk-channel additions in a browser-safe static catalog merged through channels.ts; synchronize all public playlists and bound mounted channel rows while searching the full catalog to keep large imports usable without changing member gates.
+
+- Share the IPTV home presentation between / and /tv through GoldHome; keep the optional saved TV canvas accessible separately so restyling never overwrites owner layouts.
