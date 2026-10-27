@@ -1549,3 +1549,18 @@ body { background: var(--background); }
 .media-access { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; padding-top:8px; }.media-access a { color:var(--muted-foreground); }
 .media-home-brand { display:flex; justify-content:center; padding:22px 0 6px; }.media-home-brand .broadcast-brand { font-size:18px; }.media-home-brand .broadcast-brand-logo { width:30px; height:30px; }
 @media(max-width:767px) { .media-access a,.media-shortcuts a { font-size:12px; }.media-home-brand { padding-top:16px; }.media-home-brand .broadcast-brand { font-size:15px; } }
+
+/* Optional owner sizing, shared by website, app and the isolated preview. */
+.media-home { padding-inline:var(--owner-pageInset, 24px); }
+.media-home-rows { gap:var(--owner-rowGap, 20px); }
+.media-home-row { gap:var(--owner-cardGap, 24px); grid-template-columns:minmax(150px,var(--owner-categoryWidth,28%)) minmax(0,1fr); }
+.media-shelf { gap:var(--owner-cardGap, 12px); }
+.media-channel-shelf { grid-template-columns:repeat(var(--owner-columns,6),minmax(0,1fr)); }
+.media-poster-shelf { grid-template-columns:repeat(var(--owner-columns,8),minmax(0,1fr)); }
+.media-channel-tile,.media-category { min-height:var(--owner-cardHeight,170px); }
+.media-poster { min-height:var(--owner-cardHeight,auto); }
+.design-preview-host { position:relative; overflow:hidden; width:100%; border:1px solid var(--border); background:var(--background); }
+.design-preview-frame { position:absolute; top:0; left:0; transform-origin:top left; border:0; }
+@media(min-width:1600px) { .media-home { padding-inline:var(--owner-pageInset,40px); }.media-home-rows { gap:var(--owner-rowGap,28px); }.media-category { min-height:var(--owner-cardHeight,210px); } }
+@media(max-width:1100px) { .media-channel-tile { flex-basis:var(--owner-categoryWidth,120px); }.media-poster { flex-basis:var(--owner-categoryWidth,110px); } }
+@media(max-width:767px) { .media-home { padding-inline:min(var(--owner-pageInset,12px),24px); }.media-home-row { grid-template-columns:minmax(0,1fr); }.media-category { min-height:62px; }.media-channel-tile { flex-basis:var(--owner-categoryWidth,112px); } }

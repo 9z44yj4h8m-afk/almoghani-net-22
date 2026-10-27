@@ -46,3 +46,4 @@
 - Keep verified public bulk-channel additions in a browser-safe static catalog merged through channels.ts; synchronize all public playlists and bound mounted channel rows while searching the full catalog to keep large imports usable without changing member gates.
 
 - Share the IPTV home presentation between / and /tv through GoldHome; keep the optional saved TV canvas accessible separately so restyling never overwrites owner layouts.
+- Store shared homepage sizing within site_settings design.layout, validate bounded numeric CSS through site-layout, and preview drafts only via same-origin parent messages; save design and its previous revision together under existing admin RLS to keep undo recoverable without changing public access.

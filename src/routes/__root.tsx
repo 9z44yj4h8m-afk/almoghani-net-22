@@ -11,12 +11,13 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
-import { designColorFields, useSiteConfig } from "@/lib/site-config";
+import { designColorFields, useSiteConfig, type SiteDesign } from "@/lib/site-config";
+import { siteLayoutCss } from "@/lib/site-layout";
 import { IosInstallBanner } from "@/components/ios-install-banner";
 
 function NotFoundComponent() {
@@ -183,7 +184,18 @@ function RootComponent() {
 const HEX = /^#[0-9a-fA-F]{6}$/;
 function SiteDesignStyle() {
   const { data } = useSiteConfig();
-  const d = data?.design;
+  const [preview, setPreview] = useState<SiteDesign | null>(null);
+  useEffect(() => {
+    if (window.parent === window || !new URLSearchParams(window.location.search).has("designPreview")) return;
+    const receive = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin || event.source !== window.parent || event.data?.type !== "almoghani-design-preview") return;
+      const candidate = event.data.design;
+      if (candidate && typeof candidate.primary === "string" && typeof candidate.accent === "string") setPreview(candidate);
+    };
+    window.addEventListener("message", receive);
+    return () => window.removeEventListener("message", receive);
+  }, []);
+  const d = preview ?? data?.design;
   if (!d) return null;
   const rules: string[] = [];
   if (HEX.test(d.primary)) rules.push(`--primary:${d.primary};`);
@@ -192,11 +204,11 @@ function SiteDesignStyle() {
   const safe = (f?: string) => (f && /^[A-Za-z ]{2,40}$/.test(f) ? f : "");
   const body = safe(d.fontBody), heading = safe(d.fontHeading);
   const scale = typeof d.fontScale === "number" && d.fontScale >= 85 && d.fontScale <= 130 ? d.fontScale : 0;
-  let extra = "";
+  let extra = siteLayoutCss(d.layout);
   if (body) extra += `body,.font-sans{font-family:"${body}",sans-serif !important;}`;
   if (heading) extra += `h1,h2,h3,.font-display{font-family:"${heading}",sans-serif !important;}`;
   if (typeof d.radius === "number" && d.radius >= 0 && d.radius <= 32) extra += `.rounded-lg,.rounded-xl,.rounded-2xl,.rounded-3xl{border-radius:${d.radius}px !important;}`;
   if (scale) extra += `html{font-size:${scale}%;}`;
   if (!rules.length && !extra) return null;
-  return <style>{`${rules.length ? `:root{${rules.join("")}}` : ""}${extra}`}</style>;
+  return <style>{`${rules.length ? `:root,.iptv-site-layout,.dark{${rules.join("")}}` : ""}${extra}`}</style>;
 }

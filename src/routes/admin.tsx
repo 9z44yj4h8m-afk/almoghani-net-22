@@ -14,6 +14,7 @@ import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { SmartersManager } from "@/components/admin/smarters-manager";
 import { OwnerNav } from "@/components/owner-nav";
+import { DesignLayoutControls } from "@/components/admin/design-layout-controls";
 
 import { channels as baseChannels } from "@/lib/channels";
 import { movies as baseMovies } from "@/lib/movies";
@@ -390,9 +391,30 @@ function DesignTab() {
   const refresh = useRefresh();
   const [design, setDesign] = useState<SiteDesign>(defaultDesign);
   const [msg, setMsg] = useState("");
+  const [past, setPast] = useState<SiteDesign[]>([]);
+  const [future, setFuture] = useState<SiteDesign[]>([]);
+  const [previous, setPrevious] = useState<SiteDesign | null>(null);
+  const [saving, setSaving] = useState(false);
   useEffect(() => { if (data) setDesign(data.design); }, [data]);
-  const save = async (d: SiteDesign) => { const r = await saveSetting("design", d); setMsg(r.error ? "تعذّر الحفظ." : "تم الحفظ ✓"); void refresh(); };
+  useEffect(() => { void supabase.from("site_settings").select("value").eq("key", "design-previous").maybeSingle().then(({ data: row }) => { if (row?.value) setPrevious(row.value as SiteDesign); }); }, []);
+  const change = (next: SiteDesign) => { setPast((items) => [...items.slice(-29), design]); setFuture([]); setDesign(next); };
+  const undo = () => { const last = past.at(-1); if (!last) return; setFuture((items) => [design, ...items]); setPast((items) => items.slice(0, -1)); setDesign(last); };
+  const redo = () => { const next = future[0]; if (!next) return; setPast((items) => [...items, design]); setFuture((items) => items.slice(1)); setDesign(next); };
+  const save = async (d: SiteDesign) => {
+    setSaving(true); setMsg("");
+    try {
+      const before = data?.design ?? defaultDesign;
+      const { error } = await supabase.from("site_settings").upsert([
+        { key: "design-previous", value: JSON.parse(JSON.stringify(before)), updated_at: new Date().toISOString() },
+        { key: "design", value: JSON.parse(JSON.stringify(d)), updated_at: new Date().toISOString() },
+      ]);
+      if (error) throw error;
+      setPrevious(before); setPast([]); setFuture([]); await refresh(); setMsg("تم الحفظ ✓");
+    } catch { setMsg("تعذّر الحفظ؛ بقيت تعديلاتك في المعاينة."); }
+    finally { setSaving(false); }
+  };
   return <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); void save(design); }}>
+    <DesignLayoutControls design={design} onChange={change} undo={undo} redo={redo} canUndo={past.length > 0} canRedo={future.length > 0} restore={() => { if (previous) change(previous); }} canRestore={!!previous} />
     <label className="flex items-center gap-3"><input type="color" value={design.primary || "#9333ea"} onChange={(e) => setDesign({ ...design, primary: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الرئيسي</span></label>
     <label className="flex items-center gap-3"><input type="color" value={design.accent || "#22d3ee"} onChange={(e) => setDesign({ ...design, accent: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الثانوي</span></label>
     <div className="grid gap-3 sm:grid-cols-2">{designColorFields.map((f) => <label key={f.key} className="flex items-center gap-3"><input type="color" value={design.colors?.[f.key] || f.def} onChange={(e) => setDesign({ ...design, colors: { ...design.colors, [f.key]: e.target.value } })} className="h-12 w-16 rounded" /><span className="font-bold">{f.label}</span></label>)}</div>
@@ -403,8 +425,8 @@ function DesignTab() {
     <p className="rounded-xl border border-border p-4" style={{ fontFamily: design.fontBody || undefined }}><b style={{ fontFamily: design.fontHeading || undefined }}>معاينة العنوان</b><br />هذا مثال على شكل النص في الموقع.</p>
     <label className="block space-y-1"><span className="text-sm font-bold">صورة خلفية البنر (رابط https)</span><input className={input} dir="ltr" placeholder="https://…" value={design.background} onChange={(e) => setDesign({ ...design, background: e.target.value.trim() })} /></label>
     {design.background.startsWith("https://") && <img src={design.background} alt="معاينة الخلفية" className="h-40 w-full rounded-xl object-cover" />}
-    <div className="flex gap-2"><Button type="submit">حفظ</Button><Button type="button" variant="outline" onClick={() => { setDesign(defaultDesign); void save(defaultDesign); }}>إرجاع التصميم الأصلي</Button></div>
-    {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
+    <div className="flex gap-2"><Button type="submit" disabled={saving || !data}>{saving ? "جارٍ الحفظ…" : "حفظ"}</Button><Button type="button" variant="outline" onClick={() => change(defaultDesign)}>إرجاع التصميم الأصلي</Button></div>
+    {msg && <p role="status" className="text-sm text-muted-foreground">{msg}</p>}
   </form>;
 }
 
