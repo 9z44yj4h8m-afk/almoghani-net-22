@@ -15,6 +15,15 @@ function setup() {
 }
 afterEach(() => windows.splice(0).forEach(dom => dom.window.close()));
 describe('standalone IPTV channel controls', () => {
+  it('selects card editing without changing channel data or applying a draft', () => {
+    const w = setup();
+    const before = w.readState('JSON.stringify(data)');
+    w.readState('selectDesignTarget("cards")');
+    expect(w.readState('selectedDesignTarget')).toBe('cards');
+    expect(w.readState('JSON.stringify(data)')).toBe(before);
+    w.readState('selectDesignTarget("unknown")');
+    expect(w.readState('selectedDesignTarget')).toBe('cards');
+  });
   it('bounds layout dimensions to keep channel cards and content contained', () => {
     const w = setup();
     const d = w.readState('normalizeDesign({cardMin:1,cardHeight:9999,cardGap:-10,contentWidth:9999})');
