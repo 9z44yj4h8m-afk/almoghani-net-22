@@ -24,18 +24,22 @@ describe("IPTV-compatible public export", () => {
     expect(compatible.charCodeAt(0)).toBe(35);
   });
 
-  it("keeps all 530 original entries and playback directives in the curated short playlist", () => {
+  it("keeps only requested sections while preserving their source entries and playback directives", () => {
     const entries = (file: string) => readFileSync(file, "utf8").split(/(?=^#EXTINF:)/m).slice(1)
       .map(block => block.replace(/group-title="[^"]*"/g, '').trim()).sort();
-    expect(entries("public/c.m3u")).toHaveLength(530);
-    expect(entries("public/c.m3u")).toEqual(entries("public/channels.m3u"));
+    const curated = entries("public/c.m3u");
+    const source = entries("public/channels.m3u");
+    expect(curated).toHaveLength(204);
+    for (const entry of curated) expect(source).toContain(entry);
+    expect(readFileSync("public/c.m3u", "utf8")).not.toContain('group-title="القنـوات المتبقية"');
+    expect(source).toHaveLength(530);
   });
 
-  it("orders the public short playlist into the owner's nine named sections", () => {
+  it("orders the public short playlist into the owner's eight retained sections", () => {
     const content = readFileSync("public/c.m3u", "utf8");
     const groups = [...content.matchAll(/group-title="([^"]*)"/g)].map(match => match[1]);
     const sections = groups.filter((group, index) => index === 0 || group !== groups[index - 1]);
-    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية', 'القنـوات المتبقية']);
+    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية']);
     expect(content).toMatch(/group-title="القنـوات الكويتيه",تلفزيون الكويت 1/);
     expect(content).toMatch(/group-title="MBC",MBC 1\n/);
     expect(content).toMatch(/group-title="ROTANA",روتانا سينما السعودية/);
