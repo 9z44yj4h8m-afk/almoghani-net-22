@@ -13,7 +13,7 @@ SOURCE = "https://almoghani.net/aa.m3u"
 
 def fetch():
     request = urllib.request.Request(SOURCE, headers={"User-Agent": "Mozilla/5.0"})
-    return urllib.request.urlopen(request, timeout=45).read().decode("utf-8", "replace")
+    return urllib.request.urlopen(request, timeout=45).read().decode("utf-8-sig", "replace")
 
 
 def parse(text):
@@ -28,7 +28,7 @@ def parse(text):
             group = group_match.group(1) if group_match else "عام"
             logo = logo_match.group(1) if logo_match else ""
         elif line and not line.startswith("#"):
-            if line in seen:
+            if line in seen or not name or not line.lower().startswith(("http://", "https://")):
                 continue
             seen.add(line)
             rows.append({"n": name, "u": line, "g": group, "l": logo})
