@@ -29,7 +29,7 @@ describe("IPTV-compatible public export", () => {
       .map(block => block.replace(/group-title="[^"]*"/g, '').trim()).sort();
     const curated = entries("public/c.m3u");
     const source = entries("public/channels.m3u");
-    expect(curated.length).toBeGreaterThan(204);
+    expect(curated).toHaveLength(175);
     for (const entry of curated) expect(source).toContain(entry);
     expect(source).toHaveLength(530);
   });
@@ -48,9 +48,24 @@ describe("IPTV-compatible public export", () => {
     const blocks = readFileSync("public/c.m3u", "utf8").split(/(?=^#EXTINF:)/m).slice(1);
     const remaining = blocks.filter(block => block.includes('group-title="القنـوات المتبقية"'));
     const names = remaining.map(block => block.split('\n')[0]?.split('group-title="القنـوات المتبقية",')[1]);
-    expect(names).toEqual(['اقرأ — القرآن', 'اقرأ — عالمي', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'أطفال ومواهب', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'مغامرات منصور', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']);
+    expect(names).toEqual(['اقرأ — القرآن', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']);
     expect(names).not.toContain('CNN');
     expect(names).not.toContain('الوطنية التونسية 2');
+  });
+
+  it("excludes children's channels from the curated playlist", () => {
+    const content = readFileSync("public/c.m3u", "utf8");
+    for (const name of ['أطفال ومواهب', 'مغامرات منصور', 'MBC 3 USA (1080p)']) {
+      expect(content).not.toContain(`,${name}\n`);
+    }
+  });
+
+  it("excludes foreign-language channels but preserves Arabic editions", () => {
+    const content = readFileSync("public/c.m3u", "utf8");
+    const names = content.split('\n').filter(line => line.startsWith('#EXTINF:')).map(line => line.slice(line.lastIndexOf(',') + 1));
+    const foreign = ['Al Jazeera English', 'WION', 'LiveNOW from FOX', 'Yahoo Finance', 'NHK WORLD-JAPAN', 'Times Now', 'MEDI1TV Afrique', 'العربية إنجليزي', 'Sky News', 'DW News', 'FRANCE 24 English', 'TRT World', 'NBC News NOW', 'ABC News Live', 'Euronews English', 'ABC NEWS Australia', 'Teledeporte', 'CBC News', 'FRANCE 24 Français', 'TRT Haber', 'i24NEWS English', 'CNBC', 'CBS News 24/7', 'Bloomberg TV', 'Afghanistan International (720p)', 'Kurdistan 24 (1080p)', 'Miracle Channel (1080p)', 'Payam TV (1080p)', 'Rudaw TV (1080p)', 'Welat TV (1080i)', 'ABC News Live 1', 'CBS News New York', 'Bloomberg TV Live Event', 'Reuters TV', 'Sky News Extra 1', 'Euronews English HD', 'NHK World-Japan HD', 'Africanews English', 'i24NEWS English World', 'Newsmax TV', 'MBC Loud', 'MBC بوليوود', 'MBC Persia (1080p)', 'تلفزيون الكويت 2', 'البحرين الدولية', 'Pulse95 Radio', 'اقرأ — عالمي'];
+    for (const name of foreign) expect(names).not.toContain(name);
+    for (const name of ['فرانس 24 عربي', 'DW عربية', 'RT Arabic', 'MBC 1']) expect(names).toContain(name);
   });
 
   it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
