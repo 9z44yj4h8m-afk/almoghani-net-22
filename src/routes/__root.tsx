@@ -11,12 +11,12 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
-import { designColorFields, useSiteConfig, type SiteDesign } from "@/lib/site-config";
+import { designColorFields, useSiteConfig } from "@/lib/site-config";
 import { siteLayoutCss } from "@/lib/site-layout";
 import { IosInstallBanner } from "@/components/ios-install-banner";
 
@@ -176,7 +176,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      {pathname === "/design-preview" ? <><SiteDesignStyle /><Outlet /></> : <MemberProvider><SiteDesignStyle />{standaloneScreen ? <Outlet /> : <><div className="iptv-site-layout">{pathname === "/" ? null : <IptvNavigation />}<div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div></div><IosInstallBanner /></>}</MemberProvider>}
+      <MemberProvider><SiteDesignStyle />{standaloneScreen ? <Outlet /> : <><div className="iptv-site-layout">{pathname === "/" ? null : <IptvNavigation />}<div className="broadcast-app iptv-site-main"><BroadcastHeader /><div className="broadcast-content"><Outlet /></div></div></div><IosInstallBanner /></>}</MemberProvider>
     </QueryClientProvider>
   );
 }
@@ -184,19 +184,7 @@ function RootComponent() {
 const HEX = /^#[0-9a-fA-F]{6}$/;
 function SiteDesignStyle() {
   const { data } = useSiteConfig();
-  const [preview, setPreview] = useState<SiteDesign | null>(null);
-  useEffect(() => {
-    if (window.parent === window || !new URLSearchParams(window.location.search).has("designPreview")) return;
-    const receive = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin || event.source !== window.parent || event.data?.type !== "almoghani-design-preview") return;
-      const candidate = event.data.design;
-      if (candidate && typeof candidate.primary === "string" && typeof candidate.accent === "string") setPreview(candidate);
-    };
-    window.addEventListener("message", receive);
-    window.parent.postMessage({ type: "almoghani-preview-ready" }, window.location.origin);
-    return () => window.removeEventListener("message", receive);
-  }, []);
-  const d = preview ?? data?.design;
+  const d = data?.design;
   if (!d) return null;
   const rules: string[] = [];
   if (HEX.test(d.primary)) rules.push(`--primary:${d.primary};`);

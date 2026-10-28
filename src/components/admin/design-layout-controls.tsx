@@ -3,6 +3,8 @@ import { ImagePlus, Monitor, Smartphone, Tv, RotateCcw, Undo2, Redo2 } from "luc
 import { Button } from "@/components/ui/button";
 import { layoutFields } from "@/lib/site-layout";
 import type { SiteDesign } from "@/lib/site-config";
+import { siteLayoutCss } from "@/lib/site-layout";
+import { GoldHome } from "@/components/gold-home";
 
 export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, canRedo, restore, canRestore }: {
   design: SiteDesign; onChange: (value: SiteDesign) => void; undo: () => void; redo: () => void;
@@ -10,17 +12,7 @@ export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, ca
 }) {
   const [width, setWidth] = useState(1280);
   const [available, setAvailable] = useState(640);
-  const frame = useRef<HTMLIFrameElement>(null);
   const host = useRef<HTMLDivElement>(null);
-  const send = () => frame.current?.contentWindow?.postMessage({ type: "almoghani-design-preview", design }, window.location.origin);
-  useEffect(() => { send(); }, [design, width]);
-  useEffect(() => {
-    const receive = (event: MessageEvent) => {
-      if (event.origin === window.location.origin && event.source === frame.current?.contentWindow && event.data?.type === "almoghani-preview-ready") send();
-    };
-    window.addEventListener("message", receive);
-    return () => window.removeEventListener("message", receive);
-  }, [design]);
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -49,8 +41,10 @@ export function DesignLayoutControls({ design, onChange, undo, redo, canUndo, ca
         <Button key={mode.width} type="button" variant={width === mode.width ? "secondary" : "outline"} aria-pressed={width === mode.width} onClick={() => setWidth(mode.width)}><mode.Icon />{mode.label}</Button>)}
     </div>
     <div ref={host} className="design-preview-host" style={{ height: 800 * scale }}>
-      <iframe ref={frame} title="معاينة التصميم" src="/design-preview?designPreview=1" onLoad={send}
-        style={{ width, height: 800, transform: `scale(${scale})` }} className="design-preview-frame" />
+      <style>{siteLayoutCss(design.layout).replace(".media-home", ".design-preview-host .media-home")}</style>
+      <div aria-label="معاينة التصميم" style={{ width, height: 800, transform: `scale(${scale})` }} className="design-preview-frame">
+        <GoldHome preview />
+      </div>
     </div>
     <div className="flex flex-wrap gap-2">
       <Button asChild variant="outline"><a href="#admin-sections"><ImagePlus />صور وبطاقات وبنرات</a></Button>
