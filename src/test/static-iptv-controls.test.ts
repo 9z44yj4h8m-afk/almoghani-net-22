@@ -15,6 +15,14 @@ function setup() {
 }
 afterEach(() => windows.splice(0).forEach(dom => dom.window.close()));
 describe('standalone IPTV channel controls', () => {
+  it('bounds layout dimensions to keep channel cards and content contained', () => {
+    const w = setup();
+    const d = w.readState('normalizeDesign({cardMin:1,cardHeight:9999,cardGap:-10,contentWidth:9999})');
+    expect(d.cardMin).toBe(100);
+    expect(d.cardHeight).toBe(360);
+    expect(d.cardGap).toBe(0);
+    expect(d.contentWidth).toBe(1920);
+  });
   it('adds one channel with the supplied name and stream', async () => {
     const w = setup();
     w.readState('document.getElementById("chName").value="الوسام";document.getElementById("chUrl").value="https://stream.addresses-sat.com/Alwesam/index.m3u8"');
