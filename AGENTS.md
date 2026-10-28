@@ -50,4 +50,4 @@
 - Keep pages-site/ as the standalone GitHub Pages copy of the site: hash-routed static files only, channels pulled from almoghani.net/aa.m3u by .github/scripts/channels.py because the site sends no cross-origin header, and member, chat, voice and admin features linked to almoghani.net instead of copied — the full stack cannot build on Pages and private streams must stay off it.
 
 ## Migrated pages
-- Serve the standalone blue IPTV page (GitHub Pages almoghani-voices-page copy, 43 embedded news/Jordan channels) from public/iptv.html as an exact static single-file copy; never rebuild it as React routes, its admin and favorites stay device-local in localStorage.
+- Serve the standalone blue IPTV page from public/iptv.html as a self-contained static page; extend its device-local channel controls and live design editor in place, keep favorites/settings in localStorage and export edited HTML without introducing global admin permissions.
