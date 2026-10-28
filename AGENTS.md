@@ -18,6 +18,7 @@
 - Admin password-only login authenticates the fixed owner account server-side through Cloud Auth and checks user_roles before returning a session; never bypass RLS with a shared PIN.
 
 - Share channels.ts across player/AI; sync channels.m3u with BOM/group order and channels-iptv.m3u with only direct HLS, no BOM, CRLF, same order; retain per-entry verified playback header directives in both exports because Referer-locked sources require them. Links: /live?channel=<id>, /channels/<section-slug> (portal-page).
+- Keep c.m3u as an independently grouped public playlist preserving source entries and playback directives; owner-specific export ordering must not change the website catalog or other playlists.
 - Keep AI channel search server-side and validate returned IDs against the supplied catalog so generated channels can never enter the player.
 - Resolve YouTube live server-side (resolveYoutubeLive, youtubeChannelId); embed video IDs, not the broken embed/live_stream?channel= URL.
 - Keep homepage member/chat entry artwork separate from the shared MemberPlatforms destinations on /auth; preserve private access gates so moving cards never exposes streams.
