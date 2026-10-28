@@ -1,5 +1,6 @@
 # Roadmap
 
-- [x] إعداد النطاق الفرعي tv.almoghani.net على GitHub Pages (المستودع Z) — أُلغي لطلب المالك
-- [ ] توجيه tv.almoghani.net إلى مستودع almoghani-voices-page: حذف CNAME من Z، إضافة CNAME + إعدادات Pages في almoghani-voices-page
-- [ ] إرشاد المالك لإضافة سجل CNAME عند GoDaddy (DNS مزوّد خارجي)
+- [x] توجيه tv.almoghani.net إلى مستودع almoghani-voices-page (CNAME + إعدادات Pages)
+- [x] إعادة مستودع Z لحالته (CNAME محذوف، Pages بلا نطاق)
+- [ ] المالك يضيف سجل CNAME عند GoDaddy: tv → 9z44yj4h8m-afk.github.io (لا أستطيع الوصول لحساب GoDaddy)
+- [ ] بعد ظهور النطاق: تفعيل HTTPS (Enforce HTTPS) في إعدادات Pages
