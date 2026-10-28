@@ -9,32 +9,16 @@ https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-ekhbaria/297b3ef1cd0633ad9
 https://www.youtube.com/watch?v=iw0YDBYgaUU
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k2Q10aeHs5-DCmdpJghKWzPdB0iqLpM00pUcvt2KKijFc=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",قناة المملكة
 https://www.youtube.com/watch?v=YAQQ1RLfQtY
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/XsTga3Nsfc1E6ZgC6HfHfzTG_3zhuZleOnsKxSK2aILMjwkkIm-0vdALFaU-yt0Lw07iLtbSifk=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",Al Jazeera English
-https://www.youtube.com/watch?v=gCNeDWCI0vo
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/v8xEx3kGQ31RB-_RzPBi_vVeFpwR_1gJUYHFp9APrmQ4QOZAr9NXwCNqLcDg4ZIgWD_9kSnr=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",الميادين مباشر
 https://www.youtube.com/watch?v=oIuWBQeglfs
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/evxeFzRem76hjPRh_S_B5MvjNhl4yKjSrIzmvwFx3nyEWHBOPHA4jTum6Yys3HRR0IvYmWud=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",WION
-https://www.youtube.com/watch?v=ngzEhyaFbas
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/AqzY5ePezRAQ2136-TbM_88d43JfIovkzztge92WKQ4K_ISfJMFA9yuX0Nw87DLWms4W9r2c3Q=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",LiveNOW from FOX
-https://www.youtube.com/watch?v=z0nHA8i4j2M
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/Z6BMAACHMcGAFniv21LArJ3gc2nFDpjP4QAmEuTxUi3VZLBbkNH2Hqc3n2rIvCbVVJQ8lnCjsg=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",Yahoo Finance
-https://www.youtube.com/watch?v=KQp-e_XQnDE
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_m9YDtPWqgZW91_-QTdsVWLbnR0ZQ1BaHX38ZcSRVGnfd0=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",NHK WORLD-JAPAN
-https://www.youtube.com/watch?v=IimtbuqYIE8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/fvYBSnXrdEA/hqdefault.jpg" group-title="القنـوات الأخبــارية",المشهد
 https://www.youtube.com/watch?v=fvYBSnXrdEA
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/LWDgtxQhubQ/hqdefault.jpg" group-title="القنـوات الأخبــارية",Times Now
-https://www.youtube.com/watch?v=LWDgtxQhubQ
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/C96oohpWBGw/hqdefault.jpg" group-title="القنـوات الأخبــارية",LiveNOW from FOX
-https://www.youtube.com/watch?v=C96oohpWBGw
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الأخبــارية",Al Jazeera Mubasher 24
 https://live-hls-apps-ajm24-fa.getaj.net/AJM24/index.m3u8
 #EXTINF:-1 tvg-id="extra-mta-arabia" group-title="القنـوات الأخبــارية",MTA العربية
 https://chlivemta1.akamaized.net/hls/live/2010556/mta3alarabia/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/FjuVuXF.jpeg" group-title="القنـوات الأخبــارية",تلفزيون سوريا
 https://live.kwikmotion.com/syriatvlive/syriatv.smil/playlist_dvr.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/a20DHnj.png" group-title="القنـوات الأخبــارية",MEDI1TV Afrique
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-afrique_tm7tu45/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="القنـوات الأخبــارية",MEDI1TV Arabic
 https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/F5OFQsp.jpeg" group-title="القنـوات الأخبــارية",MEDI1TV Maghreb
@@ -61,8 +45,6 @@ https://www.youtube.com/watch?v=au8t81S0tag
 https://www.youtube.com/watch?v=O0ZppASlI6o
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/CNBC_Arabia_2025.svg/960px-CNBC_Arabia_2025.svg.png" group-title="القنـوات الأخبــارية",CNBC العربية
 https://cnbc-live.akamaized.net/cnbc/master.m3u8
-#EXTINF:-1 tvg-logo="https://shahid.mbc.net/mediaObject/7cfc0baf-1201-477f-b722-d3099fafe17f?height=230&width=512&croppingPoint=&version=1&type=png" group-title="القنـوات الأخبــارية",العربية إنجليزي
-https://live.alarabiya.net/alarabiapublish/english/playlist_dvr.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/27TJ45U-HJ8/hqdefault.jpg" group-title="القنـوات الأخبــارية",العربية Business
 https://www.youtube.com/watch?v=27TJ45U-HJ8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Hoc3cfO.png" group-title="القنـوات الأخبــارية",العربية برامج
@@ -101,48 +83,14 @@ https://www.youtube.com/watch?v=AGkp2AL8e7o
 https://www.youtube.com/watch?v=mo_6IkfLstk
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/N8xxOD0nT1Y/hqdefault.jpg" group-title="القنـوات الأخبــارية",الجزيرة 2
 https://www.youtube.com/watch?v=N8xxOD0nT1Y
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",Sky News
-https://www.youtube.com/watch?v=xDWQ3LkccY8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/NSOdTQTWlqMy8O_j32dx-ftfTCHMOt04Hm7KZ4pfAK6-eQzQSZMWvvss90kG8KQfJ7iNP3phyA=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",DW News
-https://www.youtube.com/watch?v=LuKwFajn37U
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/HvZt-nh9sGg/hqdefault.jpg" group-title="القنـوات الأخبــارية",FRANCE 24 English
-https://www.youtube.com/watch?v=HvZt-nh9sGg
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/luLQWmGFG4iDC1U_2JlzZ1mquci_sUdfZfFl4eWgBkDpW6tvZT0MEA4c4JebJdi9hCo518q1=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",TRT World
-https://www.youtube.com/watch?v=qBe59l6p_EU
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/PJj5jtuEOi5UmkFy4IBonj5WcabNcnJAIJe-jZMd1ArwIuVyQxFH_2zryBHwvfv6mJujwRpWDCM=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",NBC News NOW
-https://www.youtube.com/watch?v=_sKZFIZvwP8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/GJ8V0NX6NddGh9bf4zED4tsjPjjBK2hdp5FWHMy09pV7sdSkkE3yEhCRSch4waEb9ZavyUrWfw=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",ABC News Live
-https://www.youtube.com/watch?v=KOxtExhuaSw
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/8MyE7rxMBfLZOpYkJVJFm1C8I9jxbceBbOJS9OhrepZMVGxGV-OEJU-UdLOew_qR_l-knETWeu4=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",Euronews English
-https://www.youtube.com/watch?v=pykpO5kQJ98
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sc9xa2bYk6pIuKX3qgMHSrxEkuPmg57JMl_lRaJqCZxuSIeQt1B6BV23c-16Q3b7Aep0on1b=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",ABC NEWS Australia
-https://www.youtube.com/watch?v=vOTiJkg1voo
-#EXTINF:-1 tvg-logo="https://i.ibb.co/0jxLdjnY/TDP.png" group-title="القنـوات الأخبــارية",Teledeporte
-https://rtve01p.origin.c21livecloud.com/live-origin/tdp-hls/bitrate_1.m3u8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/9bJu0WRWPRgja30h3i5gh3Mg4T94dVfcm6L8SEhjkM3j-AwqFKQZp1JxLhXpSVYzQjJTOXiw2vM=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",CBC News
-https://www.youtube.com/watch?v=5vfaDsMhCF4
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/ytc/AIdro_k9aU_SRhYAWJjQ6AO7uzQDZE5mb7gmv4synLrC7hEWGjE=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",FRANCE 24 Français
-https://www.youtube.com/watch?v=a47ckXKZjxI
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/X-b7tJvjfBMDHCAafwyNV89qJ_FlzlXChymSisVsncnPpgOLLHknR6n1wtm8huk0SJz3KhNRTQ=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",TRT Haber
-https://www.youtube.com/watch?v=GefoJ-LXYfc
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/UqLrgUgD2JxhoLZ1p_i8_p4jJqmg06-H-H64zySmmmPUbg2O0SPFIxT3H7yw5pNjqxc393gy=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",i24NEWS English
-https://www.youtube.com/watch?v=ECZpPjkkvOI
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sS9OtcPLL1vQNfGnRudALfNzfpHVy7qwRRKTYF4HEfyICGTfXfHsfP2hhIPgKK0iBxW7p1lH1g=s240-c-k-c0x00ffffff-no-rj" group-title="القنـوات الأخبــارية",CNBC
-https://www.youtube.com/watch?v=9NyxcX3rhQs
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/OLbqCS3OrPM/hqdefault.jpg" group-title="القنـوات الأخبــارية",CNBC عربية
 https://www.youtube.com/watch?v=OLbqCS3OrPM
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/8D5QY5gw_Xk/hqdefault.jpg" group-title="القنـوات الأخبــارية",الجزيرة مباشر 24
 https://www.youtube.com/watch?v=8D5QY5gw_Xk
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/5fShan4Wmtk/hqdefault.jpg" group-title="القنـوات الأخبــارية",CBS News 24/7
-https://www.youtube.com/watch?v=5fShan4Wmtk
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/GgPKRZdFZ7s/hqdefault.jpg" group-title="القنـوات الأخبــارية",NBC News NOW
-https://www.youtube.com/watch?v=GgPKRZdFZ7s
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/y_28ovYA8aY/hqdefault.jpg" group-title="القنـوات الأخبــارية",قناة الغد
 https://www.youtube.com/watch?v=y_28ovYA8aY
 #EXTINF:-1 tvg-logo="https://i.imgur.com/bqRC3sl.png" group-title="القنـوات الأخبــارية",الشرق للأخبار
 https://live-news.asharq.com/asharq.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/OuogLHx.png" group-title="القنـوات الأخبــارية",Bloomberg TV
-https://bloomberg.com/media-manifest/streams/eu.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الأخبــارية",RT Arabic
 https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/9lOuzHQ.png" group-title="القنـوات الأخبــارية",I News
@@ -171,8 +119,6 @@ https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8
 https://live.presstv.co.uk/hls/ifilmar_4_482/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/MfyRQCs.png" group-title="القنـوات الأخبــارية",أخبار العالم
 https://live.nowtelly.com/now_arabic/live/playlist.m3u8
-#EXTINF:-1 tvg-id="AfghanistanInternational.uk" group-title="القنـوات الأخبــارية",Afghanistan International (720p)
-https://hls.afintl.com/hls/stream.m3u8
 #EXTINF:-1 tvg-id="AlJazeera.qa" group-title="القنـوات الأخبــارية",Al Jazeera (1080p)
 https://live-hls-apps-aja-fa.getaj.net/AJA/01.m3u8
 #EXTINF:-1 tvg-id="AlJazeeraMubasher.qa" group-title="القنـوات الأخبــارية",Al Jazeera Mubasher (1080p)
@@ -193,42 +139,12 @@ https://ghaasiflu.online/Dijlah/index.m3u8
 https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/master.m3u8
 #EXTINF:-1 tvg-id="ElyssaTV.tn" group-title="القنـوات الأخبــارية",Elyssa TV (1080p)
 https://tv.elyssatv.com/live/master.m3u8
-#EXTINF:-1 tvg-id="Kurdistan24.iq" group-title="القنـوات الأخبــارية",Kurdistan 24 (1080p)
-https://hlspackager.akamaized.net/live/DB/K24/HLS/K24.m3u8
-#EXTINF:-1 tvg-id="MiracleChannel.se" group-title="القنـوات الأخبــارية",Miracle Channel (1080p)
-https://live.miracleonline.org/hls/miracle1.m3u8
 #EXTINF:-1 tvg-id="PalestineToday.ps" group-title="القنـوات الأخبــارية",Palestine Today (480p)
 https://live.paltodaytv.com/paltv/live/playlist.m3u8
-#EXTINF:-1 tvg-id="PayamTV.iq" group-title="القنـوات الأخبــارية",Payam TV (1080p)
-https://hlspackager.akamaized.net/live/DB/PAYAM_TV/HLS/PAYAM_TV.m3u8
-#EXTINF:-1 tvg-id="RudawTV.iq" group-title="القنـوات الأخبــارية",Rudaw TV (1080p)
-https://hlspackager.akamaized.net/live/DB/RUDAW/HLS/RUDAW.m3u8
 #EXTINF:-1 tvg-id="TRTArabi.tr" group-title="القنـوات الأخبــارية",TRT Arabi (1080p)
 https://tv-trtarabi.medya.trt.com.tr/master.m3u8
 #EXTINF:-1 tvg-id="UNews.lb" group-title="القنـوات الأخبــارية",UNews (1080p)
 https://cdn.catiacast.video/abr/9436b5ab3c1171ab04a59af11951292f/playlist.m3u8
-#EXTINF:-1 tvg-id="WelatTV.sy" group-title="القنـوات الأخبــارية",Welat TV (1080i)
-https://stream.badinan.xyz/welat/tv/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/ABC_News_Live_logo_2021.svg/960px-ABC_News_Live_logo_2021.svg.png" group-title="القنـوات الأخبــارية",ABC News Live 1
-https://abcnews-streams.akamaized.net/hls/live/2023560/abcnewshudson1/master.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/bpc4v0u.png" group-title="القنـوات الأخبــارية",CBS News New York
-https://cbsn-ny.cbsnstream.cbsnews.com/out/v1/ec3897d58a9b45129a77d67aa247d136/master.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/OuogLHx.png" group-title="القنـوات الأخبــارية",Bloomberg TV Live Event
-https://bloomberg.com/media-manifest/streams/us-event.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/6eQ2nCJ.png" group-title="القنـوات الأخبــارية",Reuters TV
-https://amg00453-reuters-amg00453c1-rakuten-uk-2110.playouts.now.amagi.tv/playlist/amg00453-reuters-reuters-rakutenuk/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/ZsPb8nL.png" group-title="القنـوات الأخبــارية",Sky News Extra 1
-https://skynewsau-live.akamaized.net/hls/live/2002689/skynewsau-extra1/master.m3u8
-#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Euro_News.png" group-title="القنـوات الأخبــارية",Euronews English HD
-https://dash4.antik.sk/live/test_euronews/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/NHK_World_Japan.png" group-title="القنـوات الأخبــارية",NHK World-Japan HD
-https://masterpl.hls.nhkworld.jp/hls/w/live/smarttv.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/5UxU4zc.png" group-title="القنـوات الأخبــارية",Africanews English
-https://cdn-euronews.akamaized.net/live/eds/africanews-en/25049/index.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/LOGO_i24NEWS.png/960px-LOGO_i24NEWS.png" group-title="القنـوات الأخبــارية",i24NEWS English World
-https://i24newsenglish-cdn.encoders.immergo.tv/master.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Newsmax_logo.svg/960px-Newsmax_logo.svg.png" group-title="القنـوات الأخبــارية",Newsmax TV
-https://nmx1ota.akamaized.net/hls/live/2107010/Live_1/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/eC4LfEVxvKg/hqdefault.jpg" group-title="القنـوات السعـودية",قناة القرآن الكريم
 https://www.youtube.com/watch?v=eC4LfEVxvKg
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/lxpmm36-1Ww/hqdefault.jpg" group-title="القنـوات السعـودية",القناة الرياضية السعودية
@@ -271,10 +187,6 @@ https://shd-gcp-live.edgenextcdn.net/live/bitmovin-thikrayat/8cfa8fe0c9627573574
 https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="القنـوات البـدوية",أصيل
 https://live.asil.tv/asiltv/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/mptwwLs.png" group-title="MBC",MBC Loud
-https://radio-loud-fm.mbc.net/radio-loud-fm_1.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/TTAGFHG.png" group-title="MBC",MBC بوليوود
-https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-bollywood/546eb40d7dcf9a209255dd2496903764/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/CiA3plN.png" group-title="MBC",MBC 1
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1/15cf99af5de54063fdabfefe66adc075/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/BcXASJp.png" group-title="MBC",MBC 4
@@ -305,12 +217,8 @@ https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-usa/cd8d40acdab28aac
 https://d6izdil55uftn.cloudfront.net/out/v1/0a06d1d6377c47edbd48721ed724bd08/index.m3u8
 #EXTINF:-1 tvg-id="MBC1USA.us" group-title="MBC",MBC 1 USA (1080p)
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1-usa/fdac3a4fc0473f1f56e07ec1d63a4b7b/index.m3u8
-#EXTINF:-1 tvg-id="MBC3USA.us" group-title="MBC",MBC 3 USA (1080p)
-https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-3-usa/5d58265a862a476dc7f97694addb5ded/index.m3u8
 #EXTINF:-1 tvg-id="MBCFM.ae" group-title="MBC",MBC FM (1080p)
 https://dbbv9umqcd7cs.cloudfront.net/out/v1/db15b75c3cc0400c91961468d6a232ac/index.m3u8
-#EXTINF:-1 tvg-id="MBCPersia.ae" group-title="MBC",MBC Persia (1080p)
-https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-persia/818ee8e4b592dc497608f066d825bfb4/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/pGgp38I.png" group-title="ROTANA",روتانا سينما السعودية
 #EXTVLCOPT:http-referrer=https://rotana.net/
 #EXTVLCOPT:http-origin=https://rotana.net
@@ -364,8 +272,6 @@ https://kwtspta.cdn.mangomolo.com/sp/smil:sp.stream.smil/chunklist.m3u8
 https://kwtsplta.cdn.mangomolo.com/spl/smil:spl.stream.smil/chunklist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/kG0d8Ay.png" group-title="القنـوات الكويتيه",تلفزيون الكويت 1
 https://kwtktv1ta.cdn.mangomolo.com/ktv1/smil:ktv1.stream.smil/chunklist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/hB57mNh.png" group-title="القنـوات الكويتيه",تلفزيون الكويت 2
-https://kwtktv2ta.cdn.mangomolo.com/ktv2/smil:ktv2.stream.smil/chunklist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/naVEZtj.png" group-title="القنـوات الكويتيه",الكويت — القرين
 https://kwtktvaqta.cdn.mangomolo.com/ktvaq/smil:tktvaq.stream.smil/chunklist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/jg3VAxO.png" group-title="القنـوات الكويتيه",الكويت — العربي
@@ -414,8 +320,6 @@ https://live.kwikmotion.com/qtv2live/qtv2.smil/playlist.m3u8
 https://partwota.cdn.mgmlcdn.com/omlive/smil:omlive.stream.smil/chunklist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",تلفزيون البحرين
 https://5c7b683162943.streamlock.net/live/ngrp:bahraintvmain_all/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",البحرين الدولية
-https://5c7b683162943.streamlock.net/live/ngrp:bahraininternational_all/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",البحرين الرياضية 2
 https://5c7b683162943.streamlock.net/live/ngrp:bahrainsportstwo_all/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",QBC قطر للأعمال
@@ -428,24 +332,18 @@ https://live.kwikmotion.com/smcquranlive/quranradiolive/playlist.m3u8
 https://cdn1.logichost.in/ajmantv/live/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/2FPtYZr.png" group-title="القنـوات الخليجية",قناة الاستقامة
 https://jmc-live.ercdn.net/alistiqama/alistiqama.m3u8
-#EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",Pulse95 Radio
-https://svs.itworkscdn.net/pulse95live/pulse96/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",Watar Radio
 https://svs.itworkscdn.net/smcwatarlive/smcwatar/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="القنـوات الخليجية",قطر 2
 https://qatartv.akamaized.net/hls/live/20000611/qtv2/master.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/HPVsIa4.png" group-title="القنـوات المتبقية",اقرأ — القرآن
 https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv2/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/nUlZvSe.png" group-title="القنـوات المتبقية",اقرأ — عالمي
-https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv1/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/cTLj7Yt.png" group-title="القنـوات المتبقية",أفلام
 https://shd-amg-fast.edgenextcdn.net/tx001/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/NIVhISa.png" group-title="القنـوات المتبقية",أفلام أكشن
 https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/JWihdcl.png" group-title="القنـوات المتبقية",أفلام إثارة
 https://shd-amg-fast.edgenextcdn.net/tx012/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/Y2BqP9m.png" group-title="القنـوات المتبقية",أطفال ومواهب
-https://5aafcc5de91f1.streamlock.net/atfal1.com/atfal2/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/QtlnZbq.png" group-title="القنـوات المتبقية",باب الحارة
 https://shd-amg-fast.edgenextcdn.net/tx010/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://shahid.mbc.net/mediaObject/d089a559-4f41-4def-a786-f98fcfbf0464?height=auto&width=288&croppingPoint=&version=1&type=png" group-title="القنـوات المتبقية",مرايا
@@ -454,8 +352,6 @@ https://shd-amg-fast.edgenextcdn.net/tx008/playlist.m3u8
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-big-time-plus/924283f994779a311c1389698ff7e736/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/otAHLRo.png" group-title="القنـوات المتبقية",الشلال
 https://amg01480-alshallalfze-alshallal-ono-q0hfg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/-Ye42cCA4Pg/hqdefault.jpg" group-title="القنـوات المتبقية",مغامرات منصور
-https://www.youtube.com/watch?v=-Ye42cCA4Pg
 #EXTINF:-1 tvg-logo="https://assets.mbcmood.com/channels/1738059679TARAB_Logo.png" group-title="القنـوات المتبقية",طرب
 https://shd-amg-fast.edgenextcdn.net/tx002/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://assets.mbcmood.com/channels/1720184012Mohammed%20Abdo%20banner.png" group-title="القنـوات المتبقية",محمد عبده
