@@ -6,7 +6,7 @@ describe("IPTV-compatible public export", () => {
     for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u", "public/c.m3u"]) {
       const content = readFileSync(filename, "utf8");
       expect(content).not.toContain('group-title="الأجنبية —');
-      expect(content).toContain('group-title="العربية —');
+      if (filename !== "public/c.m3u") expect(content).toContain('group-title="العربية —');
       expect(content).toContain("روتانا سينما السعودية");
     }
   });
@@ -24,8 +24,21 @@ describe("IPTV-compatible public export", () => {
     expect(compatible.charCodeAt(0)).toBe(35);
   });
 
-  it("keeps the short link c.m3u identical to channels.m3u", () => {
-    expect(readFileSync("public/c.m3u", "utf8")).toBe(readFileSync("public/channels.m3u", "utf8"));
+  it("keeps all 530 original entries and playback directives in the curated short playlist", () => {
+    const entries = (file: string) => readFileSync(file, "utf8").split(/(?=^#EXTINF:)/m).slice(1)
+      .map(block => block.replace(/group-title="[^"]*"/g, '').trim()).sort();
+    expect(entries("public/c.m3u")).toHaveLength(530);
+    expect(entries("public/c.m3u")).toEqual(entries("public/channels.m3u"));
+  });
+
+  it("orders the public short playlist into the owner's nine named sections", () => {
+    const content = readFileSync("public/c.m3u", "utf8");
+    const groups = [...content.matchAll(/group-title="([^"]*)"/g)].map(match => match[1]);
+    const sections = groups.filter((group, index) => index === 0 || group !== groups[index - 1]);
+    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية', 'القنـوات المتبقية']);
+    expect(content).toMatch(/group-title="القنـوات الكويتيه",تلفزيون الكويت 1/);
+    expect(content).toMatch(/group-title="MBC",MBC 1\n/);
+    expect(content).toMatch(/group-title="ROTANA",روتانا سينما السعودية/);
   });
 
   it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
