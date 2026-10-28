@@ -48,3 +48,6 @@
 - Share the IPTV home presentation between / and /tv through GoldHome; keep the optional saved TV canvas accessible separately so restyling never overwrites owner layouts.
 - Store shared homepage sizing within site_settings design.layout, validate bounded numeric CSS through site-layout, and render draft previews through GoldHome with container-bounded sizing; save design and its previous revision together under existing admin RLS to keep undo recoverable without changing public access.
 - Keep pages-site/ as the standalone GitHub Pages copy of the site: hash-routed static files only, channels pulled from almoghani.net/aa.m3u by .github/scripts/channels.py because the site sends no cross-origin header, and member, chat, voice and admin features linked to almoghani.net instead of copied — the full stack cannot build on Pages and private streams must stay off it.
+
+## Migrated pages
+- Serve the standalone blue IPTV page (GitHub Pages almoghani-voices-page copy, 43 embedded news/Jordan channels) from public/iptv.html as an exact static single-file copy; never rebuild it as React routes, its admin and favorites stay device-local in localStorage.
