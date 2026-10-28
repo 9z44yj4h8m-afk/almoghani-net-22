@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALMOGHANI LIVE — المغني لايف</title>
+<meta name="description" content="ALMOGHANI LIVE: قنوات مباشرة وأفلام كاملة ومسلسلات بدوية داخل واجهة عربية داكنة.">
+<meta property="og:title" content="ALMOGHANI LIVE — المغني لايف">
+<meta property="og:description" content="قنوات مباشرة وأفلام ومسلسلات في مكان واحد.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Outfit:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237c3aed'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --background:oklch(0.19 0 0); --surface-deep:oklch(0.15 0 0); --surface:oklch(0.24 0 0); --card:oklch(0.24 0 0);
+  --foreground:oklch(0.98 0 0); --primary:oklch(0.65 0.25 295); --primary-foreground:oklch(0.99 0 0);
+  --secondary:oklch(0.27 0.035 295); --muted:oklch(0.28 0 0); --muted-foreground:oklch(0.73 0 0); --border:oklch(0.32 0.008 295);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--background);color:var(--foreground);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;min-height:100dvh}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+.shell{width:100%;max-width:1720px;margin:0 auto;padding:0 24px 24px}
+.brand{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 0 8px;font-family:"Outfit",sans-serif;letter-spacing:.5px}
+.brand b{font-size:30px;font-weight:900;line-height:1}
+.brand b i{color:var(--primary);font-style:normal}
+.brand small{display:block;font-family:"Cairo",sans-serif;font-size:12px;font-weight:800;color:var(--muted-foreground);margin-top:4px}
+.note{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:6px 0 18px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-deep);color:var(--muted-foreground);font-size:13px;font-weight:700}
+.note a{color:var(--primary)}
+.rows{display:grid;gap:20px}
+.row{display:grid;grid-template-columns:minmax(220px,28%) minmax(0,1fr);gap:24px;direction:ltr;align-items:stretch}
+.cat{display:flex;align-items:center;justify-content:center;gap:20px;min-height:170px;padding:18px;direction:ltr;border:1px solid var(--border);border-radius:10px;background:linear-gradient(160deg,var(--secondary),var(--surface-deep))}
+.cat span{direction:rtl;font-family:"Cairo",sans-serif;font-size:36px;font-weight:900;line-height:1.5}
+.cat svg{width:56px;height:56px;color:var(--primary)}
+.shelf{min-width:0;display:grid;gap:12px;align-items:stretch}
+.shelf.ch{grid-template-columns:repeat(6,minmax(0,1fr))}
+.shelf.po{grid-template-columns:repeat(8,minmax(0,1fr))}
+.tile{display:flex;flex-direction:column;gap:8px;min-width:0;padding:12px 6px;border-radius:10px;background:var(--card);text-align:center;transition:transform .15s ease,box-shadow .15s ease}
+.tile:hover{transform:translateY(-3px);box-shadow:0 8px 26px oklch(0 0 0/.35)}
+.tile img{width:100%;aspect-ratio:1;object-fit:contain;max-height:150px;border-radius:6px;background:var(--surface-deep)}
+.tile span{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700}
+.poster{position:relative;display:block;width:100%;aspect-ratio:2/3;overflow:hidden;border-radius:10px;background:var(--surface)}
+.poster img{width:100%;height:100%;object-fit:cover}
+.poster em{position:absolute;inset-inline:0;bottom:0;padding:26px 8px 10px;font-style:normal;font-size:13px;font-weight:800;text-align:center;direction:rtl;background:linear-gradient(transparent,var(--surface-deep))}
+.search{display:flex;align-items:center;gap:12px;margin:18px 0;padding:5px 16px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+.search svg{width:20px;color:var(--primary)}
+.search input{flex:1;min-width:0;height:40px;border:0;outline:none;background:transparent;color:var(--foreground)}
+.pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding-top:14px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted-foreground);font-size:14px;font-weight:800;transition:color .15s ease,background .15s ease}
+.pill:hover{color:var(--foreground);background:var(--secondary)}
+.pill.on{border-color:var(--primary);background:var(--primary);color:var(--primary-foreground)}
+.pill svg{width:16px}
+.access{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding-top:10px}
+.work{display:grid;grid-template-columns:180px minmax(280px,360px) minmax(0,1fr);gap:12px;align-items:start}
+.rail{display:flex;flex-direction:column;gap:2px;border:1px solid var(--border);border-radius:10px;background:var(--surface-deep);padding:8px;overflow:hidden}
+.rail button{display:block;width:100%;min-height:46px;padding:10px 12px;border-bottom:1px solid var(--border);text-align:right;font-size:14px;font-weight:800;color:var(--muted-foreground)}
+.rail button:last-child{border-bottom:0}
+.rail button.on{background:var(--primary);color:var(--primary-foreground);border-radius:6px}
+.rail b{margin-inline-start:6px;font-size:11px;color:var(--muted-foreground)}
+.list{border:1px solid var(--border);border-radius:10px;background:var(--surface-deep);padding:8px;min-width:0}
+.list .search{margin:0 0 8px}
+.count{padding:2px 6px 8px;font-size:11px;color:var(--muted-foreground)}
+.items{display:flex;flex-direction:column;gap:6px;max-height:560px;overflow-y:auto;scrollbar-width:thin}
+.item{display:flex;align-items:center;gap:12px;min-height:78px;padding:8px 10px;border:1px solid transparent;border-radius:8px;background:var(--surface);text-align:right}
+.item:hover{border-color:var(--border)}
+.item.on{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}
+.item img,.item i{width:64px;height:64px;flex:none;object-fit:contain;border-radius:6px;background:var(--surface-deep)}
+.item i{display:grid;place-items:center;font-style:normal;font-size:24px;font-weight:900;color:var(--muted-foreground)}
+.item span{font-size:17px;font-weight:800;overflow-wrap:anywhere}
+.item u{display:block;margin-top:3px;font-size:11px;font-style:normal;text-decoration:none;color:var(--muted-foreground)}
+.stage{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface-deep)}
+.frame{position:relative;aspect-ratio:16/9;background:#000}
+.frame iframe,.frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.stage-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--border)}
+.stage-bar h2{margin:0;font-family:"Cairo",sans-serif;font-size:22px;font-weight:900}
+.stage-bar .badge{padding:5px 12px;border-radius:999px;background:var(--primary);color:var(--primary-foreground);font-size:12px;font-weight:900}
+.stage-bar p{margin:0;color:var(--muted-foreground);font-size:13px;font-weight:700}
+.grid{display:grid;gap:14px}
+.grid.ch{grid-template-columns:repeat(6,minmax(0,1fr))}
+.grid.po{grid-template-columns:repeat(8,minmax(0,1fr))}
+h1{font-family:"Cairo",sans-serif;font-size:30px;font-weight:900;margin:22px 0 6px}
+.sub{color:var(--muted-foreground);font-weight:700;margin:0 0 18px}
+.empty{padding:40px 18px;text-align:center;color:var(--muted-foreground);font-weight:700;border:1px dashed var(--border);border-radius:12px}
+.contact{display:grid;gap:12px;max-width:560px}
+.cta{display:flex;align-items:center;gap:18px;padding:16px 20px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.cta b{font-size:20px;font-weight:900;overflow-wrap:anywhere}
+.cta em{font-style:normal;color:var(--muted-foreground);font-size:13px}
+.dot{width:44px;height:44px;flex:none;border-radius:50%;background:var(--primary);display:grid;place-items:center;color:var(--primary-foreground)}
+.err{padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted-foreground);font-weight:700}
+@media(max-width:1100px){.work{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "list" "rail"}.stage{grid-area:stage}.list{grid-area:list}.rail{grid-area:rail;flex-direction:row;overflow-x:auto}.rail button{min-height:44px;flex:0 0 auto;border-bottom:0;text-align:center}.row{grid-template-columns:200px minmax(0,1fr);gap:16px}.cat span{font-size:26px}.cat svg{width:42px;height:42px}.shelf{display:flex;overflow-x:auto}.tile{flex:0 0 120px}.poster{flex:0 0 110px}.grid.ch{grid-template-columns:repeat(4,minmax(0,1fr))}.grid.po{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:767px){.shell{padding:0 12px 18px}.row{grid-template-columns:minmax(0,1fr);gap:10px}.cat{min-height:62px;justify-content:flex-start;padding:10px 16px;gap:14px}.cat span{font-size:23px}.cat svg{width:32px;height:32px}.tile{flex-basis:112px}.poster{flex-basis:108px}.brand b{font-size:23px}.grid.ch{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.po{grid-template-columns:repeat(3,minmax(0,1fr))}.items{max-height:420px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="brand"><b>ALMOGHANI <i>LIVE</i></b><small>المغني لايف</small></header>
+  <div id="view"></div>
+  <nav class="access" id="access"></nav>
+</div>
+<script src="channels.js"></script>
+<script>
+(function () {
+  "use strict";
+  var HOME = "https://almoghani.net";
+  var MOVIES = [
+    { t: "سبع البرمبة", y: "gGaozLyl-y4", d: "1:38:57" },
+    { t: "اوعى وشك", y: "1obs9eMxNAI", d: "1:45:57" },
+    { t: "بنك الحظ", y: "omnLea1B3jc", d: "1:50:12" },
+    { t: "عمر وسلمى 2", y: "gr8ExWtFglY", d: "1:40:39" },
+    { t: "خير وبركة", y: "1LZvuOn9zEQ", d: "1:41:24" },
+    { t: "كلم ماما", y: "CUFlewlkV54", d: "1:26:52" },
+    { t: "1408", y: "ELOQ0O2kKGU", d: "1:44:24" },
+    { t: "Southpaw", y: "y_6zrQZRJr8", d: "2:03:57" },
+    { t: "Paper Man", y: "BDdyKWZrdng", d: "1:50:46" },
+    { t: "أسطورة كبيرة", y: "oBNFGtxOrKc", d: "فيلم كامل" },
+    { t: "هيزل وقلبها المحب", y: "hZntpjaJ92c", d: "فيلم كامل" },
+    { t: "فيلم أكشن جديد", y: "_TbLOphqpA4", d: "فيلم كامل" },
+    { t: "الانتقام", y: "yg_s2NwYyQ8", d: "فيلم كامل" }
+  ];
+  var SERIES = [
+    { t: "دواس الليل", p: "PLdLJSN32o2ZFvnChN9Gij09pDTaM_K2JN" },
+    { t: "عودة أبو تايه", p: "" },
+    { t: "النذير", p: "PLE2zYh2xkSw2LscU4GCrAtAxQjFDmDLX-" },
+    { t: "ذياب هباب الريح", p: "PLv2N9jlV10RDMq0Zif-06QM62dXbcFeoy" },
+    { t: "اخو سعدى", p: "PLE2zYh2xkSw0vfEn15sF1f6KV7ePqBjbB" },
+    { t: "غدر الزمان", p: "PLMNAvl6BOFrDDdvbQWxO-WIzcYaOx2LQp" },
+    { t: "القصير", p: "PLcQVQ2Ij_zcGA12MSQiHjqsmYeyOE0Rql" },
+    { t: "الرحيل", p: "PLeQ_hQmKIlZsrZr_H08sqWEo5946UCsN_" },
+    { t: "جلوة راكان", p: "PLBxP5E6FUMw8G8k4pTOeac5zT920Z8uDO" }
+  ];
+  var CONTACT = [
+    { k: "واتساب", v: "0557073007", u: "https://wa.me/966557073007" },
+    { k: "البريد", v: "ahmed@almoghani.net", u: "mailto:ahmed@almoghani.net" },
+    { k: "سناب شات", v: "Ls460g", u: "https://www.snapchat.com/add/Ls460g" },
+    { k: "إكس", v: "Op430", u: "https://x.com/Op430" }
+  ];
+  var CH = Array.isArray(window.CHANNELS) ? window.CHANNELS : null;
+  var view = document.getElementById("view");
+  var access = document.getElementById("access");
+  var state = { q: "", group: "", open: -1 };
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function norm(v) {
+    return String(v || "").toLowerCase()
+      .replace(/[\u064B-\u065F\u0670ـ]/g, "")
+      .replace(/[أإآ]/g, "ا")
+      .replace(/[^\p{L}\p{N}]/gu, "")
+      .replace(/بيان|بين/g, "bein")
+      .replace(/سبورت|sports/g, "sport");
+  }
+  function ytId(url) {
+    var m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+    return m ? m[1] : "";
+  }
+  function isHls(url) { return /^https?:\/\//i.test(url) && !ytId(url); }
+  function hash() { return (location.hash || "#/").replace(/^#/, ""); }
+  function go(to) { location.hash = to; }
+  function icon(p) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
+  }
+  var ICON = {
+    tv: icon('<rect x="2" y="7" width="20" height="14" rx="2"/><path d="m17 2-5 5-5-5"/>'),
+    film: icon('<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 9h20M2 15h20"/>'),
+    reel: icon('<path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/>'),
+    search: icon('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+    user: icon('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>'),
+    shield: icon('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>'),
+    phone: icon('<path d="M5 3h4l2 5-3 2a12 12 0 0 0 6 6l2-3 5 2v4a2 2 0 0 1-2 2A18 18 0 0 1 3 5a2 2 0 0 1 2-2z"/>'),
+    globe: icon('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>'),
+    mail: icon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>'),
+    chat: icon('<path d="M21 12a8 8 0 0 1-11 7l-5 2 2-5a8 8 0 1 1 14-4z"/>'),
+    snap: icon('<path d="M12 3c3 0 5 2 5 5 0 2 .5 3 1 4-.5 1-2 1-3 2 .5 1 1 2 2 3-2 0-3 .5-5 1-2-.5-3-1-5-1 1-1 1.5-2 2-3-1-1-2.5-1-3-2 .5-1 1-2 1-4 0-3 2-5 5-5z"/>'),
+    x: icon('<path d="M3 3l8 10M21 21 13 11M3 21l7-7M21 3l-7 7"/>')
+  };
+  var CONTACT_ICON = { "واتساب": ICON.phone, "البريد": ICON.mail, "سناب شات": ICON.snap, "إكس": ICON.x };
+
+  function channelTiles(list, n) {
+    return list.slice(0, n).map(function (c) {
+      var i = CH.indexOf(c);
+      return '<a class="tile" href="#/watch/' + i + '" aria-label="شغّل ' + esc(c.n) + '">' +
+        (c.l ? '<img src="' + esc(c.l) + '" alt="" loading="lazy">' : "<i>" + esc((c.n || "?").slice(0, 1)) + "</i>") +
+        "<span>" + esc(c.n) + "</span></a>";
+    }).join("");
+  }
+  function row(title, sub, href, ic, cls, inner) {
+    return '<section class="row"><a class="cat" href="' + href + '">' + ic + "<span>" + title + "</span></a>" +
+      '<div class="shelf ' + cls + '">' + inner + "</div></section>";
+  }
+  function home() {
+    if (!CH) return waiting();
+    var withLogo = CH.filter(function (c) { return c.l; });
+    var films = MOVIES.map(function (m) {
+      return '<a class="poster" href="#/movie/' + m.y + '" aria-label="' + esc(m.t) + '"><img src="https://i.ytimg.com/vi/' + m.y + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(m.t) + "</em></a>";
+    }).join("");
+    var series = SERIES.map(function (s, i) {
+      return '<a class="poster" href="#/series/' + i + '" aria-label="' + esc(s.t) + '"><img src="https://i.ytimg.com/vi/' + playlistThumb(i) + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(s.t) + "</em></a>";
+    }).join("");
+    return '<main class="rows">' +
+      row("بث مباشر", "", "#/live", ICON.tv, "ch", channelTiles(withLogo, 6)) +
+      row("أفلام", "", "#/movies", ICON.film, "po", films) +
+      row("مسلسلات", "", "#/series", ICON.reel, "po", series) +
+      "</main>" +
+      searchForm() +
+      pills() +
+      '<div class="note">نسخة تعريفية من الموقع — القنوات الخاصة بالأعضاء ولوحة التحكم في <a href="' + HOME + '/auth">almoghani.net</a>.</div>';
+  }
+  function playlistThumb(i) {
+    var known = { 0: "JiFBbINrPVU", 2: "XhRmzAzeY3w", 4: "t73vq7kH7r8" };
+    return known[i] || "JiFBbINrPVU";
+  }
+  function searchForm() {
+    return '<form class="search" onsubmit="return window.__goSearch(event)">' + ICON.search +
+      '<input id="q" aria-label="ابحث عن قناة" placeholder="البحث في القنوات" value="' + esc(state.q) + '" oninput="window.__type(this.value)">' +
+      '<button class="pill" type="submit" aria-label="بحث">بحث</button></form>';
+  }
+  function pills() {
+    if (!CH) return "";
+    var groups = [];
+    CH.forEach(function (c) { if (groups.indexOf(c.g) < 0) groups.push(c.g); });
+    return '<nav class="pills" aria-label="الأقسام">' +
+      '<a class="pill" href="#/live">' + ICON.tv + "جميع القنوات</a>" +
+      groups.map(function (g) { return '<a class="pill" href="#/group/' + encodeURIComponent(g) + '">' + esc(g) + "</a>"; }).join("") +
+      '<a class="pill" href="#/movies">' + ICON.film + "أفلام</a>" +
+      '<a class="pill" href="#/series">' + ICON.reel + "مسلسلات</a>" +
+      '<a class="pill" href="#/contact">' + ICON.phone + "التواصل</a></nav>";
+  }
+  function waiting() {
+    return '<div class="empty">جارٍ تجهيز قائمة القنوات… <button class="pill" onclick="location.reload()">إعادة المحاولة</button></div>';
+  }
+  function filtered() {
+    var list = CH.filter(function (c) {
+      if (state.group && c.g !== state.group) return false;
+      if (state.q && norm(c.n).indexOf(norm(state.q)) < 0) return false;
+      return true;
+    });
+    return list;
+  }
+  function live(presetGroup) {
+    if (!CH) return waiting();
+    if (presetGroup) state.group = presetGroup;
+    var list = filtered();
+    var groups = [];
+    CH.forEach(function (c) { if (groups.indexOf(c.g) < 0) groups.push(c.g); });
+    var current = state.open >= 0 ? CH[state.open] : list[0];
+    if (current) state.open = CH.indexOf(current);
+    return '<h1>' + (state.group ? esc(state.group) : "البث المباشر") + "</h1>" +
+      '<p class="sub">' + CH.length + " قناة — اضغط القناة لتشغيلها داخل الموقع.</p>" +
+      '<div class="work">' +
+      '<div class="rail" role="tablist">' +
+      '<button class="' + (state.group ? "" : "on") + '" onclick="window.__group(\'\')">الكل <b>' + CH.length + "</b></button>" +
+      groups.map(function (g) {
+        var n = CH.filter(function (c) { return c.g === g; }).length;
+        return '<button class="' + (state.group === g ? "on" : "") + '" onclick="window.__group(\'' + g.replace(/'/g, "\\'") + '\')">' + esc(g) + " <b>" + n + "</b></button>";
+      }).join("") +
+      "</div>" +
+      '<div class="list">' + searchForm() + '<div class="count">عدد النتائج: ' + list.length + '</div><div class="items">' +
+      (list.length ? list.map(function (c) {
+        var i = CH.indexOf(c);
+        return '<button class="item ' + (i === state.open ? "on" : "") + '" onclick="window.__open(' + i + ')">' +
+          (c.l ? '<img src="' + esc(c.l) + '" alt="" loading="lazy">' : "<i>" + esc((c.n || "?").slice(0, 1)) + "</i>") +
+          "<span>" + esc(c.n) + "<u>" + esc(c.g) + "</u></span></button>";
+      }).join("") : '<div class="empty">لا توجد قناة مطابقة للبحث.</div>') +
+      "</div></div>" +
+      '<div class="stage">' + stageFrame(current) + "</div>" +
+      "</div>" + pills();
+  }
+  function stageFrame(c) {
+    if (!c) return '<div class="frame"></div><div class="stage-bar"><p>اختر قناة للتشغيل.</p></div>';
+    var yt = ytId(c.u);
+    var body = yt
+      ? '<iframe src="https://www.youtube.com/embed/' + yt + '?autoplay=1&rel=0&playsinline=1" title="' + esc(c.n) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'
+      : '<video id="v" controls playsinline></video>';
+    return '<div class="frame">' + body + "</div>" +
+      '<div class="stage-bar"><span class="badge">مباشر</span><h2>' + esc(c.n) + "</h2><p>" + esc(c.g) + "</p>" +
+      (yt ? "" : '<button class="pill" onclick="window.__copy(\'' + esc(c.u) + '\')">نسخ رابط البث</button>') +
+      "</div>";
+  }
+  function attachHls(c) {
+    if (!c || ytId(c.u)) return;
+    var video = document.getElementById("v");
+    if (!video) return;
+    if (video.canPlayType("application/vnd.apple.mpegurl")) { video.src = c.u; void video.play().catch(function () {}); return; }
+    if (window.Hls) { runHls(video, c.u); return; }
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js";
+    s.onload = function () { runHls(video, c.u); };
+    s.onerror = function () { showErr(video, "تعذّر تحميل مشغّل البث."); };
+    document.head.appendChild(s);
+  }
+  function runHls(video, src) {
+    if (!window.Hls || !window.Hls.isSupported()) { showErr(video, "متصفحك لا يدعم تشغيل البث المباشر."); return; }
+    var h = new window.Hls();
+    h.on(window.Hls.Events.ERROR, function (_e, data) {
+      if (data.fatal) showErr(video, "هذا المصدر لا يرسل بثًا صالحًا الآن — جرّب قناة أخرى أو افتحها في مشغّل خارجي.");
+    });
+    h.loadSource(src);
+    h.attachMedia(video);
+    void video.play().catch(function () {});
+  }
+  function showErr(video, msg) {
+    var frame = video && video.parentElement;
+    if (!frame) return;
+    frame.innerHTML = '<div class="err" style="height:100%;display:grid;place-items:center;text-align:center">' + esc(msg) + "</div>";
+  }
+  function movies() {
+    return "<h1>أفلام كاملة</h1><p class='sub'>مقاطع رسمية كاملة على يوتيوب.</p>" +
+      (state.open >= 0 && CH[state.open] ? "" : "") +
+      '<div class="grid po">' + MOVIES.map(function (m) {
+        return '<a class="poster" href="#/movie/' + m.y + '" aria-label="' + esc(m.t) + '"><img src="https://i.ytimg.com/vi/' + m.y + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(m.t) + " · " + esc(m.d) + "</em></a>";
+      }).join("") + "</div>" + pills();
+  }
+  function movie(id) {
+    var m = MOVIES.filter(function (x) { return x.y === id; })[0];
+    var t = m ? m.t : "فيلم";
+    return "<h1>" + esc(t) + "</h1><p class='sub'>تشغيل رسمي من يوتيوب.</p>" +
+      '<div class="stage"><div class="frame"><iframe src="https://www.youtube.com/embed/' + esc(id) + '?autoplay=1&rel=0" title="' + esc(t) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>' +
+      '<div class="stage-bar"><span class="badge">فيلم</span><h2>' + esc(t) + "</h2></div></div>" +
+      '<div class="grid po">' + MOVIES.map(function (x) {
+        return '<a class="poster" href="#/movie/' + x.y + '" aria-label="' + esc(x.t) + '"><img src="https://i.ytimg.com/vi/' + x.y + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(x.t) + "</em></a>";
+      }).join("") + "</div>";
+  }
+  function series() {
+    return "<h1>المسلسلات البدوية</h1><p class='sub'>قوائم تشغيل رسمية بجميع الحلقات.</p>" +
+      '<div class="grid po">' + SERIES.map(function (s, i) {
+        return '<a class="poster" href="#/series/' + i + '" aria-label="' + esc(s.t) + '"><img src="https://i.ytimg.com/vi/' + playlistThumb(i) + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(s.t) + "</em></a>";
+      }).join("") + "</div>" + pills();
+  }
+  function seriesOne(i) {
+    var s = SERIES[i];
+    if (!s) return '<div class="empty">المسلسل غير موجود.</div>';
+    var src = s.p
+      ? "https://www.youtube.com/embed/videoseries?list=" + s.p + "&autoplay=1"
+      : "https://www.youtube.com/embed/JiFBbINrPVU?autoplay=1";
+    return "<h1>" + esc(s.t) + "</h1><p class='sub'>حلقات المسلسل مرتبة داخل قائمة تشغيل.</p>" +
+      '<div class="stage"><div class="frame"><iframe src="' + src + '" title="' + esc(s.t) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>' +
+      '<div class="stage-bar"><span class="badge">مسلسل</span><h2>' + esc(s.t) + "</h2></div></div>" +
+      '<div class="grid po">' + SERIES.map(function (x, j) {
+        return '<a class="poster" href="#/series/' + j + '" aria-label="' + esc(x.t) + '"><img src="https://i.ytimg.com/vi/' + playlistThumb(j) + '/hqdefault.jpg" alt="" loading="lazy"><em>' + esc(x.t) + "</em></a>";
+      }).join("") + "</div>";
+  }
+  function contact() {
+    return "<h1>التواصل والاشتراك</h1><p class='sub'>لطلب قناة أو اشتراك، تواصل معنا مباشرة.</p>" +
+      '<div class="contact">' + CONTACT.map(function (c) {
+        return '<a class="cta" href="' + esc(c.u) + '"><span class="dot">' + (CONTACT_ICON[c.k] || ICON.phone) + "</span><span><b>" + esc(c.v) + "</b><em>" + esc(c.k) + "</em></span></a>";
+      }).join("") + "</div>" +
+      '<div class="note">صفحة الأعضاء الرسمية: <a href="' + HOME + '/auth">almoghani.net/auth</a></div>';
+  }
+  function render() {
+    var path = hash();
+    access.innerHTML = [
+      { h: HOME + "/auth", t: "دخول الأعضاء", i: ICON.user },
+      { h: HOME + "/admin", t: "لوحة التحكم", i: ICON.shield },
+      { h: HOME, t: "الموقع", i: ICON.globe },
+      { h: "#/contact", t: "التواصل", i: ICON.phone }
+    ].map(function (a) { return '<a class="pill" href="' + a.h + '">' + a.i + esc(a.t) + "</a>"; }).join("");
+    if (path.indexOf("/watch/") === 0) {
+      state.open = Number(path.slice(7));
+      var c = CH && CH[state.open];
+      view.innerHTML = c ? live() : waiting();
+      attachHls(c);
+      return;
+    }
+    if (path.indexOf("/group/") === 0) { state.group = decodeURIComponent(path.slice(7)); state.open = -1; view.innerHTML = live(); attachHls(CH && CH[state.open]); return; }
+    if (path === "/live") { state.group = ""; state.open = -1; view.innerHTML = live(); attachHls(CH && CH[state.open]); return; }
+    if (path.indexOf("/movie/") === 0) { view.innerHTML = movie(path.slice(7)); return; }
+    if (path === "/movies") { view.innerHTML = movies(); return; }
+    if (path.indexOf("/series/") === 0) { view.innerHTML = seriesOne(Number(path.slice(8))); return; }
+    if (path === "/series") { view.innerHTML = series(); return; }
+    if (path === "/contact") { view.innerHTML = contact(); return; }
+    state.group = ""; state.open = -1;
+    view.innerHTML = home();
+  }
+  window.__type = function (v) { state.q = v; };
+  window.__goSearch = function (e) {
+    e.preventDefault();
+    state.q = (document.getElementById("q") || {}).value || state.q;
+    state.open = -1;
+    location.hash = "#/live";
+    render();
+    return false;
+  };
+  window.__group = function (g) { state.group = g; state.open = -1; render(); };
+  window.__open = function (i) { state.open = i; render(); location.hash = "#/watch/" + i; };
+  window.__copy = function (u) {
+    if (navigator.clipboard) void navigator.clipboard.writeText(u);
+    alert("نُسخ رابط البث: " + u);
+  };
+  window.addEventListener("hashchange", render);
+  render();
+})();
+</script>
+</body>
+</html>
