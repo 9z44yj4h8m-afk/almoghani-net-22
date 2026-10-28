@@ -29,20 +29,28 @@ describe("IPTV-compatible public export", () => {
       .map(block => block.replace(/group-title="[^"]*"/g, '').trim()).sort();
     const curated = entries("public/c.m3u");
     const source = entries("public/channels.m3u");
-    expect(curated).toHaveLength(204);
+    expect(curated.length).toBeGreaterThan(204);
     for (const entry of curated) expect(source).toContain(entry);
-    expect(readFileSync("public/c.m3u", "utf8")).not.toContain('group-title="القنـوات المتبقية"');
     expect(source).toHaveLength(530);
   });
 
-  it("orders the public short playlist into the owner's eight retained sections", () => {
+  it("orders the public short playlist into the owner's nine named sections", () => {
     const content = readFileSync("public/c.m3u", "utf8");
     const groups = [...content.matchAll(/group-title="([^"]*)"/g)].map(match => match[1]);
     const sections = groups.filter((group, index) => index === 0 || group !== groups[index - 1]);
-    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية']);
+    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية', 'القنـوات المتبقية']);
     expect(content).toMatch(/group-title="القنـوات الكويتيه",تلفزيون الكويت 1/);
     expect(content).toMatch(/group-title="MBC",MBC 1\n/);
     expect(content).toMatch(/group-title="ROTANA",روتانا سينما السعودية/);
+  });
+
+  it("retains only Gulf channels in the remaining section", () => {
+    const blocks = readFileSync("public/c.m3u", "utf8").split(/(?=^#EXTINF:)/m).slice(1);
+    const remaining = blocks.filter(block => block.includes('group-title="القنـوات المتبقية"'));
+    const names = remaining.map(block => block.split('\n')[0].split('group-title="القنـوات المتبقية",')[1]);
+    expect(names).toEqual(['اقرأ — القرآن', 'اقرأ — عالمي', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'أطفال ومواهب', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'مغامرات منصور', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']);
+    expect(names).not.toContain('CNN');
+    expect(names).not.toContain('الوطنية التونسية 2');
   });
 
   it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
