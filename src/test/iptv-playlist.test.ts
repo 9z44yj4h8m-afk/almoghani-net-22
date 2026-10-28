@@ -34,21 +34,20 @@ describe("IPTV-compatible public export", () => {
     expect(source).toHaveLength(530);
   });
 
-  it("orders the public short playlist into the owner's nine named sections", () => {
+  it("groups all 175 public short playlist entries in one section named القنوات", () => {
     const content = readFileSync("public/c.m3u", "utf8");
     const groups = [...content.matchAll(/group-title="([^"]*)"/g)].map(match => match[1]);
-    const sections = groups.filter((group, index) => index === 0 || group !== groups[index - 1]);
-    expect(sections).toEqual(['المفضلة', 'القنـوات الأخبــارية', 'القنـوات السعـودية', 'القنـوات البـدوية', 'MBC', 'ROTANA', 'القنـوات الكويتيه', 'القنـوات الخليجية', 'القنـوات المتبقية']);
-    expect(content).toMatch(/group-title="القنـوات الكويتيه",تلفزيون الكويت 1/);
-    expect(content).toMatch(/group-title="MBC",MBC 1\n/);
-    expect(content).toMatch(/group-title="ROTANA",روتانا سينما السعودية/);
+    expect(groups).toHaveLength(175);
+    expect([...new Set(groups)]).toEqual(['القنوات']);
+    expect(content).toMatch(/group-title="القنوات",تلفزيون الكويت 1/);
+    expect(content).toMatch(/group-title="القنوات",MBC 1\n/);
+    expect(content).toMatch(/group-title="القنوات",روتانا سينما السعودية/);
   });
 
-  it("retains only Gulf channels in the remaining section", () => {
+  it("preserves curated Gulf entries without restoring removed remaining channels", () => {
     const blocks = readFileSync("public/c.m3u", "utf8").split(/(?=^#EXTINF:)/m).slice(1);
-    const remaining = blocks.filter(block => block.includes('group-title="القنـوات المتبقية"'));
-    const names = remaining.map(block => block.split('\n')[0]?.split('group-title="القنـوات المتبقية",')[1]);
-    expect(names).toEqual(['اقرأ — القرآن', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']);
+    const names = blocks.map(block => block.split('\n')[0]?.split('group-title="القنوات",')[1]);
+    for (const name of ['اقرأ — القرآن', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']) expect(names).toContain(name);
     expect(names).not.toContain('CNN');
     expect(names).not.toContain('الوطنية التونسية 2');
   });
