@@ -29,7 +29,7 @@ const shortcuts = [
   { href: "/chat", title: "الدردشة", Icon: MessageCircle },
 ];
 
-export function GoldHome({ application = false }: { application?: boolean }) {
+export function GoldHome({ application = false, preview = false }: { application?: boolean; preview?: boolean }) {
   const [q, setQ] = useState("");
   const channels = useCatalog();
   const { data: config } = useSiteConfig();
@@ -51,7 +51,7 @@ export function GoldHome({ application = false }: { application?: boolean }) {
   ];
 
   return (
-    <div className="media-home" dir="rtl">
+    <div className="media-home" dir="rtl" onClickCapture={preview ? (event) => { event.preventDefault(); event.stopPropagation(); } : undefined}>
       <main className="media-home-rows">
         <section className="media-home-row" aria-label="البث المباشر">
           <Button asChild variant="secondary" className="media-category">
@@ -108,7 +108,7 @@ export function GoldHome({ application = false }: { application?: boolean }) {
           </div>
         </section>
       </main>
-      <form
+      {!preview && <form
         className="media-search"
         onSubmit={(event) => {
           event.preventDefault();
@@ -124,7 +124,7 @@ export function GoldHome({ application = false }: { application?: boolean }) {
           onChange={(event) => setQ(event.target.value)}
         />
         <Button type="submit" variant="ghost" size="icon" aria-label="بحث"><Search /></Button>
-      </form>
+      </form>}
       <nav className="media-shortcuts" aria-label="بقية الأقسام">
         {shortcuts.map(({ href, title, Icon }) => (
           <Button asChild key={href} variant="ghost"><a href={href}><Icon />{title}</a></Button>

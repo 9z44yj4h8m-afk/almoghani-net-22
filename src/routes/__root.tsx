@@ -17,6 +17,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MemberProvider } from "@/components/member-provider";
 import { designColorFields, useSiteConfig } from "@/lib/site-config";
+import { siteLayoutCss } from "@/lib/site-layout";
 import { IosInstallBanner } from "@/components/ios-install-banner";
 
 function NotFoundComponent() {
@@ -192,11 +193,11 @@ function SiteDesignStyle() {
   const safe = (f?: string) => (f && /^[A-Za-z ]{2,40}$/.test(f) ? f : "");
   const body = safe(d.fontBody), heading = safe(d.fontHeading);
   const scale = typeof d.fontScale === "number" && d.fontScale >= 85 && d.fontScale <= 130 ? d.fontScale : 0;
-  let extra = "";
+  let extra = siteLayoutCss(d.layout);
   if (body) extra += `body,.font-sans{font-family:"${body}",sans-serif !important;}`;
   if (heading) extra += `h1,h2,h3,.font-display{font-family:"${heading}",sans-serif !important;}`;
   if (typeof d.radius === "number" && d.radius >= 0 && d.radius <= 32) extra += `.rounded-lg,.rounded-xl,.rounded-2xl,.rounded-3xl{border-radius:${d.radius}px !important;}`;
   if (scale) extra += `html{font-size:${scale}%;}`;
   if (!rules.length && !extra) return null;
-  return <style>{`${rules.length ? `:root{${rules.join("")}}` : ""}${extra}`}</style>;
+  return <style>{`${rules.length ? `:root,.iptv-site-layout,.dark{${rules.join("")}}` : ""}${extra}`}</style>;
 }
