@@ -24,11 +24,14 @@ describe("IPTV-compatible public export", () => {
     expect(compatible.charCodeAt(0)).toBe(35);
   });
 
-  it("keeps all 530 original entries and playback directives in the curated short playlist", () => {
+  it("keeps only requested sections while preserving their source entries and playback directives", () => {
     const entries = (file: string) => readFileSync(file, "utf8").split(/(?=^#EXTINF:)/m).slice(1)
       .map(block => block.replace(/group-title="[^"]*"/g, '').trim()).sort();
-    expect(entries("public/c.m3u")).toHaveLength(530);
-    expect(entries("public/c.m3u")).toEqual(entries("public/channels.m3u"));
+    const curated = entries("public/c.m3u");
+    const source = entries("public/channels.m3u");
+    expect(curated.length).toBeGreaterThan(204);
+    for (const entry of curated) expect(source).toContain(entry);
+    expect(source).toHaveLength(530);
   });
 
   it("orders the public short playlist into the owner's nine named sections", () => {
@@ -39,6 +42,15 @@ describe("IPTV-compatible public export", () => {
     expect(content).toMatch(/group-title="القنـوات الكويتيه",تلفزيون الكويت 1/);
     expect(content).toMatch(/group-title="MBC",MBC 1\n/);
     expect(content).toMatch(/group-title="ROTANA",روتانا سينما السعودية/);
+  });
+
+  it("retains only Gulf channels in the remaining section", () => {
+    const blocks = readFileSync("public/c.m3u", "utf8").split(/(?=^#EXTINF:)/m).slice(1);
+    const remaining = blocks.filter(block => block.includes('group-title="القنـوات المتبقية"'));
+    const names = remaining.map(block => block.split('\n')[0]?.split('group-title="القنـوات المتبقية",')[1]);
+    expect(names).toEqual(['اقرأ — القرآن', 'اقرأ — عالمي', 'أفلام', 'أفلام أكشن', 'أفلام إثارة', 'أطفال ومواهب', 'باب الحارة', 'مرايا', 'بيغ تايم بلس', 'الشلال', 'مغامرات منصور', 'طرب', 'محمد عبده', 'عبدالمجيد عبدالله', 'راشد الماجد', 'ماجد المهندس', 'رابح صقر', 'Asharq Radio', 'الرسالة', 'الشرق ديسكفري', 'الشرق الوثائقية', 'الشرق ديسكفري مباشر', 'Al Arabiya Business (1080p)']);
+    expect(names).not.toContain('CNN');
+    expect(names).not.toContain('الوطنية التونسية 2');
   });
 
   it("preserves the verified Rotana playback headers for every Rotana CDN entry", () => {
