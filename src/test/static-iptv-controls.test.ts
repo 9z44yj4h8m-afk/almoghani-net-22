@@ -17,8 +17,7 @@ afterEach(() => windows.splice(0).forEach(dom => dom.window.close()));
 describe('standalone IPTV channel controls', () => {
   it('adds one channel with the supplied name and stream', async () => {
     const w = setup();
-    w.document.querySelector<HTMLInputElement>('#chName')!.value = 'الوسام';
-    w.document.querySelector<HTMLInputElement>('#chUrl')!.value = 'https://stream.addresses-sat.com/Alwesam/index.m3u8';
+    w.eval('document.getElementById("chName").value="الوسام";document.getElementById("chUrl").value="https://stream.addresses-sat.com/Alwesam/index.m3u8"');
     await w.eval('saveChannel()');
     expect(w.eval('data.channels.length')).toBe(44);
     expect(w.eval('data.channels.at(-1).name')).toBe('الوسام');
