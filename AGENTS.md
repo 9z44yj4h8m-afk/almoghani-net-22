@@ -51,3 +51,4 @@
 
 ## Migrated pages
 - Serve the standalone blue IPTV page from public/iptv.html as a self-contained static page; extend its device-local channel controls and live design editor in place, keep favorites/settings in localStorage and export edited HTML without introducing global admin permissions.
+- Keep the standalone design workspace scoped to its editor, with inert same-origin preview selection and existing draft history; this enables direct element selection without altering the public page or granting global writes.
