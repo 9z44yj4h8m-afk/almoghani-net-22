@@ -134,6 +134,13 @@
       "when": 1792541196503,
       "tag": "0018_add_stream_url_override_column_to_channel_overrides",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1793285599429,
+      "tag": "0019_migration",
+      "breakpoints": true
     }
   ]
 }

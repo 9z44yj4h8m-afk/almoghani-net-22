@@ -44,6 +44,7 @@ import { Route as ApiPublicBotVoiceTurnRouteImport } from './routes/api/public/b
 import { Route as ApiPublicHlsRouteImport } from './routes/api/public/hls'
 import { Route as ApiPublicIptvRouteImport } from './routes/api/public/iptv'
 import { Route as ApiPublicVoiceListenRouteImport } from './routes/api/public/voice-listen'
+import { Route as ApiPublicJobsCheckChannelsRouteImport } from './routes/api/public/jobs/check-channels'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -221,6 +222,12 @@ const ApiPublicVoiceListenRoute = ApiPublicVoiceListenRouteImport.update({
   path: '/api/public/voice-listen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicJobsCheckChannelsRoute =
+  ApiPublicJobsCheckChannelsRouteImport.update({
+    id: '/api/public/jobs/check-channels',
+    path: '/api/public/jobs/check-channels',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -264,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
+  '/api/public/jobs/check-channels': typeof ApiPublicJobsCheckChannelsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -302,6 +310,7 @@ export interface FileRoutesByTo {
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
+  '/api/public/jobs/check-channels': typeof ApiPublicJobsCheckChannelsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -341,6 +350,7 @@ export interface FileRoutesById {
   '/api/public/hls': typeof ApiPublicHlsRoute
   '/api/public/iptv': typeof ApiPublicIptvRoute
   '/api/public/voice-listen': typeof ApiPublicVoiceListenRoute
+  '/api/public/jobs/check-channels': typeof ApiPublicJobsCheckChannelsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -381,6 +391,7 @@ export interface FileRouteTypes {
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/api/public/voice-listen'
+    | '/api/public/jobs/check-channels'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/api/public/voice-listen'
+    | '/api/public/jobs/check-channels'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -457,6 +469,7 @@ export interface FileRouteTypes {
     | '/api/public/hls'
     | '/api/public/iptv'
     | '/api/public/voice-listen'
+    | '/api/public/jobs/check-channels'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -496,6 +509,7 @@ export interface RootRouteChildren {
   ApiPublicHlsRoute: typeof ApiPublicHlsRoute
   ApiPublicIptvRoute: typeof ApiPublicIptvRoute
   ApiPublicVoiceListenRoute: typeof ApiPublicVoiceListenRoute
+  ApiPublicJobsCheckChannelsRoute: typeof ApiPublicJobsCheckChannelsRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -746,6 +760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicVoiceListenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/jobs/check-channels': {
+      id: '/api/public/jobs/check-channels'
+      path: '/api/public/jobs/check-channels'
+      fullPath: '/api/public/jobs/check-channels'
+      preLoaderRoute: typeof ApiPublicJobsCheckChannelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -792,6 +813,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHlsRoute: ApiPublicHlsRoute,
   ApiPublicIptvRoute: ApiPublicIptvRoute,
   ApiPublicVoiceListenRoute: ApiPublicVoiceListenRoute,
+  ApiPublicJobsCheckChannelsRoute: ApiPublicJobsCheckChannelsRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
