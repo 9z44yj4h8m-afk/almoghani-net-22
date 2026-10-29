@@ -7,6 +7,8 @@ const RULES: { host: string; referer: string }[] = [
   { host: "rotana.hibridcdn.net", referer: "https://rotana.net/" },
   // MBC/Shahid rejects foreign Referers; Safari's native player always sends one.
   { host: "shd-gcp-live.edgenextcdn.net", referer: "" },
+  // Aseel's server is unreachable from some home networks; relaying lets TVs reach it via the site.
+  { host: "live.asil.tv", referer: "" },
 ];
 
 const CORS = {
