@@ -10,7 +10,7 @@ https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 group-title="القنوات",الصحراء
 http://alf554562.online/live/FZ056157913/926856427483/675410.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="القنوات",أصيل
-https://live.asil.tv/asiltv/index.m3u8
+https://almoghani.net/api/public/hls?u=https%3A%2F%2Flive.asil.tv%2Fasiltv%2Ftracks-v1a1%2Fmono.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="القنوات",الإخبارية السعودية
 https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-ekhbaria/297b3ef1cd0633ad9cfba7473a686a06/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/De4SEWE.png" group-title="القنوات",الحدث
