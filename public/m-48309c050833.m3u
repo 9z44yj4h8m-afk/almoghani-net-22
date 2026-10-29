@@ -1,7 +1,15 @@
 #EXTM3U
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj" group-title="القنوات",الأردن دراما — التلفزيون الأردني
 https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8
+#EXTINF:-1 group-title="القنوات",البدوية دراما (الأردن دراما بدوي)
+http://alf554562.online/live/FZ056157913/926856427483/676771.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/rtqVAxf.png" group-title="القنوات",الوسام الفضائية — نبض الجنوب
 https://stream.addresses-sat.com/Alwesam/index.m3u8
 #EXTINF:-1 group-title="القنوات",الصحراء
+http://alf554562.online/live/FZ056157913/926856427483/675410.m3u8
+#EXTINF:-1 group-title="القنوات",الصحراء (احتياطي)
 http://ebh48.top:80/live/169704281902/425912890502/11629.ts
+#EXTINF:-1 group-title="القنوات",ذكريات
+http://alf554562.online/live/FZ056157913/926856427483/675412.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="القنوات",أصيل
+https://live.asil.tv/asiltv/index.m3u8
