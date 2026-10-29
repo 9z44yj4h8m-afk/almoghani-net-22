@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      channel_health: {
+        Row: {
+          alerted: boolean
+          checked_at: string
+          fail_count: number
+          last_status: string | null
+          name: string
+          url: string
+        }
+        Insert: {
+          alerted?: boolean
+          checked_at?: string
+          fail_count?: number
+          last_status?: string | null
+          name?: string
+          url: string
+        }
+        Update: {
+          alerted?: boolean
+          checked_at?: string
+          fail_count?: number
+          last_status?: string | null
+          name?: string
+          url?: string
+        }
+        Relationships: []
+      }
       channel_overrides: {
         Row: {
           category: string | null
