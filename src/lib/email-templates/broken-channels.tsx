@@ -24,7 +24,7 @@ function BrokenChannels({ channels = [], checkedAt }: Props) {
 
 export const template = {
   component: BrokenChannels,
-  subject: (d: Record<string, any>) => `تنبيه: ${(d.channels?.length ?? 0)} قناة متعطلة`,
+  subject: (d: Record<string, any>) => `تنبيه: ${(d['channels']?.length ?? 0)} قناة متعطلة`,
   displayName: 'تنبيه القنوات المتعطلة (للمالك)',
   to: 'a0552525337@gmail.com',
   previewData: { channels: [{ name: 'الوسام', status: 'لا يستجيب' }], checkedAt: '2026-10-29 17:00' },
