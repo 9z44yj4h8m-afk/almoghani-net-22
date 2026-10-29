@@ -1,0 +1,21 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/TKRfEhUz7Bc09o8BFsTbRcyu8_oxdMZjSZLAi_mKTh-dt2w0YyZGD-qZjL2qL0nq6HFEedTQ60Y=s900-c-k-c0x00ffffff-no-rj" group-title="القنوات",الأردن دراما — التلفزيون الأردني
+https://playlist.fasttvcdn.com/pl/cc0blorawy1ibohhrupraa/Drama/playlist.m3u8
+#EXTINF:-1 group-title="القنوات",البدوية دراما (الأردن دراما بدوي)
+http://alf554562.online/live/FZ056157913/926856427483/676771.m3u8
+#EXTINF:-1 group-title="القنوات",الصحراء
+http://alf554562.online/live/FZ056157913/926856427483/675410.m3u8
+#EXTINF:-1 group-title="القنوات",ذكريات
+http://alf554562.online/live/FZ056157913/926856427483/675412.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/gROQqFD.png" group-title="القنوات",أصيل
+https://live.asil.tv/asiltv/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/WcRlHQm.png" group-title="القنوات",الإخبارية السعودية
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-al-ekhbaria/297b3ef1cd0633ad9cfba7473a686a06/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/De4SEWE.png" group-title="القنوات",الحدث
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-hadath/2ff87ec4c2f3ede35295a20637d9f8fd/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/bNyUyrR0PHo/hqdefault.jpg" group-title="القنوات",قناة الجزيرة
+https://live-hls-web-aja.getaj.net/AJA/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/GRQTndk.png" group-title="القنوات",السعودية
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/zgMqQPQ.png" group-title="القنوات",الوسطى
+https://svs.itworkscdn.net/alwoustalive/alwoustatv.smil/playlist.m3u8
