@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ALMOGHANI LIVE</string>
+    <string name="offline_title">لا يوجد اتصال بالإنترنت</string>
+    <string name="offline_desc">تحقق من الاتصال ثم أعد المحاولة لتشغيل البث.</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="downloading">بدأ التنزيل</string>
+    <string name="download_failed">تعذر تنزيل الملف</string>
+</resources>
