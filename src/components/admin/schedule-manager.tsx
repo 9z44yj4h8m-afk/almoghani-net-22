@@ -22,7 +22,7 @@ export function ScheduleManager() {
     const { data, error } = await supabase.from("channel_schedules").select("id,channel_id,title,starts_at,ends_at").gte("starts_at", new Date(Date.now() - 86400_000).toISOString()).order("starts_at");
     if (error) throw error;
     return data;
-  }, refetchInterval: 15000 });
+  }, refetchInterval: false, refetchOnWindowFocus: false });
   const [drafts, setDrafts] = useState<Record<string, Row>>({});
   const [query, setQuery] = useState("");
   const [msg, setMsg] = useState("");
