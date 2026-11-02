@@ -572,6 +572,7 @@ function OverviewTab() {
   const stats = [
     ["القنوات الظاهرة", baseChannels.length + (data?.customChannels.length ?? 0) - hiddenCh],
     ["القنوات المضافة", data?.customChannels.length ?? 0],
+    ["الأقسام", channelCategories.length],
     ["الأفلام", baseMovies.length + (data?.customMovies.length ?? 0) - (data?.hiddenMovies.length ?? 0)],
     ["الأعضاء", members.data?.length ?? "…"],
     ["الأعضاء الموقوفون", members.data?.filter((m) => m.suspended).length ?? "…"],
@@ -579,6 +580,15 @@ function OverviewTab() {
   ] as const;
   return <div className="space-y-6">
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{stats.map(([l, v]) => <div key={l} className="rounded-2xl border border-border bg-card/50 p-4"><p className="text-sm text-muted-foreground">{l}</p><p className="mt-1 text-3xl font-black">{v}</p></div>)}</div>
+    <div className="rounded-xl border border-amber-400/20 bg-amber-400/5 p-4">
+      <h3 className="mb-3 font-black">إجراءات سريعة</h3>
+      <div className="flex flex-wrap gap-2">
+        <Button asChild variant="outline"><a href="#admin-channels">إضافة وتعديل قناة</a></Button>
+        <Button asChild variant="outline"><a href="#admin-transfer">استيراد M3U ونسخ احتياطي</a></Button>
+        <Button asChild variant="outline"><a href="#admin-sections">الأقسام والصور</a></Button>
+        <Button asChild variant="outline"><a href="#admin-design">تعديل التصميم</a></Button>
+      </div>
+    </div>
     <div className="flex flex-wrap gap-2">
       <Button asChild variant="outline"><Link to="/">الرئيسية</Link></Button>
       <Button asChild variant="outline"><Link to="/movies">الأفلام</Link></Button>
