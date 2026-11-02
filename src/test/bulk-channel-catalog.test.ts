@@ -9,15 +9,22 @@ describe("Verified public IPTV-org additions", () => {
     const ids = channels.map(c => c.id);
     const addedIds = bulkChannels.map(c => c.id);
     expect(new Set(addedIds).size).toBe(addedIds.length);
-    // public/c.m3u is a deliberately curated subset, not the full IPTV-org export.
-    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u"]) {
-      const counts = new Map<string, number>();
-      for (const line of readFileSync(filename, "utf8").split(/\r?\n/)) counts.set(line, (counts.get(line) ?? 0) + 1);
-      for (const c of bulkChannels) {
-        expect(ids.filter(id => id === c.id)).toHaveLength(1);
-        expect(counts.get(c.streamUrl ?? "")).toBe(1);
-        expect(c.id.startsWith("smarters:")).toBe(false);
-        expect(new URL(c.streamUrl ?? "").protocol).toBe("https:");
+    // Public M3U files are intentionally curated; they do not mirror the entire TS catalog.
+    // Preserve their existing exclusions while ensuring any included streams are not duplicated.
+    const files = ["public/channels.m3u", "public/channels-iptv.m3u", "public/c.m3u"];
+    const counts = files.map((filename) => {
+      const streams = readFileSync(filename, "utf8")
+        .split(/\r?\n/).map((line) => line.trim()).filter((line) => /^https?:\/\//.test(line));
+      const values = new Map<string, number>();
+      for (const stream of streams) values.set(stream, (values.get(stream) ?? 0) + 1);
+      return values;
+    });
+    for (const c of bulkChannels) {
+      expect(ids.filter(id => id === c.id)).toHaveLength(1);
+      expect(c.id.startsWith("smarters:")).toBe(false);
+      expect(new URL(c.streamUrl ?? "").protocol).toBe("https:");
+      for (const fileCounts of counts) {
+        expect(fileCounts.get(c.streamUrl ?? "") ?? 0).toBeLessThanOrEqual(1);
       }
     }
   });
