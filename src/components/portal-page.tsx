@@ -67,7 +67,7 @@ export const liveSections = sections;
 export function PortalPage({ section, homepage = false }: { section?: string; homepage?: boolean }) {
   const pathname = useLocation({ select: (location) => location.pathname }); const publicChannels = useCatalog();
   const fetchLiveCatalog = useServerFn(getUnifiedLiveCatalog);
-  const catalog = useQuery({ queryKey: ["unified-live-catalog"], queryFn: () => fetchLiveCatalog(), staleTime: 3_000, retry: false });
+  const catalog = useQuery({ queryKey: ["unified-live-catalog"], queryFn: () => fetchLiveCatalog(), staleTime: 60_000, retry: false, refetchInterval: false, refetchOnWindowFocus: false, refetchOnReconnect: false });
   const memberChannels: Channel[] = (catalog.data ?? []).map(item => ({ id: item.id, name: item.name, category: smartersCategory(item.group), thumbnail: publicChannels.find(channel => channel.name.toLowerCase() === item.name.toLowerCase())?.thumbnail ?? "", description: item.group }));
   const channels = mergeLiveChannels(publicChannels, memberChannels);
   const homepageBein = findHomepageBeinChannel(channels);
