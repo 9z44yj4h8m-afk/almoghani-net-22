@@ -76,8 +76,7 @@ function AdminPage() {
     setAdmin(null);
     if (user) {
       void supabase.rpc("claim_owner_admin")
-        .then(({ data, error }) => setAdmin(!error && !!data))
-        .catch(() => setAdmin(false));
+        .then(({ data, error }) => setAdmin(!error && !!data), () => setAdmin(false));
     }
   }, [user]);
 
