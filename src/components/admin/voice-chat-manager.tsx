@@ -423,21 +423,10 @@ export function SayNowForm({ locked = false }: { locked?: boolean } = {}) {
       setNote("هذا هو الصوت اللي اخترته ✓");
     } catch {
       if (!active()) return;
-      // Free on-device fallback when the cloud voice is unavailable (e.g. no AI credits).
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        const synth = window.speechSynthesis;
-        synth.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = "ar-SA";
-        const ar = synth.getVoices().find((v) => v.lang.toLowerCase().startsWith("ar"));
-        if (ar) u.voice = ar;
-        u.pitch = 1.4;
-        u.rate = 0.95;
-        u.onend = u.onerror = () => setPlaying(false);
-        setPlaying(true);
-        synth.speak(u);
-        setNote("تعذّر الصوت السحابي؛ اشتغل قارئ جهازك المجاني، ولا يمكن حفظ صوته كملف.");
-      } else setNote("تعذّر تجريب الصوت.");
+      setPlaying(false);
+      setClipSrc("");
+      setAudioFile(null);
+      setNote("تعذّر تشغيل صوت الموقع المختار؛ لم يتم تشغيل أصوات الجوال. حاول مجددًا.");
     }
     finally { if (active()) { previewRequestRef.current = null; setTesting(false); } }
   }
