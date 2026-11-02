@@ -90,7 +90,7 @@ async function fetchSiteConfig(): Promise<SiteConfig> {
 export const siteConfigKey = ["site-config"] as const;
 
 export function useSiteConfig() {
-  return useQuery({ queryKey: siteConfigKey, queryFn: fetchSiteConfig, staleTime: 60_000, refetchInterval: false, refetchOnWindowFocus: false, refetchOnReconnect: false });
+  return useQuery({ queryKey: siteConfigKey, queryFn: fetchSiteConfig, staleTime: 60_000, refetchInterval: false, refetchOnWindowFocus: false, refetchOnReconnect: false, refetchOnMount: false });
 }
 
 export function youtubeIdFrom(url: string): string | null {
