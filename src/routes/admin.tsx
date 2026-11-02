@@ -64,30 +64,91 @@ function AdminPage() {
   const { user, ready } = useMember();
   const { tab } = Route.useSearch();
   const [admin, setAdmin] = useState<boolean | null>(null);
-  useEffect(() => { setAdmin(null); if (user) void supabase.rpc("claim_owner_admin").then(({ data }) => setAdmin(!!data)); }, [user]);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [refreshing, setRefreshing] = useState(false);
+  const qc = useQueryClient();
+
   useEffect(() => {
-    if (admin && tab) document.getElementById(`admin-${tab}`)?.scrollIntoView({ block: "start" });
-  }, [admin, tab]);
+    setAdmin(null);
+    if (user) {
+      void supabase.rpc("claim_owner_admin")
+        .then(({ data, error }) => setAdmin(!error && !!data))
+        .catch(() => setAdmin(false));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (tab && ADMIN_SECTIONS.some((section) => section.id === tab)) setActiveTab(tab);
+  }, [tab]);
+
+  async function refreshManually() {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: siteConfigKey }),
+        qc.invalidateQueries({ queryKey: ["channel-schedules"] }),
+        qc.invalidateQueries({ queryKey: ["admin-roles"] }),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  }
 
   if (!ready) return null;
   if (!user) return <AdminPasswordLogin />;
   if (admin === null) return <Center>جارٍ التحقق…</Center>;
   if (!admin) return <AdminPasswordLogin />;
 
+  const section = ADMIN_SECTIONS.find((s) => s.id === activeTab) ?? ADMIN_SECTIONS[0];
+  const CurrentSection = section.content;
+
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border px-4 py-4 sm:px-6"><Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI LIVE</Link></header>
+      <header className="border-b border-amber-400/15 bg-background/95 px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <Link to="/" className="flex items-center gap-2 font-bold"><ArrowRight className="h-5 w-5" />ALMOGHANI <span className="text-amber-400">LIVE</span></Link>
+          <span className="rounded-full border border-amber-400/25 px-3 py-1 text-xs text-amber-200">CONTROL STUDIO · AG07</span>
+        </div>
+      </header>
       <OwnerNav />
-      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        <h1 className="font-display text-3xl font-black">لوحة التحكم</h1>
-        <Button asChild className="mt-4"><Link to="/admin-chat">لوحة الشات (المستخدمين والأصوات)</Link></Button>
-        <nav aria-label="أقسام لوحة التحكم" className="my-6 flex flex-wrap gap-2">
-          {ADMIN_SECTIONS.map(({ id, label }) => <Button key={id} asChild size="sm" variant="outline"><a href={`#admin-${id}`}>{label}</a></Button>)}
-        </nav>
-        {ADMIN_SECTIONS.map(({ id, label, content: Content }) => <section key={id} id={`admin-${id}`} aria-label={label} className="scroll-mt-24 space-y-6 border-t border-border py-8">
-          <h2 className="font-display text-2xl font-black">{label}</h2>
-          <Content />
-        </section>)}
+      <main className="mx-auto max-w-7xl px-3 py-6 sm:px-6">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-amber-400/20 bg-gradient-to-l from-amber-400/10 via-card/70 to-background p-4 sm:p-6">
+          <div>
+            <h1 className="font-display text-2xl font-black sm:text-3xl">لوحة التحكم الكاملة</h1>
+            <p className="mt-2 text-sm text-muted-foreground">إدارة القنوات والأقسام والمحتوى والأعضاء والتصميم من مكان واحد</p>
+            <p className="mt-1 text-xs text-amber-200/90">التحديث التلقائي متوقف — التحديث والفحص يدويان فقط</p>
+          </div>
+          <Button type="button" variant="outline" disabled={refreshing} onClick={() => void refreshManually()}>
+            {refreshing ? "جارٍ التحديث…" : "↻ تحديث البيانات يدويًا"}
+          </Button>
+        </div>
+        <div className="grid min-w-0 gap-5 lg:grid-cols-[235px_minmax(0,1fr)]">
+          <aside className="min-w-0 rounded-2xl border border-border bg-card/70 p-3 lg:self-start">
+            <p className="mb-3 px-2 text-sm font-bold text-amber-300">أقسام الإدارة</p>
+            <nav aria-label="أقسام لوحة التحكم" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+              {ADMIN_SECTIONS.map(({ id, label }) => (
+                <Button key={id} type="button" size="sm"
+                  variant={section.id === id ? "default" : "outline"}
+                  aria-current={section.id === id ? "page" : undefined}
+                  onClick={() => setActiveTab(id)}
+                  className="h-auto min-h-10 min-w-0 justify-start whitespace-normal text-right leading-5">
+                  {label}
+                </Button>
+              ))}
+              <Button asChild size="sm" variant="outline" className="h-auto min-h-10 justify-start whitespace-normal text-right">
+                <Link to="/admin-chat">إدارة الدردشة والأصوات</Link>
+              </Button>
+            </nav>
+          </aside>
+          <section id={`admin-${section.id}`} aria-label={section.label}
+            className="min-w-0 space-y-5 rounded-2xl border border-border bg-card/30 p-3 sm:p-6">
+            <div className="border-b border-amber-400/15 pb-4">
+              <h2 className="font-display text-xl font-black text-amber-100 sm:text-2xl">{section.label}</h2>
+              <p className="mt-1 text-xs text-muted-foreground">تُحفظ التغييرات على خادم الموقع بحسب صلاحيات حساب المالك.</p>
+            </div>
+            <CurrentSection />
+          </section>
+        </div>
       </main>
     </div>
   );
