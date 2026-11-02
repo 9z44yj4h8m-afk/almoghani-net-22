@@ -119,7 +119,7 @@ export function ChannelTransferManager() {
   return <div className="space-y-5">
     <div className="rounded-xl border border-amber-400/20 bg-card/60 p-4">
       <h3 className="mb-3 text-lg font-black">استيراد قوائم القنوات يدويًا</h3>
-      <p className="mb-3 text-sm text-muted-foreground">اختر ملف M3U أو نسخة JSON سبق تصديرها من هذه اللوحة. لا يوجد استيراد تلقائي، ولن تُحذف القنوات القديمة.</p>
+      <p className="mb-3 text-sm text-muted-foreground">اختر ملف M3U أو نسخة JSON سبق تصديرها من هذه اللوحة. لا يوجد استيراد تلقائي، ولن تُحذف القنوات القديمة. لا تستورد روابط اشتراكات شخصية تحتوي بيانات دخول لأن قنوات الموقع يمكن أن يراها الزوار.</p>
       <label className="block space-y-2 text-sm font-bold">
         <span>ملف القنوات</span>
         <input aria-label="اختر ملف M3U أو JSON" type="file" accept=".m3u,.m3u8,.json" disabled={busy}
@@ -132,7 +132,7 @@ export function ChannelTransferManager() {
         </p>)}
         {staged.length > 15 && <p className="px-3 py-2 text-xs text-muted-foreground">و{staged.length - 15} قناة أخرى…</p>}
       </div>}
-      <Button type="button" className="mt-4 w-full sm:w-auto" disabled={busy || isPending || !staged.length} onClick={() => void importChannels()}>
+      <Button type="button" className="mt-4 w-full sm:w-auto" disabled={busy || isPending || !data || !staged.length} onClick={() => void importChannels()}>
         {busy ? "جارٍ الحفظ…" : <><Save /> حفظ القنوات المستوردة</>}
       </Button>
     </div>
