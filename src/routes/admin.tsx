@@ -272,7 +272,13 @@ function ChannelsTab() {
             <Button size="icon" variant="ghost" aria-label="فحص البث" disabled={busy} onClick={() => void test()}><Activity className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" aria-label={pinned ? "إلغاء التثبيت" : "تثبيت أعلى القائمة"} onClick={() => void setOverride(c.id, { sort_order: pinned ? null : -1 })}>{pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}</Button>
             <Button size="icon" variant="ghost" aria-label={hidden ? "إظهار" : "إخفاء"} onClick={() => setOverride(c.id, { hidden: !hidden })}>{hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
-            {c.custom && <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => { await supabase.from("custom_channels").delete().eq("id", c.id); void refresh(); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
+            {c.custom && <Button size="icon" variant="ghost" aria-label="حذف" onClick={async () => {
+            if (!window.confirm(`هل تريد حذف قناة «${c.name}»؟ لا يمكن التراجع عن حذف القناة المضافة.`)) return;
+            const { error } = await supabase.from("custom_channels").delete().eq("id", c.id);
+            if (error) { setMsg("تعذّر حذف القناة."); return; }
+            setMsg("تم حذف القناة ✓");
+            void refresh();
+          }}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
           </li>;
         })}
       </ul>
