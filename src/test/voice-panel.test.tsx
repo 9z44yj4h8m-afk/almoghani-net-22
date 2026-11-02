@@ -25,6 +25,26 @@ async function makeClip() {
 }
 
 describe("female voice panel", () => {
+  it("never substitutes device speech when the selected site voice fails", async () => {
+    preview.mockRejectedValue(new Error("voice unavailable"));
+    const speak = vi.fn();
+    vi.stubGlobal("speechSynthesis", { speak, cancel: vi.fn(), getVoices: vi.fn(() => []) });
+    const utterance = vi.fn();
+    vi.stubGlobal("SpeechSynthesisUtterance", utterance);
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    render(<SayNowForm />);
+    fireEvent.change(screen.getByLabelText("صوت هذه الجملة"), { target: { value: "female-hessa" } });
+    fireEvent.change(screen.getByRole("textbox", { name: "الكلام" }), { target: { value: "هلا يا نورة" } });
+    fireEvent.click(screen.getByRole("button", { name: "تجريب الصوت" }));
+    await waitFor(() => expect(preview).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(screen.getByRole("button", { name: "تجريب الصوت" })).toBeEnabled());
+    expect(preview.mock.calls[0]?.[0].data.voice).toBe("female-hessa");
+    expect(speak).not.toHaveBeenCalled();
+    expect(utterance).not.toHaveBeenCalled();
+    expect(play).not.toHaveBeenCalled();
+    expect(screen.queryByLabelText("معاينة الصوت المولد")).toBeNull();
+    expect(screen.getByRole("button", { name: "إعادة الصوت" })).toBeDisabled();
+  });
   it("cancels a pending preview immediately and ignores its late audio", async () => {
     let finish: ((value: { audio: string }) => void) | undefined;
     preview.mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
