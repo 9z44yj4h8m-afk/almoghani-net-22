@@ -11,6 +11,7 @@ import { ContentManager } from "@/components/admin/content-manager";
 import { ChannelOrderManager } from "@/components/admin/channel-order-manager";
 import { ChannelImagesManager } from "@/components/admin/channel-images-manager";
 import { ChannelTransferManager } from "@/components/admin/channel-transfer-manager";
+import { ChannelCategoryNames } from "@/components/admin/channel-category-names";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { SmartersManager } from "@/components/admin/smarters-manager";
@@ -28,6 +29,7 @@ import {
 const ADMIN_SECTIONS = [
   { id: "overview", label: "الرئيسية والإحصاءات", content: OverviewTab },
   { id: "channels", label: "إدارة القنوات", content: ChannelsTab },
+  { id: "category-names", label: "أسماء التصنيفات", content: ChannelCategoryNames },
   { id: "transfer", label: "استيراد وتصدير M3U", content: ChannelTransferManager },
   { id: "smarters", label: "سمارتر", content: SmartersManager },
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
@@ -585,6 +587,7 @@ function OverviewTab() {
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline"><a href="#admin-channels">إضافة وتعديل قناة</a></Button>
         <Button asChild variant="outline"><a href="#admin-transfer">استيراد M3U ونسخ احتياطي</a></Button>
+        <Button asChild variant="outline"><a href="#admin-category-names">أسماء تصنيفات القنوات</a></Button>
         <Button asChild variant="outline"><a href="#admin-sections">الأقسام والصور</a></Button>
         <Button asChild variant="outline"><a href="#admin-design">تعديل التصميم</a></Button>
       </div>
