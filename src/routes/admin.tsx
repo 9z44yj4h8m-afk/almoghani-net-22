@@ -177,19 +177,34 @@ function ChannelsTab() {
   const refresh = useRefresh();
   const check = useServerFn(checkStreamUrl);
   const [q, setQ] = useState("");
+  const [scope, setScope] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [limit, setLimit] = useState(80);
   const [form, setForm] = useState({ name: "", category: "عامة", url: "", logo: "" });
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
   const overrides = new Map((data?.overrides ?? []).map((o) => [o.channel_id, o]));
   const all = useMemo(() => [
-    ...(data?.customChannels ?? []).map((c) => ({ id: c.id, name: c.name, category: c.category, custom: true })),
-    ...baseChannels.map((c) => ({ id: c.id, name: c.name, category: c.category as string, custom: false })),
+    ...(data?.customChannels ?? []).map((c) => ({ id: c.id, name: c.name, category: c.category, custom: true, url: c.stream_url })),
+    ...baseChannels.map((c) => ({ id: c.id, name: c.name, category: c.category as string, custom: false, url: c.streamUrl || (c.youtubeId ? "https://www.youtube.com/watch?v=" + c.youtubeId : "") })),
   ], [data]);
-  const list = all.filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase())).slice(0, 80);
+  const filtered = all.filter((c) => {
+    const o = overrides.get(c.id);
+    const name = o?.name || c.name;
+    const category = o?.category || c.category;
+    const hidden = !!o?.hidden;
+    if (scope === "hidden" && !hidden) return false;
+    if (scope === "visible" && hidden) return false;
+    if (scope === "custom" && !c.custom) return false;
+    if (categoryFilter !== "all" && categoryFilter !== category) return false;
+    return !q || (name + " " + c.name + " " + category).toLocaleLowerCase().includes(q.trim().toLocaleLowerCase());
+  });
+  const list = filtered.slice(0, limit);
+
 
   async function setOverride(id: string, patch: { hidden?: boolean; category?: string | null; name?: string | null; logo?: string | null; stream_url?: string | null; sort_order?: number | null }) {
     const cur = overrides.get(id);
-    await supabase.from("channel_overrides").upsert({
+    const { error } = await supabase.from("channel_overrides").upsert({
       channel_id: id,
       hidden: patch.hidden ?? cur?.hidden ?? false,
       category: patch.category !== undefined ? patch.category : cur?.category ?? null,
@@ -199,21 +214,29 @@ function ChannelsTab() {
       sort_order: patch.sort_order !== undefined ? patch.sort_order : cur?.sort_order ?? null,
       updated_at: new Date().toISOString(),
     });
-    void refresh();
+    if (error) { setMsg("تعذّر حفظ تعديل القناة؛ تحقق من صلاحيات الإدارة."); return false; }
+    await refresh();
+    setMsg("تم حفظ تعديل القناة ✓");
+    return true;
   }
   async function setCategory(c: { id: string; custom: boolean }, category: string) {
-    if (c.custom) { await supabase.from("custom_channels").update({ category }).eq("id", c.id); void refresh(); }
+    if (c.custom) { const { error } = await supabase.from("custom_channels").update({ category }).eq("id", c.id); if (error) return setMsg("تعذّر تغيير التصنيف."); await refresh(); setMsg("تم تغيير التصنيف ✓"); }
     else void setOverride(c.id, { category });
   }
   async function rename(c: { id: string; name: string; custom: boolean }) {
     const v = window.prompt("الاسم الجديد للقناة", c.name)?.trim().slice(0, 80);
     if (!v || v === c.name) return;
-    if (c.custom) { await supabase.from("custom_channels").update({ name: v }).eq("id", c.id); void refresh(); }
+    if (c.custom) { const { error } = await supabase.from("custom_channels").update({ name: v }).eq("id", c.id); if (error) return setMsg("تعذّر تغيير اسم القناة."); await refresh(); setMsg("تم حفظ الاسم ✓"); }
     else void setOverride(c.id, { name: v });
   }
   async function add(e: React.FormEvent) {
     e.preventDefault(); setMsg(""); setBusy(true);
     try {
+      const proposedName = form.name.trim().toLocaleLowerCase();
+      const proposedUrl = form.url.trim().toLowerCase();
+      const alreadyExists = all.some((c) => c.url.toLowerCase() === proposedUrl ||
+        ((overrides.get(c.id)?.name || c.name).trim().toLocaleLowerCase() === proposedName && (overrides.get(c.id)?.stream_url || c.url).toLowerCase() === proposedUrl));
+      if (alreadyExists) { setMsg("القناة أو رابط البث موجود مسبقًا؛ استخدم تعديل القناة بدل تكرارها."); return; }
       const r = await check({ data: { url: form.url.trim() } });
       if (!r.ok) { setMsg(r.reason); return; }
       const { error } = await supabase.from("custom_channels").insert({ id: `c-${crypto.randomUUID().slice(0, 8)}`, name: form.name.trim().slice(0, 80), category: form.category, stream_url: form.url.trim(), logo: form.logo.trim().startsWith("https://") ? form.logo.trim() : "" });
@@ -233,37 +256,58 @@ function ChannelsTab() {
       {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
     </form>
     <div>
-      <input className={input} placeholder="ابحث عن قناة…" value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="mb-3 grid gap-2 sm:grid-cols-3">
+      <input className={input} placeholder="ابحث عن قناة…" value={q} onChange={(e) => { setQ(e.target.value); setLimit(80); }} />
+      <select aria-label="حالة القنوات" className={input} value={scope} onChange={(e) => { setScope(e.target.value); setLimit(80); }}>
+        <option value="all">جميع القنوات</option><option value="visible">الظاهرة</option>
+        <option value="hidden">المخفية</option><option value="custom">المضافة يدويًا</option>
+      </select>
+      <select aria-label="تصفية حسب التصنيف" className={input} value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setLimit(80); }}>
+        <option value="all">جميع الأقسام</option>{channelCategories.map((x) => <option key={x} value={x}>{x}</option>)}
+      </select>
+      </div>
+      <p className="text-xs text-muted-foreground" role="status">يعرض {list.length} من {filtered.length} قناة — إجمالي القنوات {all.length}</p>
       <ul className="mt-3 divide-y divide-border">
         {list.map((c) => {
           const o = overrides.get(c.id); const hidden = !!o?.hidden;
-          const category = c.custom ? c.category : o?.category ?? c.category;
-          const name = c.custom ? c.name : o?.name || c.name;
+          const category = o?.category || c.category;
+          const name = o?.name || c.name;
           const pinned = typeof o?.sort_order === "number" && o.sort_order < 0;
           const editUrl = async () => {
-            const v = window.prompt("رابط البث الجديد (m3u8 أو يوتيوب)", o?.stream_url || (c.custom ? all.find((x) => x.id === c.id)?.name && "" : ""))?.trim();
+            const v = window.prompt("رابط البث الجديد (m3u8 أو يوتيوب)", o?.stream_url || c.url)?.trim();
             if (!v) return;
             setBusy(true); setMsg("");
             const r = await check({ data: { url: v } });
             setBusy(false);
             if (!r.ok) return setMsg(r.reason);
-            if (c.custom) { await supabase.from("custom_channels").update({ stream_url: v }).eq("id", c.id); void refresh(); }
-            else void setOverride(c.id, { stream_url: v });
-            setMsg("تم تحديث رابط البث ✓");
+            if (c.custom) {
+              const { error } = await supabase.from("custom_channels").update({ stream_url: v }).eq("id", c.id);
+              if (error) return setMsg("تعذّر حفظ رابط البث.");
+              await refresh();
+              setMsg("تم تحديث رابط البث ✓");
+            } else await setOverride(c.id, { stream_url: v });
           };
           const editLogo = async () => {
             const raw = window.prompt("رابط شعار القناة (https)", o?.logo || "");
             if (raw === null) return;
             const v = raw.trim();
-            if (c.custom) { await supabase.from("custom_channels").update({ logo: v.startsWith("https://") ? v : "" }).eq("id", c.id); void refresh(); }
-            else void setOverride(c.id, { logo: v.startsWith("https://") ? v : null });
+            if (v && !v.startsWith("https://")) return setMsg("رابط الشعار يجب أن يبدأ بـ https://");
+            if (c.custom) {
+              const { error } = await supabase.from("custom_channels").update({ logo: v }).eq("id", c.id);
+              if (error) return setMsg("تعذّر حفظ الشعار.");
+              await refresh();
+              setMsg("تم تحديث الشعار ✓");
+            } else await setOverride(c.id, { logo: v || null });
           };
           const test = async () => {
-            const url = c.custom ? (await supabase.from("custom_channels").select("stream_url").eq("id", c.id).maybeSingle()).data?.stream_url : o?.stream_url || baseChannels.find((x) => x.id === c.id)?.streamUrl;
+            const url = o?.stream_url || c.url;
             if (!url) return setMsg("لا يوجد رابط بث لهذه القناة.");
             setBusy(true); setMsg(`جارٍ فحص ${name}…`);
-            const r = await check({ data: { url } });
-            setBusy(false); setMsg(r.ok ? `${name}: البث يعمل ✓` : `${name}: ${r.reason}`);
+            try {
+              const r = await check({ data: { url } });
+              setMsg(r.ok ? name + ": البث يعمل ✓" : name + ": " + r.reason);
+            } catch { setMsg("تعذّر إجراء فحص القناة؛ جرّب لاحقًا."); }
+            finally { setBusy(false); }
           };
           return <li key={c.id} className={`flex flex-wrap items-center gap-2 py-3 ${hidden ? "opacity-50" : ""}`}>
             <span className="min-w-0 flex-1 font-bold">{name}{c.custom && <span className="ms-2 text-xs text-accent">مضافة</span>}</span>
@@ -284,6 +328,10 @@ function ChannelsTab() {
           </li>;
         })}
       </ul>
+      {filtered.length > limit && <Button type="button" variant="outline" className="mt-4 w-full" onClick={() => setLimit((n) => n + 80)}>
+        عرض 80 قناة إضافية
+      </Button>}
+      {!filtered.length && <p className="mt-4 text-sm text-muted-foreground">لا توجد قنوات مطابقة للبحث والتصفية.</p>}
     </div>
   </div>;
 }
