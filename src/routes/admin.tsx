@@ -99,7 +99,7 @@ function AdminPage() {
   if (admin === null) return <Center>جارٍ التحقق…</Center>;
   if (!admin) return <AdminPasswordLogin />;
 
-  const section = ADMIN_SECTIONS.find((s) => s.id === activeTab) ?? ADMIN_SECTIONS[0];
+  const section = ADMIN_SECTIONS.find((s) => s.id === activeTab) ?? ADMIN_SECTIONS[0]!;
   const CurrentSection = section.content;
 
   return (
