@@ -18,6 +18,8 @@ jobs:
       - name: Run tests
         run: bun run test
       - name: Verify TypeScript
+        if: always()
         run: bunx tsc --noEmit
       - name: Build site
+        if: always()
         run: bun run build
