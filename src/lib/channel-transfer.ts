@@ -25,7 +25,7 @@ export function normalizeChannelCategory(group: string): string {
   const lower = raw.toLocaleLowerCase();
   if (/رياضي|sports?|bein|بي ?إن|كرة|football/.test(lower)) return "رياضية";
   if (/إخباري|أخبار|news|عاجل/.test(lower)) return "إخبارية";
-  if (/اسلام|إسلام|قرآن|سنة|دينية|quran|religio/.test(lower)) return "إسلامية";
+  if (/اسلام|إسلام|قرآن|سنة|دينية|quran|islam|religio/.test(lower)) return "إسلامية";
   if (/اطفال|أطفال|وثائق|kids|document/.test(lower)) return "أطفال ووثائقي";
   if (/افلام كاملة|أفلام كاملة|full.movie/.test(lower)) return "أفلام كاملة";
   if (/دراما|مسلسل|فيلم|أفلام|movies?|series|cinema/.test(lower)) return "مسلسلات وأفلام";
