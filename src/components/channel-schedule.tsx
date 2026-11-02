@@ -5,7 +5,7 @@ type Item = { id: string; title: string; starts_at: string; ends_at: string | nu
 const fmt = (d: string) => new Date(d).toLocaleString("ar-SA", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 export function ChannelSchedule({ channelId }: { channelId: string }) {
-  const schedules = useQuery({ queryKey: ["channel-schedules", channelId], refetchInterval: 15000, queryFn: async () => {
+  const schedules = useQuery({ queryKey: ["channel-schedules", channelId], refetchInterval: false, refetchOnWindowFocus: false, queryFn: async () => {
     const since = new Date(Date.now() - 3 * 3600_000).toISOString();
     const { data, error } = await supabase.from("channel_schedules").select("id,title,starts_at,ends_at").eq("channel_id", channelId).gte("starts_at", since).order("starts_at").limit(50);
     if (error) throw error;
