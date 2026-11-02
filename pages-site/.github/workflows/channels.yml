@@ -1,10 +1,7 @@
 name: channels
 
+# Run this workflow manually only. Automatic channel updates are disabled.
 on:
-  push:
-    branches: [main]
-  schedule:
-    - cron: "20 */6 * * *"
   workflow_dispatch:
 
 permissions:
