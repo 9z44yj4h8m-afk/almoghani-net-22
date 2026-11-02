@@ -78,15 +78,15 @@ export function parseChannelBackup(text: string): TransferChannel[] {
   for (const item of data.channels) {
     if (!item || typeof item !== "object" || Array.isArray(item)) continue;
     const c = item as Record<string, unknown>;
-    const name = typeof c.name === "string" ? c.name.trim().slice(0, 80) : "";
-    const url = typeof c.url === "string" ? c.url.trim().slice(0, 1000) : "";
+    const name = typeof c['name'] === "string" ? c['name'].trim().slice(0, 80) : "";
+    const url = typeof c['url'] === "string" ? c['url'].trim().slice(0, 1000) : "";
     if (!name || !validChannelUrl(url) || seen.has(url.toLowerCase())) continue;
     seen.add(url.toLowerCase());
     out.push({
       name,
-      category: normalizeChannelCategory(typeof c.category === "string" ? c.category : ""),
+      category: normalizeChannelCategory(typeof c['category'] === "string" ? c['category'] : ""),
       url,
-      logo: typeof c.logo === "string" && /^https:\/\//i.test(c.logo) ? c.logo.slice(0, 1000) : "",
+      logo: typeof c['logo'] === "string" && /^https:\/\//i.test(c['logo']) ? c['logo'].slice(0, 1000) : "",
     });
   }
   if (!out.length) throw new Error("النسخة لا تحتوي أي قناة صالحة.");
@@ -95,8 +95,8 @@ export function parseChannelBackup(text: string): TransferChannel[] {
 
 export function serializeChannelM3u(channels: TransferChannel[]): string {
   const esc = (v: string) => v.replace(/["\r\n]/g, " ").trim();
-  return ["#EXTM3U", ...channels.filter(c => validChannelUrl(c.url)).flatMap((c) => [
-    '#EXTINF:-1 tvg-name="' + esc(c.name) + '" tvg-logo="' + esc(c.logo) + '" group-title="' + esc(c.category) + '",' + esc(c.name),
-    c.url,
+  return ["#EXTM3U", ...channels.filter(c => validChannelUrl(c['url'])).flatMap((c) => [
+    '#EXTINF:-1 tvg-name="' + esc(c['name']) + '" tvg-logo="' + esc(c['logo']) + '" group-title="' + esc(c['category']) + '",' + esc(c['name']),
+    c['url'],
   ])].join("\n") + "\n";
 }
