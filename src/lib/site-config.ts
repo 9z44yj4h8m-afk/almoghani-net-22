@@ -127,7 +127,7 @@ export function mergeChannels(config: SiteConfig | undefined): Channel[] {
         id: c.id,
         name: o?.name || c.name,
         category: (channelCategories.includes(category as ChannelCategory) ? category : "عامة") as ChannelCategory,
-        ...(yt ? { youtubeId: yt } : { streamUrl: c.stream_url }),
+        ...(yt ? { youtubeId: yt } : { streamUrl: url }),
         thumbnail: c.logo || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : ""),
         description: c.description || "بث مباشر",
         ...(typeof o?.logo === "string" ? { thumbnail: o.logo } : {}),
