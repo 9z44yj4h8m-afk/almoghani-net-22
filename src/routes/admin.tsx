@@ -94,6 +94,17 @@ function AdminPage() {
     }
   }
 
+  function handleAdminNavigation(event: React.MouseEvent<HTMLElement>) {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const anchor = target.closest('a[href^="#admin-"]');
+    const sectionId = anchor?.getAttribute("href")?.slice("#admin-".length);
+    if (sectionId && ADMIN_SECTIONS.some((section) => section.id === sectionId)) {
+      event.preventDefault();
+      setActiveTab(sectionId);
+    }
+  }
+
   if (!ready) return null;
   if (!user) return <AdminPasswordLogin />;
   if (admin === null) return <Center>جارٍ التحقق…</Center>;
@@ -111,7 +122,7 @@ function AdminPage() {
         </div>
       </header>
       <OwnerNav />
-      <main className="mx-auto max-w-7xl px-3 py-6 sm:px-6">
+      <main onClick={handleAdminNavigation} className="mx-auto max-w-7xl px-3 py-6 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-amber-400/20 bg-gradient-to-l from-amber-400/10 via-card/70 to-background p-4 sm:p-6">
           <div>
             <h1 className="font-display text-2xl font-black sm:text-3xl">لوحة التحكم الكاملة</h1>
