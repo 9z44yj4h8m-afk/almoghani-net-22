@@ -9,7 +9,8 @@ describe("Verified public IPTV-org additions", () => {
     const ids = channels.map(c => c.id);
     const addedIds = bulkChannels.map(c => c.id);
     expect(new Set(addedIds).size).toBe(addedIds.length);
-    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u", "public/c.m3u"]) {
+    // public/c.m3u is a deliberately curated subset, not the full IPTV-org export.
+    for (const filename of ["public/channels.m3u", "public/channels-iptv.m3u"]) {
       const counts = new Map<string, number>();
       for (const line of readFileSync(filename, "utf8").split(/\r?\n/)) counts.set(line, (counts.get(line) ?? 0) + 1);
       for (const c of bulkChannels) {
