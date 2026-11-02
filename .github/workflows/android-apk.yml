@@ -1,0 +1,56 @@
+name: Android APK - ALMOGHANI LIVE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build installable Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+      - name: Install Android 35 SDK
+        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+      - name: Configure Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Compile Android APK
+        run: gradle -p android-app :app:assembleDebug --no-daemon --stacktrace
+      - name: Name APK for download
+        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk android-app/app/build/outputs/apk/debug/ALMOGHANI-LIVE.apk
+      - name: Attach APK to build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMOGHANI-LIVE-APK
+          path: android-app/app/build/outputs/apk/debug/ALMOGHANI-LIVE.apk
+          retention-days: 90
+          if-no-files-found: error
+      - name: Publish APK download in GitHub Releases
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          APK=android-app/app/build/outputs/apk/debug/ALMOGHANI-LIVE.apk
+          TAG=almoghani-live-android-v1
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$APK" --clobber
+          else
+            gh release create "$TAG" "$APK" --target "$GITHUB_SHA" --title "ALMOGHANI LIVE - Android APK" --notes "APK تجريبي للأندرويد يعرض https://almoghani.net. موقّع بمفتاح اختبار؛ قد يلزم حذف النسخة القديمة قبل التحديث. ليس إصدار متجر Google Play." --prerelease
+          fi
