@@ -1,0 +1,23 @@
+name: Validate ALMOGHANI LIVE
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Run tests
+        run: bun run test
+      - name: Verify TypeScript
+        run: bunx tsc --noEmit
+      - name: Build site
+        run: bun run build
