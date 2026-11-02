@@ -31,7 +31,6 @@ const ADMIN_SECTIONS = [
   { id: "transfer", label: "استيراد وتصدير M3U", content: ChannelTransferManager },
   { id: "smarters", label: "سمارتر", content: SmartersManager },
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
-  { id: "channels", label: "القنوات", content: ChannelsTab },
   { id: "channel-order", label: "ترتيب القنوات", content: ChannelOrderManager },
   { id: "channel-images", label: "صور القنوات", content: ChannelImagesManager },
   { id: "movies", label: "الأفلام", content: MoviesTab },
