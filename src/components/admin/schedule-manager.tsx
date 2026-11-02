@@ -22,7 +22,7 @@ export function ScheduleManager() {
     const { data, error } = await supabase.from("channel_schedules").select("id,channel_id,title,starts_at,ends_at").gte("starts_at", new Date(Date.now() - 86400_000).toISOString()).order("starts_at");
     if (error) throw error;
     return data;
-  }, refetchInterval: false, refetchOnWindowFocus: false });
+  }, refetchInterval: false, refetchOnWindowFocus: false, refetchOnReconnect: false });
   const [drafts, setDrafts] = useState<Record<string, Row>>({});
   const [query, setQuery] = useState("");
   const [msg, setMsg] = useState("");
@@ -59,6 +59,9 @@ export function ScheduleManager() {
   return <form onSubmit={save} className="space-y-4">
     <div className="flex flex-wrap items-center gap-3">
       <h3 className="flex-1 font-bold">مواعيد البث</h3>
+      <Button type="button" variant="outline" disabled={busy || schedules.isFetching} onClick={() => { void schedules.refetch(); }}>
+        {schedules.isFetching ? "جارٍ التحديث…" : "تحديث يدوي"}
+      </Button>
       <Button type="button" variant="outline" disabled={busy || schedules.isPending || schedules.isError} onClick={() => { const r = { id: crypto.randomUUID(), channel_id: channels[0]?.id ?? "", title: "", starts_at: "", ends_at: null }; update(r, {}); setQuery(""); }}><Plus />إضافة موعد</Button>
       <Button type="submit" disabled={busy || !Object.keys(drafts).length}><Save />{busy ? "جارٍ الحفظ…" : "حفظ جميع المواعيد"}</Button>
     </div>
