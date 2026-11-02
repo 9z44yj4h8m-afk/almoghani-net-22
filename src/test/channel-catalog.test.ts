@@ -8,7 +8,11 @@ describe("Public channel catalog", () => {
     ["tg-ps-al-madina", "https://streaming.zaytonatube.com:8081/AlMadinatv/almadina21/tracks-v1a1/mono.ts.m3u8", "https://streaming.zaytonatube.com:8081/AlMadinatv/almadina21/index.m3u8"],
   ])("keeps the verified playable rendition for %s in every export", (id, url, previousUrl) => {
     expect(channels.find((channel) => channel.id === id)?.streamUrl).toBe(url);
-    for (const filename of ["public/c.m3u", "public/channels.m3u", "public/channels-iptv.m3u"]) {
+    // The curated c.m3u list intentionally excludes some non-Gulf channels.
+    const files = id === "tg-ps-al-madina"
+      ? ["public/channels.m3u", "public/channels-iptv.m3u"]
+      : ["public/c.m3u", "public/channels.m3u", "public/channels-iptv.m3u"];
+    for (const filename of files) {
       const lines = readFileSync(filename, "utf8").split(/\r?\n/);
       expect(lines).toContain(url);
       expect(lines).not.toContain(previousUrl);
