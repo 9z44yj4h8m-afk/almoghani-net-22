@@ -10,6 +10,7 @@ import { ScheduleManager } from "@/components/admin/schedule-manager";
 import { ContentManager } from "@/components/admin/content-manager";
 import { ChannelOrderManager } from "@/components/admin/channel-order-manager";
 import { ChannelImagesManager } from "@/components/admin/channel-images-manager";
+import { ChannelTransferManager } from "@/components/admin/channel-transfer-manager";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { AdminPasswordLogin } from "@/components/admin/password-login";
 import { SmartersManager } from "@/components/admin/smarters-manager";
@@ -25,6 +26,9 @@ import {
 } from "@/lib/site-config";
 
 const ADMIN_SECTIONS = [
+  { id: "overview", label: "الرئيسية والإحصاءات", content: OverviewTab },
+  { id: "channels", label: "إدارة القنوات", content: ChannelsTab },
+  { id: "transfer", label: "استيراد وتصدير M3U", content: ChannelTransferManager },
   { id: "smarters", label: "سمارتر", content: SmartersManager },
   { id: "sections", label: "الصور وترتيب الأقسام", content: SectionEditor },
   { id: "channels", label: "القنوات", content: ChannelsTab },
@@ -38,7 +42,6 @@ const ADMIN_SECTIONS = [
   { id: "texts", label: "النصوص والتواصل", content: TextsTab },
   { id: "design", label: "التصميم", content: DesignTab },
   { id: "ads", label: "الإعلان والشريط", content: AdsTab },
-  { id: "overview", label: "الإحصاءات", content: OverviewTab },
 ];
 
 export const Route = createFileRoute("/admin")({
@@ -136,17 +139,17 @@ function AdminPage() {
         <div className="grid min-w-0 gap-5 lg:grid-cols-[235px_minmax(0,1fr)]">
           <aside className="min-w-0 rounded-2xl border border-border bg-card/70 p-3 lg:self-start">
             <p className="mb-3 px-2 text-sm font-bold text-amber-300">أقسام الإدارة</p>
-            <nav aria-label="أقسام لوحة التحكم" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+            <nav aria-label="أقسام لوحة التحكم" className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible">
               {ADMIN_SECTIONS.map(({ id, label }) => (
                 <Button key={id} type="button" size="sm"
                   variant={section.id === id ? "default" : "outline"}
                   aria-current={section.id === id ? "page" : undefined}
                   onClick={() => setActiveTab(id)}
-                  className="h-auto min-h-10 min-w-0 justify-start whitespace-normal text-right leading-5">
+                  className="h-auto min-h-10 shrink-0 justify-start whitespace-normal text-right leading-5 lg:w-full">
                   {label}
                 </Button>
               ))}
-              <Button asChild size="sm" variant="outline" className="h-auto min-h-10 justify-start whitespace-normal text-right">
+              <Button asChild size="sm" variant="outline" className="h-auto min-h-10 shrink-0 justify-start whitespace-normal text-right lg:w-full">
                 <Link to="/admin-chat">إدارة الدردشة والأصوات</Link>
               </Button>
             </nav>
