@@ -23,7 +23,7 @@ import { movies as baseMovies } from "@/lib/movies";
 import { listMembers, listRoles, setMemberRole, findMemberByEmail, checkStreamUrl, createMember, setMemberPassword } from "@/lib/admin.functions";
 import {
   useSiteConfig, siteConfigKey, channelCategories, youtubeIdFrom,
-  siteFonts, designColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, safeLibraryLink, safeHttpsImage, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
+  siteFonts, designColorFields, atlasColorFields, defaultTexts, defaultContacts, defaultDesign, defaultAd, defaultTicker, defaultChat, type SiteTexts, safeLibraryLink, safeHttpsImage, type SiteContacts, type SiteDesign, type SiteAd, type SiteTicker,
 } from "@/lib/site-config";
 
 const ADMIN_SECTIONS = [
@@ -547,6 +547,9 @@ function DesignTab() {
     <DesignLayoutControls design={design} onChange={change} undo={undo} redo={redo} canUndo={past.length > 0} canRedo={future.length > 0} restore={() => { if (previous) change(previous); }} canRestore={!!previous} />
     <label className="flex items-center gap-3"><input type="color" value={design.primary || "#9333ea"} onChange={(e) => change({ ...design, primary: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الرئيسي</span></label>
     <label className="flex items-center gap-3"><input type="color" value={design.accent || "#22d3ee"} onChange={(e) => change({ ...design, accent: e.target.value })} className="h-12 w-16 rounded" /><span className="font-bold">اللون الثانوي</span></label>
+    <h3 className="font-bold text-amber-200">ألوان الصفحة الرئيسية (أطلس البث)</h3>
+    <div className="grid gap-3 sm:grid-cols-2">{atlasColorFields.map((f) => <label key={"atlas-" + f.key} className="flex items-center gap-3"><input type="color" value={design.atlas?.[f.key] || f.def} onChange={(e) => change({ ...design, atlas: { ...design.atlas, [f.key]: e.target.value } })} className="h-12 w-16 rounded" /><span className="font-bold">{f.label}</span></label>)}</div>
+    <h3 className="font-bold text-amber-200">ألوان بقية الصفحات</h3>
     <div className="grid gap-3 sm:grid-cols-2">{designColorFields.map((f) => <label key={f.key} className="flex items-center gap-3"><input type="color" value={design.colors?.[f.key] || f.def} onChange={(e) => change({ ...design, colors: { ...design.colors, [f.key]: e.target.value } })} className="h-12 w-16 rounded" /><span className="font-bold">{f.label}</span></label>)}</div>
     <label className="block space-y-1"><span className="text-sm font-bold">استدارة الزوايا: {design.radius ?? "افتراضي"}{design.radius !== undefined && "px"}</span><input type="range" min={0} max={32} step={2} value={design.radius ?? 12} onChange={(e) => change({ ...design, radius: Number(e.target.value) })} className="w-full" /></label>
     <label className="block space-y-1"><span className="text-sm font-bold">خط النصوص</span><select className={input} value={design.fontBody ?? ""} onChange={(e) => change({ ...design, fontBody: e.target.value })}><option value="">الافتراضي</option>{siteFonts.map((f) => <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>)}</select></label>
