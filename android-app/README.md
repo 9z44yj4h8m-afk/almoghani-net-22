@@ -1,6 +1,6 @@
 # ALMOGHANI LIVE — Android APK
 
-تطبيق Android يعرض موقع https://almoghani-net-22.lovable.app باستخدام WebView أصلي داخل التطبيق، ويفتح بالعرض تلقائيًا (sensorLandscape).
+تطبيق Android يعرض صفحة https://almoghani-net-22.lovable.app/iptv.html مباشرة باستخدام WebView أصلي داخل التطبيق، ويفتح بالعرض تلقائيًا (sensorLandscape).
 
 ## المميزات
 - RTL وتصميم الموقع نفسه.
