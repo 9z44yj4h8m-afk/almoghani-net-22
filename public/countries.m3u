@@ -158,6 +158,8 @@ https://svs.itworkscdn.net/asharqdocumentarylive/asharqdocumentary.smil/playlist
 https://www.youtube.com/watch?v=FlzMedKfQOs
 #EXTINF:-1 tvg-logo="https://i.imgur.com/bqRC3sl.png" group-title="السعودية",الشرق للأخبار
 https://live-news.asharq.com/asharq.m3u8
+#EXTINF:-1 tvg-id="Alarabiya.ae" group-title="السعودية",Alarabiya (1080p)
+https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Oz2bPOt.png" group-title="الإمارات",الشارقة
 https://live.kwikmotion.com/smc1live/smc1tv.smil/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/Wd3Xvd1.png" group-title="الإمارات",الشارقة 2
@@ -272,22 +274,72 @@ https://www.youtube.com/watch?v=mo_6IkfLstk
 https://www.youtube.com/watch?v=5vfaDsMhCF4
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/y_28ovYA8aY/hqdefault.jpg" group-title="مصر",قناة الغد
 https://www.youtube.com/watch?v=y_28ovYA8aY
+#EXTINF:-1 tvg-id="extra-mekameleen" group-title="مصر",مكملين
+https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="العراق",Al Sharqiya News
+https://indexforce.com/newshighres/mystream/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="العراق",Al Najah News
+https://streaming.najah.edu:8443/hls/AlNajah.m3u8
 #EXTINF:-1 tvg-logo="" group-title="العراق",العراقية نيوز
 https://imn-live.esite-lab.com/hls/iraqia-news.m3u8
+#EXTINF:-1 tvg-id="DijlahTV.iq" group-title="العراق",Dijlah TV (1080p)
+https://ghaasiflu.online/Dijlah/index.m3u8
+#EXTINF:-1 tvg-id="Kurdistan24.iq" group-title="العراق",Kurdistan 24 (1080p)
+https://hlspackager.akamaized.net/live/DB/K24/HLS/K24.m3u8
+#EXTINF:-1 tvg-id="RudawTV.iq" group-title="العراق",Rudaw TV (1080p)
+https://hlspackager.akamaized.net/live/DB/RUDAW/HLS/RUDAW.m3u8
+#EXTINF:-1 tvg-id="WelatTV.sy" group-title="العراق",Welat TV (1080i)
+https://stream.badinan.xyz/welat/tv/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/FjuVuXF.jpeg" group-title="سوريا",تلفزيون سوريا
 https://live.kwikmotion.com/syriatvlive/syriatv.smil/playlist_dvr.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/f8WcqRY.png" group-title="لبنان",صوت لبنان
 https://svs.itworkscdn.net/vdltvlive/vdltv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="AlMayadeenTV.lb" group-title="لبنان",Al Mayadeen TV (576p)
 https://mdnlv.cdn.octivid.com/almdn/smil:mpegts.stream.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="AlManar.lb" group-title="لبنان",Al-Manar (576p)
+https://edge.fastpublish.me/live/index.m3u8
 #EXTINF:-1 tvg-id="PalestineToday.ps" group-title="فلسطين",Palestine Today (480p)
 https://live.paltodaytv.com/paltv/live/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="اليمن",المهرية
 https://starmenajo.com/hls/almahriah/index.m3u8
+#EXTINF:-1 tvg-id="AlMasirah.ye" group-title="اليمن",Al Masirah (720p)
+https://live.cdnbridge.tv/Almasirah/Almasirah_all/playlist.m3u8
+#EXTINF:-1 tvg-id="AlMasirahMubacher.ye" group-title="اليمن",Al Masirah Mubacher (642p)
+https://live2.cdnbridge.tv/AlmasirahMubasher/Mubasher_All/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/a20DHnj.png" group-title="المغرب",MEDI1TV Afrique
+https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-afrique_tm7tu45/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="المغرب",MEDI1TV Arabic
+https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/F5OFQsp.jpeg" group-title="المغرب",MEDI1TV Maghreb
+https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="المغرب",ميدي 1 تيفي
 https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="الجزائر",AL24 نيوز
+https://cdn.live.easybroadcast.io/abr_corp/66_al24_u4yga6h/corp/66_al24_u4yga6h_240p/chunks.m3u8
+#EXTINF:-1 tvg-id="ElyssaTV.tn" group-title="تونس",Elyssa TV (1080p)
+https://tv.elyssatv.com/live/master.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/zgMqQPQ.png" group-title="ليبيا",الوسطى
 https://svs.itworkscdn.net/alwoustalive/alwoustatv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="AfghanistanInternational.uk" group-title="أفغانستان",Afghanistan International (720p)
+https://hls.afintl.com/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/0CJGGgd.png" group-title="إيطاليا",Sportitalia
+https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/FabFP5A.png" group-title="الهند",Trace Sport Stars
+https://lightning-tracesport-samsungau.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540" group-title="الهند",DD Sports
+https://mumbai-edge.smartplaytv.in/DDSportsHD/index.m3u8
+#EXTINF:-1 tvg-logo="https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540" group-title="الهند",DD Sports
+https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/0jxLdjnY/TDP.png" group-title="إسبانيا",Teledeporte
+https://rtve01p.origin.c21livecloud.com/live-origin/tdp-hls/bitrate_1.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/TVR_Sport_Logo_2023.svg/960px-TVR_Sport_Logo_2023.svg.png" group-title="رومانيا",TVR Sport
+https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/TyC_Sports_logo.svg/960px-TyC_Sports_logo.svg.png" group-title="الأرجنتين",TyC Sports
+https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/PGm944g.png" group-title="سان مارينو",San Marino RTV Sport
+https://d2hrvno5bw6tg2.cloudfront.net/smrtv-ch02/smil:ch-02.smil/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/vIV7x6n.png" group-title="كازاخستان",Sport+ Qazaqstan
+https://fs.uplink.kz/sport+/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/gYgMDstQrKquZlKMpynGak3fik58-0UdhvIFvRNk8Z1KAGDzn6Kuz8uULtWRwVM3bJcqBuWfxQ=s240-c-k-c0x00ffffff-no-rj" group-title="تركيا",TRT عربي
 https://www.youtube.com/watch?v=sat-YpJQ-fg
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/luLQWmGFG4iDC1U_2JlzZ1mquci_sUdfZfFl4eWgBkDpW6tvZT0MEA4c4JebJdi9hCo518q1=s240-c-k-c0x00ffffff-no-rj" group-title="تركيا",TRT World
@@ -310,28 +362,40 @@ https://www.youtube.com/watch?v=LuKwFajn37U
 https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/master.m3u8
 #EXTINF:-1 tvg-logo="" group-title="روسيا",RT Arabic
 https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="بريطانيا",Sky News
+https://www.youtube.com/watch?v=xDWQ3LkccY8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/9/9d/Talksport_logo.png" group-title="بريطانيا",talkSPORT
+https://af7a8b4e.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfdGFsa1NQT1JUX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/9lOuzHQ.png" group-title="بريطانيا",I News
+https://live.i-news.tv/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/PJj5jtuEOi5UmkFy4IBonj5WcabNcnJAIJe-jZMd1ArwIuVyQxFH_2zryBHwvfv6mJujwRpWDCM=s240-c-k-c0x00ffffff-no-rj" group-title="الولايات المتحدة",NBC News NOW
+https://www.youtube.com/watch?v=_sKZFIZvwP8
+#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/GJ8V0NX6NddGh9bf4zED4tsjPjjBK2hdp5FWHMy09pV7sdSkkE3yEhCRSch4waEb9ZavyUrWfw=s240-c-k-c0x00ffffff-no-rj" group-title="الولايات المتحدة",ABC News Live
+https://www.youtube.com/watch?v=KOxtExhuaSw
+#EXTINF:-1 tvg-logo="https://i.imgur.com/ulGKX30.png" group-title="الولايات المتحدة",SportsGrid
+https://sportsgrid-tribal.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/eMjutHS.png" group-title="الولايات المتحدة",CBS Sports Golazo
+https://dai.google.com/linear/hls/event/7f3Wv6f7QEKfQna22jHqLQ/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/EzNf2Yx.png" group-title="الولايات المتحدة",NBC Sports NOW
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sS9OtcPLL1vQNfGnRudALfNzfpHVy7qwRRKTYF4HEfyICGTfXfHsfP2hhIPgKK0iBxW7p1lH1g=s240-c-k-c0x00ffffff-no-rj" group-title="الولايات المتحدة",CNBC
 https://www.youtube.com/watch?v=9NyxcX3rhQs
 #EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/OLbqCS3OrPM/hqdefault.jpg" group-title="الولايات المتحدة",CNBC عربية
 https://www.youtube.com/watch?v=OLbqCS3OrPM
+#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/5fShan4Wmtk/hqdefault.jpg" group-title="الولايات المتحدة",CBS News 24/7
+https://www.youtube.com/watch?v=5fShan4Wmtk
+#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/GgPKRZdFZ7s/hqdefault.jpg" group-title="الولايات المتحدة",NBC News NOW
+https://www.youtube.com/watch?v=GgPKRZdFZ7s
 #EXTINF:-1 tvg-logo="https://i.imgur.com/OuogLHx.png" group-title="الولايات المتحدة",Bloomberg TV
 https://bloomberg.com/media-manifest/streams/eu.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/a20DHnj.png" group-title="قنوات دولية وأخرى",MEDI1TV Afrique
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-afrique_tm7tu45/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/3YsZPY6.jpeg" group-title="قنوات دولية وأخرى",MEDI1TV Arabic
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/F5OFQsp.jpeg" group-title="قنوات دولية وأخرى",MEDI1TV Maghreb
-https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/qFNRJLb.png" group-title="الولايات المتحدة",Fubo Sports Network
+https://dnf08l6u6uxnz.cloudfront.net/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/9S9k4IK.png" group-title="الولايات المتحدة",Overtime
+https://d1a8aq6t30gkqj.cloudfront.net/v1/amc_overtime_1/samsungheadend_us/latest/main/hls/playlist_hd.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/LOGO_i24NEWS.png/960px-LOGO_i24NEWS.png" group-title="قنوات دولية وأخرى",آي 24 نيوز عربي
 https://i24newsarabic-cdn.encoders.immergo.tv/master.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/rBixF3P.png" group-title="قنوات دولية وأخرى",اليوم
 https://hlspackager.akamaized.net/live/DB/ALYAUM_TV/HLS/ALYAUM_TV.m3u8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/dGnkztdrLtXRlzkdqReeL-NES2761xxmNVcJhGKqFpR0vQBoP9XaxnXF95FDpwrjyFr2iJvV8Es=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",Sky News
-https://www.youtube.com/watch?v=xDWQ3LkccY8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/PJj5jtuEOi5UmkFy4IBonj5WcabNcnJAIJe-jZMd1ArwIuVyQxFH_2zryBHwvfv6mJujwRpWDCM=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",NBC News NOW
-https://www.youtube.com/watch?v=_sKZFIZvwP8
-#EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/GJ8V0NX6NddGh9bf4zED4tsjPjjBK2hdp5FWHMy09pV7sdSkkE3yEhCRSch4waEb9ZavyUrWfw=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",ABC News Live
-https://www.youtube.com/watch?v=KOxtExhuaSw
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/8MyE7rxMBfLZOpYkJVJFm1C8I9jxbceBbOJS9OhrepZMVGxGV-OEJU-UdLOew_qR_l-knETWeu4=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",Euronews English
 https://www.youtube.com/watch?v=pykpO5kQJ98
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/sc9xa2bYk6pIuKX3qgMHSrxEkuPmg57JMl_lRaJqCZxuSIeQt1B6BV23c-16Q3b7Aep0on1b=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",ABC NEWS Australia
@@ -342,30 +406,10 @@ https://africa24.vedge.infomaniak.com/livecast/ik:africa24sport/manifest.m3u8
 https://cdn.rabta.stream/M-Sports/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/qtbSnrY.png" group-title="قنوات دولية وأخرى",PK Sports
 https://lbgo.bozztv.com/ssh101/ssh101/pksportshd/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/ulGKX30.png" group-title="قنوات دولية وأخرى",SportsGrid
-https://sportsgrid-tribal.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/FabFP5A.png" group-title="قنوات دولية وأخرى",Trace Sport Stars
-https://lightning-tracesport-samsungau.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/eMjutHS.png" group-title="قنوات دولية وأخرى",CBS Sports Golazo
-https://dai.google.com/linear/hls/event/7f3Wv6f7QEKfQna22jHqLQ/master.m3u8
-#EXTINF:-1 tvg-logo="https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540" group-title="قنوات دولية وأخرى",DD Sports
-https://mumbai-edge.smartplaytv.in/DDSportsHD/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/EzNf2Yx.png" group-title="قنوات دولية وأخرى",NBC Sports NOW
-https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008
 #EXTINF:-1 tvg-logo="https://i.imgur.com/8ANUZAu.png" group-title="قنوات دولية وأخرى",Setanta Sports 1
 https://fs.uplink.kz/setanta_sports_1_hd/mono.m3u8?token=onlinetv
-#EXTINF:-1 tvg-logo="https://i.imgur.com/vIV7x6n.png" group-title="قنوات دولية وأخرى",Sport+ Qazaqstan
-https://fs.uplink.kz/sport+/mono.m3u8?token=onlinetv
-#EXTINF:-1 tvg-logo="https://i.imgur.com/0CJGGgd.png" group-title="قنوات دولية وأخرى",Sportitalia
-https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/9/9d/Talksport_logo.png" group-title="قنوات دولية وأخرى",talkSPORT
-https://af7a8b4e.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfdGFsa1NQT1JUX0hMUw/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/0jxLdjnY/TDP.png" group-title="قنوات دولية وأخرى",Teledeporte
-https://rtve01p.origin.c21livecloud.com/live-origin/tdp-hls/bitrate_1.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/ELXmaqg.png" group-title="قنوات دولية وأخرى",TR Sport
 https://livetr.teleromagna.it/mia/live/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/TVR_Sport_Logo_2023.svg/960px-TVR_Sport_Logo_2023.svg.png" group-title="قنوات دولية وأخرى",TVR Sport
-https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/lta5Mog.png" group-title="قنوات دولية وأخرى",World of Freesports
 https://mainstreammedia-worldoffreesportsintl-rakuten.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://yt3.googleusercontent.com/UqLrgUgD2JxhoLZ1p_i8_p4jJqmg06-H-H64zySmmmPUbg2O0SPFIxT3H7yw5pNjqxc393gy=s240-c-k-c0x00ffffff-no-rj" group-title="قنوات دولية وأخرى",i24NEWS English
@@ -388,57 +432,13 @@ https://a-cdn.klowdtv.com/live3/swervewomenssports_720p/playlist.m3u8
 https://rpn.bozztv.com/gusa/gusa-tvs/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/8hC4PfF.png" group-title="قنوات دولية وأخرى",TVS Women Sports
 https://rpn.bozztv.com/gusa/gusa-tvswsn/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/5fShan4Wmtk/hqdefault.jpg" group-title="قنوات دولية وأخرى",CBS News 24/7
-https://www.youtube.com/watch?v=5fShan4Wmtk
-#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/GgPKRZdFZ7s/hqdefault.jpg" group-title="قنوات دولية وأخرى",NBC News NOW
-https://www.youtube.com/watch?v=GgPKRZdFZ7s
-#EXTINF:-1 tvg-logo="https://i.imgur.com/9lOuzHQ.png" group-title="قنوات دولية وأخرى",I News
-https://live.i-news.tv/hls/stream.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/qFNRJLb.png" group-title="قنوات دولية وأخرى",Fubo Sports Network
-https://dnf08l6u6uxnz.cloudfront.net/master.m3u8
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/TyC_Sports_logo.svg/960px-TyC_Sports_logo.svg.png" group-title="قنوات دولية وأخرى",TyC Sports
-https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/9S9k4IK.png" group-title="قنوات دولية وأخرى",Overtime
-https://d1a8aq6t30gkqj.cloudfront.net/v1/amc_overtime_1/samsungheadend_us/latest/main/hls/playlist_hd.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/PGm944g.png" group-title="قنوات دولية وأخرى",San Marino RTV Sport
-https://d2hrvno5bw6tg2.cloudfront.net/smrtv-ch02/smil:ch-02.smil/master.m3u8
-#EXTINF:-1 tvg-logo="https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540" group-title="قنوات دولية وأخرى",DD Sports
-https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/z854PC3.png" group-title="قنوات دولية وأخرى",MNB Sport
 https://live.mnb.mn/hls/mnb_sport.stream.m3u8
-#EXTINF:-1 tvg-logo="" group-title="قنوات دولية وأخرى",Al Sharqiya News
-https://indexforce.com/newshighres/mystream/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="قنوات دولية وأخرى",Al Najah News
-https://streaming.najah.edu:8443/hls/AlNajah.m3u8
-#EXTINF:-1 tvg-logo="" group-title="قنوات دولية وأخرى",AL24 نيوز
-https://cdn.live.easybroadcast.io/abr_corp/66_al24_u4yga6h/corp/66_al24_u4yga6h_240p/chunks.m3u8
 #EXTINF:-1 tvg-id="extra-makan33" group-title="قنوات دولية وأخرى",مكان 33
 https://kancdn.medonecdn.net/livehls/oil/kancdn-live/live/makan/live.livx/playlist.m3u8
-#EXTINF:-1 tvg-id="extra-mekameleen" group-title="قنوات دولية وأخرى",مكملين
-https://mn-nl.mncdn.com/mekameleen/smil:mekameleentv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="AfghanistanInternational.uk" group-title="قنوات دولية وأخرى",Afghanistan International (720p)
-https://hls.afintl.com/hls/stream.m3u8
-#EXTINF:-1 tvg-id="AlMasirah.ye" group-title="قنوات دولية وأخرى",Al Masirah (720p)
-https://live.cdnbridge.tv/Almasirah/Almasirah_all/playlist.m3u8
-#EXTINF:-1 tvg-id="AlMasirahMubacher.ye" group-title="قنوات دولية وأخرى",Al Masirah Mubacher (642p)
-https://live2.cdnbridge.tv/AlmasirahMubasher/Mubasher_All/playlist.m3u8
-#EXTINF:-1 tvg-id="AlManar.lb" group-title="قنوات دولية وأخرى",Al-Manar (576p)
-https://edge.fastpublish.me/live/index.m3u8
-#EXTINF:-1 tvg-id="Alarabiya.ae" group-title="قنوات دولية وأخرى",Alarabiya (1080p)
-https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="DijlahTV.iq" group-title="قنوات دولية وأخرى",Dijlah TV (1080p)
-https://ghaasiflu.online/Dijlah/index.m3u8
-#EXTINF:-1 tvg-id="ElyssaTV.tn" group-title="قنوات دولية وأخرى",Elyssa TV (1080p)
-https://tv.elyssatv.com/live/master.m3u8
-#EXTINF:-1 tvg-id="Kurdistan24.iq" group-title="قنوات دولية وأخرى",Kurdistan 24 (1080p)
-https://hlspackager.akamaized.net/live/DB/K24/HLS/K24.m3u8
 #EXTINF:-1 tvg-id="MiracleChannel.se" group-title="قنوات دولية وأخرى",Miracle Channel (1080p)
 https://live.miracleonline.org/hls/miracle1.m3u8
 #EXTINF:-1 tvg-id="PayamTV.iq" group-title="قنوات دولية وأخرى",Payam TV (1080p)
 https://hlspackager.akamaized.net/live/DB/PAYAM_TV/HLS/PAYAM_TV.m3u8
-#EXTINF:-1 tvg-id="RudawTV.iq" group-title="قنوات دولية وأخرى",Rudaw TV (1080p)
-https://hlspackager.akamaized.net/live/DB/RUDAW/HLS/RUDAW.m3u8
 #EXTINF:-1 tvg-id="UNews.lb" group-title="قنوات دولية وأخرى",UNews (1080p)
 https://cdn.catiacast.video/abr/9436b5ab3c1171ab04a59af11951292f/playlist.m3u8
-#EXTINF:-1 tvg-id="WelatTV.sy" group-title="قنوات دولية وأخرى",Welat TV (1080i)
-https://stream.badinan.xyz/welat/tv/playlist.m3u8
