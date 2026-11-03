@@ -45,7 +45,7 @@ import java.util.List;
  * No user passwords or stream links are embedded in this application.
  */
 public final class MainActivity extends Activity {
-    private static final String HOME_URL = "https://almoghani.net/";
+    private static final String HOME_URL = "https://almoghani-net-22.lovable.app/";
     private static final int FILE_REQUEST = 1001;
     private static final int MEDIA_PERMISSION_REQUEST = 1002;
 
@@ -254,7 +254,8 @@ public final class MainActivity extends Activity {
         String scheme = uri.getScheme();
         String host = uri.getHost();
         return "https".equalsIgnoreCase(scheme) && host != null
-            && ("almoghani.net".equalsIgnoreCase(host)
+            && ("almoghani-net-22.lovable.app".equalsIgnoreCase(host)
+                || "almoghani.net".equalsIgnoreCase(host)
                 || host.toLowerCase(java.util.Locale.ROOT).endsWith(".almoghani.net"));
     }
 
