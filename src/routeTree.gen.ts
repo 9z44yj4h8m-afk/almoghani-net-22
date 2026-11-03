@@ -15,6 +15,7 @@ import { Route as R22RouteImport } from './routes/22'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminChatRouteImport } from './routes/admin-chat'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BedouinDramaRouteImport } from './routes/bedouin-drama'
 import { Route as ChatRouteImport } from './routes/chat'
@@ -75,6 +76,11 @@ const AdminChatRoute = AdminChatRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchiveRoute = ArchiveRouteImport.update({
+  id: '/archive',
+  path: '/archive',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -242,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/app': typeof AppRoute
+  '/archive': typeof ArchiveRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
   '/chat': typeof ChatRoute
@@ -281,6 +288,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/app': typeof AppRoute
+  '/archive': typeof ArchiveRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
   '/chat': typeof ChatRoute
@@ -321,6 +329,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/admin-chat': typeof AdminChatRoute
   '/app': typeof AppRoute
+  '/archive': typeof ArchiveRoute
   '/auth': typeof AuthRoute
   '/bedouin-drama': typeof BedouinDramaRoute
   '/chat': typeof ChatRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin-chat'
     | '/app'
+    | '/archive'
     | '/auth'
     | '/bedouin-drama'
     | '/chat'
@@ -401,6 +411,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin-chat'
     | '/app'
+    | '/archive'
     | '/auth'
     | '/bedouin-drama'
     | '/chat'
@@ -440,6 +451,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin-chat'
     | '/app'
+    | '/archive'
     | '/auth'
     | '/bedouin-drama'
     | '/chat'
@@ -480,6 +492,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AdminChatRoute: typeof AdminChatRoute
   AppRoute: typeof AppRoute
+  ArchiveRoute: typeof ArchiveRoute
   AuthRoute: typeof AuthRoute
   BedouinDramaRoute: typeof BedouinDramaRoute
   ChatRoute: typeof ChatRoute
@@ -555,6 +568,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archive': {
+      id: '/archive'
+      path: '/archive'
+      fullPath: '/archive'
+      preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -784,6 +804,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AdminChatRoute: AdminChatRoute,
   AppRoute: AppRoute,
+  ArchiveRoute: ArchiveRoute,
   AuthRoute: AuthRoute,
   BedouinDramaRoute: BedouinDramaRoute,
   ChatRoute: ChatRoute,
