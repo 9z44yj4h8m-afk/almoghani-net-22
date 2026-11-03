@@ -55,3 +55,4 @@
 - Android MainActivity opens the current published project with sensorLandscape; retain the trusted-origin permission checks so changing the homepage never grants external sites camera or microphone access.
 - Serve the standalone blue IPTV page from public/iptv.html as a self-contained static page; extend its device-local channel controls and live design editor in place, keep favorites/settings in localStorage and export edited HTML without introducing global admin permissions.
 - Keep the standalone design workspace scoped to its editor, with inert same-origin preview selection and existing draft history; this enables direct element selection without altering the public page or granting global writes.
+- Keep standalone IPTV health keyed by channel ID and URL, with green only after media time advances, red for concrete source/player failures, and unknown for blocked or unverified checks; never infer playback from opaque HTTP responses.
