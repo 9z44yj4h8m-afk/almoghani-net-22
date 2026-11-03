@@ -11,8 +11,8 @@ import { isSmartersChannel, mergeLiveChannels, smartersCategory } from "@/lib/un
 import { appendAtlasChannels, channelKind, filterAtlasChannels, importAtlasPlaylist, type AtlasChannel } from "@/lib/broadcast-atlas";
 
 const stateLabels: Record<string, string> = { loading: "جارٍ الاتصال", playing: "يعمل الآن", paused: "متوقف مؤقتًا", reconnecting: "إعادة الاتصال", failed: "تعذّر التشغيل", idle: "بانتظار اختيار قناة" };
-const destinations = [["/live", "البث المباشر"], ["/sections", "الأقسام"], ["/movies", "الأفلام"], ["/bedouin-drama", "المسلسلات"], ["/chat", "الدردشة AI"], ["/auth", "دخول الأعضاء"], ["/vip", "مكتبة الأعضاء"], ["/subscribe", "الاشتراك"], ["/100", "الأصوات"], ["/tv", "التطبيق"], ["/my-account", "الإعدادات"], ["/contact", "التواصل"], ["/admin", "لوحة الإدارة"]];
-function ChannelLogo({ channel }: { channel?: AtlasChannel }) {
+const destinations = [["/live", "البث المباشر"], ["/sections", "الأقسام"], ["/movies", "الأفلام"], ["/bedouin-drama", "المسلسلات"], ["/chat", "الدردشة AI"], ["/auth", "دخول الأعضاء"], ["/vip", "مكتبة الأعضاء"], ["/subscription", "الاشتراك"], ["/100", "الأصوات"], ["/tv", "التطبيق"], ["/my-account", "الإعدادات"], ["/contact", "التواصل"], ["/admin", "لوحة الإدارة"]];
+function ChannelLogo({ channel }: { channel?: AtlasChannel | undefined }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [channel?.thumbnail]);
   return <span className="atlas-channel-logo">{channel?.thumbnail && !failed ? <img src={channel.thumbnail} alt="" width={48} height={48} loading="lazy" onError={() => setFailed(true)} /> : <Tv aria-hidden="true" />}</span>;
