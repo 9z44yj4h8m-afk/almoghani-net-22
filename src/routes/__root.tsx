@@ -171,7 +171,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (state) => state.location.pathname }); const standaloneScreen = pathname === "/chat" || pathname === "/live-chat" || pathname === "/voice-chat" || pathname === "/22" || pathname === "/unlock" || pathname === "/tv";
+  const pathname = useRouterState({ select: (state) => state.location.pathname }); const standaloneScreen = pathname === "/" || pathname === "/chat" || pathname === "/live-chat" || pathname === "/voice-chat" || pathname === "/22" || pathname === "/unlock" || pathname === "/tv";
 
   return (
     <QueryClientProvider client={queryClient}>
