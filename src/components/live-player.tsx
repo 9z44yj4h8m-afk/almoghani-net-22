@@ -1,5 +1,6 @@
-import { Bell, Maximize, Pause, Play, RefreshCw, Volume1, Volume2, VolumeX, WifiOff } from "lucide-react";
+import { Bell, Maximize, Pause, Play, RefreshCw, Volume1, Volume2, VolumeX, WifiOff, SkipBack, SkipForward } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import type Hls from "hls.js";
 import { useServerFn } from "@tanstack/react-start";
 
@@ -47,7 +48,7 @@ function usePlayerSettings() {
   return [settings, update] as const;
 }
 
-export function LivePlayer({ channel }: { channel: Channel }) {
+export function LivePlayer({ channel, atlas = false, onPrevious, onNext, onState }: { channel: Channel; atlas?: boolean; onPrevious?: () => void; onNext?: () => void; onState?: (status: string) => void }) {
   const [settings, update] = usePlayerSettings();
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -66,6 +67,17 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   const isHls = Boolean(channel.streamUrl);
   const [ytId, setYtId] = useState(channel.youtubeId);
   const resolveLive = useServerFn(resolveYoutubeLive);
+  useEffect(() => { onState?.(paused ? "paused" : status); }, [status, paused, onState]);
+  useEffect(() => {
+    if (!atlas) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLElement && (event.target.closest("input,select,textarea,button,[contenteditable=true]"))) return;
+      if (event.key.toLowerCase() === "f") { event.preventDefault(); toggleFullscreen(); }
+      if (event.key === " ") { event.preventDefault(); togglePlay(); }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  });
 
   // YouTube: look up the channel's current live broadcast on load and on every reconnect.
   useEffect(() => {
@@ -179,7 +191,8 @@ export function LivePlayer({ channel }: { channel: Channel }) {
 
     const playNative = () => {
       if (!video.canPlayType("application/vnd.apple.mpegurl")) return drop();
-      const url = channel.streamUrl!;
+      const url = channel.streamUrl;
+      if (!url) return;
       // Native HLS sends the page Referer, which MBC's CDN rejects: use the relay.
       video.src = url.startsWith("https://shd-gcp-live.edgenextcdn.net/") || url.startsWith("https://rotana.hibridcdn.net/")
         ? `/api/public/hls?u=${encodeURIComponent(url)}`
@@ -223,9 +236,11 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             drop();
           });
           // Rotana's CDN rejects video pieces without Referer rotana.net: use the relay.
-          const src = channel.streamUrl!.startsWith("https://rotana.hibridcdn.net/")
-            ? `/api/public/hls?u=${encodeURIComponent(channel.streamUrl!)}`
-            : channel.streamUrl!;
+          const url = channel.streamUrl;
+          if (!url) { hls.destroy(); return; }
+          const src = url.startsWith("https://rotana.hibridcdn.net/")
+            ? `/api/public/hls?u=${encodeURIComponent(url)}`
+            : url;
           hls.loadSource(src);
           hls.attachMedia(video);
         })
@@ -330,6 +345,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   }, [settings.quality]);
 
   function togglePlay() {
+    if (!isHls) { ytCommand(paused ? "playVideo" : "pauseVideo"); setPaused(current => !current); return; }
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) void video.play().catch(() => undefined);
@@ -353,7 +369,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
   const ytSrc = `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1&autoplay=1&mute=1&enablejsapi=1&controls=0`;
 
   return (
-    <div>
+    <div className={atlas ? "atlas-live-player" : undefined}>
       <div ref={shellRef} className="relative aspect-video w-full overflow-hidden bg-surface-deep">
         {isHls ? (
           <div className="relative h-full w-full">
@@ -366,18 +382,18 @@ export function LivePlayer({ channel }: { channel: Channel }) {
               playsInline
               onClick={togglePlay}
             />
-            <button
+            <Button variant="ghost"
               type="button"
               onClick={togglePlay}
               aria-label={paused ? "تشغيل البث" : "إيقاف البث مؤقتًا"}
-              className="absolute inset-0 grid place-items-center"
+              className="absolute inset-0 h-full w-full grid place-items-center"
             >
               <span
                 className={`grid h-14 w-14 place-items-center rounded-full bg-background/60 text-foreground backdrop-blur transition-opacity duration-200 ${paused ? "opacity-100" : "opacity-0"}`}
               >
                 {paused ? <Play className="h-6 w-6 fill-current" /> : <Pause className="h-6 w-6" />}
               </span>
-            </button>
+            </Button>
           </div>
         ) : (
           <iframe
@@ -414,20 +430,28 @@ export function LivePlayer({ channel }: { channel: Channel }) {
               <p className="mt-2 text-sm text-muted-foreground">
                 قد يكون البث انتهى أو غير متاح في منطقتك.
               </p>
-              <button
+              <Button
                 type="button"
                 onClick={manualReload}
                 className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-primary-foreground"
               >
                 <RefreshCw className="h-4 w-4" />
                 حاول مرة أخرى
-              </button>
+              </Button>
             </div>
           </div>
         )}
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-border bg-surface-deep/80 px-3 py-3 sm:px-5">
+      {atlas ? <div className="atlas-player-controls">
+        <Button variant="ghost" size="icon" onClick={togglePlay} aria-label={paused ? "تشغيل البث" : "إيقاف البث مؤقتًا"} title={paused ? "تشغيل" : "إيقاف مؤقت"}>{paused ? <Play /> : <Pause />}</Button>
+        <Button variant="ghost" size="icon" onClick={onPrevious} aria-label="القناة السابقة" title="القناة السابقة"><SkipForward /></Button>
+        <Button variant="ghost" size="icon" onClick={onNext} aria-label="القناة التالية" title="القناة التالية"><SkipBack /></Button>
+        <span className="atlas-controls-spacer" />
+        <span className="atlas-quality">تلقائي</span>
+        <Button variant="ghost" size="icon" onClick={() => update({ muted: !settings.muted })} aria-label={settings.muted ? "تشغيل الصوت" : "كتم الصوت"} title="الصوت"><VolumeIcon /></Button>
+        <Button variant="ghost" size="icon" onClick={toggleFullscreen} aria-label="ملء الشاشة" title="ملء الشاشة"><Maximize /></Button>
+      </div> : <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-border bg-surface-deep/80 px-3 py-3 sm:px-5">
         <div className="flex min-w-[10rem] flex-1 items-center gap-2 sm:max-w-xs">
           <button
             type="button"
@@ -534,7 +558,7 @@ export function LivePlayer({ channel }: { channel: Channel }) {
             <Maximize className="h-4 w-4" />
           </button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
