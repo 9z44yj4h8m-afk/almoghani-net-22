@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-// The owner made the standalone IPTV page the homepage (3 Nov 2026); the previous homepage lives at /archive.
+// Open the owner's approved standalone design; older pages remain available.
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
-    throw redirect({ href: "/iptv.html", statusCode: 302 });
+    throw redirect({ href: "/atlas.html", statusCode: 302 });
   },
   head: () => ({
     meta: [
