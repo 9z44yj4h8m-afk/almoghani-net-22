@@ -12,7 +12,7 @@ export type SiteTexts = { bannerTitle: string; bannerSubtitle: string; proLabel:
 export const safeLibraryLink = (v?: string) => (v && /^\/(?!\/)[\w\-/?=&%.]*$/.test(v) ? v : "/vip");
 export const safeHttpsImage = (v?: string) => (v && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : "");
 export type SiteContacts = { whatsapp: string; email: string; snapchat: string; x: string; instagram: string };
-export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number; colors?: Record<string, string>; radius?: number; layout?: SiteLayout };
+export type SiteDesign = { primary: string; accent: string; background: string; fontBody?: string; fontHeading?: string; fontScale?: number; colors?: Record<string, string>; radius?: number; layout?: SiteLayout; atlas?: Record<string, string> };
 export const designColorFields = [
   { key: "background", label: "لون الخلفية", def: "#0b1424", vars: ["--background", "--surface-deep"] },
   { key: "card", label: "لون البطاقات", def: "#111c2e", vars: ["--card", "--surface"] },
@@ -22,6 +22,16 @@ export const designColorFields = [
   { key: "secondary", label: "لون الأزرار الثانوية", def: "#1a2740", vars: ["--secondary", "--muted"] },
   { key: "gradient", label: "لون تدرّج الأزرار", def: "#c1272d", vars: ["--vip-purple"] },
   { key: "live", label: "لون شارة مباشر", def: "#e0242f", vars: ["--live", "--signal"] },
+] as const;
+export const atlasColorFields = [
+  { key: "green", label: "لون الإبراز (الأخضر)", def: "#30c66a", vars: ["--atlas-green"] },
+  { key: "background", label: "خلفية الرئيسية", def: "#090b0c", vars: ["--atlas-background"] },
+  { key: "panel", label: "خلفية لوحة القنوات", def: "#101213", vars: ["--atlas-panel"] },
+  { key: "raised", label: "خلفية الأزرار والبحث", def: "#151819", vars: ["--atlas-raised"] },
+  { key: "selected", label: "خلفية القناة المختارة", def: "#10291c", vars: ["--atlas-selected"] },
+  { key: "text", label: "لون نص الرئيسية", def: "#eef1ef", vars: ["--atlas-text"] },
+  { key: "muted", label: "لون النص الثانوي بالرئيسية", def: "#87928c", vars: ["--atlas-muted"] },
+  { key: "border", label: "لون حدود الرئيسية", def: "#292e30", vars: ["--atlas-border"] },
 ] as const;
 export const siteFonts = ["Cairo", "Tajawal", "Almarai", "IBM Plex Sans Arabic", "Noto Kufi Arabic", "Changa", "Readex Pro", "El Messiri"] as const;
 
