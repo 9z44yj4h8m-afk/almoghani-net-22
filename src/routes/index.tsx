@@ -1,16 +1,15 @@
-import { useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { GoldHome } from "@/components/gold-home";
+import { BroadcastAtlas } from "@/components/broadcast-atlas";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ALMOGHANI LIVE — القنوات والأفلام والمسلسلات" },
+      { title: "ALMOGHANI LIVE — أطلس البث المباشر" },
       {
         name: "description",
         content: "شاهد القنوات المباشرة داخل المغني لايف بواجهة عربية سريعة وواضحة.",
       },
-      { property: "og:title", content: "ALMOGHANI LIVE — القنوات والأفلام والمسلسلات" },
+      { property: "og:title", content: "ALMOGHANI LIVE — أطلس البث المباشر" },
       {
         property: "og:description",
         content: "مشاهدة القنوات المباشرة من مشغّل واحد داخل الموقع.",
@@ -19,13 +18,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => {
-    // Channel deep links now play in the live workspace; the new homepage is display-only.
-    useEffect(() => {
-      const channel = new URLSearchParams(window.location.search).get("channel");
-      if (channel) window.location.replace(`/live?channel=${encodeURIComponent(channel)}`);
-    }, []);
-    return <GoldHome />;
-  },
+  component: BroadcastAtlas,
 });
 
