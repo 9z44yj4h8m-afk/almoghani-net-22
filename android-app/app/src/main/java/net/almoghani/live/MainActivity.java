@@ -45,7 +45,7 @@ import java.util.List;
  * No user passwords or stream links are embedded in this application.
  */
 public final class MainActivity extends Activity {
-    private static final String HOME_URL = "https://almoghani-net-22.lovable.app/archive";
+    private static final String HOME_URL = "https://almoghani-net-22.lovable.app/atlas.html";
     private static final int FILE_REQUEST = 1001;
     private static final int MEDIA_PERMISSION_REQUEST = 1002;
 

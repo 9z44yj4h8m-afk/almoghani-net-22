@@ -46,7 +46,7 @@
 - Keep Smarters failure detection and manual retry in SmartersPlayer, shared by homepage and library, without persistent stream caching so access gates and source ownership remain unchanged.
 - Keep verified public bulk-channel additions in a browser-safe static catalog merged through channels.ts; synchronize all public playlists and bound mounted channel rows while searching the full catalog to keep large imports usable without changing member gates.
 
-- Render / through BroadcastAtlas using the configured catalog and shared LivePlayer/UnifiedMemberPlayer; keep GoldHome and the optional saved canvas on /tv unchanged so the homepage restyle never overwrites owner layouts.
+- Redirect / to the approved standalone atlas page and point Android HOME_URL to it; retain /iptv.html, /archive and /tv so switching entry points never overwrites older pages or owner layouts.
 - Keep BroadcastAtlas M3U imports in session-only browser state, additive to existing channels with no catalog writes or polling; this preserves owner data and never publishes imported credentials.
 - Store shared homepage sizing within site_settings design.layout, validate bounded numeric CSS through site-layout, and render draft previews through GoldHome with container-bounded sizing; save design and its previous revision together under existing admin RLS to keep undo recoverable without changing public access.
 - Keep pages-site/ as the standalone GitHub Pages copy of the site: hash-routed static files only, channels pulled from almoghani.net/aa.m3u by .github/scripts/channels.py because the site sends no cross-origin header, and member, chat, voice and admin features linked to almoghani.net instead of copied — the full stack cannot build on Pages and private streams must stay off it.
