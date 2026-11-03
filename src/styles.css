@@ -96,6 +96,21 @@
 .atlas-notice { font-size: 12px; display: flex; justify-content: space-between; align-items: center; padding: 8px; color: var(--atlas-green); }
 .broadcast-atlas :focus-visible { outline: 2px solid var(--atlas-green); outline-offset: 2px; }
 @media (min-width: 1600px) { .atlas-browser,.atlas-viewer { padding-left: 44px; padding-right: 44px; } .atlas-viewer-body { margin-top: 85px; } }
+@media (min-width: 761px) and (max-height: 600px) {
+ .broadcast-atlas { min-height: 0; }
+ .atlas-brand-bar,.atlas-viewer-heading { min-height: 65px; height: 65px; }
+ .atlas-brand-mark { width: 36px; height: 36px; }
+ .atlas-keyboard { min-height: 35px; }
+ .atlas-filters { padding-bottom: 12px; }
+ .atlas-list-heading { padding-bottom: 8px; }
+ .atlas-search { margin-bottom: 8px; height: 36px; }
+ .atlas-viewer-body { margin-top: 0; }
+ .atlas-now-playing { padding: 12px 0; }
+ .atlas-playback-status { padding: 8px 0; }
+ .atlas-watch-actions { margin-top: 4px; }
+ .atlas-watch-actions button { height: 35px; }
+ .atlas-viewer-footer { display: none; }
+}
 @media (max-width: 1100px) and (min-width: 761px) { .atlas-browser,.atlas-viewer { padding-left: 20px; padding-right: 20px; } .atlas-brand-copy h1 { font-size: 17px; } .atlas-brand-bar { gap: 9px; } .atlas-keyboard-caption { display: none !important; } .atlas-filters { gap: 6px; } .atlas-filters label { padding: 0 8px; } .atlas-filters label > svg:first-child { display: none; } }
 @media (max-width: 760px) {
  .broadcast-atlas { display: flex; flex-direction: column; height: auto; min-height: 100dvh; overflow: visible; }
